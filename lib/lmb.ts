@@ -64,7 +64,7 @@ export async function getLmbGames():
     const date = mexicoDate();
 
     const data = await lmbFetch(
-  `/schedule?sportId=${LMB_SPORT_ID}&leagueId=${LMB_LEAGUE_ID}&date=${date}&season=${seasonYear()}&gameTypes=R,F,D,L,W&hydrate=linescore`
+  `/schedule?sportId=${LMB_SPORT_ID}&leagueId=${LMB_LEAGUE_ID}&date=${date}&hydrate=linescore`
 );
     const games =
       data?.dates?.flatMap(
