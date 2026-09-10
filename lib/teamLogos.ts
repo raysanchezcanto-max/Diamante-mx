@@ -31,6 +31,8 @@ const LMP_LOGOS: Record<string, string> = {
     "/logos/lmp/mayos-navojoa.png",
   "venados de mazatlan":
     "/logos/lmp/venados-mazatlan.png",
+  };
+
   const LMB_LOGOS: Record<string, string> = {
   "toros de tijuana":
     "/logos/lmb/toros-tijuana.png",
