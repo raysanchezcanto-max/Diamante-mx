@@ -7,7 +7,7 @@ function playerPhoto(
 ) {
   if (league === "LMP") {
     if (playerId === 540204) {
-      return "/players/lmp/ramon-rios.jpg";
+     return "/players/lmp/ramon-rios.png";
     }
 
     return `https://images.cloudgfx.com/player/mugshot/${playerId}?app=lamp&h=350&w=250`;
