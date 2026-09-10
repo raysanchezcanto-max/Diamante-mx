@@ -1,6 +1,14 @@
 import type { Leader } from "@/lib/mlb";
+import type { LeagueCode } from "@/lib/teamLogos";
 
-function playerPhoto(playerId: number) {
+function playerPhoto(
+  league: LeagueCode,
+  playerId: number
+) {
+  if (league === "LMP") {
+    return `https://images.cloudgfx.com/player/mugshot/${playerId}?app=lamp&h=180&w=140`;
+  }
+
   return `https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_180,q_auto:best/v1/people/${playerId}/headshot/silo/current.png`;
 }
 
@@ -8,10 +16,12 @@ function LeaderCard({
   title,
   unit,
   data,
+  league,
 }: {
   title: string;
   unit: string;
   data: Leader[];
+  league: LeagueCode;
 }) {
   return (
     <div className="leaderCard">
@@ -21,19 +31,26 @@ function LeaderCard({
       </div>
 
       {data.length === 0 ? (
-        <p className="muted">Sin datos disponibles.</p>
+        <p className="muted">
+          Sin datos disponibles.
+        </p>
       ) : (
         data.slice(0, 8).map((p) => (
           <div
             className="leaderRow"
             key={`${title}-${p.rank}-${p.name}`}
           >
-            <span className="rank">{p.rank}</span>
+            <span className="rank">
+              {p.rank}
+            </span>
 
             <div className="playerWithPhoto">
               <img
                 className="playerPhoto"
-                src={playerPhoto(p.playerId)}
+                src={playerPhoto(
+                  league,
+                  p.playerId
+                )}
                 alt={`Foto de ${p.name}`}
                 width={44}
                 height={44}
@@ -46,7 +63,9 @@ function LeaderCard({
               </div>
             </div>
 
-            <strong className="stat">{p.value}</strong>
+            <strong className="stat">
+              {p.value}
+            </strong>
           </div>
         ))
       )}
@@ -56,18 +75,23 @@ function LeaderCard({
 
 export default function Leaders({
   leaders,
+  league = "MLB",
 }: {
   leaders: {
     avg: Leader[];
     hr: Leader[];
     hits: Leader[];
   };
+  league?: LeagueCode;
 }) {
   return (
     <section className="section">
       <div className="sectionHeader">
         <div>
-          <span className="eyebrow">LÍDERES MLB</span>
+          <span className="eyebrow">
+            LÍDERES {league}
+          </span>
+
           <h2>Líderes de bateo</h2>
         </div>
       </div>
@@ -77,18 +101,21 @@ export default function Leaders({
           title="Promedio"
           unit="AVG"
           data={leaders.avg}
+          league={league}
         />
 
         <LeaderCard
           title="Home Runs"
           unit="HR"
           data={leaders.hr}
+          league={league}
         />
 
         <LeaderCard
           title="Hits"
           unit="H"
           data={leaders.hits}
+          league={league}
         />
       </div>
     </section>
