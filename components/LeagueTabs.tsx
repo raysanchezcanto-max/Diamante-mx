@@ -23,16 +23,16 @@ export default function LeagueTabs({
           MLB
         </a>
 
-        <span
+        <a
+          href="/?league=lmb"
           className={
             activeLeague === "LMB"
-              ? "tab active disabledTab"
-              : "tab disabledTab"
+              ? "tab active"
+              : "tab"
           }
-          title="LMB próximamente"
         >
           LMB
-        </span>
+        </a>
 
         <a
           href="/?league=lmp"
