@@ -7,10 +7,14 @@ function playerPhoto(
 ) {
   if (league === "LMP") {
     if (playerId === 540204) {
-     return "/players/lmp/ramon-rios.png";
+      return "/players/lmp/ramon-rios.png";
     }
 
     return `https://images.cloudgfx.com/player/mugshot/${playerId}?app=lamp&h=350&w=250`;
+  }
+
+  if (league === "LMB") {
+    return `https://img.mlbstatic.com/mlb-photos/image/upload/c_fill,g_auto/w_180/v1/people/${playerId}/headshot/milb/current`;
   }
 
   return `https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_180,q_auto:best/v1/people/${playerId}/headshot/silo/current.png`;
