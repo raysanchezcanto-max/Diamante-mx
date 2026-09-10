@@ -149,9 +149,12 @@ export default async function Home({
   />
 </div>
 
-      <div id="lideres">
-        <Leaders leaders={leaders} />
-      </div>
+     <div id="lideres">
+  <Leaders
+    leaders={leaders}
+    league={selectedLeague}
+  />
+</div>
 
       <footer>
         <div className="brand small">
