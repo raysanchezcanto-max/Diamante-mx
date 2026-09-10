@@ -14,7 +14,7 @@ function mexicoDateKey(date: Date) {
   }).format(date);
 }
 
-function gameLabel(game: Game) {
+function gameTime(game: Game) {
   if (game.status === "Live") {
     const inning = game.inning
       ? `${game.inningState ?? ""} ${game.inning}`.trim()
@@ -34,7 +34,7 @@ function gameLabel(game: Game) {
   }).format(new Date(game.startTime));
 }
 
-function gameDateLabel(game: Game) {
+function dateLabel(game: Game) {
   return new Intl.DateTimeFormat("es-MX", {
     timeZone: "America/Mexico_City",
     weekday: "long",
@@ -44,144 +44,221 @@ function gameDateLabel(game: Game) {
   }).format(new Date(game.startTime));
 }
 
+function GameCards({
+  games,
+  league,
+}: {
+  games: Game[];
+  league: LeagueCode;
+}) {
+  return (
+    <div className="gamesGrid">
+      {games.map((game) => {
+        const awayLogo = getTeamLogo(
+          league,
+          game.awayId,
+          game.away
+        );
+
+        const homeLogo = getTeamLogo(
+          league,
+          game.homeId,
+          game.home
+        );
+
+        return (
+          <article
+            className="gameCard"
+            key={game.id}
+          >
+            <div
+              className={
+                game.status === "Live"
+                  ? "gameStatus live"
+                  : "gameStatus"
+              }
+            >
+              {gameTime(game)}
+            </div>
+
+            <div className="teamRow">
+              <div className="teamIdentity">
+                {awayLogo && (
+                  <img
+                    src={awayLogo}
+                    alt={`Logo de ${game.away}`}
+                    width={34}
+                    height={34}
+                    loading="lazy"
+                  />
+                )}
+
+                <span>{game.away}</span>
+              </div>
+
+              <strong>
+                {game.awayRuns ?? "–"}
+              </strong>
+            </div>
+
+            <div className="teamRow">
+              <div className="teamIdentity">
+                {homeLogo && (
+                  <img
+                    src={homeLogo}
+                    alt={`Logo de ${game.home}`}
+                    width={34}
+                    height={34}
+                    loading="lazy"
+                  />
+                )}
+
+                <span>{game.home}</span>
+              </div>
+
+              <strong>
+                {game.homeRuns ?? "–"}
+              </strong>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Games({
   games,
+  nextGames = [],
   league = "MLB",
 }: {
   games: Game[];
+  nextGames?: Game[];
   league?: LeagueCode;
 }) {
   const today = mexicoDateKey(new Date());
 
-  const gamesDate =
-    games.length > 0
-      ? mexicoDateKey(
-          new Date(games[0].startTime)
-        )
+  /*
+    Algunas funciones antiguas ya pueden
+    devolver la próxima fecha cuando hoy
+    está vacío.
+
+    Por eso separamos aquí los juegos
+    realmente correspondientes a hoy.
+  */
+  const todayGames = games.filter(
+    (game) =>
+      mexicoDateKey(
+        new Date(game.startTime)
+      ) === today
+  );
+
+  const futureGamesFromMain =
+    games.filter(
+      (game) =>
+        mexicoDateKey(
+          new Date(game.startTime)
+        ) !== today
+    );
+
+  /*
+    Si nextGames trae información,
+    tiene prioridad.
+
+    Si no, usamos el fallback anterior.
+  */
+  const upcomingGames =
+    nextGames.length > 0
+      ? nextGames
+      : futureGamesFromMain;
+
+  const upcomingDate =
+    upcomingGames.length > 0
+      ? dateLabel(upcomingGames[0])
       : null;
 
-  const showingToday =
-    gamesDate === today;
-
-  const nextDateLabel =
-    games.length > 0
-      ? gameDateLabel(games[0])
-      : null;
+  const hasAnyGames =
+    todayGames.length > 0 ||
+    upcomingGames.length > 0;
 
   return (
-    <section className="section">
-      <div className="sectionHeader">
-        <div>
-          <span className="eyebrow">
-            {showingToday
-              ? "PIZARRA"
-              : "PRÓXIMA FECHA"}
-          </span>
+    <>
+      {todayGames.length > 0 && (
+        <section className="section">
+          <div className="sectionHeader">
+            <div>
+              <span className="eyebrow">
+                PIZARRA
+              </span>
 
-          <h2>
-            {showingToday
-              ? "Juegos de hoy"
-              : "Próximos juegos"}
-          </h2>
+              <h2>Juegos de hoy</h2>
+            </div>
 
-          {!showingToday &&
-            nextDateLabel && (
-              <p className="gamesDate">
-                {nextDateLabel}
-              </p>
-            )}
-        </div>
+            <span className="liveDot">
+              ● Datos {league}
+            </span>
+          </div>
 
-        <span className="liveDot">
-          ● Datos {league}
-        </span>
-      </div>
-
-      {games.length === 0 ? (
-        <div className="empty">
-          No hay próximos juegos
-          disponibles en el calendario.
-        </div>
-      ) : (
-        <div className="gamesGrid">
-          {games.map((game) => {
-            const awayLogo =
-              getTeamLogo(
-                league,
-                game.awayId,
-                game.away
-              );
-
-            const homeLogo =
-              getTeamLogo(
-                league,
-                game.homeId,
-                game.home
-              );
-
-            return (
-              <article
-                className="gameCard"
-                key={game.id}
-              >
-                <div
-                  className={
-                    game.status === "Live"
-                      ? "gameStatus live"
-                      : "gameStatus"
-                  }
-                >
-                  {gameLabel(game)}
-                </div>
-
-                <div className="teamRow">
-                  <div className="teamIdentity">
-                    {awayLogo && (
-                      <img
-                        src={awayLogo}
-                        alt={`Logo de ${game.away}`}
-                        width={34}
-                        height={34}
-                        loading="lazy"
-                      />
-                    )}
-
-                    <span>
-                      {game.away}
-                    </span>
-                  </div>
-
-                  <strong>
-                    {game.awayRuns ?? "–"}
-                  </strong>
-                </div>
-
-                <div className="teamRow">
-                  <div className="teamIdentity">
-                    {homeLogo && (
-                      <img
-                        src={homeLogo}
-                        alt={`Logo de ${game.home}`}
-                        width={34}
-                        height={34}
-                        loading="lazy"
-                      />
-                    )}
-
-                    <span>
-                      {game.home}
-                    </span>
-                  </div>
-
-                  <strong>
-                    {game.homeRuns ?? "–"}
-                  </strong>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+          <GameCards
+            games={todayGames}
+            league={league}
+          />
+        </section>
       )}
-    </section>
+
+      {upcomingGames.length > 0 && (
+        <section className="section">
+          <div className="sectionHeader">
+            <div>
+              <span className="eyebrow">
+                PRÓXIMA FECHA
+              </span>
+
+              <h2>Próximos juegos</h2>
+
+              {upcomingDate && (
+                <p className="gamesDate">
+                  {upcomingDate}
+                </p>
+              )}
+            </div>
+
+            {todayGames.length === 0 && (
+              <span className="liveDot">
+                ● Datos {league}
+              </span>
+            )}
+          </div>
+
+          <GameCards
+            games={upcomingGames}
+            league={league}
+          />
+        </section>
+      )}
+
+      {!hasAnyGames && (
+        <section className="section">
+          <div className="sectionHeader">
+            <div>
+              <span className="eyebrow">
+                PRÓXIMA FECHA
+              </span>
+
+              <h2>Próximos juegos</h2>
+            </div>
+
+            <span className="liveDot">
+              ● Datos {league}
+            </span>
+          </div>
+
+          <div className="empty">
+            No hay próximos juegos disponibles
+            en el calendario.
+          </div>
+        </section>
+      )}
+    </>
   );
 }
