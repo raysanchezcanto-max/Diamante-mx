@@ -1,4 +1,4 @@
-export type LeagueCode = "MLB" | "LMP";
+export type LeagueCode = "MLB" | "LMB" | "LMP";
 
 const LMP_LOGOS: Record<string, string> = {
   "jaguares de nayarit":
@@ -54,8 +54,16 @@ export function getTeamLogo(
     return `https://www.mlbstatic.com/team-logos/team-cap-on-dark/${teamId}.svg`;
   }
 
-  const normalizedName =
-    normalizeTeamName(teamName);
+  if (league === "LMP") {
+    const normalizedName =
+      normalizeTeamName(teamName);
 
-  return LMP_LOGOS[normalizedName] ?? null;
+    return LMP_LOGOS[normalizedName] ?? null;
+  }
+
+  /*
+    Los logos LMB se agregarán en el
+    siguiente paso.
+  */
+  return null;
 }
