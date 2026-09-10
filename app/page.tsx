@@ -51,8 +51,6 @@ const selectedLeague:
         getLmbStandings(),
         getLmbLeaders(),
       ])
-    const nextGames =
-  await getNextGames(selectedLeague);
     : selectedLeague === "LMP"
       ? await Promise.all([
           getLmpGames(),
@@ -64,6 +62,9 @@ const selectedLeague:
           getStandings(),
           getLeaders(),
         ]);
+
+const nextGames =
+  await getNextGames(selectedLeague);
     const lmpSeasonStart = new Date(
     "2026-10-13T00:00:00-06:00"
   );
