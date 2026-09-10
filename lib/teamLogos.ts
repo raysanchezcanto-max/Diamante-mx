@@ -128,16 +128,18 @@ export function getTeamLogo(
     return `https://www.mlbstatic.com/team-logos/team-cap-on-dark/${teamId}.svg`;
   }
 
-  if (league === "LMP") {
-    const normalizedName =
-      normalizeTeamName(teamName);
+ if (league === "LMP") {
+  const normalizedName =
+    normalizeTeamName(teamName);
 
-    return LMP_LOGOS[normalizedName] ?? null;
-  }
-
-  /*
-    Los logos LMB se agregarán en el
-    siguiente paso.
-  */
-  return null;
+  return LMP_LOGOS[normalizedName] ?? null;
 }
+
+if (league === "LMB") {
+  const normalizedName =
+    normalizeTeamName(teamName);
+
+  return LMB_LOGOS[normalizedName] ?? null;
+}
+
+return null;
