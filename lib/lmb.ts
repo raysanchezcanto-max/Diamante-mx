@@ -216,6 +216,32 @@ export async function getLmbGames():
 */
 export async function getLmbStandings():
   Promise<Standing[]> {
+  function getLmbZone(teamName: string) {
+  const normalized = teamName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
+  const northTeams = [
+    "toros de tijuana",
+    "caliente de durango",
+    "sultanes de monterrey",
+    "charros de jalisco",
+    "acereros del norte",
+    "acereros de monclova",
+    "algodoneros union laguna",
+    "algodoneros de union laguna",
+    "rieleros de aguascalientes",
+    "saraperos de saltillo",
+    "tecos de los dos laredos",
+    "dorados de chihuahua",
+  ];
+
+  return northTeams.includes(normalized)
+    ? "Zona Norte"
+    : "Zona Sur";
+}
   try {
     const season = seasonYear();
 
@@ -238,8 +264,10 @@ export async function getLmbStandings():
           record?.teamRecords ?? []
       ) {
         rows.push({
-          division,
-
+         division:
+  getLmbZone(
+    item.team?.name ?? ""
+  ),
           teamId:
             item.team?.id ?? 0,
 
