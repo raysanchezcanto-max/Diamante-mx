@@ -187,7 +187,6 @@ async function getLeaderCategory(
       data?.leagueLeaders?.[0]?.leaders ?? [];
 
     return list.map((item: any) => ({
-      return list.map((item: any) => ({
   rank:
     item.rank,
 
