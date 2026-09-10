@@ -65,34 +65,132 @@ export async function getLmpGames(): Promise<Game[]> {
   try {
     const date = mexicoDate();
 
-    const data = await lmpFetch(
+    /*
+      Primero buscamos juegos de hoy.
+    */
+    const todayData = await lmpFetch(
       `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&date=${date}&hydrate=linescore`
     );
 
-    const games =
-      data?.dates?.flatMap((d: any) => d.games ?? []) ?? [];
+    const todayGames =
+      todayData?.dates?.flatMap(
+        (d: any) => d.games ?? []
+      ) ?? [];
 
-    return games.map((g: any) => ({
-      id:
-        g.gamePk,
+    /*
+      Si hay juegos hoy, mostramos esos.
+    */
+    if (todayGames.length > 0) {
+      return todayGames.map((g: any) => ({
+        id: g.gamePk,
+
+        status:
+          g.status?.abstractGameState ??
+          "Preview",
+
+        detailedState:
+          g.status?.detailedState ??
+          "Programado",
+
+        awayId:
+          g.teams?.away?.team?.id ?? 0,
+
+        away:
+          g.teams?.away?.team?.name ??
+          "Visitante",
+
+        homeId:
+          g.teams?.home?.team?.id ?? 0,
+
+        home:
+          g.teams?.home?.team?.name ??
+          "Local",
+
+        awayRuns:
+          g.teams?.away?.score,
+
+        homeRuns:
+          g.teams?.home?.score,
+
+        inning:
+          g.linescore?.currentInning,
+
+        inningState:
+          g.linescore?.inningState,
+
+        startTime:
+          g.gameDate,
+      }));
+    }
+
+    /*
+      Si hoy no hay juegos, buscamos
+      hasta 60 días hacia adelante.
+    */
+    const start = new Date();
+    start.setDate(start.getDate() + 1);
+
+    const end = new Date();
+    end.setDate(end.getDate() + 60);
+
+    const startDate =
+      new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(start);
+
+    const endDate =
+      new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(end);
+
+    const upcomingData = await lmpFetch(
+      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${startDate}&endDate=${endDate}&hydrate=linescore`
+    );
+
+    /*
+      Tomamos solamente la primera fecha
+      futura que tenga partidos.
+    */
+    const nextDate =
+      upcomingData?.dates?.find(
+        (d: any) =>
+          Array.isArray(d.games) &&
+          d.games.length > 0
+      );
+
+    const nextGames =
+      nextDate?.games ?? [];
+
+    return nextGames.map((g: any) => ({
+      id: g.gamePk,
 
       status:
-        g.status?.abstractGameState ?? "Preview",
+        g.status?.abstractGameState ??
+        "Preview",
 
       detailedState:
-        g.status?.detailedState ?? "Programado",
+        g.status?.detailedState ??
+        "Programado",
 
       awayId:
         g.teams?.away?.team?.id ?? 0,
 
       away:
-        g.teams?.away?.team?.name ?? "Visitante",
+        g.teams?.away?.team?.name ??
+        "Visitante",
 
       homeId:
         g.teams?.home?.team?.id ?? 0,
 
       home:
-        g.teams?.home?.team?.name ?? "Local",
+        g.teams?.home?.team?.name ??
+        "Local",
 
       awayRuns:
         g.teams?.away?.score,
