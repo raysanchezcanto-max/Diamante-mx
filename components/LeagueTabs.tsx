@@ -1,27 +1,46 @@
-"use client";
+type LeagueTabsProps = {
+  activeLeague: "MLB" | "LMB" | "LMP";
+};
 
-import { useState } from "react";
-
-export default function LeagueTabs() {
-  const [league, setLeague] = useState("MLB");
+export default function LeagueTabs({
+  activeLeague,
+}: LeagueTabsProps) {
   return (
     <div className="leagueWrap">
-      <div className="tabs" role="tablist" aria-label="Ligas">
-        {["MLB", "LMB", "LMP"].map((item) => (
-          <button
-            key={item}
-            className={league === item ? "tab active" : "tab"}
-            onClick={() => setLeague(item)}
-          >
-            {item}
-          </button>
-        ))}
+      <div className="tabs" role="navigation" aria-label="Ligas">
+        <a
+          href="/?league=mlb"
+          className={
+            activeLeague === "MLB"
+              ? "tab active"
+              : "tab"
+          }
+        >
+          MLB
+        </a>
+
+        <span
+          className={
+            activeLeague === "LMB"
+              ? "tab active disabledTab"
+              : "tab disabledTab"
+          }
+          title="LMB próximamente"
+        >
+          LMB
+        </span>
+
+        <a
+          href="/?league=lmp"
+          className={
+            activeLeague === "LMP"
+              ? "tab active"
+              : "tab"
+          }
+        >
+          LMP
+        </a>
       </div>
-      {league !== "MLB" && (
-        <div className="comingSoon">
-          <strong>{league}</strong> ya está contemplada para la siguiente fase. Primero validaremos la fuente de datos para conectarla de forma estable.
-        </div>
-      )}
     </div>
   );
 }
