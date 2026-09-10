@@ -1,5 +1,10 @@
 import type { Game } from "@/lib/mlb";
 
+import {
+  getTeamLogo,
+  type LeagueCode,
+} from "@/lib/teamLogos";
+
 function gameLabel(game: Game) {
   if (game.status === "Live") {
     const inning = game.inning
@@ -20,11 +25,13 @@ function gameLabel(game: Game) {
   }).format(new Date(game.startTime));
 }
 
-function teamLogo(teamId: number) {
-  return `https://www.mlbstatic.com/team-logos/team-cap-on-dark/${teamId}.svg`;
-}
-
-export default function Games({ games }: { games: Game[] }) {
+export default function Games({
+  games,
+  league = "MLB",
+}: {
+  games: Game[];
+  league?: LeagueCode;
+}) {
   return (
     <section className="section">
       <div className="sectionHeader">
@@ -33,61 +40,87 @@ export default function Games({ games }: { games: Game[] }) {
           <h2>Juegos de hoy</h2>
         </div>
 
-        <span className="liveDot">● Datos MLB</span>
+        <span className="liveDot">
+          ● Datos {league}
+        </span>
       </div>
 
       {games.length === 0 ? (
         <div className="empty">
-          No hay juegos MLB disponibles para hoy o la fuente está
-          temporalmente sin respuesta.
+          No hay juegos disponibles para hoy.
         </div>
       ) : (
         <div className="gamesGrid">
-          {games.map((game) => (
-            <article className="gameCard" key={game.id}>
-              <div
-                className={
-                  game.status === "Live"
-                    ? "gameStatus live"
-                    : "gameStatus"
-                }
+          {games.map((game) => {
+            const awayLogo = getTeamLogo(
+              league,
+              game.awayId,
+              game.away
+            );
+
+            const homeLogo = getTeamLogo(
+              league,
+              game.homeId,
+              game.home
+            );
+
+            return (
+              <article
+                className="gameCard"
+                key={game.id}
               >
-                {gameLabel(game)}
-              </div>
-
-              <div className="teamRow">
-                <div className="teamIdentity">
-                  <img
-                    src={teamLogo(game.awayId)}
-                    alt={`Logo de ${game.away}`}
-                    width={34}
-                    height={34}
-                    loading="lazy"
-                  />
-
-                  <span>{game.away}</span>
+                <div
+                  className={
+                    game.status === "Live"
+                      ? "gameStatus live"
+                      : "gameStatus"
+                  }
+                >
+                  {gameLabel(game)}
                 </div>
 
-                <strong>{game.awayRuns ?? "–"}</strong>
-              </div>
+                <div className="teamRow">
+                  <div className="teamIdentity">
+                    {awayLogo && (
+                      <img
+                        src={awayLogo}
+                        alt={`Logo de ${game.away}`}
+                        width={34}
+                        height={34}
+                        loading="lazy"
+                      />
+                    )}
 
-              <div className="teamRow">
-                <div className="teamIdentity">
-                  <img
-                    src={teamLogo(game.homeId)}
-                    alt={`Logo de ${game.home}`}
-                    width={34}
-                    height={34}
-                    loading="lazy"
-                  />
+                    <span>{game.away}</span>
+                  </div>
 
-                  <span>{game.home}</span>
+                  <strong>
+                    {game.awayRuns ?? "–"}
+                  </strong>
                 </div>
 
-                <strong>{game.homeRuns ?? "–"}</strong>
-              </div>
-            </article>
-          ))}
+                <div className="teamRow">
+                  <div className="teamIdentity">
+                    {homeLogo && (
+                      <img
+                        src={homeLogo}
+                        alt={`Logo de ${game.home}`}
+                        width={34}
+                        height={34}
+                        loading="lazy"
+                      />
+                    )}
+
+                    <span>{game.home}</span>
+                  </div>
+
+                  <strong>
+                    {game.homeRuns ?? "–"}
+                  </strong>
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
     </section>
