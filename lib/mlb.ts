@@ -4,18 +4,28 @@ export type Game = {
   id: number;
   status: string;
   detailedState: string;
+
+  awayId: number;
   away: string;
+
+  homeId: number;
   home: string;
+
   awayRuns?: number;
   homeRuns?: number;
+
   inning?: number;
   inningState?: string;
+
   startTime: string;
 };
 
 export type Standing = {
   division: string;
+
+  teamId: number;
   team: string;
+
   wins: number;
   losses: number;
   pct: string;
@@ -50,28 +60,64 @@ function seasonYear() {
 async function mlbFetch(path: string) {
   const res = await fetch(`${MLB_API}${path}`, {
     next: { revalidate: 60 },
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+    },
   });
-  if (!res.ok) throw new Error(`MLB API ${res.status}`);
+
+  if (!res.ok) {
+    throw new Error(`MLB API ${res.status}`);
+  }
+
   return res.json();
 }
 
 export async function getGames(): Promise<Game[]> {
   try {
     const date = mexicoDate();
-    const data = await mlbFetch(`/schedule?sportId=1&date=${date}&hydrate=linescore`);
-    const games = data?.dates?.flatMap((d: any) => d.games ?? []) ?? [];
+
+    const data = await mlbFetch(
+      `/schedule?sportId=1&date=${date}&hydrate=linescore`
+    );
+
+    const games =
+      data?.dates?.flatMap((d: any) => d.games ?? []) ?? [];
+
     return games.map((g: any) => ({
       id: g.gamePk,
-      status: g.status?.abstractGameState ?? "Preview",
-      detailedState: g.status?.detailedState ?? "Programado",
-      away: g.teams?.away?.team?.name ?? "Visitante",
-      home: g.teams?.home?.team?.name ?? "Local",
-      awayRuns: g.teams?.away?.score,
-      homeRuns: g.teams?.home?.score,
-      inning: g.linescore?.currentInning,
-      inningState: g.linescore?.inningState,
-      startTime: g.gameDate,
+
+      status:
+        g.status?.abstractGameState ?? "Preview",
+
+      detailedState:
+        g.status?.detailedState ?? "Programado",
+
+      awayId:
+        g.teams?.away?.team?.id ?? 0,
+
+      away:
+        g.teams?.away?.team?.name ?? "Visitante",
+
+      homeId:
+        g.teams?.home?.team?.id ?? 0,
+
+      home:
+        g.teams?.home?.team?.name ?? "Local",
+
+      awayRuns:
+        g.teams?.away?.score,
+
+      homeRuns:
+        g.teams?.home?.score,
+
+      inning:
+        g.linescore?.currentInning,
+
+      inningState:
+        g.linescore?.inningState,
+
+      startTime:
+        g.gameDate,
     }));
   } catch {
     return [];
@@ -81,37 +127,75 @@ export async function getGames(): Promise<Game[]> {
 export async function getStandings(): Promise<Standing[]> {
   try {
     const season = seasonYear();
-    const data = await mlbFetch(`/standings?leagueId=103,104&season=${season}&standingsTypes=regularSeason&hydrate=team`);
+
+    const data = await mlbFetch(
+      `/standings?leagueId=103,104&season=${season}&standingsTypes=regularSeason&hydrate=team`
+    );
+
     const rows: Standing[] = [];
+
     for (const record of data?.records ?? []) {
-      const division = record?.division?.nameShort ?? record?.division?.name ?? "División";
+      const division =
+        record?.division?.nameShort ??
+        record?.division?.name ??
+        "División";
+
       for (const item of record?.teamRecords ?? []) {
         rows.push({
           division,
-          team: item.team?.name ?? "Equipo",
-          wins: item.wins ?? 0,
-          losses: item.losses ?? 0,
-          pct: item.winningPercentage ?? ".000",
-          gamesBack: item.gamesBack ?? "-",
+
+          teamId:
+            item.team?.id ?? 0,
+
+          team:
+            item.team?.name ?? "Equipo",
+
+          wins:
+            item.wins ?? 0,
+
+          losses:
+            item.losses ?? 0,
+
+          pct:
+            item.winningPercentage ?? ".000",
+
+          gamesBack:
+            item.gamesBack ?? "-",
         });
       }
     }
+
     return rows;
   } catch {
     return [];
   }
 }
 
-async function getLeaderCategory(category: string): Promise<Leader[]> {
+async function getLeaderCategory(
+  category: string
+): Promise<Leader[]> {
   try {
     const season = seasonYear();
-    const data = await mlbFetch(`/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&sportId=1&limit=10`);
-    const list = data?.leagueLeaders?.[0]?.leaders ?? [];
+
+    const data = await mlbFetch(
+      `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&sportId=1&limit=10`
+    );
+
+    const list =
+      data?.leagueLeaders?.[0]?.leaders ?? [];
+
     return list.map((item: any) => ({
-      rank: item.rank,
-      name: item.person?.fullName ?? "Jugador",
-      team: item.team?.name ?? "",
-      value: String(item.value ?? "-"),
+      rank:
+        item.rank,
+
+      name:
+        item.person?.fullName ?? "Jugador",
+
+      team:
+        item.team?.name ?? "",
+
+      value:
+        String(item.value ?? "-"),
     }));
   } catch {
     return [];
@@ -124,5 +208,10 @@ export async function getLeaders() {
     getLeaderCategory("homeRuns"),
     getLeaderCategory("hits"),
   ]);
-  return { avg, hr, hits };
+
+  return {
+    avg,
+    hr,
+    hits,
+  };
 }
