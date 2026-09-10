@@ -36,6 +36,12 @@ nav a:hover { color: var(--text); }
 .section { max-width: 1200px; margin: 0 auto; padding: 62px 24px 0; }
 .sectionHeader { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
 .sectionHeader h2 { margin: 7px 0 0; font-size: 30px; letter-spacing: -.03em; }
+.gamesDate {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  text-transform: capitalize;
+}
 .liveDot { color: var(--muted); font-size: 13px; }
 .liveDot::first-letter { color: var(--accent); }
 .gamesGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
