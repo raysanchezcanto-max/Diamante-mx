@@ -2,25 +2,25 @@ export type LeagueCode = "MLB" | "LMP";
 
 const LMP_LOGOS: Record<string, string> = {
   "jaguares de nayarit":
-    "/logos/lmp/jaguares-nayarit.png",
+    "/logos/lmp/jaguares-nayarit.svg",
 
   "tomateros de culiacan":
-    "/logos/lmp/tomateros-culiacan.png",
+    "/logos/lmp/tomateros-culiacan.svg",
 
   "naranjeros de hermosillo":
-    "/logos/lmp/naranjeros-hermosillo.png",
+    "/logos/lmp/naranjeros-hermosillo.svg",
 
   "yaquis de obregon":
-    "/logos/lmp/yaquis-obregon.png",
+    "/logos/lmp/yaquis-obregon.svg",
 
   "charros de jalisco":
     "/logos/lmp/charros-jalisco.png",
 
   "caneros de los mochis":
-    "/logos/lmp/caneros-mochis.png",
+    "/logos/lmp/caneros-mochis.svg",
 
   "aguilas de mexicali":
-    "/logos/lmp/aguilas-mexicali.png",
+    "/logos/lmp/aguilas-mexicali.svg",
 
   "algodoneros de guasave":
     "/logos/lmp/algodoneros-guasave.png",
