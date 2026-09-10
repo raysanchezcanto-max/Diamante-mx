@@ -45,7 +45,21 @@ export default async function Home({
           getStandings(),
           getLeaders(),
         ]);
+    const lmpSeasonStart = new Date(
+    "2026-10-13T00:00:00-06:00"
+  );
 
+  const showLmpSeasonNotice =
+    selectedLeague === "LMP" &&
+    new Date() < lmpSeasonStart;
+
+  const daysUntilLmp = Math.max(
+    0,
+    Math.ceil(
+      (lmpSeasonStart.getTime() - Date.now()) /
+        (1000 * 60 * 60 * 24)
+    )
+  );
   return (
     <main>
       <header className="topbar">
@@ -94,6 +108,32 @@ export default async function Home({
       </div>
 
       <LeagueTabs activeLeague={selectedLeague} />
+            {showLmpSeasonNotice && (
+        <div className="seasonNotice">
+          <div>
+            <span className="eyebrow">
+              PRÓXIMA TEMPORADA · LMP 2026–2027
+            </span>
+
+            <h3>
+              El béisbol del Pacífico regresa el 13 de octubre
+            </h3>
+
+            <p>
+              La nueva temporada de la Liga Mexicana del
+              Pacífico inicia el{" "}
+              <strong>13 de octubre de 2026</strong>.
+              Mientras tanto, puedes consultar las
+              estadísticas de la temporada 2025–2026.
+            </p>
+          </div>
+
+          <div className="seasonCountdown">
+            <strong>{daysUntilLmp}</strong>
+            <span>DÍAS PARA EL PLAYBALL</span>
+          </div>
+        </div>
+      )}
 
       <div id="juegos">
         <Games games={games} />
