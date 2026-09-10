@@ -2,7 +2,7 @@ import LeagueTabs from "@/components/LeagueTabs";
 import Games from "@/components/Games";
 import Standings from "@/components/Standings";
 import Leaders from "@/components/Leaders";
-
+import { getNextGames } from "@/lib/nextGames";
 import {
   getGames,
   getLeaders,
@@ -51,6 +51,8 @@ const selectedLeague:
         getLmbStandings(),
         getLmbLeaders(),
       ])
+    const nextGames =
+  await getNextGames(selectedLeague);
     : selectedLeague === "LMP"
       ? await Promise.all([
           getLmpGames(),
@@ -152,9 +154,10 @@ const selectedLeague:
         </div>
       )}
 
-      <div id="juegos">
+   <div id="juegos">
   <Games
     games={games}
+    nextGames={nextGames}
     league={selectedLeague}
   />
 </div>
