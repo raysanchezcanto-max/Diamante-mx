@@ -27,7 +27,8 @@ const LMP_LOGOS: Record<string, string> = {
 
   "tucson baseball team":
     "/logos/lmp/tucson.png",
-
+  "mayos de navojoa":
+    "/logos/lmp/mayos-navojoa.png",
   "venados de mazatlan":
     "/logos/lmp/venados-mazatlan.png",
 };
