@@ -63,17 +63,110 @@ export async function getLmbGames():
   try {
     const date = mexicoDate();
 
-    const data = await lmbFetch(
-  `/schedule?sportId=${LMB_SPORT_ID}&leagueId=${LMB_LEAGUE_ID}&date=${date}&hydrate=linescore`
-);
-    const games =
-      data?.dates?.flatMap(
+    /*
+      Primero buscamos juegos de hoy.
+    */
+    const todayData = await lmbFetch(
+      `/schedule?sportId=${LMB_SPORT_ID}&leagueId=${LMB_LEAGUE_ID}&date=${date}&hydrate=linescore`
+    );
+
+    const todayGames =
+      todayData?.dates?.flatMap(
         (d: any) => d.games ?? []
       ) ?? [];
 
-    return games.map((g: any) => ({
-      id:
-        g.gamePk,
+    /*
+      Si hay juegos hoy, mostramos esos.
+    */
+    if (todayGames.length > 0) {
+      return todayGames.map((g: any) => ({
+        id: g.gamePk,
+
+        status:
+          g.status?.abstractGameState ??
+          "Preview",
+
+        detailedState:
+          g.status?.detailedState ??
+          "Programado",
+
+        awayId:
+          g.teams?.away?.team?.id ?? 0,
+
+        away:
+          g.teams?.away?.team?.name ??
+          "Visitante",
+
+        homeId:
+          g.teams?.home?.team?.id ?? 0,
+
+        home:
+          g.teams?.home?.team?.name ??
+          "Local",
+
+        awayRuns:
+          g.teams?.away?.score,
+
+        homeRuns:
+          g.teams?.home?.score,
+
+        inning:
+          g.linescore?.currentInning,
+
+        inningState:
+          g.linescore?.inningState,
+
+        startTime:
+          g.gameDate,
+      }));
+    }
+
+    /*
+      Si no hay juegos hoy, buscamos
+      hasta 60 días hacia adelante.
+    */
+    const start = new Date();
+    start.setDate(start.getDate() + 1);
+
+    const end = new Date();
+    end.setDate(end.getDate() + 60);
+
+    const startDate =
+      new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(start);
+
+    const endDate =
+      new Intl.DateTimeFormat("en-CA", {
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(end);
+
+    const upcomingData = await lmbFetch(
+      `/schedule?sportId=${LMB_SPORT_ID}&leagueId=${LMB_LEAGUE_ID}&startDate=${startDate}&endDate=${endDate}&hydrate=linescore`
+    );
+
+    /*
+      Elegimos solamente la primera
+      fecha futura que tenga partidos.
+    */
+    const nextDate =
+      upcomingData?.dates?.find(
+        (d: any) =>
+          Array.isArray(d.games) &&
+          d.games.length > 0
+      );
+
+    const nextGames =
+      nextDate?.games ?? [];
+
+    return nextGames.map((g: any) => ({
+      id: g.gamePk,
 
       status:
         g.status?.abstractGameState ??
