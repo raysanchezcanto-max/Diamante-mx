@@ -33,7 +33,6 @@ export type Standing = {
 };
 
 export type Leader = {
- export type Leader = {
   rank: number;
   playerId: number;
   name: string;
