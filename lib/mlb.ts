@@ -224,10 +224,7 @@ export async function getGames(): Promise<Game[]> {
     return [];
   }
 }
-  } catch {
-    return [];
-  }
-}
+  
 
 export async function getStandings(): Promise<Standing[]> {
   try {
