@@ -1,13 +1,15 @@
 import type { Standing } from "@/lib/mlb";
-
-function teamLogo(teamId: number) {
-  return `https://www.mlbstatic.com/team-logos/team-cap-on-dark/${teamId}.svg`;
-}
+import {
+  getTeamLogo,
+  type LeagueCode,
+} from "@/lib/teamLogos";
 
 export default function Standings({
   standings,
+  league = "MLB",
 }: {
   standings: Standing[];
+  league?: LeagueCode;
 }) {
   const divisions = Array.from(
     new Set(standings.map((s) => s.division))
@@ -17,7 +19,10 @@ export default function Standings({
     <section className="section">
       <div className="sectionHeader">
         <div>
-          <span className="eyebrow">TEMPORADA REGULAR</span>
+          <span className="eyebrow">
+            TEMPORADA REGULAR
+          </span>
+
           <h2>Tabla de posiciones</h2>
         </div>
       </div>
@@ -29,7 +34,10 @@ export default function Standings({
       ) : (
         <div className="standingsGrid">
           {divisions.map((division) => (
-            <div className="tableCard" key={division}>
+            <div
+              className="tableCard"
+              key={division}
+            >
               <h3>{division}</h3>
 
               <div className="tableScroll">
@@ -47,30 +55,46 @@ export default function Standings({
                   <tbody>
                     {standings
                       .filter(
-                        (s) => s.division === division
+                        (s) =>
+                          s.division === division
                       )
-                      .map((row) => (
-                        <tr key={row.team}>
-                          <td>
-                            <div className="standingsTeam">
-                              <img
-                                src={teamLogo(row.teamId)}
-                                alt={`Logo de ${row.team}`}
-                                width={26}
-                                height={26}
-                                loading="lazy"
-                              />
+                      .map((row) => {
+                        const logo =
+                          getTeamLogo(
+                            league,
+                            row.teamId,
+                            row.team
+                          );
 
-                              <span>{row.team}</span>
-                            </div>
-                          </td>
+                        return (
+                          <tr key={row.team}>
+                            <td>
+                              <div className="standingsTeam">
+                                {logo && (
+                                  <img
+                                    src={logo}
+                                    alt={`Logo de ${row.team}`}
+                                    width={26}
+                                    height={26}
+                                    loading="lazy"
+                                  />
+                                )}
 
-                          <td>{row.wins}</td>
-                          <td>{row.losses}</td>
-                          <td>{row.pct}</td>
-                          <td>{row.gamesBack}</td>
-                        </tr>
-                      ))}
+                                <span>
+                                  {row.team}
+                                </span>
+                              </div>
+                            </td>
+
+                            <td>{row.wins}</td>
+                            <td>{row.losses}</td>
+                            <td>{row.pct}</td>
+                            <td>
+                              {row.gamesBack}
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
