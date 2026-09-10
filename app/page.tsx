@@ -136,12 +136,18 @@ export default async function Home({
       )}
 
       <div id="juegos">
-        <Games games={games} />
-      </div>
+  <Games
+    games={games}
+    league={selectedLeague}
+  />
+</div>
 
-      <div id="posiciones">
-        <Standings standings={standings} />
-      </div>
+<div id="posiciones">
+  <Standings
+    standings={standings}
+    league={selectedLeague}
+  />
+</div>
 
       <div id="lideres">
         <Leaders leaders={leaders} />
