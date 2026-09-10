@@ -93,10 +93,34 @@ tbody tr:last-child td { border-bottom: 0; }
 .leaderTitle { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .leaderTitle h3 { margin: 0; font-size: 17px; }
 .leaderTitle span { color: var(--accent); font-weight: 900; font-size: 12px; }
-.leaderRow { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px solid rgba(33,52,42,.65); }
+.leaderRow {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(33,52,42,.65);
+}
+
 .leaderRow:last-child { border-bottom: 0; }
 .rank { color: var(--muted); font-size: 12px; }
 .player { min-width: 0; }
+.playerWithPhoto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.playerPhoto {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+}
 .player strong { display: block; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player small { color: var(--muted); font-size: 11px; }
 .stat { color: var(--accent); font-size: 16px; }
