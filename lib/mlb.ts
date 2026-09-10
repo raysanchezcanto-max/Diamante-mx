@@ -33,7 +33,9 @@ export type Standing = {
 };
 
 export type Leader = {
+ export type Leader = {
   rank: number;
+  playerId: number;
   name: string;
   team: string;
   value: string;
@@ -185,18 +187,22 @@ async function getLeaderCategory(
       data?.leagueLeaders?.[0]?.leaders ?? [];
 
     return list.map((item: any) => ({
-      rank:
-        item.rank,
+      return list.map((item: any) => ({
+  rank:
+    item.rank,
 
-      name:
-        item.person?.fullName ?? "Jugador",
+  playerId:
+    item.person?.id ?? 0,
 
-      team:
-        item.team?.name ?? "",
+  name:
+    item.person?.fullName ?? "Jugador",
 
-      value:
-        String(item.value ?? "-"),
-    }));
+  team:
+    item.team?.name ?? "",
+
+  value:
+    String(item.value ?? "-"),
+}));
   } catch {
     return [];
   }
