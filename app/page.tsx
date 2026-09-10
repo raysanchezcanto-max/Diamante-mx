@@ -14,6 +14,11 @@ import {
   getLmpLeaders,
   getLmpStandings,
 } from "@/lib/lmp";
+import {
+  getLmbGames,
+  getLmbLeaders,
+  getLmbStandings,
+} from "@/lib/lmb";
 
 export const revalidate = 60;
 
@@ -28,13 +33,25 @@ export default async function Home({
 }: PageProps) {
   const params = await searchParams;
 
-  const selectedLeague =
-    params?.league?.toLowerCase() === "lmp"
+  const leagueParam =
+  params?.league?.toLowerCase();
+
+const selectedLeague:
+  "MLB" | "LMB" | "LMP" =
+  leagueParam === "lmb"
+    ? "LMB"
+    : leagueParam === "lmp"
       ? "LMP"
       : "MLB";
 
   const [games, standings, leaders] =
-    selectedLeague === "LMP"
+  selectedLeague === "LMB"
+    ? await Promise.all([
+        getLmbGames(),
+        getLmbStandings(),
+        getLmbLeaders(),
+      ])
+    : selectedLeague === "LMP"
       ? await Promise.all([
           getLmpGames(),
           getLmpStandings(),
