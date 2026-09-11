@@ -3,6 +3,8 @@ import Games from "@/components/Games";
 import Standings from "@/components/Standings";
 import Leaders from "@/components/Leaders";
 import { getNextGames } from "@/lib/nextGames";
+import RecentResults from "@/components/RecentResults";
+import { getRecentGames } from "@/lib/recentGames";
 import {
   getGames,
   getLeaders,
@@ -67,6 +69,8 @@ const nextGames =
   await getNextGames(selectedLeague);
     const lmpSeasonStart = new Date(
     "2026-10-13T00:00:00-06:00"
+      const recentGames =
+  await getRecentGames(selectedLeague);
   );
 
   const showLmpSeasonNotice =
@@ -162,6 +166,10 @@ const nextGames =
     league={selectedLeague}
   />
 </div>
+      <RecentResults
+  games={recentGames}
+  league={selectedLeague}
+/>
 
 <div id="posiciones">
   <Standings
