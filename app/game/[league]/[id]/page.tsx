@@ -258,42 +258,33 @@ const broadcasts =
   </div>
 
   {broadcasts.length > 0 ? (
-    <div className="broadcastGrid">
-      {broadcasts.map((broadcast, index) => (
-        <div
-          className="broadcastCard"
+  <div className="broadcastLinks">
+    {broadcasts.map((broadcast, index) =>
+      broadcast.url ? (
+        <a
           key={`${broadcast.name}-${index}`}
+          href={broadcast.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="watchButton"
         >
-          <div>
-         {broadcast.url && (
-  <a
-    href={broadcast.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="watchButton"
-  >
-    Ver en {broadcast.name}
-  </a>
+          Ver en {broadcast.name}
+        </a>
+      ) : (
+        <span
+          key={`${broadcast.name}-${index}`}
+          className="watchButtonDisabled"
+        >
+          {broadcast.name}
+        </span>
+      )
+    )}
+  </div>
+) : (
+  <div className="broadcastEmpty">
+    Transmisión por confirmar
+  </div>
 )}
-
-          {broadcast.url && (
-            <a
-              href={broadcast.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="broadcastButton"
-            >
-              Ver en {broadcast.name}
-            </a>
-          )}
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div className="broadcastEmpty">
-      Transmisión por confirmar
-    </div>
-  )}
 </section>
 
           <span
