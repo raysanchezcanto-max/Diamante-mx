@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 
 import {
@@ -88,11 +89,13 @@ function GameCards({
         );
 
         return (
-          <article
-            className="gameCard"
-            key={game.id}
-          >
-            <div
+         <Link
+  href={`/game/${league.toLowerCase()}/${game.id}`}
+  className="gameCard gameCardLink"
+  key={game.id}
+>
+          
+            </Link>
               className={
                 game.status === "Live"
                   ? "gameStatus live"
