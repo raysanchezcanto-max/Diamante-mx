@@ -14,7 +14,10 @@ function mexicoDateKey(date: Date) {
   }).format(date);
 }
 
-function gameTime(game: Game) {
+function gameTime(
+  game: Game,
+  league: LeagueCode
+) {
   if (game.status === "Live") {
     const inning = game.inning
       ? `${game.inningState ?? ""} ${game.inning}`.trim()
@@ -27,13 +30,31 @@ function gameTime(game: Game) {
     return "FINAL";
   }
 
+  /*
+    La fuente actualmente devuelve una
+    hora incorrecta para el juego inaugural
+    de LMP 2026-2027.
+
+    Hasta contar con una hora oficial
+    confiable mostramos "Hora por confirmar".
+  */
+  const gameDate = mexicoDateKey(
+    new Date(game.startTime)
+  );
+
+  if (
+    league === "LMP" &&
+    gameDate === "2026-10-13"
+  ) {
+    return "HORA POR CONFIRMAR";
+  }
+
   return new Intl.DateTimeFormat("es-MX", {
     timeZone: "America/Mexico_City",
     hour: "numeric",
     minute: "2-digit",
   }).format(new Date(game.startTime));
 }
-
 function dateLabel(game: Game) {
   return new Intl.DateTimeFormat("es-MX", {
     timeZone: "America/Mexico_City",
