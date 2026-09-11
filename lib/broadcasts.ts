@@ -8,7 +8,42 @@ export type Broadcast = {
 
 const MLB_API =
   "https://statsapi.mlb.com/api/v1";
+function getMlbBroadcastUrl(
+  name: string
+): string | undefined {
+  const normalized =
+    name.toLowerCase();
 
+  if (normalized.includes("mlb.tv")) {
+    return "https://www.mlb.com/live-stream-games";
+  }
+
+  if (normalized.includes("espn")) {
+    return "https://www.espn.com/watch/";
+  }
+
+  if (normalized.includes("fox")) {
+    return "https://www.foxsports.com/live";
+  }
+
+  if (normalized.includes("apple tv")) {
+    return "https://tv.apple.com/";
+  }
+
+  if (normalized.includes("roku")) {
+    return "https://therokuchannel.roku.com/";
+  }
+
+  if (normalized.includes("tbs")) {
+    return "https://www.tbs.com/watchtbs";
+  }
+
+  if (normalized.includes("mlb network")) {
+    return "https://www.mlb.com/network";
+  }
+
+  return undefined;
+}
 /*
   Transmisiones LMB que administramos
   manualmente cuando la API no proporciona
@@ -81,27 +116,39 @@ async function getMlbBroadcasts(
     const broadcasts =
       game?.broadcasts ?? [];
 
-    return broadcasts
-      .filter(
-        (broadcast: any) =>
-          broadcast?.name
-      )
-      .map(
-        (broadcast: any): Broadcast => ({
-          name: broadcast.name,
+    const mappedBroadcasts: Broadcast[] =
+  broadcasts
+    .filter(
+      (broadcast: any) =>
+        broadcast?.name
+    )
+    .map(
+      (broadcast: any): Broadcast => ({
+        name: broadcast.name,
 
-          type:
-            broadcast.type === "radio"
-              ? "Radio"
-              : broadcast.type === "TV"
-                ? "TV"
-                : "Streaming",
-        })
-      );
-  } catch {
-    return [];
-  }
-}
+        type:
+          broadcast.type === "radio"
+            ? "Radio"
+            : broadcast.type === "TV"
+              ? "TV"
+              : "Streaming",
+
+        url: getMlbBroadcastUrl(
+          broadcast.name
+        ),
+      })
+    );
+
+return Array.from(
+  new Map(
+    mappedBroadcasts.map(
+      (broadcast) => [
+        broadcast.name,
+        broadcast,
+      ]
+    )
+  ).values()
+);
 
 export async function getGameBroadcasts(
   league: LeagueCode,
