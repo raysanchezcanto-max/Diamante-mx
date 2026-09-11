@@ -1,3 +1,4 @@
+import { getGameBroadcasts } from "@/lib/broadcasts";
 import { notFound } from "next/navigation";
 
 import {
@@ -145,6 +146,11 @@ export default async function GamePage({
   if (!game) {
     notFound();
   }
+  const broadcasts =
+  await getGameBroadcasts(
+    leagueCode,
+    gameId
+  );
 
   const awayLogo =
     getTeamLogo(
@@ -180,6 +186,53 @@ export default async function GamePage({
       game.startTime,
       league
     );
+  <section className="broadcastSection">
+  <div className="broadcastHeader">
+    <span className="eyebrow">
+      TRANSMISIÓN
+    </span>
+
+    <h2>Dónde ver</h2>
+  </div>
+
+  {broadcasts.length > 0 ? (
+    <div className="broadcastGrid">
+      {broadcasts.map(
+        (broadcast, index) => (
+          <div
+            className="broadcastCard"
+            key={`${broadcast.name}-${index}`}
+          >
+            <div>
+              <span className="broadcastType">
+                {broadcast.type}
+              </span>
+
+              <strong>
+                {broadcast.name}
+              </strong>
+            </div>
+
+            {broadcast.url && (
+              <a
+                href={broadcast.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="broadcastButton"
+              >
+                Ver en {broadcast.name}
+              </a>
+            )}
+          </div>
+        )
+      )}
+    </div>
+  ) : (
+    <div className="broadcastEmpty">
+      Transmisión por confirmar
+    </div>
+  )}
+</section>
 
   return (
     <main className="gamePage">
