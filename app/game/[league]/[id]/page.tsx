@@ -146,9 +146,9 @@ export default async function GamePage({
   if (!game) {
     notFound();
   }
-  const broadcasts =
+const broadcasts =
   await getGameBroadcasts(
-    leagueCode,
+    league,
     gameId
   );
 
