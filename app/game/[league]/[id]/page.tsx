@@ -34,21 +34,21 @@ function formatGameDate(
   }
 
   const gameDate = new Date(startTime);
+
+  const dateKey = (date: Date) =>
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Mexico_City",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+
   const today = new Date();
 
-  const tomorrow = new Date();
-  tomorrow.setDate(
-    tomorrow.getDate() + 1
+  const tomorrow = new Date(
+    Date.now() + 24 * 60 * 60 * 1000
   );
 
-  const dateKey = (date: Date) =>
-    new Intl.DateTimeFormat("en-CA", {
-      timeZone: "America/Mexico_City",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(date);
-
   if (
     dateKey(gameDate) ===
     dateKey(today)
@@ -75,43 +75,45 @@ function formatGameDate(
   ).format(gameDate);
 }
 
-  const dateKey = (date: Date) =>
-    new Intl.DateTimeFormat("en-CA", {
-      timeZone:
-        "America/Mexico_City",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(date);
-
-  if (
-    dateKey(gameDate) ===
-    dateKey(today)
-  ) {
-    return "Hoy";
+function formatGameTime(
+  startTime: string,
+  league: LeagueCode
+) {
+  if (!startTime) {
+    return "Hora por confirmar";
   }
 
+  const dateKey =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }
+    ).format(
+      new Date(startTime)
+    );
+
   if (
-    dateKey(gameDate) ===
-    dateKey(tomorrow)
+    league === "LMP" &&
+    dateKey === "2026-10-13"
   ) {
-    return "Mañana";
+    return "Hora por confirmar";
   }
 
   return new Intl.DateTimeFormat(
     "es-MX",
     {
-      timeZone:
-        "America/Mexico_City",
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
+      timeZone: "America/Mexico_City",
+      hour: "numeric",
+      minute: "2-digit",
     }
-  ).format(gameDate);
+  ).format(
+    new Date(startTime)
+  );
 }
-  
-
 export default async function GamePage({
   params,
 }: GamePageProps) {
