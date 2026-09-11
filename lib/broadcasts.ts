@@ -50,7 +50,7 @@ if (
 ) {
   return "https://www.mlb.com/live-stream-games/subscribe/detroitsportsnet";
 }
-  return undefined;
+ return "https://www.mlb.com/live-stream-games";
 }
 /*
   Transmisiones LMB que administramos
