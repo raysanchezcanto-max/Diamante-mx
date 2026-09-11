@@ -186,51 +186,40 @@ const broadcasts =
       game.startTime,
       league
     );
-  <section className="broadcastSection">
-  <div className="broadcastHeader">
-    <span className="eyebrow">
-      TRANSMISIÓN
-    </span>
+ <section className="broadcastSection">
+  <span className="eyebrow">
+    TRANSMISIÓN
+  </span>
 
-    <h2>Dónde ver</h2>
-  </div>
+  <h2>Dónde ver</h2>
 
   {broadcasts.length > 0 ? (
-    <div className="broadcastGrid">
-      {broadcasts.map(
-        (broadcast, index) => (
-          <div
-            className="broadcastCard"
+    <div className="broadcastLinks">
+      {broadcasts.map((broadcast, index) =>
+        broadcast.url ? (
+          <a
             key={`${broadcast.name}-${index}`}
+            href={broadcast.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="watchButton"
           >
-            <div>
-              <span className="broadcastType">
-                {broadcast.type}
-              </span>
-
-              <strong>
-                {broadcast.name}
-              </strong>
-            </div>
-
-            {broadcast.url && (
-              <a
-                href={broadcast.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="broadcastButton"
-              >
-                Ver en {broadcast.name}
-              </a>
-            )}
-          </div>
+            Ver en {broadcast.name}
+          </a>
+        ) : (
+          <span
+            key={`${broadcast.name}-${index}`}
+            className="watchButtonDisabled"
+          >
+            {broadcast.name}
+          </span>
         )
       )}
     </div>
   ) : (
-    <div className="broadcastEmpty">
+    <p className="broadcastEmpty">
       Transmisión por confirmar
-    </div>
+    </p>
   )}
 </section>
 
