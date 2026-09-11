@@ -48,37 +48,47 @@ function formatGameDate(
   );
 }
 
-function formatGameTime(
-  startTime: string,
-  league: LeagueCode
+function formatGameDate(
+  startTime: string
 ) {
   if (!startTime) {
-    return "Hora por confirmar";
+    return "Fecha por confirmar";
   }
 
-  const dateKey =
-    new Intl.DateTimeFormat(
-      "en-CA",
-      {
-        timeZone:
-          "America/Mexico_City",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }
-    ).format(
-      new Date(startTime)
-    );
+  const gameDate =
+    new Date(startTime);
 
-  /*
-    Mantenemos la corrección que ya
-    usamos para el juego inaugural LMP.
-  */
+  const today =
+    new Date();
+
+  const tomorrow =
+    new Date();
+
+  tomorrow.setDate(
+    tomorrow.getDate() + 1
+  );
+
+  const dateKey = (date: Date) =>
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone:
+        "America/Mexico_City",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+
   if (
-    league === "LMP" &&
-    dateKey === "2026-10-13"
+    dateKey(gameDate) ===
+    dateKey(today)
   ) {
-    return "Hora por confirmar";
+    return "Hoy";
+  }
+
+  if (
+    dateKey(gameDate) ===
+    dateKey(tomorrow)
+  ) {
+    return "Mañana";
   }
 
   return new Intl.DateTimeFormat(
@@ -86,10 +96,13 @@ function formatGameTime(
     {
       timeZone:
         "America/Mexico_City",
-      hour: "numeric",
-      minute: "2-digit",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     }
-  ).format(
+  ).format(gameDate);
+}
     new Date(startTime)
   );
 }
