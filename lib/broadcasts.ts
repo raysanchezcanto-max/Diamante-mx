@@ -41,7 +41,15 @@ function getMlbBroadcastUrl(
   if (normalized.includes("mlb network")) {
     return "https://www.mlb.com/network";
   }
+if (normalized.includes("rockies.tv")) {
+  return "https://www.mlb.com/rockies/schedule/watch";
+}
 
+if (
+  normalized.includes("detroit sportsnet")
+) {
+  return "https://www.mlb.com/live-stream-games/subscribe/detroitsportsnet";
+}
   return undefined;
 }
 /*
