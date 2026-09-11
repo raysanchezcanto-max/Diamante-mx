@@ -116,11 +116,12 @@ async function getMlbBroadcasts(
     const broadcasts =
       game?.broadcasts ?? [];
 
-    const mappedBroadcasts: Broadcast[] =
+  const mappedBroadcasts: Broadcast[] =
   broadcasts
     .filter(
       (broadcast: any) =>
-        broadcast?.name
+        broadcast?.name &&
+        broadcast?.type !== "radio"
     )
     .map(
       (broadcast: any): Broadcast => ({
