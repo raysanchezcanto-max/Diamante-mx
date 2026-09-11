@@ -99,7 +99,7 @@ function GameCards({
                   : "gameStatus"
               }
             >
-              {gameTime(game)}
+              {gameTime(game, league)}
             </div>
 
             <div className="teamRow">
