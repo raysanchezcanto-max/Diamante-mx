@@ -94,8 +94,9 @@ function GameCards({
   className="gameCard gameCardLink"
   key={game.id}
 >
+            <div
           
-            </Link>
+      
               className={
                 game.status === "Live"
                   ? "gameStatus live"
@@ -103,7 +104,7 @@ function GameCards({
               }
             >
               {gameTime(game, league)}
-            </div>
+            </Link>
 
             <div className="teamRow">
               <div className="teamIdentity">
