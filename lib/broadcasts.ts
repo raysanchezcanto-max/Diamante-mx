@@ -118,11 +118,32 @@ async function getMlbBroadcasts(
 
   const mappedBroadcasts: Broadcast[] =
   broadcasts
-    .filter(
-      (broadcast: any) =>
-        broadcast?.name &&
-        broadcast?.type !== "radio"
-    )
+   .filter((broadcast: any) => {
+  if (!broadcast?.name) {
+    return false;
+  }
+
+  const type = String(
+    broadcast?.type ?? ""
+  ).toLowerCase();
+
+  const name = String(
+    broadcast.name
+  ).toLowerCase();
+
+  const isRadio =
+    type.includes("radio") ||
+    type === "am" ||
+    type === "fm" ||
+    name.includes(" am") ||
+    name.includes(" fm") ||
+    name.includes("am/") ||
+    name.includes("fm/") ||
+    /\d+am/i.test(name) ||
+    /\d+fm/i.test(name);
+
+  return !isRadio;
+})
     .map(
       (broadcast: any): Broadcast => ({
         name: broadcast.name,
