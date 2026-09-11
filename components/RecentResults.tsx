@@ -109,7 +109,7 @@ export default function RecentResults({
                   {game.homeRuns ?? "–"}
                 </strong>
               </div>
-            </link>
+            </Link>
           );
         })}
       </div>
