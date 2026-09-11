@@ -69,6 +69,8 @@ const nextGames =
   await getNextGames(selectedLeague);
     const lmpSeasonStart = new Date(
     "2026-10-13T00:00:00-06:00"
+      );
+
       const recentGames =
   await getRecentGames(selectedLeague);
   );
