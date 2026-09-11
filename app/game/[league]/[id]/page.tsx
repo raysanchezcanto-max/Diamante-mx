@@ -103,9 +103,7 @@ function formatGameDate(
     }
   ).format(gameDate);
 }
-    new Date(startTime)
-  );
-}
+  
 
 export default async function GamePage({
   params,
