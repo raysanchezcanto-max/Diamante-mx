@@ -33,40 +33,47 @@ function formatGameDate(
     return "Fecha por confirmar";
   }
 
+  const gameDate = new Date(startTime);
+  const today = new Date();
+
+  const tomorrow = new Date();
+  tomorrow.setDate(
+    tomorrow.getDate() + 1
+  );
+
+  const dateKey = (date: Date) =>
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Mexico_City",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+
+  if (
+    dateKey(gameDate) ===
+    dateKey(today)
+  ) {
+    return "Hoy";
+  }
+
+  if (
+    dateKey(gameDate) ===
+    dateKey(tomorrow)
+  ) {
+    return "Mañana";
+  }
+
   return new Intl.DateTimeFormat(
     "es-MX",
     {
-      timeZone:
-        "America/Mexico_City",
+      timeZone: "America/Mexico_City",
       weekday: "long",
       day: "numeric",
       month: "long",
       year: "numeric",
     }
-  ).format(
-    new Date(startTime)
-  );
+  ).format(gameDate);
 }
-
-function formatGameDate(
-  startTime: string
-) {
-  if (!startTime) {
-    return "Fecha por confirmar";
-  }
-
-  const gameDate =
-    new Date(startTime);
-
-  const today =
-    new Date();
-
-  const tomorrow =
-    new Date();
-
-  tomorrow.setDate(
-    tomorrow.getDate() + 1
-  );
 
   const dateKey = (date: Date) =>
     new Intl.DateTimeFormat("en-CA", {
