@@ -55,7 +55,7 @@ const LMB_BROADCASTS:
     url: "https://www.youtube.com/@AztecaDeportes",
   },
 ],
-
+};
 async function getMlbBroadcasts(
   gameId: number
 ): Promise<Broadcast[]> {
