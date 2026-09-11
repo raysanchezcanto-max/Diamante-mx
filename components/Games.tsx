@@ -89,7 +89,7 @@ function GameCards({
         );
 
         return (
-       return (
+       
   <Link
     href={`/game/${league.toLowerCase()}/${game.id}`}
     className="gameCard gameCardLink"
