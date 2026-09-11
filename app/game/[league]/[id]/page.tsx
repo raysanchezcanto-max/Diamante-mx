@@ -204,7 +204,10 @@ const broadcasts =
             rel="noopener noreferrer"
             className="watchButton"
           >
-            Ver en {broadcast.name}
+            {broadcast.url === "https://www.mlb.com/live-stream-games" &&
+!broadcast.name.toLowerCase().includes("mlb.tv")
+  ? `Ver opciones para ${broadcast.name}`
+  : `Ver en ${broadcast.name}`}
           </a>
         ) : (
           <span
