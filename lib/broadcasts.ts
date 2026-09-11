@@ -21,31 +21,40 @@ const MLB_API =
 const LMB_BROADCASTS:
   Record<number, Broadcast[]> = {
   [-2026091101]: [
-    {
-      name: "LMB.TV",
-      type: "Streaming",
-      url: "https://www.lmb.tv/",
-    },
-    {
-      name: "Claro Sports",
-      type: "Streaming",
-      url: "https://www.clarosports.com/",
-    },
-  ],
+  {
+    name: "LMB.TV",
+    type: "Streaming",
+    url: "https://www.lmb.tv/",
+  },
+  {
+    name: "Claro Sports",
+    type: "Streaming",
+    url: "https://www.clarosports.com/",
+  },
+  {
+    name: "YouTube · Azteca Deportes",
+    type: "Streaming",
+    url: "https://www.youtube.com/@AztecaDeportes",
+  },
+],
 
   [-2026091201]: [
     {
       name: "LMB.TV",
-      type: "Streaming",
-      url: "https://www.lmb.tv/",
-    },
-    {
-      name: "Claro Sports",
-      type: "Streaming",
-      url: "https://www.clarosports.com/",
-    },
-  ],
-};
+    type: "Streaming",
+    url: "https://www.lmb.tv/",
+  },
+  {
+    name: "Claro Sports",
+    type: "Streaming",
+    url: "https://www.clarosports.com/",
+  },
+  {
+    name: "YouTube · Azteca Deportes",
+    type: "Streaming",
+    url: "https://www.youtube.com/@AztecaDeportes",
+  },
+],
 
 async function getMlbBroadcasts(
   gameId: number
