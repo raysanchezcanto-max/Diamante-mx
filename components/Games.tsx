@@ -89,64 +89,66 @@ function GameCards({
         );
 
         return (
-       
-  <Link
-    href={`/game/${league.toLowerCase()}/${game.id}`}
-    className="gameCard gameCardLink"
-    key={game.id}
-  >
-    <div
-      className={
-        game.status === "Live"
-          ? "gameStatus live"
-          : "gameStatus"
-      }
-    >
-      {gameTime(game, league)}
+          <Link
+            href={`/game/${league.toLowerCase()}/${game.id}`}
+            className="gameCard gameCardLink"
+            key={game.id}
+          >
+            <div
+              className={
+                game.status === "Live"
+                  ? "gameStatus live"
+                  : "gameStatus"
+              }
+            >
+              {gameTime(game, league)}
+            </div>
+
+            <div className="teamRow">
+              <div className="teamIdentity">
+                {awayLogo && (
+                  <img
+                    src={awayLogo}
+                    alt={`Logo de ${game.away}`}
+                    width={34}
+                    height={34}
+                    loading="lazy"
+                  />
+                )}
+
+                <span>{game.away}</span>
+              </div>
+
+              <strong>
+                {game.awayRuns ?? "–"}
+              </strong>
+            </div>
+
+            <div className="teamRow">
+              <div className="teamIdentity">
+                {homeLogo && (
+                  <img
+                    src={homeLogo}
+                    alt={`Logo de ${game.home}`}
+                    width={34}
+                    height={34}
+                    loading="lazy"
+                  />
+                )}
+
+                <span>{game.home}</span>
+              </div>
+
+              <strong>
+                {game.homeRuns ?? "–"}
+              </strong>
+            </div>
+          </Link>
+        );
+      })}
     </div>
-
-    <div className="teamRow">
-      <div className="teamIdentity">
-        {awayLogo && (
-          <img
-            src={awayLogo}
-            alt={`Logo de ${game.away}`}
-            width={34}
-            height={34}
-            loading="lazy"
-          />
-        )}
-
-        <span>{game.away}</span>
-      </div>
-
-      <strong>
-        {game.awayRuns ?? "–"}
-      </strong>
-    </div>
-
-    <div className="teamRow">
-      <div className="teamIdentity">
-        {homeLogo && (
-          <img
-            src={homeLogo}
-            alt={`Logo de ${game.home}`}
-            width={34}
-            height={34}
-            loading="lazy"
-          />
-        )}
-
-        <span>{game.home}</span>
-      </div>
-
-      <strong>
-        {game.homeRuns ?? "–"}
-      </strong>
-    </div>
-  </Link>
-);
-
+  );
+}
 export default function Games({
   games,
   nextGames = [],
