@@ -167,40 +167,68 @@ export default function Games({
     Por eso separamos aquí los juegos
     realmente correspondientes a hoy.
   */
-  const todayGames = games.filter(
-    (game) =>
-      mexicoDateKey(
-        new Date(game.startTime)
-      ) === today
-  );
+/*
+  Unimos los juegos recibidos por ambas
+  fuentes y eliminamos duplicados.
+*/
+const allGames = Array.from(
+  new Map(
+    [...games, ...nextGames].map(
+      (game) => [game.id, game]
+    )
+  ).values()
+);
 
-  const futureGamesFromMain =
-    games.filter(
-      (game) =>
-        mexicoDateKey(
-          new Date(game.startTime)
-        ) !== today
-    );
+/*
+  Si un partido de nextGames resulta ser
+  hoy, debe mostrarse como "Juego de hoy"
+  y no como "Próxima fecha".
+*/
+const todayGames = allGames.filter(
+  (game) =>
+    mexicoDateKey(
+      new Date(game.startTime)
+    ) === today
+);
 
-  /*
-    Si nextGames trae información,
-    tiene prioridad.
+const futureGames = allGames.filter(
+  (game) =>
+    mexicoDateKey(
+      new Date(game.startTime)
+    ) > today
+);
 
-    Si no, usamos el fallback anterior.
-  */
-  const upcomingGames =
-    nextGames.length > 0
-      ? nextGames
-      : futureGamesFromMain;
+/*
+  Mostramos únicamente la primera
+  fecha futura disponible.
+*/
+const firstFutureDate =
+  futureGames.length > 0
+    ? mexicoDateKey(
+        new Date(
+          futureGames[0].startTime
+        )
+      )
+    : null;
 
-  const upcomingDate =
-    upcomingGames.length > 0
-      ? dateLabel(upcomingGames[0])
-      : null;
+const upcomingGames =
+  firstFutureDate
+    ? futureGames.filter(
+        (game) =>
+          mexicoDateKey(
+            new Date(game.startTime)
+          ) === firstFutureDate
+      )
+    : [];
 
-  const hasAnyGames =
-    todayGames.length > 0 ||
-    upcomingGames.length > 0;
+const upcomingDate =
+  upcomingGames.length > 0
+    ? dateLabel(upcomingGames[0])
+    : null;
+
+const hasAnyGames =
+  todayGames.length > 0 ||
+  upcomingGames.length > 0;
 
   return (
     <>
