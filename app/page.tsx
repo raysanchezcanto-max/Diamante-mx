@@ -73,7 +73,7 @@ const nextGames =
 
       const recentGames =
   await getRecentGames(selectedLeague);
-  );
+
 
   const showLmpSeasonNotice =
     selectedLeague === "LMP" &&
