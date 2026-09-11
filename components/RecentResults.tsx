@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 
 import {
@@ -60,10 +61,11 @@ export default function RecentResults({
           );
 
           return (
-            <article
-              className="gameCard"
-              key={game.id}
-            >
+            <Link
+  href={`/game/${league.toLowerCase()}/${game.id}`}
+  className="gameCard gameCardLink"
+  key={game.id}
+>
               <div className="gameStatus">
                 FINAL · {resultDate(game)}
               </div>
@@ -107,7 +109,7 @@ export default function RecentResults({
                   {game.homeRuns ?? "–"}
                 </strong>
               </div>
-            </article>
+            </link>
           );
         })}
       </div>
