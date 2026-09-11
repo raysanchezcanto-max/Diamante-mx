@@ -217,9 +217,9 @@ const broadcasts =
       )}
     </div>
   ) : (
-    <p className="broadcastEmpty">
+    <div className="broadcastEmpty">
       Transmisión por confirmar
-    </p>
+    </div>
   )}
 </section>
 
