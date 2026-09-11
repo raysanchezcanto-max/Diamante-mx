@@ -149,6 +149,10 @@ return Array.from(
     )
   ).values()
 );
+      } catch {
+    return [];
+  }
+}
 
 export async function getGameBroadcasts(
   league: LeagueCode,
