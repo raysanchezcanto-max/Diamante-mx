@@ -265,14 +265,16 @@ const broadcasts =
           key={`${broadcast.name}-${index}`}
         >
           <div>
-            <span className="broadcastType">
-              {broadcast.type}
-            </span>
-
-            <strong>
-              {broadcast.name}
-            </strong>
-          </div>
+         {broadcast.url && (
+  <a
+    href={broadcast.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="watchButton"
+  >
+    Ver en {broadcast.name}
+  </a>
+)}
 
           {broadcast.url && (
             <a
