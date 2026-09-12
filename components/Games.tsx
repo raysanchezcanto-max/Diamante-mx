@@ -14,14 +14,26 @@ function mexicoDateKey(date: Date) {
     day: "2-digit",
   }).format(date);
 }
+function formatInningHalf(
+  inningState?: string
+) {
+  if (!inningState) return "";
 
+  const value =
+    inningState.toLowerCase();
+
+  if (value === "top") return "ALTA";
+  if (value === "bottom") return "BAJA";
+
+  return inningState.toUpperCase();
+}
 function gameTime(
   game: Game,
   league: LeagueCode
 ) {
   if (game.status === "Live") {
     const inning = game.inning
-      ? `${game.inningState ?? ""} ${game.inning}`.trim()
+    `${formatInningHalf(game.inningState)} ${game.inning}`
       : game.detailedState;
 
     return `EN VIVO · ${inning}`;
