@@ -1,3 +1,6 @@
+import {
+  getLmbOfficialBroadcasts,
+} from "./lmbLive";
 import type { LeagueCode } from "./teamLogos";
 
 export type Broadcast = {
@@ -203,13 +206,29 @@ export async function getGameBroadcasts(
     return getMlbBroadcasts(gameId);
   }
 
-  if (
-    league === "LMB" &&
-    LMB_BROADCASTS[gameId]
-  ) {
+ if (league === "LMB") {
+  const official =
+    await getLmbOfficialBroadcasts(
+      gameId
+    );
+
+  if (official.length > 0) {
+    return official.map(
+      (broadcast): Broadcast => ({
+        name: broadcast.name,
+        type: "Streaming",
+        url: broadcast.url,
+        fallback: !broadcast.url,
+      })
+    );
+  }
+
+  if (LMB_BROADCASTS[gameId]) {
     return LMB_BROADCASTS[gameId];
   }
 
+  return [];
+}
   /*
     LMP se conectará cuando se publiquen
     oficialmente las transmisiones de la
