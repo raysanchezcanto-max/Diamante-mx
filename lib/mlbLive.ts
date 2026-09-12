@@ -17,6 +17,10 @@ function translateMlbDescription(
 ) {
   return description
     .replace(
+  /^Pitching Change:\s*(.+?) replaces (.+?)\.?$/gi,
+  "Cambio de lanzador: $1 reemplaza a $2."
+)
+    .replace(
       /strikes out on a foul tip/gi,
       "se poncha con foul tip"
     )
