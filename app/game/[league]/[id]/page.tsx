@@ -1,3 +1,4 @@
+import { getLmbPlayState } from "@/lib/lmbLive";
 import BaseDiamond from "@/components/BaseDiamond";
 import { getGameBroadcasts } from "@/lib/broadcasts";
 import { notFound } from "next/navigation";
@@ -172,6 +173,10 @@ const broadcasts =
 
   const isLive =
     game.status === "Live";
+  const playState =
+  league === "LMB" && isLive
+    ? await getLmbPlayState(gameId)
+    : null;
 
   const hasScore =
     game.awayRuns !== undefined &&
@@ -314,9 +319,13 @@ const broadcasts =
             : ""}
       </span>
 
-      {isLive && (
-        <BaseDiamond />
-      )}
+      {isLive && playState && (
+  <BaseDiamond
+    first={playState.first}
+    second={playState.second}
+    third={playState.third}
+  />
+)}
     </>
   ) : (
     <strong>VS</strong>
