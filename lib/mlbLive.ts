@@ -88,6 +88,22 @@ export async function getMlbPlayState(
 
     const currentPlay =
       data?.liveData?.plays?.currentPlay;
+    const allPlays =
+  data?.liveData?.plays?.allPlays ?? [];
+
+const lastCompletedPlay =
+  [...allPlays]
+    .reverse()
+    .find(
+      (play: any) =>
+        play?.about?.isComplete &&
+        play?.result?.description
+    );
+
+const description =
+  currentPlay?.result?.description ||
+  lastCompletedPlay?.result?.description ||
+  "";
 
     const linescore =
       data?.liveData?.linescore;
@@ -131,8 +147,7 @@ export async function getMlbPlayState(
 
      description:
   translateMlbDescription(
-    currentPlay?.result?.description ??
-    ""
+    description
   ),
     };
   } catch {
