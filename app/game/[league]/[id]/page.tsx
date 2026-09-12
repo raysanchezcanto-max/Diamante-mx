@@ -176,7 +176,7 @@ const broadcasts =
 
   const isLive =
     game.status === "Live";
-  const playState =
+
  const playState =
   !isLive
     ? null
