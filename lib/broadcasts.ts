@@ -50,8 +50,7 @@ if (
   normalized.includes("detroit sportsnet")
 ) {
   return "https://www.mlb.com/live-stream-games/subscribe/detroitsportsnet";
-}
- return "https://www.mlb.com/live-stream-games";
+return undefined;
 }
 /*
   Transmisiones LMB que administramos
@@ -154,21 +153,30 @@ async function getMlbBroadcasts(
   return !isRadio;
 })
     .map(
-      (broadcast: any): Broadcast => ({
-        name: broadcast.name,
+  (broadcast: any): Broadcast => {
+    const directUrl =
+      getMlbBroadcastUrl(
+        broadcast.name
+      );
 
-        type:
-          broadcast.type === "radio"
-            ? "Radio"
-            : broadcast.type === "TV"
-              ? "TV"
-              : "Streaming",
+    return {
+      name: broadcast.name,
 
-        url: getMlbBroadcastUrl(
-          broadcast.name
-        ),
-      })
-    );
+      type:
+        broadcast.type === "radio"
+          ? "Radio"
+          : broadcast.type === "TV"
+            ? "TV"
+            : "Streaming",
+
+      url:
+        directUrl ??
+        "https://www.mlb.com/live-stream-games",
+
+      fallback: !directUrl,
+    };
+  }
+);
 
 return Array.from(
   new Map(
