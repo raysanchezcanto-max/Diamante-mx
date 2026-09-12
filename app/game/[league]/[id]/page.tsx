@@ -1,3 +1,4 @@
+import LiveGamePanel from "@/components/LiveGamePanel";
 import AutoRefresh from "@/components/AutoRefresh";
 import { getLmbPlayState } from "@/lib/lmbLive";
 import BaseDiamond from "@/components/BaseDiamond";
@@ -325,6 +326,10 @@ const broadcasts =
             ? "EN VIVO"
             : ""}
       </span>
+       ) : (
+    <strong>VS</strong>
+  )}
+</div>
 
      {isLive && playState && (
   <div className="liveSituation">
@@ -381,6 +386,21 @@ const broadcasts =
           </div>
         </div>
       </section>
+    {isLive && playState && (
+  <LiveGamePanel
+    inning={game.inning}
+    inningState={game.inningState}
+    first={playState.first}
+    second={playState.second}
+    third={playState.third}
+    balls={playState.balls}
+    strikes={playState.strikes}
+    outs={playState.outs}
+    description={
+      playState.description
+    }
+  />
+)}
 
       <section className="gameInfo">
         <span className="eyebrow">
