@@ -362,11 +362,10 @@ const broadcasts =
     balls={playState.balls}
     strikes={playState.strikes}
     outs={playState.outs}
-    description={
-      playState.description
-    }
+    description={playState.description}
   />
 )}
+  
 
       <section className="gameInfo">
         <span className="eyebrow">
