@@ -273,14 +273,7 @@ export async function getRecentGames(
         `&hydrate=linescore`;
     }
 
-    if (league === "LMB") {
-      path =
-        `/schedule?sportId=11` +
-        `&leagueId=125` +
-        `&startDate=${startDate}` +
-        `&endDate=${endDate}` +
-        `&hydrate=linescore`;
-    }
+   
 
     if (league === "LMP") {
       path =
@@ -320,18 +313,11 @@ export async function getRecentGames(
     const mappedGames =
   finishedGames.map(mapGame);
 
-if (
-  league === "LMB" &&
-  mappedGames.length === 0
-) {
-  return lmbRecentFallback();
-}
+
 
 return mappedGames;
       } catch {
-    if (league === "LMB") {
-      return lmbRecentFallback();
-    }
+  
 
     return [];
   }
