@@ -218,6 +218,7 @@ const broadcasts =
               {game.venue}
             </p>
           </div>
+          {!isFinal && (
           <section className="broadcastSection">
   <div className="broadcastHeader">
     <span className="eyebrow">
@@ -258,6 +259,7 @@ const broadcasts =
   </div>
 )}
 </section>
+      )}
 
           <span
             className={
