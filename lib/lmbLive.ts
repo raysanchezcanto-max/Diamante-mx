@@ -368,3 +368,97 @@ export async function getLmbPlayState(
     return null;
   }
 }
+export type LmbOfficialBroadcast = {
+  name: string;
+  url?: string;
+};
+
+export async function getLmbOfficialBroadcasts(
+  permalink: number
+): Promise<LmbOfficialBroadcast[]> {
+  try {
+    const response = await fetch(
+      `https://lmb.com.mx/juegos/api/detail?permalink=${permalink}`,
+      {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+
+    const game =
+      data?.games_info?.[0];
+
+    if (!game) {
+      return [];
+    }
+
+    const broadcasts:
+      LmbOfficialBroadcast[] = [];
+
+    if (
+      Array.isArray(game.tvNetworks)
+    ) {
+      game.tvNetworks.forEach(
+        (network: any) => {
+          const name =
+            network?.name ??
+            network?.network ??
+            "";
+
+          const url =
+            network?.url ??
+            network?.link ??
+            undefined;
+
+          if (name) {
+            broadcasts.push({
+              name,
+              url,
+            });
+          }
+        }
+      );
+    }
+
+    if (
+      game.tv_network?.name
+    ) {
+      broadcasts.push({
+        name:
+          game.tv_network.name,
+        url:
+          game.tv_network.url ??
+          game.tv_network.link ??
+          undefined,
+      });
+    }
+
+    if (game.jonron_tv) {
+      broadcasts.push({
+        name: "Jonrón TV",
+        url: game.jonron_tv,
+      });
+    }
+
+    return Array.from(
+      new Map(
+        broadcasts.map(
+          (broadcast) => [
+            broadcast.name,
+            broadcast,
+          ]
+        )
+      ).values()
+    );
+  } catch {
+    return [];
+  }
+}
