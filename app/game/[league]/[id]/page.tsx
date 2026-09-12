@@ -318,47 +318,13 @@ const broadcasts =
 
           <div className="matchupCenter">
   {hasScore ? (
-    <>
-      <span>
-        {isFinal
-          ? "FINAL"
-          : isLive
-            ? "EN VIVO"
-            : ""}
-      </span>
-       ) : (
-    <strong>VS</strong>
-  )}
-</div>
-
-     {isLive && playState && (
-  <div className="liveSituation">
-    {game.inning && (
-      <div className="liveInning">
-        {game.inningState ?? ""} {game.inning}
-      </div>
-    )}
-
-    <BaseDiamond
-      first={playState.first}
-      second={playState.second}
-      third={playState.third}
-    />
-
-    <div className="liveCount">
-      <span>B {playState.balls}</span>
-      <span>S {playState.strikes}</span>
-      <span>O {playState.outs}</span>
-    </div>
-
-    {playState.description && (
-      <p className="liveDescription">
-        {playState.description}
-      </p>
-    )}
-  </div>
-)}
-    </>
+    <span>
+      {isFinal
+        ? "FINAL"
+        : isLive
+          ? "EN VIVO"
+          : ""}
+    </span>
   ) : (
     <strong>VS</strong>
   )}
