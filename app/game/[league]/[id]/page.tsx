@@ -1,3 +1,4 @@
+import BaseDiamond from "@/components/BaseDiamond";
 import { getGameBroadcasts } from "@/lib/broadcasts";
 import { notFound } from "next/navigation";
 
@@ -303,18 +304,24 @@ const broadcasts =
           </div>
 
           <div className="matchupCenter">
-            {hasScore ? (
-              <span>
-                {isFinal
-                  ? "FINAL"
-                  : isLive
-                    ? "EN VIVO"
-                    : ""}
-              </span>
-            ) : (
-              <strong>VS</strong>
-            )}
-          </div>
+  {hasScore ? (
+    <>
+      <span>
+        {isFinal
+          ? "FINAL"
+          : isLive
+            ? "EN VIVO"
+            : ""}
+      </span>
+
+      {isLive && (
+        <BaseDiamond />
+      )}
+    </>
+  ) : (
+    <strong>VS</strong>
+  )}
+</div>
 
           <div className="matchupTeam">
             {homeLogo && (
