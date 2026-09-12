@@ -126,8 +126,8 @@ export async function getLmbGames():
   La API de LMB no está devolviendo
   correctamente este juego de postemporada.
 */
-    const liveScore =
-  await getLmbLiveScore();
+   const liveScore =
+  await getLmbLiveScore(867488);
 
 if (liveScore) {
   return [
