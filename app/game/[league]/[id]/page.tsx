@@ -328,6 +328,12 @@ const broadcasts =
 
      {isLive && playState && (
   <div className="liveSituation">
+    {game.inning && (
+      <div className="liveInning">
+        {game.inningState ?? ""} {game.inning}
+      </div>
+    )}
+
     <BaseDiamond
       first={playState.first}
       second={playState.second}
@@ -339,6 +345,12 @@ const broadcasts =
       <span>S {playState.strikes}</span>
       <span>O {playState.outs}</span>
     </div>
+
+    {playState.description && (
+      <p className="liveDescription">
+        {playState.description}
+      </p>
+    )}
   </div>
 )}
     </>
