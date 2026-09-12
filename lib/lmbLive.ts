@@ -125,35 +125,7 @@ Promise<SofaEvent[]> {
 
   return events;
 }
-  for (const url of sources) {
-    try {
-      const response =
-        await fetch(url, {
-          cache: "no-store",
-          headers: {
-            Accept:
-              "application/json",
-            "User-Agent":
-              "Mozilla/5.0",
-          },
-        });
-
-      if (!response.ok) {
-        continue;
-      }
-
-      const data =
-        await response.json();
-
-      if (
-        Array.isArray(data?.events)
-      ) {
-        return data.events;
-      }
-    } catch {
-      // Probamos la siguiente fuente.
-    }
-  }
+ 
 
 
 
