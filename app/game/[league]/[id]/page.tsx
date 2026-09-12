@@ -80,6 +80,20 @@ function formatGameDate(
     }
   ).format(gameDate);
 }
+function formatInningHalf(
+  inningState?: string
+) {
+  if (!inningState) return "";
+
+  const value = inningState.trim().toLowerCase();
+
+  if (value === "top") return "ALTA";
+  if (value === "bottom") return "BAJA";
+  if (value === "middle") return "MEDIA";
+  if (value === "end") return "FIN";
+
+  return inningState.toUpperCase();
+}
 
 function formatGameTime(
   startTime: string,
@@ -200,6 +214,10 @@ const broadcasts =
       game.startTime,
       league
     );
+  const liveInningLabel =
+  isLive && game.inning
+    ? `${formatInningHalf(game.inningState)} ${game.inning}`
+    : "";
 
   return (
     <main className="gamePage">
@@ -284,7 +302,7 @@ const broadcasts =
   ? `● EN VIVO${
       game.inning
         ? ` · ${
-            game.inningState ?? ""
+         formatInningHalf(game.inningState)
           } ${
             game.inning
           }`
