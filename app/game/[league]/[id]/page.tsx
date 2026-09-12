@@ -1,3 +1,4 @@
+import AutoRefresh from "@/components/AutoRefresh";
 import { getLmbPlayState } from "@/lib/lmbLive";
 import BaseDiamond from "@/components/BaseDiamond";
 import { getGameBroadcasts } from "@/lib/broadcasts";
@@ -195,6 +196,10 @@ const broadcasts =
 
   return (
     <main className="gamePage">
+      <AutoRefresh
+  enabled={!isFinal}
+  intervalMs={30000}
+/>
       <a
         className="gameBack"
         href={`/?league=${league.toLowerCase()}`}
