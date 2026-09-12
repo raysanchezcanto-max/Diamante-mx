@@ -36,7 +36,85 @@ type LmbApiGame = {
 type LmbApiResponse = {
   games_info?: LmbApiGame[];
 };
+function getMexicoDateRange() {
+  const now = new Date();
 
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }
+    ).formatToParts(now);
+
+  const year =
+    parts.find(
+      (part) => part.type === "year"
+    )?.value ?? "";
+
+  const month =
+    parts.find(
+      (part) => part.type === "month"
+    )?.value ?? "";
+
+  const day =
+    parts.find(
+      (part) => part.type === "day"
+    )?.value ?? "";
+
+  const date =
+    `${month}/${day}/${year}`;
+
+  const startDate =
+    new Date(
+      `${year}-${month}-${day}T00:00:00-06:00`
+    ).getTime();
+
+  const endDate =
+    new Date(
+      `${year}-${month}-${day}T23:59:59.999-06:00`
+    ).getTime();
+
+  return {
+    date,
+    startDate,
+    endDate,
+  };
+}
+export async function getLmbCalendar() {
+  const {
+    date,
+    startDate,
+    endDate,
+  } = getMexicoDateRange();
+
+  try {
+    const response = await fetch(
+      `https://lmb.com.mx/juegos/api/calendar?date=${date}&daysFromNow=0&startDate=${startDate}&endDate=${endDate}`,
+      {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data =
+      await response.json();
+
+    return data?.games_info ?? [];
+  } catch {
+    return [];
+  }
+}
 export async function getLmbLiveScore(
   permalink: number
 ): Promise<LmbLiveScore | null> {
