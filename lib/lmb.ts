@@ -143,7 +143,7 @@ if (
       id: -2026091101,
 
       status: "Live",
-      detailedState: "En vivo",
+      detailedState: "Serie del Rey",
 
       awayId: 0,
       away: "Toros de Tijuana",
