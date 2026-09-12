@@ -156,7 +156,7 @@ export async function getGameDetails(
       return {
         ...fallbackGame,
         status: "Live",
-        detailedState: "En vivo",
+        detailedState: "Serie del Rey",
       };
     }
 
