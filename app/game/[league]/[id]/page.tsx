@@ -197,18 +197,17 @@ const broadcasts =
     <div className="broadcastLinks">
       {broadcasts.map((broadcast, index) =>
         broadcast.url ? (
-          <a
-            key={`${broadcast.name}-${index}`}
-            href={broadcast.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="watchButton"
-          >
-            {broadcast.url === "https://www.mlb.com/live-stream-games" &&
-!broadcast.name.toLowerCase().includes("mlb.tv")
-  ? `Ver opciones para ${broadcast.name}`
-  : `Ver en ${broadcast.name}`}
-          </a>
+         <a
+  key={`${broadcast.name}-${index}`}
+  href={broadcast.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="watchButton"
+>
+  {broadcast.fallback
+    ? `Ver opciones para ${broadcast.name}`
+    : `Ver en ${broadcast.name}`}
+</a>
         ) : (
           <span
             key={`${broadcast.name}-${index}`}
