@@ -1,213 +1,122 @@
-type SofaEvent = {
-  id?: number;
+export type LmbLiveScore = {
+  status: "Preview" | "Live" | "Final";
 
-  status?: {
-    type?: string;
-    description?: string;
-  };
+  away: string;
+  home: string;
 
-  homeTeam?: {
-    name?: string;
+  awayRuns?: number;
+  homeRuns?: number;
+
+  inning?: number;
+  inningState?: string;
+
+  detailedState?: string;
+};
+
+type LmbApiGame = {
+  status?: string;
+  detailedStatus?: string;
+
+  inning?: {
+    number?: number;
+    part?: string;
   };
 
   awayTeam?: {
     name?: string;
+    runsScored?: number;
   };
 
-  homeScore?: {
-    current?: number;
-  };
-
-  awayScore?: {
-    current?: number;
+  localTeam?: {
+    name?: string;
+    runsScored?: number;
   };
 };
 
-export type LmbLiveScore = {
-  eventId: number | null;
-
-  status: "Preview" | "Live" | "Final";
-
-  home: string;
-  away: string;
-
-  homeRuns?: number;
-  awayRuns?: number;
-
-  detail?: string;
+type LmbApiResponse = {
+  games_info?: LmbApiGame[];
 };
 
-function mexicoDate(
-  offsetDays = 0
-) {
-  const date =
-    new Date(
-      Date.now() +
-        offsetDays *
-          24 *
-          60 *
-          60 *
-          1000
+export async function getLmbLiveScore(
+  permalink: number
+): Promise<LmbLiveScore | null> {
+  try {
+    const response = await fetch(
+      `https://lmb.com.mx/juegos/api/detail?permalink=${permalink}`,
+      {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      }
     );
 
-  return new Intl.DateTimeFormat(
-    "en-CA",
-    {
-      timeZone:
-        "America/Mexico_City",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    if (!response.ok) {
+      return null;
     }
-  ).format(date);
-}
 
-function normalizeName(
-  value: string
-) {
-  return value
-    .normalize("NFD")
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-    .toLowerCase();
-}
+    const data =
+      (await response.json()) as LmbApiResponse;
 
-async function getEvents():
-Promise<SofaEvent[]> {
-  /*
-    Olmecas de Tabasco en Sofascore:
-    teamId = 66404
+    const game =
+      data?.games_info?.[0];
 
-    Consultamos próximos y anteriores
-    porque un juego en curso puede cambiar
-    de colección según el estado.
-  */
-  const sources = [
-    "https://www.sofascore.com/api/v1/team/66404/events/next/0",
-    "https://www.sofascore.com/api/v1/team/66404/events/last/0",
-  ];
-
-  const events: SofaEvent[] = [];
-
-  for (const url of sources) {
-    try {
-      const response =
-        await fetch(url, {
-          cache: "no-store",
-          headers: {
-            Accept:
-              "application/json",
-            "User-Agent":
-              "Mozilla/5.0",
-          },
-        });
-
-      if (!response.ok) {
-        continue;
-      }
-
-      const data =
-        await response.json();
-
-      if (
-        Array.isArray(data?.events)
-      ) {
-        events.push(
-          ...data.events
-        );
-      }
-    } catch {
-      // Probamos la siguiente fuente.
+    if (!game) {
+      return null;
     }
-  }
 
-  return events;
-}
- 
+    const rawStatus =
+      String(game.status ?? "")
+        .toUpperCase();
 
+    const detailed =
+      String(
+        game.detailedStatus ?? ""
+      ).toLowerCase();
 
+    let status:
+      "Preview" | "Live" | "Final" =
+      "Preview";
 
-export async function
-getLmbLiveScore():
-Promise<LmbLiveScore | null> {
-  const events =
-    await getEvents();
+    if (
+      rawStatus === "L" ||
+      detailed.includes("en vivo")
+    ) {
+      status = "Live";
+    } else if (
+      rawStatus === "F" ||
+      detailed.includes("final")
+    ) {
+      status = "Final";
+    }
 
-  const event =
-    events.find((item) => {
-      const home =
-        normalizeName(
-          item.homeTeam?.name ??
-            ""
-        );
+    return {
+      status,
 
-      const away =
-        normalizeName(
-          item.awayTeam?.name ??
-            ""
-        );
+      away:
+        game.awayTeam?.name ??
+        "Visitante",
 
-      const hasOlmecas =
-        home.includes("olmecas") ||
-        away.includes("olmecas");
+      home:
+        game.localTeam?.name ??
+        "Local",
 
-      const hasTijuana =
-        home.includes("tijuana") ||
-        away.includes("tijuana");
+      awayRuns:
+        game.awayTeam?.runsScored,
 
-      return (
-        hasOlmecas &&
-        hasTijuana
-      );
-    });
+      homeRuns:
+        game.localTeam?.runsScored,
 
-  if (!event) {
+      inning:
+        game.inning?.number,
+
+      inningState:
+        game.inning?.part,
+
+      detailedState:
+        game.detailedStatus,
+    };
+  } catch {
     return null;
   }
-
-  const type =
-    String(
-      event.status?.type ?? ""
-    ).toLowerCase();
-
-  const status:
-    "Preview" |
-    "Live" |
-    "Final" =
-    type.includes("progress") ||
-    type.includes("live") ||
-    type.includes("inprogress")
-      ? "Live"
-      : type.includes("finished")
-        ? "Final"
-        : "Preview";
-
-  return {
-    eventId:
-      event.id ?? null,
-
-    status,
-
-    home:
-      event.homeTeam?.name ??
-      "Local",
-
-    away:
-      event.awayTeam?.name ??
-      "Visitante",
-
-    homeRuns:
-      event.homeScore?.current,
-
-    awayRuns:
-      event.awayScore?.current,
-
-    detail:
-      event.status
-        ?.description,
-  };
 }
-
-
