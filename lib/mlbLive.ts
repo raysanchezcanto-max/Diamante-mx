@@ -12,7 +12,59 @@ export type MlbPlayState = {
 
   description?: string;
 };
-
+function translateMlbDescription(
+  description: string
+) {
+  return description
+    .replace(
+      /strikes out on a foul tip/gi,
+      "se poncha con foul tip"
+    )
+    .replace(
+      /strikes out swinging/gi,
+      "se poncha tirándole"
+    )
+    .replace(
+      /strikes out looking/gi,
+      "se poncha sin tirarle"
+    )
+    .replace(
+      /grounds out/gi,
+      "es puesto out con rodado"
+    )
+    .replace(
+      /flies out/gi,
+      "es puesto out con elevado"
+    )
+    .replace(
+      /lines out/gi,
+      "es puesto out con línea"
+    )
+    .replace(
+      /pops out/gi,
+      "es puesto out con elevado corto"
+    )
+    .replace(
+      /\bwalks\b/gi,
+      "recibe base por bolas"
+    )
+    .replace(
+      /\bsingles\b/gi,
+      "conecta sencillo"
+    )
+    .replace(
+      /\bdoubles\b/gi,
+      "conecta doble"
+    )
+    .replace(
+      /\btriples\b/gi,
+      "conecta triple"
+    )
+    .replace(
+      /\bhomers\b/gi,
+      "conecta jonrón"
+    );
+}
 export async function getMlbPlayState(
   gameId: number
 ): Promise<MlbPlayState | null> {
@@ -73,9 +125,11 @@ export async function getMlbPlayState(
         linescore?.inningState ??
         "",
 
-      description:
-        currentPlay?.result?.description ??
-        "",
+     description:
+  translateMlbDescription(
+    currentPlay?.result?.description ??
+    ""
+  ),
     };
   } catch {
     return null;
