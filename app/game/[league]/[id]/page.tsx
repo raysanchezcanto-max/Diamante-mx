@@ -1,3 +1,4 @@
+import { getMlbPlayState } from "@/lib/mlbLive";
 import LiveGamePanel from "@/components/LiveGamePanel";
 import AutoRefresh from "@/components/AutoRefresh";
 import { getLmbPlayState } from "@/lib/lmbLive";
@@ -176,9 +177,14 @@ const broadcasts =
   const isLive =
     game.status === "Live";
   const playState =
-  league === "LMB" && isLive
-    ? await getLmbPlayState(gameId)
-    : null;
+ const playState =
+  !isLive
+    ? null
+    : league === "LMB"
+      ? await getLmbPlayState(gameId)
+      : league === "MLB"
+        ? await getMlbPlayState(gameId)
+        : null;
 
   const hasScore =
     game.awayRuns !== undefined &&
