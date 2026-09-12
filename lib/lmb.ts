@@ -120,6 +120,48 @@ export async function getLmbGames():
           g.gameDate,
       }));
     }
+    /*
+  Fallback Serie del Rey 2026.
+  La API de LMB no está devolviendo
+  correctamente este juego de postemporada.
+*/
+const now = new Date();
+
+const serieDelReyStart =
+  new Date("2026-09-11T19:30:00-06:00");
+
+const serieDelReyLiveUntil =
+  new Date("2026-09-12T01:00:00-06:00");
+
+if (
+  date === "2026-09-11" &&
+  now >= serieDelReyStart &&
+  now < serieDelReyLiveUntil
+) {
+  return [
+    {
+      id: -2026091101,
+
+      status: "Live",
+      detailedState: "En vivo",
+
+      awayId: 0,
+      away: "Toros de Tijuana",
+
+      homeId: 0,
+      home: "Olmecas de Tabasco",
+
+      awayRuns: undefined,
+      homeRuns: undefined,
+
+      inning: undefined,
+      inningState: undefined,
+
+      startTime:
+        "2026-09-11T19:30:00-06:00",
+    },
+  ];
+}
 
     /*
       Si no hay juegos hoy, buscamos
