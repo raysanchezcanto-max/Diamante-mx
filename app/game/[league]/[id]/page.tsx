@@ -261,19 +261,22 @@ const broadcasts =
             }
           >
             {isLive
-              ? `● EN VIVO${
-                  game.inning
-                    ? ` · ${
-                        game.inningState ??
-                        ""
-                      } ${
-                        game.inning
-                      }`
-                    : ""
-                }`
-              : isFinal
-                ? "FINAL"
-                : game.detailedState}
+  ? `● EN VIVO${
+      game.inning
+        ? ` · ${
+            game.inningState ?? ""
+          } ${
+            game.inning
+          }`
+        : ""
+    }`
+  : isFinal
+    ? "FINAL"
+    : game.detailedState
+        ?.toLowerCase() ===
+        "scheduled"
+      ? "PROGRAMADO"
+      : game.detailedState}
           </span>
         </div>
 
