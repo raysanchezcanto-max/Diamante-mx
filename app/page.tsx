@@ -1,3 +1,4 @@
+import AutoRefresh from "@/components/AutoRefresh";
 import LeagueTabs from "@/components/LeagueTabs";
 import Games from "@/components/Games";
 import Standings from "@/components/Standings";
@@ -88,6 +89,14 @@ const nextGames =
   );
   return (
     <main>
+      <AutoRefresh
+  enabled={games.some(
+    (game) =>
+      game.status === "Live" ||
+      game.status === "Preview"
+  )}
+  intervalMs={30000}
+/>
       <header className="topbar">
         <a
           className="brand"
