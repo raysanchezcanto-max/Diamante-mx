@@ -74,14 +74,57 @@ function normalizeName(
     .toLowerCase();
 }
 
-async function getEvents(
-  date: string
-): Promise<SofaEvent[]> {
+async function getEvents():
+Promise<SofaEvent[]> {
+  /*
+    Olmecas de Tabasco en Sofascore:
+    teamId = 66404
+
+    Consultamos próximos y anteriores
+    porque un juego en curso puede cambiar
+    de colección según el estado.
+  */
   const sources = [
-    `https://www.sofascore.com/api/v1/sport/baseball/scheduled-events/${date}`,
-    `https://api.sofascore.app/api/v1/sport/baseball/scheduled-events/${date}`,
+    "https://www.sofascore.com/api/v1/team/66404/events/next/0",
+    "https://www.sofascore.com/api/v1/team/66404/events/last/0",
   ];
 
+  const events: SofaEvent[] = [];
+
+  for (const url of sources) {
+    try {
+      const response =
+        await fetch(url, {
+          cache: "no-store",
+          headers: {
+            Accept:
+              "application/json",
+            "User-Agent":
+              "Mozilla/5.0",
+          },
+        });
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const data =
+        await response.json();
+
+      if (
+        Array.isArray(data?.events)
+      ) {
+        events.push(
+          ...data.events
+        );
+      }
+    } catch {
+      // Probamos la siguiente fuente.
+    }
+  }
+
+  return events;
+}
   for (const url of sources) {
     try {
       const response =
@@ -127,14 +170,40 @@ Promise<LmbLiveScore | null> {
     Por eso consultamos ambas
     fechas.
   */
-  const dates = [
-    mexicoDate(),
-    mexicoDate(1),
-  ];
+  const events =
+  await getEvents();
 
-  for (const date of dates) {
-    const events =
-      await getEvents(date);
+const event =
+  events.find((item) => {
+    const home =
+      normalizeName(
+        item.homeTeam?.name ??
+          ""
+      );
+
+    const away =
+      normalizeName(
+        item.awayTeam?.name ??
+          ""
+      );
+
+    const hasOlmecas =
+      home.includes("olmecas") ||
+      away.includes("olmecas");
+
+    const hasTijuana =
+      home.includes("tijuana") ||
+      away.includes("tijuana");
+
+    return (
+      hasOlmecas &&
+      hasTijuana
+    );
+  });
+
+if (!event) {
+  return null;
+}
 
     const event =
       events.find((item) => {
