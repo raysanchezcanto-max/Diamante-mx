@@ -542,3 +542,94 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   text-align: center;
   color: #b7c8c1;
 }
+.liveGamePanel {
+  margin: 24px 0 32px;
+  padding: 22px 26px;
+  border: 1px solid rgba(190, 255, 45, 0.16);
+  border-radius: 18px;
+  background: rgba(12, 32, 25, 0.82);
+}
+
+.liveGamePanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.liveGameInning {
+  color: var(--accent);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.liveGamePanelBody {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.liveGameBases {
+  min-width: 110px;
+  display: flex;
+  justify-content: center;
+}
+
+.liveGameStats {
+  display: grid;
+  grid-template-columns: repeat(3, 90px);
+  gap: 12px;
+}
+
+.liveGameStats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.liveGameStats small,
+.liveGamePlay small {
+  color: #9fb2aa;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.liveGameStats strong {
+  color: #fff;
+  font-size: 22px;
+}
+
+.liveGamePlay {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.liveGamePlay p {
+  margin: 6px 0 0;
+  color: #d6e2dd;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+  .liveGamePanelBody {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .liveGameStats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .liveGameStats > div {
+    text-align: center;
+  }
+}
