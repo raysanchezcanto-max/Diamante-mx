@@ -1,3 +1,4 @@
+import { getLmbLiveScore } from "./lmbLive";
 import type {
   Game,
   Standing,
@@ -125,6 +126,43 @@ export async function getLmbGames():
   La API de LMB no está devolviendo
   correctamente este juego de postemporada.
 */
+    const liveScore =
+  await getLmbLiveScore();
+
+if (liveScore) {
+  return [
+    {
+      id: -2026091101,
+
+      status: liveScore.status,
+
+      detailedState:
+        liveScore.status === "Live"
+          ? "Serie del Rey"
+          : liveScore.status === "Final"
+            ? "Final"
+            : "Programado",
+
+      awayId: 0,
+      away: "Toros de Tijuana",
+
+      homeId: 0,
+      home: "Olmecas de Tabasco",
+
+      awayRuns:
+        liveScore.awayRuns,
+
+      homeRuns:
+        liveScore.homeRuns,
+
+      inning: undefined,
+      inningState: undefined,
+
+      startTime:
+        "2026-09-11T19:30:00-06:00",
+    },
+  ];
+}
 const now = new Date();
 
 const serieDelReyStart =
