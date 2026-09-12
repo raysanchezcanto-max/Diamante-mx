@@ -270,7 +270,9 @@ const broadcasts =
           rel="noopener noreferrer"
           className="watchButton"
         >
-          Ver en {broadcast.name}
+         {broadcast.fallback
+  ? `Ver opciones para ${broadcast.name}`
+  : `Ver en ${broadcast.name}`}
         </a>
       ) : (
         <span
