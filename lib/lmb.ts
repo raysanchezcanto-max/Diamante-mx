@@ -62,6 +62,46 @@ async function lmbFetch(path: string) {
   Así también pueden aparecer juegos
   de playoffs y Serie del Rey.
 */
+function getOfficialLmbTeamName(
+  name: string
+) {
+  const normalized = name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
+  const teams: Record<string, string> = {
+    toros: "Toros de Tijuana",
+    caliente: "Caliente de Durango",
+    sultanes: "Sultanes de Monterrey",
+    charros: "Charros de Jalisco",
+    acereros: "Acereros de Monclova",
+    algodoneros: "Algodoneros de Unión Laguna",
+    rieleros: "Rieleros de Aguascalientes",
+    saraperos: "Saraperos de Saltillo",
+    tecos: "Tecos de los Dos Laredos",
+    dorados: "Dorados de Chihuahua",
+
+    "diablos rojos":
+      "Diablos Rojos del México",
+    diablos:
+      "Diablos Rojos del México",
+    olmecas: "Olmecas de Tabasco",
+    piratas: "Piratas de Campeche",
+    pericos: "Pericos de Puebla",
+    bravos: "Bravos de León",
+    guerreros: "Guerreros de Oaxaca",
+    "el aguila": "El Águila de Veracruz",
+    aguila: "El Águila de Veracruz",
+    tigres: "Tigres de Quintana Roo",
+    conspiradores:
+      "Conspiradores de Querétaro",
+    leones: "Leones de Yucatán",
+  };
+
+  return teams[normalized] ?? name;
+}
 export async function getLmbGames():
   Promise<Game[]> {
   try {
@@ -110,16 +150,19 @@ if (
 
         awayId: 0,
 
-        away:
-          g.awayTeam?.name ??
-          "Visitante",
+       away:
+  getOfficialLmbTeamName(
+    g.awayTeam?.name ??
+      "Visitante"
+  ),
 
         homeId: 0,
 
         home:
-          g.localTeam?.name ??
-          "Local",
-
+  getOfficialLmbTeamName(
+    g.localTeam?.name ??
+      "Local"
+  ),
         awayRuns:
           g.awayTeam
             ?.runsScored,
