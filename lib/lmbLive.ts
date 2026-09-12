@@ -160,125 +160,83 @@ Promise<SofaEvent[]> {
 export async function
 getLmbLiveScore():
 Promise<LmbLiveScore | null> {
-  /*
-    El partido comienza por la
-    noche en México, pero puede
-    pertenecer al día siguiente
-    en UTC.
-
-    Por eso consultamos ambas
-    fechas.
-  */
   const events =
-  await getEvents();
+    await getEvents();
 
-const event =
-  events.find((item) => {
-    const home =
-      normalizeName(
-        item.homeTeam?.name ??
-          ""
-      );
-
-    const away =
-      normalizeName(
-        item.awayTeam?.name ??
-          ""
-      );
-
-    const hasOlmecas =
-      home.includes("olmecas") ||
-      away.includes("olmecas");
-
-    const hasTijuana =
-      home.includes("tijuana") ||
-      away.includes("tijuana");
-
-    return (
-      hasOlmecas &&
-      hasTijuana
-    );
-  });
-
-if (!event) {
-  return null;
-}
-
-    const event =
-      events.find((item) => {
-        const home =
-          normalizeName(
-            item.homeTeam?.name ??
-              ""
-          );
-
-        const away =
-          normalizeName(
-            item.awayTeam?.name ??
-              ""
-          );
-
-        const hasOlmecas =
-          home.includes("olmecas") ||
-          away.includes("olmecas");
-
-        const hasTijuana =
-          home.includes("tijuana") ||
-          away.includes("tijuana");
-
-        return (
-          hasOlmecas &&
-          hasTijuana
+  const event =
+    events.find((item) => {
+      const home =
+        normalizeName(
+          item.homeTeam?.name ??
+            ""
         );
-      });
 
-    if (!event) {
-      continue;
-    }
+      const away =
+        normalizeName(
+          item.awayTeam?.name ??
+            ""
+        );
 
-    const type =
-      String(
-        event.status?.type ?? ""
-      ).toLowerCase();
+      const hasOlmecas =
+        home.includes("olmecas") ||
+        away.includes("olmecas");
 
-    const status:
-      "Preview" |
-      "Live" |
-      "Final" =
-      type.includes("progress") ||
-      type.includes("live")
-        ? "Live"
-        : type.includes(
-              "finished"
-            )
-          ? "Final"
-          : "Preview";
+      const hasTijuana =
+        home.includes("tijuana") ||
+        away.includes("tijuana");
 
-    return {
-      eventId:
-        event.id ?? null,
+      return (
+        hasOlmecas &&
+        hasTijuana
+      );
+    });
 
-      status,
-
-      home:
-        event.homeTeam?.name ??
-        "Local",
-
-      away:
-        event.awayTeam?.name ??
-        "Visitante",
-
-      homeRuns:
-        event.homeScore?.current,
-
-      awayRuns:
-        event.awayScore?.current,
-
-      detail:
-        event.status
-          ?.description,
-    };
+  if (!event) {
+    return null;
   }
+
+  const type =
+    String(
+      event.status?.type ?? ""
+    ).toLowerCase();
+
+  const status:
+    "Preview" |
+    "Live" |
+    "Final" =
+    type.includes("progress") ||
+    type.includes("live") ||
+    type.includes("inprogress")
+      ? "Live"
+      : type.includes("finished")
+        ? "Final"
+        : "Preview";
+
+  return {
+    eventId:
+      event.id ?? null,
+
+    status,
+
+    home:
+      event.homeTeam?.name ??
+      "Local",
+
+    away:
+      event.awayTeam?.name ??
+      "Visitante",
+
+    homeRuns:
+      event.homeScore?.current,
+
+    awayRuns:
+      event.awayScore?.current,
+
+    detail:
+      event.status
+        ?.description,
+  };
+}
 
   return null;
 }
