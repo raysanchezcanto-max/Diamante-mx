@@ -475,3 +475,38 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   margin-top: 12px;
   color: #9aa8a1;
 }
+.baseDiamond {
+  position: relative;
+  width: 62px;
+  height: 48px;
+  margin: 8px auto;
+}
+
+.base {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--accent);
+  transform: rotate(45deg);
+  background: transparent;
+  border-radius: 2px;
+}
+
+.base.occupied {
+  background: var(--accent);
+}
+
+.secondBase {
+  top: 0;
+  left: 24px;
+}
+
+.thirdBase {
+  top: 22px;
+  left: 5px;
+}
+
+.firstBase {
+  top: 22px;
+  right: 5px;
+}
