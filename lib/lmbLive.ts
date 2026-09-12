@@ -85,12 +85,58 @@ function getMexicoDateRange() {
     endDate,
   };
 }
-export async function getLmbCalendar() {
-  const {
-    date,
-    startDate,
-    endDate,
-  } = getMexicoDateRange();
+export async function getLmbCalendar(
+  offsetDays = 0
+) {
+  const baseDate =
+    new Date(
+      Date.now() +
+        offsetDays *
+          24 *
+          60 *
+          60 *
+          1000
+    );
+
+  const parts =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }
+    ).formatToParts(baseDate);
+
+  const year =
+    parts.find(
+      (part) => part.type === "year"
+    )?.value ?? "";
+
+  const month =
+    parts.find(
+      (part) => part.type === "month"
+    )?.value ?? "";
+
+  const day =
+    parts.find(
+      (part) => part.type === "day"
+    )?.value ?? "";
+
+  const date =
+    `${month}/${day}/${year}`;
+
+  const startDate =
+    new Date(
+      `${year}-${month}-${day}T00:00:00-06:00`
+    ).getTime();
+
+  const endDate =
+    new Date(
+      `${year}-${month}-${day}T23:59:59.999-06:00`
+    ).getTime();
 
   try {
     const response = await fetch(
