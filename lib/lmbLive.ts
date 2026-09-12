@@ -155,8 +155,7 @@ Promise<SofaEvent[]> {
     }
   }
 
-  return [];
-}
+
 
 export async function
 getLmbLiveScore():
