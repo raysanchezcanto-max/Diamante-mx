@@ -174,8 +174,28 @@ export default function Games({
 */
 const allGames = Array.from(
   new Map(
-    [...games, ...nextGames].map(
-      (game) => [game.id, game]
+    [...nextGames, ...games].map(
+      (game) => {
+        const date =
+          mexicoDateKey(
+            new Date(game.startTime)
+          );
+
+        const away =
+          game.away
+            .toLowerCase()
+            .trim();
+
+        const home =
+          game.home
+            .toLowerCase()
+            .trim();
+
+        const key =
+          `${date}-${away}-${home}`;
+
+        return [key, game];
+      }
     )
   ).values()
 );
