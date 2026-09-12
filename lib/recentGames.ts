@@ -1,3 +1,4 @@
+import { getLmbCalendar } from "./lmbLive";
 import type { Game } from "./mlb";
 import type { LeagueCode } from "./teamLogos";
 
@@ -115,9 +116,134 @@ function lmbRecentFallback() {
       Date.now()
   );
 }
+function officialLmbTeamName(
+  name: string
+) {
+  const normalized = name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
+  const teams: Record<string, string> = {
+    toros: "Toros de Tijuana",
+    caliente: "Caliente de Durango",
+    sultanes: "Sultanes de Monterrey",
+    charros: "Charros de Jalisco",
+    acereros: "Acereros de Monclova",
+    algodoneros: "Algodoneros de Unión Laguna",
+    rieleros: "Rieleros de Aguascalientes",
+    saraperos: "Saraperos de Saltillo",
+    tecos: "Tecos de los Dos Laredos",
+    dorados: "Dorados de Chihuahua",
+
+    diablos: "Diablos Rojos del México",
+    "diablos rojos": "Diablos Rojos del México",
+    olmecas: "Olmecas de Tabasco",
+    piratas: "Piratas de Campeche",
+    pericos: "Pericos de Puebla",
+    bravos: "Bravos de León",
+    guerreros: "Guerreros de Oaxaca",
+    aguila: "El Águila de Veracruz",
+    "el aguila": "El Águila de Veracruz",
+    tigres: "Tigres de Quintana Roo",
+    conspiradores: "Conspiradores de Querétaro",
+    leones: "Leones de Yucatán",
+  };
+
+  return teams[normalized] ?? name;
+}
 export async function getRecentGames(
   league: LeagueCode
 ): Promise<Game[]> {
+  if (league === "LMB") {
+  const days = await Promise.all(
+    Array.from(
+      { length: 14 },
+      (_, index) =>
+        getLmbCalendar(-(index + 1))
+    )
+  );
+
+  const recentGames: Game[] =
+    days
+      .flat()
+      .filter((g: any) => {
+        const status =
+          String(
+            g.status ?? ""
+          ).toUpperCase();
+
+        const detailed =
+          String(
+            g.detailedStatus ?? ""
+          ).toLowerCase();
+
+        return (
+          status === "F" ||
+          detailed.includes("final")
+        );
+      })
+      .map(
+        (g: any): Game => ({
+          id:
+            Number(g.gameId) || 0,
+
+          status: "Final",
+
+          detailedState:
+            "Final",
+
+          awayId: 0,
+
+          away:
+            officialLmbTeamName(
+              g.awayTeam?.name ??
+                "Visitante"
+            ),
+
+          homeId: 0,
+
+          home:
+            officialLmbTeamName(
+              g.localTeam?.name ??
+                "Local"
+            ),
+
+          awayRuns:
+            g.awayTeam?.runsScored,
+
+          homeRuns:
+            g.localTeam?.runsScored,
+
+          inning:
+            g.inning?.number,
+
+          inningState:
+            g.inning?.part,
+
+          startTime:
+            typeof g.date_time ===
+            "number"
+              ? new Date(
+                  g.date_time * 1000
+                ).toISOString()
+              : "",
+        })
+      );
+
+  return recentGames
+    .sort(
+      (a, b) =>
+        new Date(
+          b.startTime
+        ).getTime() -
+        new Date(
+          a.startTime
+        ).getTime()
+    )
+    .slice(0, 8);
+}
   try {
     /*
       Buscamos desde 14 días atrás
