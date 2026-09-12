@@ -238,5 +238,4 @@ Promise<LmbLiveScore | null> {
   };
 }
 
-  return null;
-}
+
