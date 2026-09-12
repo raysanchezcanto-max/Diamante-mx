@@ -4,6 +4,7 @@ export type Broadcast = {
   name: string;
   type: "TV" | "Streaming" | "Radio";
   url?: string;
+  fallback?: boolean;
 };
 
 const MLB_API =
