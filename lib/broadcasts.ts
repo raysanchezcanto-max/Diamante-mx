@@ -50,6 +50,8 @@ if (
   normalized.includes("detroit sportsnet")
 ) {
   return "https://www.mlb.com/live-stream-games/subscribe/detroitsportsnet";
+}
+
 return undefined;
 }
 /*
