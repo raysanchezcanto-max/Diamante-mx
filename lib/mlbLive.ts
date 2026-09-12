@@ -16,10 +16,29 @@ function translateMlbDescription(
   description: string
 ) {
   return description
+    // Cambios y sustituciones
     .replace(
-  /^Pitching Change:\s*(.+?) replaces (.+?)\.?$/gi,
-  "Cambio de lanzador: $1 reemplaza a $2."
-)
+      /^Pitching Change:\s*(.+?) replaces (.+?)\.?$/gi,
+      "Cambio de lanzador: $1 reemplaza a $2."
+    )
+    .replace(
+      /^Defensive Substitution:\s*/gi,
+      "Sustitución defensiva: "
+    )
+    .replace(
+      /^Offensive Substitution:\s*/gi,
+      "Sustitución ofensiva: "
+    )
+    .replace(
+      /^Pinch-hitter\s*/gi,
+      "Bateador emergente "
+    )
+    .replace(
+      /^Pinch-runner\s*/gi,
+      "Corredor emergente "
+    )
+
+    // Ponches
     .replace(
       /strikes out on a foul tip/gi,
       "se poncha con foul tip"
@@ -32,6 +51,48 @@ function translateMlbDescription(
       /strikes out looking/gi,
       "se poncha sin tirarle"
     )
+    .replace(
+      /strikes out/gi,
+      "se poncha"
+    )
+
+    // Bases por bolas / pelotazo
+    .replace(
+      /intentionally walks/gi,
+      "recibe base por bolas intencional"
+    )
+    .replace(
+      /\bwalks\b/gi,
+      "recibe base por bolas"
+    )
+    .replace(
+      /hit by pitch/gi,
+      "es golpeado por lanzamiento"
+    )
+
+    // Hits
+    .replace(
+      /\bsingles\b/gi,
+      "conecta sencillo"
+    )
+    .replace(
+      /\bdoubles\b/gi,
+      "conecta doble"
+    )
+    .replace(
+      /\btriples\b/gi,
+      "conecta triple"
+    )
+    .replace(
+      /\bhomers\b/gi,
+      "conecta jonrón"
+    )
+    .replace(
+      /home run/gi,
+      "jonrón"
+    )
+
+    // Outs
     .replace(
       /grounds out/gi,
       "es puesto out con rodado"
@@ -49,24 +110,156 @@ function translateMlbDescription(
       "es puesto out con elevado corto"
     )
     .replace(
-      /\bwalks\b/gi,
-      "recibe base por bolas"
+      /force out/gi,
+      "es puesto out forzado"
     )
     .replace(
-      /\bsingles\b/gi,
-      "conecta sencillo"
+      /grounds into a double play/gi,
+      "bateó para doble play"
     )
     .replace(
-      /\bdoubles\b/gi,
-      "conecta doble"
+      /double play/gi,
+      "doble play"
     )
     .replace(
-      /\btriples\b/gi,
-      "conecta triple"
+      /triple play/gi,
+      "triple play"
+    )
+
+    // Sacrificios
+    .replace(
+      /sacrifice fly/gi,
+      "elevado de sacrificio"
     )
     .replace(
-      /\bhomers\b/gi,
-      "conecta jonrón"
+      /sacrifice bunt/gi,
+      "toque de sacrificio"
+    )
+
+    // Errores / elección del fildeador
+    .replace(
+      /reaches on a fielding error/gi,
+      "llega a base por error de fildeo"
+    )
+    .replace(
+      /reaches on a throwing error/gi,
+      "llega a base por error de tiro"
+    )
+    .replace(
+      /fielder's choice/gi,
+      "elección del fildeador"
+    )
+
+    // Corredores
+    .replace(
+      /steals second base/gi,
+      "se roba la segunda base"
+    )
+    .replace(
+      /steals third base/gi,
+      "se roba la tercera base"
+    )
+    .replace(
+      /steals home/gi,
+      "se roba el home"
+    )
+    .replace(
+      /caught stealing second base/gi,
+      "es puesto out intentando robar segunda"
+    )
+    .replace(
+      /caught stealing third base/gi,
+      "es puesto out intentando robar tercera"
+    )
+    .replace(
+      /caught stealing home/gi,
+      "es puesto out intentando robar home"
+    )
+    .replace(
+      /picked off/gi,
+      "es sorprendido fuera de base"
+    )
+    .replace(
+      /\bscores\b/gi,
+      "anota"
+    )
+    .replace(
+      /advances to second/gi,
+      "avanza a segunda"
+    )
+    .replace(
+      /advances to third/gi,
+      "avanza a tercera"
+    )
+    .replace(
+      /advances to home/gi,
+      "avanza al home"
+    )
+
+    // Lanzamientos
+    .replace(
+      /wild pitch/gi,
+      "lanzamiento descontrolado"
+    )
+    .replace(
+      /passed ball/gi,
+      "passed ball"
+    )
+    .replace(
+      /\bbalk\b/gi,
+      "balk"
+    )
+
+    // Direcciones y posiciones
+    .replace(
+      /left fielder/gi,
+      "jardinero izquierdo"
+    )
+    .replace(
+      /center fielder/gi,
+      "jardinero central"
+    )
+    .replace(
+      /right fielder/gi,
+      "jardinero derecho"
+    )
+    .replace(
+      /shortstop/gi,
+      "campocorto"
+    )
+    .replace(
+      /first baseman/gi,
+      "primera base"
+    )
+    .replace(
+      /second baseman/gi,
+      "segunda base"
+    )
+    .replace(
+      /third baseman/gi,
+      "tercera base"
+    )
+    .replace(
+      /pitcher/gi,
+      "lanzador"
+    )
+    .replace(
+      /catcher/gi,
+      "receptor"
+    )
+
+    // Tipo de batazo
+    .replace(
+      /on a line drive/gi,
+      "con línea"
+    )
+    .replace(
+      /on a ground ball/gi,
+      "con rodado"
+    )
+    .replace(
+      /on a fly ball/gi,
+      "con elevado"
     );
 }
 export async function getMlbPlayState(
