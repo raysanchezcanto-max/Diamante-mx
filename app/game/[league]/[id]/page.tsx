@@ -319,12 +319,20 @@ const broadcasts =
             : ""}
       </span>
 
-      {isLive && playState && (
-  <BaseDiamond
-    first={playState.first}
-    second={playState.second}
-    third={playState.third}
-  />
+     {isLive && playState && (
+  <div className="liveSituation">
+    <BaseDiamond
+      first={playState.first}
+      second={playState.second}
+      third={playState.third}
+    />
+
+    <div className="liveCount">
+      <span>B {playState.balls}</span>
+      <span>S {playState.strikes}</span>
+      <span>O {playState.outs}</span>
+    </div>
+  </div>
 )}
     </>
   ) : (
