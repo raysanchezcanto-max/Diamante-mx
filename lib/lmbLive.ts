@@ -244,3 +244,127 @@ export async function getLmbLiveScore(
     return null;
   }
 }
+export type LmbPlayState = {
+  first: number;
+  second: number;
+  third: number;
+
+  balls: number;
+  strikes: number;
+  outs: number;
+
+  description?: string;
+};
+
+function collectPlayStates(
+  value: any,
+  results: any[] = []
+) {
+  if (Array.isArray(value)) {
+    value.forEach((item) =>
+      collectPlayStates(item, results)
+    );
+
+    return results;
+  }
+
+  if (
+    value &&
+    typeof value === "object"
+  ) {
+    if (
+      value.bases &&
+      typeof value.bases === "object" &&
+      "first" in value.bases &&
+      "second" in value.bases &&
+      "third" in value.bases
+    ) {
+      results.push(value);
+    }
+
+    Object.values(value).forEach(
+      (item) =>
+        collectPlayStates(
+          item,
+          results
+        )
+    );
+  }
+
+  return results;
+}
+
+export async function getLmbPlayState(
+  permalink: number
+): Promise<LmbPlayState | null> {
+  try {
+    const response = await fetch(
+      `https://lmb.com.mx/juegos/api/jugadas?permalink=${permalink}`,
+      {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data =
+      await response.json();
+
+    const plays =
+      collectPlayStates(data);
+
+    if (plays.length === 0) {
+      return null;
+    }
+
+    /*
+      La respuesta contiene las jugadas
+      del partido. Tomamos el último
+      estado disponible de las bases.
+    */
+    const play =
+      plays[plays.length - 1];
+
+    return {
+      first:
+        Number(
+          play.bases?.first ?? 0
+        ),
+
+      second:
+        Number(
+          play.bases?.second ?? 0
+        ),
+
+      third:
+        Number(
+          play.bases?.third ?? 0
+        ),
+
+      balls:
+        Number(
+          play.playBallsCount ?? 0
+        ),
+
+      strikes:
+        Number(
+          play.playStrikeCount ?? 0
+        ),
+
+      outs:
+        Number(
+          play.playOutsCount ?? 0
+        ),
+
+      description:
+        play.playDescription,
+    };
+  } catch {
+    return null;
+  }
+}
