@@ -119,9 +119,11 @@ function GameCards({
                 <span>{game.away}</span>
               </div>
 
-              <strong>
-                {game.awayRuns ?? "–"}
-              </strong>
+             <strong>
+  {game.status === "Preview"
+    ? "–"
+    : game.awayRuns ?? "–"}
+</strong>
             </div>
 
             <div className="teamRow">
@@ -139,9 +141,11 @@ function GameCards({
                 <span>{game.home}</span>
               </div>
 
-              <strong>
-                {game.homeRuns ?? "–"}
-              </strong>
+             <strong>
+  {game.status === "Preview"
+    ? "–"
+    : game.homeRuns ?? "–"}
+</strong>
             </div>
           </Link>
         );
