@@ -186,44 +186,6 @@ const broadcasts =
       game.startTime,
       league
     );
- <section className="broadcastSection">
-  <span className="eyebrow">
-    TRANSMISIÓN
-  </span>
-
-  <h2>Dónde ver</h2>
-
-  {broadcasts.length > 0 ? (
-    <div className="broadcastLinks">
-      {broadcasts.map((broadcast, index) =>
-        broadcast.url ? (
-         <a
-  key={`${broadcast.name}-${index}`}
-  href={broadcast.url}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="watchButton"
->
-  {broadcast.fallback
-    ? `Ver opciones para ${broadcast.name}`
-    : `Ver en ${broadcast.name}`}
-</a>
-        ) : (
-          <span
-            key={`${broadcast.name}-${index}`}
-            className="watchButtonDisabled"
-          >
-            {broadcast.name}
-          </span>
-        )
-      )}
-    </div>
-  ) : (
-    <div className="broadcastEmpty">
-      Transmisión por confirmar
-    </div>
-  )}
-</section>
 
   return (
     <main className="gamePage">
