@@ -130,11 +130,47 @@ export async function getGameDetails(
     partidos LMB administrados localmente.
   */
   if (
-    league === "LMB" &&
-    LMB_FALLBACK_GAMES[gameId]
-  ) {
-    return LMB_FALLBACK_GAMES[gameId];
+  league === "LMB" &&
+  LMB_FALLBACK_GAMES[gameId]
+) {
+  const fallbackGame =
+    LMB_FALLBACK_GAMES[gameId];
+
+  if (gameId === -2026091101) {
+    const now = new Date();
+
+    const start =
+      new Date(
+        "2026-09-11T19:30:00-06:00"
+      );
+
+    const liveUntil =
+      new Date(
+        "2026-09-12T01:00:00-06:00"
+      );
+
+    if (
+      now >= start &&
+      now < liveUntil
+    ) {
+      return {
+        ...fallbackGame,
+        status: "Live",
+        detailedState: "En vivo",
+      };
+    }
+
+    if (now >= liveUntil) {
+      return {
+        ...fallbackGame,
+        status: "Final",
+        detailedState: "Final",
+      };
+    }
   }
+
+  return fallbackGame;
+}
 
   try {
     const response = await fetch(
