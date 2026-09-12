@@ -1,4 +1,7 @@
-import { getLmbLiveScore } from "./lmbLive";
+import {
+  getLmbCalendar,
+  getLmbLiveScore,
+} from "./lmbLive";
 import type {
   Game,
   Standing,
@@ -63,6 +66,79 @@ export async function getLmbGames():
   Promise<Game[]> {
   try {
     const date = mexicoDate();
+    const officialGames =
+  await getLmbCalendar();
+
+if (
+  Array.isArray(officialGames) &&
+  officialGames.length > 0
+) {
+  return officialGames.map(
+    (g: any): Game => {
+      const rawStatus =
+        String(
+          g.status ?? ""
+        ).toUpperCase();
+
+      const status =
+        rawStatus === "L"
+          ? "Live"
+          : rawStatus === "F"
+            ? "Final"
+            : "Preview";
+
+      const startTime =
+        typeof g.date_time === "number"
+          ? new Date(
+              g.date_time * 1000
+            ).toISOString()
+          : "";
+
+      return {
+        id:
+          Number(g.gameId) || 0,
+
+        status,
+
+        detailedState:
+          status === "Live"
+            ? "Serie del Rey"
+            : g.detailedStatus ??
+              (status === "Final"
+                ? "Final"
+                : "Programado"),
+
+        awayId: 0,
+
+        away:
+          g.awayTeam?.name ??
+          "Visitante",
+
+        homeId: 0,
+
+        home:
+          g.localTeam?.name ??
+          "Local",
+
+        awayRuns:
+          g.awayTeam
+            ?.runsScored,
+
+        homeRuns:
+          g.localTeam
+            ?.runsScored,
+
+        inning:
+          g.inning?.number,
+
+        inningState:
+          g.inning?.part,
+
+        startTime,
+      };
+    }
+  );
+}
 
     /*
       Primero buscamos juegos de hoy.
