@@ -32,12 +32,12 @@ function gameTime(
   league: LeagueCode
 ) {
   if (game.status === "Live") {
-    const inning = game.inning
-    `${formatInningHalf(game.inningState)} ${game.inning}`
-      : game.detailedState;
+  const inning = game.inning
+    ? `${formatInningHalf(game.inningState)} ${game.inning}`
+    : game.detailedState;
 
-    return `EN VIVO · ${inning}`;
-  }
+  return `EN VIVO · ${inning}`;
+}
 
   if (game.status === "Final") {
     return "FINAL";
