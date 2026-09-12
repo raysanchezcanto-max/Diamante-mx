@@ -256,13 +256,13 @@ export type LmbPlayState = {
   description?: string;
 };
 
-function collectPlayStates(
+function collectInnings(
   value: any,
   results: any[] = []
 ) {
   if (Array.isArray(value)) {
     value.forEach((item) =>
-      collectPlayStates(item, results)
+      collectInnings(item, results)
     );
 
     return results;
@@ -273,21 +273,18 @@ function collectPlayStates(
     typeof value === "object"
   ) {
     if (
-      value.bases &&
-      typeof value.bases === "object" &&
-      "first" in value.bases &&
-      "second" in value.bases &&
-      "third" in value.bases
+      typeof value.inningNumber === "number" &&
+      (
+        Array.isArray(value.inningTopPlays) ||
+        Array.isArray(value.inningBottomPlays)
+      )
     ) {
       results.push(value);
     }
 
     Object.values(value).forEach(
       (item) =>
-        collectPlayStates(
-          item,
-          results
-        )
+        collectInnings(item, results)
     );
   }
 
@@ -315,20 +312,45 @@ export async function getLmbPlayState(
     const data =
       await response.json();
 
-    const plays =
-      collectPlayStates(data);
+    const innings =
+  collectInnings(data);
 
-    if (plays.length === 0) {
-      return null;
-    }
+if (innings.length === 0) {
+  return null;
+}
 
-    /*
-      La respuesta contiene las jugadas
-      del partido. Tomamos el último
-      estado disponible de las bases.
-    */
-    const play =
-      plays[plays.length - 1];
+const latestInning =
+  innings.sort(
+    (a, b) =>
+      b.inningNumber -
+      a.inningNumber
+  )[0];
+
+const bottomPlays =
+  latestInning.inningBottomPlays ?? [];
+
+const topPlays =
+  latestInning.inningTopPlays ?? [];
+
+const currentPlays =
+  bottomPlays.length > 0
+    ? bottomPlays
+    : topPlays;
+
+if (currentPlays.length === 0) {
+  return null;
+}
+
+const play =
+  [...currentPlays].sort(
+    (a, b) =>
+      Number(
+        b.indexInningPlay ?? 0
+      ) -
+      Number(
+        a.indexInningPlay ?? 0
+      )
+  )[0];
 
     return {
       first:
