@@ -387,6 +387,34 @@ const play =
         a.indexInningPlay ?? 0
       )
   )[0];
+    const lastCompletedPlay =
+  [...currentPlays]
+    .filter(
+      (item) =>
+        item?.isComplete === true &&
+        item?.playDescription &&
+        item.playDescription
+          .toLowerCase() !== "al bat"
+    )
+    .sort(
+      (a, b) =>
+        Number(b.indexInningPlay ?? 0) -
+        Number(a.indexInningPlay ?? 0)
+    )[0];
+    const lastCompletedPlay =
+  [...currentPlays]
+    .filter(
+      (item) =>
+        item?.isComplete === true &&
+        item?.playDescription &&
+        item.playDescription
+          .toLowerCase() !== "al bat"
+    )
+    .sort(
+      (a, b) =>
+        Number(b.indexInningPlay ?? 0) -
+        Number(a.indexInningPlay ?? 0)
+    )[0];
     const batterName =
   latestInning?.chupa?.batter?.name ??
   data?.chupa?.batter?.name ??
@@ -424,8 +452,10 @@ const play =
           play.playOutsCount ?? 0
         ),
 
-      description:
-        play.playDescription,
+    description:
+  lastCompletedPlay?.playDescription ??
+  play?.playDescription ??
+  "",
       
      batterName,
       };
