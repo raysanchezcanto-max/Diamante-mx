@@ -62,8 +62,9 @@ export default function LiveGamePanel({
   strikes = 0,
   outs = 0,
   description,
+  batterName,
 }: LiveGamePanelProps) {
-  batterName?: string;
+  
   return (
     <section className="liveGamePanel">
       <div className="liveGamePanelHeader">
