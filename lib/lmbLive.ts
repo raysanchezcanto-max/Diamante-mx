@@ -254,6 +254,7 @@ export type LmbPlayState = {
   outs: number;
 
   description?: string;
+  batterName?: string;
 };
 
 function collectInnings(
@@ -385,6 +386,9 @@ const play =
 
       description:
         play.playDescription,
+      batterName:
+  data?.batter?.name ??
+  undefined,
     };
   } catch {
     return null;
