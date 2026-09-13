@@ -352,6 +352,11 @@ const play =
         a.indexInningPlay ?? 0
       )
   )[0];
+    const batterName =
+  latestInning?.chupa?.batter?.name ??
+  data?.chupa?.batter?.name ??
+  play?.batter?.name ??
+  undefined;
 
     return {
       first:
@@ -386,11 +391,10 @@ const play =
 
       description:
         play.playDescription,
-     batterName:
-  data?.chupa?.batter?.name ??
-  data?.batter?.name ??
-  undefined,
-    };
+      
+     batterName,
+      };
+ 
   } catch {
     return null;
   }
