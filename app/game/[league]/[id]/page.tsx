@@ -298,16 +298,8 @@ const broadcasts =
                 : "gameDetailStatus"
             }
           >
-            {isLive
-  ? `● EN VIVO${
-      game.inning
-        ? ` · ${
-         formatInningHalf(game.inningState)
-          } ${
-            game.inning
-          }`
-        : ""
-    }`
+          {isLive
+  ? "● EN VIVO"
   : isFinal
     ? "FINAL"
     : game.detailedState
@@ -341,17 +333,11 @@ const broadcasts =
           </div>
 
           <div className="matchupCenter">
-  {hasScore ? (
-    <span>
-      {isFinal
-        ? "FINAL"
-        : isLive
-          ? "EN VIVO"
-          : ""}
-    </span>
-  ) : (
+  {isFinal ? (
+    <span>FINAL</span>
+  ) : !isLive ? (
     <strong>VS</strong>
-  )}
+  ) : null}
 </div>
 
           <div className="matchupTeam">
