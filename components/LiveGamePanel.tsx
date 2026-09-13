@@ -63,6 +63,7 @@ export default function LiveGamePanel({
   outs = 0,
   description,
 }: LiveGamePanelProps) {
+  batterName?: string;
   return (
     <section className="liveGamePanel">
       <div className="liveGamePanelHeader">
@@ -107,12 +108,18 @@ export default function LiveGamePanel({
         </div>
       </div>
 
-      {description && (
-        <div className="liveGamePlay">
-          <small>ÚLTIMA JUGADA</small>
-          <p>{description}</p>
-        </div>
-      )}
+     {description && (
+  <div className="liveGamePlay">
+    <small>ÚLTIMA JUGADA</small>
+
+    <p>
+      {description.toLowerCase() === "al bat" &&
+      batterName
+        ? `Al bat: ${batterName}`
+        : description}
+    </p>
+  </div>
+)}
     </section>
   );
 }
