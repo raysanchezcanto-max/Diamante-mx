@@ -19,23 +19,37 @@ function formatInningState(
   value?: string
 ) {
   const normalized =
-    value?.toLowerCase() ?? "";
+    value?.trim().toLowerCase() ?? "";
 
   if (
     normalized.includes("top") ||
     normalized.includes("alta")
   ) {
-    return "Alta";
+    return "ALTA";
   }
 
   if (
     normalized.includes("bottom") ||
     normalized.includes("baja")
   ) {
-    return "Baja";
+    return "BAJA";
   }
 
-  return value ?? "";
+  if (
+    normalized === "middle" ||
+    normalized === "mitad"
+  ) {
+    return "MITAD";
+  }
+
+  if (
+    normalized === "end" ||
+    normalized === "fin"
+  ) {
+    return "FIN";
+  }
+
+  return value?.toUpperCase() ?? "";
 }
 
 export default function LiveGamePanel({
