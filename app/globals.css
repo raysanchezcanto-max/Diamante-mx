@@ -633,3 +633,15 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
     text-align: center;
   }
 }
+.gameDetailStatus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
+}
+
+.gameDetailStatus.live {
+  white-space: nowrap;
+}
