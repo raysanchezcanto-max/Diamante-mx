@@ -211,6 +211,10 @@ text = text.replace(
       "tercera base"
     )
     .replace(
+  /\bin foul territory\b/gi,
+  "en territorio de foul"
+)
+    .replace(
       /catcher/gi,
       "receptor"
     )
