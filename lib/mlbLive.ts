@@ -12,6 +12,7 @@ export type MlbPlayState = {
 
   description?: string;
   batterName?: string;
+  plays?: string[];
 };
 function translateMlbDescription(
   description: string
