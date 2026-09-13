@@ -386,11 +386,13 @@ const finalDescription =
         currentPlay?.count?.strikes ?? 0
       ),
 
-      outs: Number(
-        currentPlay?.count?.outs ??
-        linescore?.outs ??
-        0
-      ),
+     outs:
+  Number(
+    linescore?.outs ??
+    currentPlay?.count?.outs ??
+    0
+  ),
+    
 
       inning: Number(
         currentPlay?.about?.inning ??
