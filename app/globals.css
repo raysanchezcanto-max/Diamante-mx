@@ -645,3 +645,39 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 .gameDetailStatus.live {
   white-space: nowrap;
 }
+.inningPlayList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.inningPlayItem {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.inningPlayItem > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(190, 255, 45, 0.1);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.inningPlayItem p {
+  margin: 2px 0 0;
+  color: #d6e2dd;
+  font-size: 13px;
+  line-height: 1.45;
+}
