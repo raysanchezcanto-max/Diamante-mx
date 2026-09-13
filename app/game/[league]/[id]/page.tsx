@@ -373,6 +373,7 @@ const broadcasts =
     strikes={playState.strikes}
     outs={playState.outs}
     description={playState.description}
+    batterName={playState.batterName}
   />
 )}
   
