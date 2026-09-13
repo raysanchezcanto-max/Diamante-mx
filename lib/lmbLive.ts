@@ -288,7 +288,42 @@ function collectInnings(
         collectInnings(item, results)
     );
   }
+function findCurrentBatterName(
+  value: any
+): string | undefined {
+  const names: string[] = [];
 
+  function search(item: any) {
+    if (!item) return;
+
+    if (Array.isArray(item)) {
+      item.forEach(search);
+      return;
+    }
+
+    if (typeof item !== "object") {
+      return;
+    }
+
+    const name =
+      item?.chupa?.batter?.name;
+
+    if (
+      typeof name === "string" &&
+      name.trim()
+    ) {
+      names.push(name.trim());
+    }
+
+    Object.values(item).forEach(search);
+  }
+
+  search(value);
+
+  return names.length > 0
+    ? names[names.length - 1]
+    : undefined;
+}
   return results;
 }
 
