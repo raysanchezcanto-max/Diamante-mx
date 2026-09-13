@@ -351,7 +351,7 @@ const description =
   currentPlay?.result?.description ||
   lastCompletedPlay?.result?.description ||
   "";
-    const automaticDescription =
+   const automaticDescription =
   await translateBaseballText(
     description
   );
@@ -372,7 +372,56 @@ const finalDescription =
 
     const offense =
       linescore?.offense ?? {};
+const currentInning =
+  Number(
+    currentPlay?.about?.inning ??
+    linescore?.currentInning ??
+    0
+  );
 
+const currentHalf =
+  String(
+    currentPlay?.about?.halfInning ??
+    ""
+  ).toLowerCase();
+
+const rawInningPlays =
+  (
+    data?.liveData?.plays?.allPlays ??
+    []
+  ).filter(
+    (item: any) =>
+      item?.about?.isComplete === true &&
+      Number(item?.about?.inning ?? 0) ===
+        currentInning &&
+      String(
+        item?.about?.halfInning ?? ""
+      ).toLowerCase() === currentHalf &&
+      item?.result?.description
+  );
+
+const plays =
+  await Promise.all(
+    rawInningPlays.map(
+      async (item: any) => {
+        const original =
+          String(
+            item.result.description
+          ).trim();
+
+        const automatic =
+          await translateBaseballText(
+            original
+          );
+
+        return automatic !== original
+          ? automatic
+          : translateMlbDescription(
+              original
+            );
+      }
+    )
+  );
     return {
       first: offense.first ? 1 : 0,
       second: offense.second ? 1 : 0,
@@ -407,6 +456,7 @@ const finalDescription =
 
      description:
   finalDescription,
+      plays,
   
     };
   } catch {
