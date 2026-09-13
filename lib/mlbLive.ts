@@ -11,6 +11,7 @@ export type MlbPlayState = {
   inningState?: string;
 
   description?: string;
+  batterName?: string;
 };
 function translateMlbDescription(
   description: string
