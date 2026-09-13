@@ -22,6 +22,10 @@ function translateMlbDescription(
       "Cambio de lanzador: $1 reemplaza a $2."
     )
     .replace(
+  /^Defensive Substitution:\s*(.+?) replaces (.+?), batting (\d+)(?:st|nd|rd|th), playing (.+?)\.?$/gi,
+  "Sustitución defensiva: $1 reemplaza a $2, bateando $3.º en el orden, jugando como $4."
+)
+    .replace(
       /^Defensive Substitution:\s*/gi,
       "Sustitución defensiva: "
     )
