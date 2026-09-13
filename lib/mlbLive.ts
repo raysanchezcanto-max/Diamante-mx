@@ -52,7 +52,43 @@ function translateMlbDescription(
       /^(.+?) hit by pitch\.?$/i,
       "$1 es golpeado por lanzamiento."
     )
-
+// Hits con tipo de batazo
+.replace(
+  /^(.+?) singles on a line drive to (.+?)\.?$/i,
+  "$1 conecta sencillo con línea hacia $2."
+)
+.replace(
+  /^(.+?) singles on a ground ball to (.+?)\.?$/i,
+  "$1 conecta sencillo con rodado hacia $2."
+)
+.replace(
+  /^(.+?) singles on a fly ball to (.+?)\.?$/i,
+  "$1 conecta sencillo con elevado hacia $2."
+)
+.replace(
+  /^(.+?) doubles on a line drive to (.+?)\.?$/i,
+  "$1 conecta doble con línea hacia $2."
+)
+.replace(
+  /^(.+?) doubles on a ground ball to (.+?)\.?$/i,
+  "$1 conecta doble con rodado hacia $2."
+)
+.replace(
+  /^(.+?) doubles on a fly ball to (.+?)\.?$/i,
+  "$1 conecta doble con elevado hacia $2."
+)
+.replace(
+  /^(.+?) triples on a line drive to (.+?)\.?$/i,
+  "$1 conecta triple con línea hacia $2."
+)
+.replace(
+  /^(.+?) triples on a ground ball to (.+?)\.?$/i,
+  "$1 conecta triple con rodado hacia $2."
+)
+.replace(
+  /^(.+?) triples on a fly ball to (.+?)\.?$/i,
+  "$1 conecta triple con elevado hacia $2."
+)
     // Elevados
     .replace(
       /^(.+?) flies out sharply to (.+?)\.?$/i,
