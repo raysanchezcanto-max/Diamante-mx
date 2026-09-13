@@ -364,8 +364,14 @@ const broadcasts =
       </section>
     {isLive && playState && (
   <LiveGamePanel
-    inning={game.inning}
-    inningState={game.inningState}
+  inning={
+  playState.inning ??
+  game.inning
+}
+inningState={
+  playState.inningState ??
+  game.inningState
+}
     first={playState.first}
     second={playState.second}
     third={playState.third}
