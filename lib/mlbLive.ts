@@ -81,6 +81,10 @@ function translateMlbDescription(
 
     // Rodados
     .replace(
+  /^(.+?) grounds out, (.+?) to (.+?)\.?$/i,
+  "$1 es puesto out con rodado, de $2 a $3."
+)
+    .replace(
       /^(.+?) grounds out sharply to (.+?)\.?$/i,
       "$1 es puesto out con rodado fuerte hacia $2."
     )
