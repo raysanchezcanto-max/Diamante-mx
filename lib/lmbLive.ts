@@ -256,6 +256,8 @@ export type LmbPlayState = {
   description?: string;
   batterName?: string;
   plays?: string[];
+  inning?: number;
+inningState?: string;
 };
 
 function collectInnings(
