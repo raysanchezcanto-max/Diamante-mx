@@ -14,6 +14,7 @@ type LiveGamePanelProps = {
 
   description?: string;
   batterName?: string;
+  plays?: string[];
 };
 
 function formatInningState(
@@ -64,6 +65,7 @@ export default function LiveGamePanel({
   outs = 0,
   description,
   batterName,
+  plays = [],
 }: LiveGamePanelProps) {
   
   return (
@@ -110,7 +112,26 @@ export default function LiveGamePanel({
         </div>
       </div>
 
-     {description && (
+    {plays.length > 0 ? (
+  <div className="liveGamePlay">
+    <small>JUGADAS DEL INNING</small>
+
+    <div className="inningPlayList">
+      {plays.map((play, index) => (
+        <div
+          className="inningPlayItem"
+          key={`${index}-${play}`}
+        >
+          <span>
+            {index + 1}
+          </span>
+
+          <p>{play}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+) : description ? (
   <div className="liveGamePlay">
     <small>ÚLTIMA JUGADA</small>
 
@@ -121,7 +142,7 @@ export default function LiveGamePanel({
         : description}
     </p>
   </div>
-)}
+) : null}
     </section>
   );
 }
