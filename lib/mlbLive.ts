@@ -1,3 +1,4 @@
+import { translateBaseballText } from "@/lib/translateBaseball";
 export type MlbPlayState = {
   first: number;
   second: number;
@@ -350,6 +351,17 @@ const description =
   currentPlay?.result?.description ||
   lastCompletedPlay?.result?.description ||
   "";
+    const automaticDescription =
+  await translateBaseballText(
+    description
+  );
+
+const finalDescription =
+  automaticDescription !== description
+    ? automaticDescription
+    : translateMlbDescription(
+        description
+      );
 
     const linescore =
       data?.liveData?.linescore;
@@ -392,8 +404,7 @@ const description =
         "",
 
      description:
-  translateMlbDescription(
-    description
+  finalDescription,
   ),
     };
   } catch {
