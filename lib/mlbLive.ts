@@ -176,6 +176,30 @@ function translateMlbDescription(
       "lanzador"
     )
     .replace(
+  /([^.]+?) scores\./gi,
+  "$1 anota."
+)
+.replace(
+  /([^.]+?) to 3rd\./gi,
+  "$1 avanza a tercera."
+)
+.replace(
+  /([^.]+?) to 2nd\./gi,
+  "$1 avanza a segunda."
+)
+.replace(
+  /([^.]+?) to 1st\./gi,
+  "$1 avanza a primera."
+)
+.replace(
+  /([^.]+?) out at 2nd\./gi,
+  "$1 es puesto out en segunda."
+)
+.replace(
+  /([^.]+?) out at 1st\./gi,
+  "$1 es puesto out en primera."
+)
+    .replace(
       /\breplaces\b/gi,
       "reemplaza a"
     )
