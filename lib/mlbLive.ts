@@ -137,7 +137,10 @@ function translateMlbDescription(
     Después traducimos términos que pueden quedar
     dentro de descripciones más largas.
   */
-
+.replace(
+  /^Status Change\s*-\s*Warmup\.?$/i,
+  "Cambio de estado: Calentamiento."
+);
   return text
     .replace(
       /right fielder/gi,
