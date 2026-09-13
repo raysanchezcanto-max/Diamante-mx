@@ -255,6 +255,7 @@ export type LmbPlayState = {
 
   description?: string;
   batterName?: string;
+  plays?: string[];
 };
 
 function collectInnings(
@@ -401,7 +402,25 @@ const play =
         Number(b.indexInningPlay ?? 0) -
         Number(a.indexInningPlay ?? 0)
     )[0];
-   
+   const inningPlays =
+  [...currentPlays]
+    .filter(
+      (item) =>
+        item?.isComplete === true &&
+        item?.playDescription &&
+        item.playDescription
+          .trim()
+          .toLowerCase() !== "al bat"
+    )
+    .sort(
+      (a, b) =>
+        Number(a.indexInningPlay ?? 0) -
+        Number(b.indexInningPlay ?? 0)
+    )
+    .map(
+      (item) =>
+        String(item.playDescription).trim()
+    );
     const batterName =
   latestInning?.chupa?.batter?.name ??
   data?.chupa?.batter?.name ??
@@ -445,6 +464,7 @@ const play =
   "",
       
      batterName,
+      plays: inningPlays,
       };
  
   } catch {
