@@ -13,6 +13,7 @@ type LiveGamePanelProps = {
   outs?: number;
 
   description?: string;
+  batterName?: string;
 };
 
 function formatInningState(
