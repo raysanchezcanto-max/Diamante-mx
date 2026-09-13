@@ -386,7 +386,8 @@ const play =
 
       description:
         play.playDescription,
-      batterName:
+     batterName:
+  data?.chupa?.batter?.name ??
   data?.batter?.name ??
   undefined,
     };
