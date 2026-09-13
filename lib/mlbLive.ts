@@ -405,7 +405,7 @@ const finalDescription =
 
      description:
   finalDescription,
-  ),
+  
     };
   } catch {
     return null;
