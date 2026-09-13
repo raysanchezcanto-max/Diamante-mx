@@ -374,6 +374,7 @@ const broadcasts =
     outs={playState.outs}
     description={playState.description}
     batterName={playState.batterName}
+    plays={playState.plays}
   />
 )}
   
