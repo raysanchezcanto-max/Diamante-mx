@@ -15,217 +15,137 @@ export type MlbPlayState = {
 function translateMlbDescription(
   description: string
 ) {
-  return description
-    // Cambios y sustituciones
-    .replace(
-      /^Pitching Change:\s*(.+?) replaces (.+?)\.?$/gi,
-      "Cambio de lanzador: $1 reemplaza a $2."
-    )
-    .replace(
-  /^Defensive Substitution:\s*(.+?) replaces (.+?), batting (\d+)(?:st|nd|rd|th), playing (.+?)\.?$/gi,
-  "Sustitución defensiva: $1 reemplaza a $2, bateando $3.º en el orden, jugando como $4."
-)
-    .replace(
-      /^Defensive Substitution:\s*/gi,
-      "Sustitución defensiva: "
-    )
-    .replace(
-      /^Offensive Substitution:\s*/gi,
-      "Sustitución ofensiva: "
-    )
-    .replace(
-      /^Pinch-hitter\s*/gi,
-      "Bateador emergente "
-    )
-    .replace(
-      /^Pinch-runner\s*/gi,
-      "Corredor emergente "
-    )
+  let text = description.trim();
 
+  /*
+    Primero traducimos estructuras completas.
+    Esto evita mezclar inglés y español.
+  */
+
+  text = text
     // Ponches
     .replace(
-      /strikes out on a foul tip/gi,
-      "se poncha con foul tip"
+      /^(.+?) strikes out swinging\.?$/i,
+      "$1 se poncha tirándole."
     )
     .replace(
-      /strikes out swinging/gi,
-      "se poncha tirándole"
+      /^(.+?) strikes out looking\.?$/i,
+      "$1 se poncha sin tirarle."
     )
     .replace(
-      /strikes out looking/gi,
-      "se poncha sin tirarle"
-    )
-    .replace(
-      /strikes out/gi,
-      "se poncha"
+      /^(.+?) strikes out on a foul tip\.?$/i,
+      "$1 se poncha con foul tip."
     )
 
-    // Bases por bolas / pelotazo
+    // Base por bolas / golpeado
     .replace(
-      /intentionally walks/gi,
-      "recibe base por bolas intencional"
+      /^(.+?) walks\.?$/i,
+      "$1 recibe base por bolas."
     )
     .replace(
-      /\bwalks\b/gi,
-      "recibe base por bolas"
+      /^(.+?) intentionally walks\.?$/i,
+      "$1 recibe base por bolas intencional."
     )
     .replace(
-      /hit by pitch/gi,
-      "es golpeado por lanzamiento"
-    )
-
-    // Hits
-    .replace(
-      /\bsingles\b/gi,
-      "conecta sencillo"
-    )
-    .replace(
-      /\bdoubles\b/gi,
-      "conecta doble"
-    )
-    .replace(
-      /\btriples\b/gi,
-      "conecta triple"
-    )
-    .replace(
-      /\bhomers\b/gi,
-      "conecta jonrón"
-    )
-    .replace(
-      /home run/gi,
-      "jonrón"
+      /^(.+?) hit by pitch\.?$/i,
+      "$1 es golpeado por lanzamiento."
     )
 
-    // Outs
+    // Elevados
     .replace(
-      /grounds out/gi,
-      "es puesto out con rodado"
+      /^(.+?) flies out sharply to (.+?)\.?$/i,
+      "$1 es puesto out con elevado fuerte hacia $2."
     )
     .replace(
-      /flies out/gi,
-      "es puesto out con elevado"
+      /^(.+?) flies out softly to (.+?)\.?$/i,
+      "$1 es puesto out con elevado suave hacia $2."
     )
     .replace(
-      /lines out/gi,
-      "es puesto out con línea"
-    )
-    .replace(
-      /pops out/gi,
-      "es puesto out con elevado corto"
-    )
-    .replace(
-      /force out/gi,
-      "es puesto out forzado"
-    )
-    .replace(
-      /grounds into a double play/gi,
-      "bateó para doble play"
-    )
-    .replace(
-      /double play/gi,
-      "doble play"
-    )
-    .replace(
-      /triple play/gi,
-      "triple play"
+      /^(.+?) flies out to (.+?)\.?$/i,
+      "$1 es puesto out con elevado hacia $2."
     )
 
-    // Sacrificios
+    // Líneas
     .replace(
-      /sacrifice fly/gi,
-      "elevado de sacrificio"
+      /^(.+?) lines out sharply to (.+?)\.?$/i,
+      "$1 es puesto out con línea fuerte hacia $2."
     )
     .replace(
-      /sacrifice bunt/gi,
-      "toque de sacrificio"
-    )
-
-    // Errores / elección del fildeador
-    .replace(
-      /reaches on a fielding error/gi,
-      "llega a base por error de fildeo"
+      /^(.+?) lines out softly to (.+?)\.?$/i,
+      "$1 es puesto out con línea suave hacia $2."
     )
     .replace(
-      /reaches on a throwing error/gi,
-      "llega a base por error de tiro"
-    )
-    .replace(
-      /fielder's choice/gi,
-      "elección del fildeador"
+      /^(.+?) lines out to (.+?)\.?$/i,
+      "$1 es puesto out con línea hacia $2."
     )
 
-    // Corredores
+    // Rodados
     .replace(
-      /steals second base/gi,
-      "se roba la segunda base"
+      /^(.+?) grounds out sharply to (.+?)\.?$/i,
+      "$1 es puesto out con rodado fuerte hacia $2."
     )
     .replace(
-      /steals third base/gi,
-      "se roba la tercera base"
+      /^(.+?) grounds out softly to (.+?)\.?$/i,
+      "$1 es puesto out con rodado suave hacia $2."
     )
     .replace(
-      /steals home/gi,
-      "se roba el home"
-    )
-    .replace(
-      /caught stealing second base/gi,
-      "es puesto out intentando robar segunda"
-    )
-    .replace(
-      /caught stealing third base/gi,
-      "es puesto out intentando robar tercera"
-    )
-    .replace(
-      /caught stealing home/gi,
-      "es puesto out intentando robar home"
-    )
-    .replace(
-      /picked off/gi,
-      "es sorprendido fuera de base"
-    )
-    .replace(
-      /\bscores\b/gi,
-      "anota"
-    )
-    .replace(
-      /advances to second/gi,
-      "avanza a segunda"
-    )
-    .replace(
-      /advances to third/gi,
-      "avanza a tercera"
-    )
-    .replace(
-      /advances to home/gi,
-      "avanza al home"
+      /^(.+?) grounds out to (.+?)\.?$/i,
+      "$1 es puesto out con rodado hacia $2."
     )
 
-    // Lanzamientos
+    // Pop out
     .replace(
-      /wild pitch/gi,
-      "lanzamiento descontrolado"
-    )
-    .replace(
-      /passed ball/gi,
-      "passed ball"
-    )
-    .replace(
-      /\bbalk\b/gi,
-      "balk"
+      /^(.+?) pops out to (.+?)\.?$/i,
+      "$1 es puesto out con elevado corto hacia $2."
     )
 
-    // Direcciones y posiciones
+    // Cambios de lanzador
     .replace(
-      /left fielder/gi,
-      "jardinero izquierdo"
+      /^Pitching Change:\s*(.+?) replaces (.+?)\.?$/i,
+      "Cambio de lanzador: $1 reemplaza a $2."
+    )
+
+    // Sustituciones defensivas
+    .replace(
+      /^Defensive Substitution:\s*(.+?) replaces (.+?), batting (\d+)(?:st|nd|rd|th), playing (.+?)\.?$/i,
+      "Sustitución defensiva: $1 reemplaza a $2, bateando $3.º en el orden, jugando como $4."
+    )
+
+    // Tiempos
+    .replace(
+      /^Batter Timeout\.?$/i,
+      "Tiempo solicitado por el bateador."
+    )
+    .replace(
+      /^Pitcher Timeout\.?$/i,
+      "Tiempo solicitado por el lanzador."
+    )
+    .replace(
+      /^Mound Visit\.?$/i,
+      "Visita al montículo."
+    )
+    .replace(
+      /^Injury Delay\.?$/i,
+      "Pausa por lesión."
+    );
+
+  /*
+    Después traducimos términos que pueden quedar
+    dentro de descripciones más largas.
+  */
+
+  return text
+    .replace(
+      /right fielder/gi,
+      "jardinero derecho"
     )
     .replace(
       /center fielder/gi,
       "jardinero central"
     )
     .replace(
-      /right fielder/gi,
-      "jardinero derecho"
+      /left fielder/gi,
+      "jardinero izquierdo"
     )
     .replace(
       /shortstop/gi,
@@ -244,26 +164,80 @@ function translateMlbDescription(
       "tercera base"
     )
     .replace(
+      /catcher/gi,
+      "receptor"
+    )
+    .replace(
       /pitcher/gi,
       "lanzador"
     )
     .replace(
-      /catcher/gi,
-      "receptor"
-    )
-
-    // Tipo de batazo
-    .replace(
-      /on a line drive/gi,
-      "con línea"
+      /\breplaces\b/gi,
+      "reemplaza a"
     )
     .replace(
-      /on a ground ball/gi,
-      "con rodado"
+      /\bbatting\b/gi,
+      "bateando"
     )
     .replace(
-      /on a fly ball/gi,
-      "con elevado"
+      /\bplaying\b/gi,
+      "jugando como"
+    )
+    .replace(
+      /\bsharply\b/gi,
+      "con fuerza"
+    )
+    .replace(
+      /\bsoftly\b/gi,
+      "suavemente"
+    )
+    .replace(
+      /\bscores\b/gi,
+      "anota"
+    )
+    .replace(
+      /advances to second/gi,
+      "avanza a segunda"
+    )
+    .replace(
+      /advances to third/gi,
+      "avanza a tercera"
+    )
+    .replace(
+      /advances to home/gi,
+      "avanza al home"
+    )
+    .replace(
+      /steals second base/gi,
+      "se roba la segunda base"
+    )
+    .replace(
+      /steals third base/gi,
+      "se roba la tercera base"
+    )
+    .replace(
+      /steals home/gi,
+      "se roba el home"
+    )
+    .replace(
+      /wild pitch/gi,
+      "lanzamiento descontrolado"
+    )
+    .replace(
+      /passed ball/gi,
+      "passed ball"
+    )
+    .replace(
+      /sacrifice fly/gi,
+      "elevado de sacrificio"
+    )
+    .replace(
+      /sacrifice bunt/gi,
+      "toque de sacrificio"
+    )
+    .replace(
+      /fielder's choice/gi,
+      "elección del fildeador"
     );
 }
 export async function getMlbPlayState(
