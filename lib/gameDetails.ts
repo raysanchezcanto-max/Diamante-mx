@@ -346,37 +346,24 @@ homeRuns:
           ?.dateTime ?? "",
 
       awayId:
-        away?.id ?? 0,
+  away?.id ?? 0,
 
-     away:
-  getOfficialLmbTeamName(
-    lmbGame.awayTeam?.name ??
-      "Visitante"
-  ),
+away:
+  away?.name ??
+  "Visitante",
 
 awayRuns:
-  status === "Preview"
-    ? undefined
-    : lmbGame.awayTeam?.runsScored,
+  linescore?.teams?.away?.runs,
 
 homeId:
-  Number(
-    lmbGame.localTeam?.id ??
-      lmbGame.localTeam?.teamId ??
-      0
-  ),
+  home?.id ?? 0,
 
 home:
-  getOfficialLmbTeamName(
-    lmbGame.localTeam?.name ??
-      "Local"
-  ),
+  home?.name ??
+  "Local",
 
 homeRuns:
-  status === "Preview"
-    ? undefined
-    : lmbGame.localTeam?.runsScored,
-
+  linescore?.teams?.home?.runs,
       venue:
         gameData?.venue?.name ??
         "Estadio por confirmar",
