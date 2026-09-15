@@ -1,4 +1,7 @@
+
 import {
+  getOfficialLmbTeamName,
+} from "./lmb";import {
   getLmbCalendar,
 } from "./lmbLive";
 import type { Game } from "./mlb";
@@ -240,11 +243,13 @@ export async function getNextGames(
 
               awayId: 0,
               away:
+                 getOfficialLmbTeamName(
                 g.awayTeam?.name ??
                 "Visitante",
 
               homeId: 0,
               home:
+                    getOfficialLmbTeamName(
                 g.localTeam?.name ??
                 "Local",
 
