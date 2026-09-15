@@ -10,7 +10,7 @@ type AutoRefreshProps = {
 
 export default function AutoRefresh({
   enabled = true,
-  intervalMs = 30000,
+ intervalMs = 15000,
 }: AutoRefreshProps) {
   const router = useRouter();
 
