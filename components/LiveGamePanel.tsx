@@ -16,6 +16,8 @@ home: string;
 
   description?: string;
   batterName?: string;
+  pitcherName?: string;
+pitchCount?: number;
   plays?: string[];
 };
 
@@ -68,9 +70,11 @@ export default function LiveGamePanel({
   balls = 0,
   strikes = 0,
   outs = 0,
-  description,
-  batterName,
-  plays = [],
+ description,
+batterName,
+pitcherName,
+pitchCount,
+plays = [],
 }: LiveGamePanelProps) {
  const formattedInningState =
   formatInningState(inningState);
