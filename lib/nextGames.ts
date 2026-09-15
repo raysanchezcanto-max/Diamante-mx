@@ -182,6 +182,92 @@ export async function getNextGames(
   league: LeagueCode
 ): Promise<Game[]> {
   try {
+        if (league === "LMB") {
+      for (
+        let offset = 1;
+        offset <= 60;
+        offset++
+      ) {
+        const officialGames =
+          await getLmbCalendar(offset);
+
+        if (
+          !Array.isArray(officialGames) ||
+          officialGames.length === 0
+        ) {
+          continue;
+        }
+
+        return officialGames.map(
+          (g: any): Game => {
+            const rawStatus =
+              String(
+                g.status ?? ""
+              ).toUpperCase();
+
+            const status =
+              rawStatus === "L"
+                ? "Live"
+                : rawStatus === "F"
+                  ? "Final"
+                  : "Preview";
+
+            const startTime =
+              typeof g.date_time === "number"
+                ? new Date(
+                    g.date_time * 1000
+                  ).toISOString()
+                : typeof g.date_time ===
+                    "string"
+                  ? new Date(
+                      g.date_time
+                    ).toISOString()
+                  : "";
+
+            return {
+              id:
+                Number(g.gameId) || 0,
+
+              status,
+
+              detailedState:
+                g.detailedStatus ??
+                (status === "Live"
+                  ? "En vivo"
+                  : status === "Final"
+                    ? "Final"
+                    : "Programado"),
+
+              awayId: 0,
+              away:
+                g.awayTeam?.name ??
+                "Visitante",
+
+              homeId: 0,
+              home:
+                g.localTeam?.name ??
+                "Local",
+
+              awayRuns:
+                g.awayTeam?.runsScored,
+
+              homeRuns:
+                g.localTeam?.runsScored,
+
+              inning:
+                g.inning?.number,
+
+              inningState:
+                g.inning?.part,
+
+              startTime,
+            };
+          }
+        );
+      }
+
+      return [];
+    }
     const start = new Date();
     start.setDate(start.getDate() + 1);
 
