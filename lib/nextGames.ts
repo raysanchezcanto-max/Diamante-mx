@@ -1,3 +1,6 @@
+import {
+  getLmbCalendar,
+} from "./lmbLive";
 import type { Game } from "./mlb";
 import type { LeagueCode } from "./teamLogos";
 
