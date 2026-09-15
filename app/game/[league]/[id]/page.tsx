@@ -221,9 +221,8 @@ const broadcasts =
 
   return (
     <main className="gamePage">
-      <AutoRefresh
+   <AutoRefresh
   enabled={!isFinal}
-  intervalMs={30000}
 />
       <a
         className="gameBack"
