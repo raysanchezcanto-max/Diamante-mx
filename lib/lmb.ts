@@ -62,7 +62,7 @@ async function lmbFetch(path: string) {
   Así también pueden aparecer juegos
   de playoffs y Serie del Rey.
 */
-function getOfficialLmbTeamName(
+export function getOfficialLmbTeamName(
   name: string
 ) {
   const normalized = name
