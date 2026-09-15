@@ -496,6 +496,9 @@ const plays =
 
      description:
   finalDescription,
+      batterName,
+pitcherName,
+pitchCount,
       plays,
   
     };
