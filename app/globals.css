@@ -681,3 +681,18 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-size: 13px;
   line-height: 1.45;
 }
+.liveGameInningBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.liveGameBattingTeam {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #9fb8b1;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
