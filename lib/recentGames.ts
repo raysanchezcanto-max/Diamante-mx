@@ -259,6 +259,7 @@ return latestDate
         ) === latestDate
     )
   : [];
+    }
   try {
     /*
       Buscamos desde 14 días atrás
