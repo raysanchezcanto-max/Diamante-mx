@@ -381,6 +381,8 @@ home={game.home}
     outs={playState.outs}
     description={playState.description}
     batterName={playState.batterName}
+    pitcherName={playState.pitcherName}
+pitchCount={playState.pitchCount}
     plays={playState.plays}
   
   />
