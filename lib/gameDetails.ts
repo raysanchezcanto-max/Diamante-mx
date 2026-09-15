@@ -1,3 +1,6 @@
+import {
+  getOfficialLmbTeamName,
+} from "./lmb";
 import type { LeagueCode } from "./teamLogos";
 import {
   getLmbGameInfo,
@@ -210,13 +213,16 @@ export async function getGameDetails(
           ),
 
         away:
+            getOfficialLmbTeamName(
           lmbGame.awayTeam?.name ??
           "Visitante",
 
         awayRuns:
-          lmbGame.awayTeam
-            ?.runsScored,
-
+        awayRuns:
+  status === "Preview"
+    ? undefined
+    : lmbGame.awayTeam
+        ?.runsScored,
         homeId:
           Number(
             lmbGame.localTeam?.id ??
@@ -225,12 +231,16 @@ export async function getGameDetails(
           ),
 
         home:
+                getOfficialLmbTeamName(
           lmbGame.localTeam?.name ??
           "Local",
 
         homeRuns:
-          lmbGame.localTeam
-            ?.runsScored,
+        homeRuns:
+  status === "Preview"
+    ? undefined
+    : lmbGame.localTeam
+        ?.runsScored,
 
         venue,
 
