@@ -372,6 +372,8 @@ inningState={
   playState.inningState ??
   game.inningState
 }
+    away={game.away}
+home={game.home}
     first={playState.first}
     second={playState.second}
     third={playState.third}
@@ -381,6 +383,7 @@ inningState={
     description={playState.description}
     batterName={playState.batterName}
     plays={playState.plays}
+  
   />
 )}
   
