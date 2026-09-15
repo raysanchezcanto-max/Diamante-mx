@@ -290,14 +290,7 @@ export async function getNextGames(
         `&hydrate=linescore`;
     }
 
-    if (league === "LMB") {
-      path =
-        `/schedule?sportId=11` +
-        `&leagueId=125` +
-        `&startDate=${startDate}` +
-        `&endDate=${endDate}` +
-        `&hydrate=linescore`;
-    }
+   
 
     if (league === "LMP") {
       path =
@@ -329,9 +322,7 @@ export async function getNextGames(
       Si la API no devuelve el calendario
       futuro de LMB, usamos el fallback.
     */
-    if (league === "LMB") {
-      return lmbFallbackNextGames();
-    }
+   
 
     return [];
   } catch {
