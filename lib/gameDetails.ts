@@ -218,7 +218,7 @@ export async function getGameDetails(
           "Visitante",
 
         awayRuns:
-        awayRuns:
+        
   status === "Preview"
     ? undefined
     : lmbGame.awayTeam
@@ -236,7 +236,7 @@ export async function getGameDetails(
           "Local",
 
         homeRuns:
-        homeRuns:
+        
   status === "Preview"
     ? undefined
     : lmbGame.localTeam
