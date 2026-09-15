@@ -350,24 +350,34 @@ export async function getGameDetails(
       awayId:
         away?.id ?? 0,
 
-      away:
-        away?.name ??
-        "Visitante",
+     away:
+  getOfficialLmbTeamName(
+    lmbGame.awayTeam?.name ??
+      "Visitante"
+  ),
 
-      awayRuns:
-        linescore?.teams
-          ?.away?.runs,
+awayRuns:
+  status === "Preview"
+    ? undefined
+    : lmbGame.awayTeam?.runsScored,
 
-      homeId:
-        home?.id ?? 0,
+homeId:
+  Number(
+    lmbGame.localTeam?.id ??
+      lmbGame.localTeam?.teamId ??
+      0
+  ),
 
-      home:
-        home?.name ??
-        "Local",
+home:
+  getOfficialLmbTeamName(
+    lmbGame.localTeam?.name ??
+      "Local"
+  ),
 
-      homeRuns:
-        linescore?.teams
-          ?.home?.runs,
+homeRuns:
+  status === "Preview"
+    ? undefined
+    : lmbGame.localTeam?.runsScored,
 
       venue:
         gameData?.venue?.name ??
