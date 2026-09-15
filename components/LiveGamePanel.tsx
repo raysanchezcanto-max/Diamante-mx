@@ -1,6 +1,8 @@
 import BaseDiamond from "./BaseDiamond";
 
 type LiveGamePanelProps = {
+  away: string;
+home: string;
   inning?: number;
   inningState?: string;
 
@@ -55,8 +57,11 @@ function formatInningState(
 }
 
 export default function LiveGamePanel({
+ export default function LiveGamePanel({
   inning,
   inningState,
+  away,
+  home,
   first = 0,
   second = 0,
   third = 0,
@@ -67,7 +72,15 @@ export default function LiveGamePanel({
   batterName,
   plays = [],
 }: LiveGamePanelProps) {
-  
+ const formattedInningState =
+  formatInningState(inningState);
+
+const battingTeam =
+  formattedInningState === "ALTA"
+    ? away
+    : formattedInningState === "BAJA"
+      ? home
+      : ""; 
   return (
     <section className="liveGamePanel">
       <div className="liveGamePanelHeader">
