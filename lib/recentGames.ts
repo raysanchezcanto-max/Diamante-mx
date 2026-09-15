@@ -287,28 +287,33 @@ export async function getRecentGames(
     const data =
       await scheduleFetch(path);
 
-    const finishedGames =
-      (data?.dates ?? [])
-        .flatMap(
-          (date: any) =>
-            date.games ?? []
-        )
-        .filter(
-          (game: any) =>
-            game.status
-              ?.abstractGameState ===
-            "Final"
-        )
-        .sort(
-          (a: any, b: any) =>
-            new Date(
-              b.gameDate
-            ).getTime() -
-            new Date(
-              a.gameDate
-            ).getTime()
-        )
-        .slice(0, 8);
+   const finishedDates =
+  (data?.dates ?? [])
+    .map((date: any) => ({
+      date: date.date,
+      games: (date.games ?? []).filter(
+        (game: any) =>
+          game.status
+            ?.abstractGameState ===
+          "Final"
+      ),
+    }))
+    .filter(
+      (date: any) =>
+        date.games.length > 0
+    )
+    .sort(
+      (a: any, b: any) =>
+        new Date(
+          b.date
+        ).getTime() -
+        new Date(
+          a.date
+        ).getTime()
+    );
+
+const finishedGames =
+  finishedDates[0]?.games ?? [];
 
     const mappedGames =
   finishedGames.map(mapGame);
