@@ -13,6 +13,8 @@ export type MlbPlayState = {
 
   description?: string;
   batterName?: string;
+  pitcherName?: string;
+pitchCount?: number;
   plays?: string[];
 };
 function translateMlbDescription(
@@ -335,6 +337,44 @@ export async function getMlbPlayState(
 
     const currentPlay =
       data?.liveData?.plays?.currentPlay;
+    const batterName =
+  currentPlay?.matchup?.batter?.fullName ??
+  "";
+
+const pitcherName =
+  currentPlay?.matchup?.pitcher?.fullName ??
+  "";
+
+const pitcherId =
+  currentPlay?.matchup?.pitcher?.id;
+
+const boxscore =
+  data?.liveData?.boxscore;
+
+const awayPlayers =
+  boxscore?.teams?.away?.players ?? {};
+
+const homePlayers =
+  boxscore?.teams?.home?.players ?? {};
+
+const pitcherKey =
+  pitcherId
+    ? `ID${pitcherId}`
+    : "";
+
+const pitcherStats =
+  pitcherKey
+    ? awayPlayers[pitcherKey]
+        ?.stats?.pitching ??
+      homePlayers[pitcherKey]
+        ?.stats?.pitching
+    : undefined;
+
+const pitchCount =
+  typeof pitcherStats?.numberOfPitches ===
+  "number"
+    ? pitcherStats.numberOfPitches
+    : undefined;
     const allPlays =
   data?.liveData?.plays?.allPlays ?? [];
 
