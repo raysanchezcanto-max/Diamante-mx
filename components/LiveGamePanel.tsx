@@ -57,7 +57,7 @@ function formatInningState(
 }
 
 export default function LiveGamePanel({
- export default function LiveGamePanel({
+
   inning,
   inningState,
   away,
