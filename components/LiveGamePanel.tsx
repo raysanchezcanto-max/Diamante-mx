@@ -88,15 +88,33 @@ const battingTeam =
           SITUACIÓN DEL JUEGO
         </span>
 
-       {inning && (
-  <div className="liveGameInningBlock">
+    {inning && (
+  <div
+    className="liveGameInningBlock"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-end",
+      gap: "4px",
+    }}
+  >
     <strong className="liveGameInning">
       {formattedInningState}{" "}
       {inning}
     </strong>
 
     {battingTeam && (
-      <span className="liveGameBattingTeam">
+      <span
+        className="liveGameBattingTeam"
+        style={{
+          display: "block",
+          fontSize: "11px",
+          fontWeight: 600,
+          color: "#8fa9a0",
+          letterSpacing: "0.04em",
+          whiteSpace: "nowrap",
+        }}
+      >
         BATEANDO · {battingTeam}
       </span>
     )}
