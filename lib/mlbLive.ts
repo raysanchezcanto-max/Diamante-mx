@@ -483,11 +483,11 @@ const plays =
   ),
     
 
-      inning: Number(
-        currentPlay?.about?.inning ??
-        linescore?.currentInning ??
-        0
-      ),
+    inning: Number(
+  linescore?.currentInning ??
+  currentPlay?.about?.inning ??
+  0
+),
 
     inningState:
   linescore?.inningState ??
