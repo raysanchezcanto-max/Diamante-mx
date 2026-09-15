@@ -122,6 +122,38 @@ const battingTeam =
         BATEANDO · {battingTeam}
       </span>
     )}
+    {batterName && (
+  <span
+    style={{
+      display: "block",
+      fontSize: "11px",
+      fontWeight: 600,
+      color: "#ffffff",
+      letterSpacing: "0.03em",
+      whiteSpace: "nowrap",
+    }}
+  >
+    AL BAT · {batterName}
+  </span>
+)}
+
+{pitcherName && (
+  <span
+    style={{
+      display: "block",
+      fontSize: "11px",
+      fontWeight: 600,
+      color: "#ffffff",
+      letterSpacing: "0.03em",
+      whiteSpace: "nowrap",
+    }}
+  >
+    LANZANDO · {pitcherName}
+    {typeof pitchCount === "number"
+      ? ` · ${pitchCount} P`
+      : ""}
+  </span>
+)}
   </div>
 )}
         </div>
