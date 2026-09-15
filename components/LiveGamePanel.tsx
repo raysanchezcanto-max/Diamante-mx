@@ -102,8 +102,7 @@ const battingTeam =
     )}
   </div>
 )}
-        )}
-      </div>
+     
 
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
