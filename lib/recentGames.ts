@@ -231,19 +231,34 @@ export async function getRecentGames(
               : "",
         })
       );
+const sortedRecentGames =
+  recentGames.sort(
+    (a, b) =>
+      new Date(
+        b.startTime
+      ).getTime() -
+      new Date(
+        a.startTime
+      ).getTime()
+  );
 
-  return recentGames
-    .sort(
-      (a, b) =>
+const latestDate =
+  sortedRecentGames.length > 0
+    ? mexicoDate(
         new Date(
-          b.startTime
-        ).getTime() -
-        new Date(
-          a.startTime
-        ).getTime()
+          sortedRecentGames[0].startTime
+        )
+      )
+    : null;
+
+return latestDate
+  ? sortedRecentGames.filter(
+      (game) =>
+        mexicoDate(
+          new Date(game.startTime)
+        ) === latestDate
     )
-    .slice(0, 8);
-}
+  : [];
   try {
     /*
       Buscamos desde 14 días atrás
