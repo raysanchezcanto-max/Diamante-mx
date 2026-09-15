@@ -1,4 +1,7 @@
 import type { LeagueCode } from "./teamLogos";
+import {
+  getLmbGameInfo,
+} from "./lmbLive";
 
 const MLB_API =
   "https://statsapi.mlb.com/api/v1.1";
@@ -125,6 +128,122 @@ export async function getGameDetails(
   league: LeagueCode,
   gameId: number
 ): Promise<GameDetails | null> {
+    if (
+    league === "LMB" &&
+    gameId > 0
+  ) {
+    const lmbGame =
+      await getLmbGameInfo(gameId);
+
+    if (lmbGame) {
+      const rawStatus =
+        String(
+          lmbGame.status ?? ""
+        ).toUpperCase();
+
+      const status =
+        rawStatus === "L"
+          ? "Live"
+          : rawStatus === "F"
+            ? "Final"
+            : "Preview";
+
+      let startTime = "";
+
+      if (
+        typeof lmbGame.date_time ===
+        "number"
+      ) {
+        startTime =
+          new Date(
+            lmbGame.date_time * 1000
+          ).toISOString();
+      } else if (
+        typeof lmbGame.date_time ===
+        "string"
+      ) {
+        const parsedDate =
+          new Date(lmbGame.date_time);
+
+        if (
+          !Number.isNaN(
+            parsedDate.getTime()
+          )
+        ) {
+          startTime =
+            parsedDate.toISOString();
+        }
+      }
+
+      const venue =
+        typeof lmbGame.venue ===
+        "string"
+          ? lmbGame.venue
+          : lmbGame.venue?.name ??
+            (typeof lmbGame.stadium ===
+            "string"
+              ? lmbGame.stadium
+              : lmbGame.stadium?.name) ??
+            "Estadio por confirmar";
+
+      return {
+        id: gameId,
+        league: "LMB",
+
+        status,
+
+        detailedState:
+          lmbGame.detailedStatus ??
+          (status === "Live"
+            ? "En vivo"
+            : status === "Final"
+              ? "Final"
+              : "Programado"),
+
+        startTime,
+
+        awayId:
+          Number(
+            lmbGame.awayTeam?.id ??
+            lmbGame.awayTeam?.teamId ??
+            0
+          ),
+
+        away:
+          lmbGame.awayTeam?.name ??
+          "Visitante",
+
+        awayRuns:
+          lmbGame.awayTeam
+            ?.runsScored,
+
+        homeId:
+          Number(
+            lmbGame.localTeam?.id ??
+            lmbGame.localTeam?.teamId ??
+            0
+          ),
+
+        home:
+          lmbGame.localTeam?.name ??
+          "Local",
+
+        homeRuns:
+          lmbGame.localTeam
+            ?.runsScored,
+
+        venue,
+
+        inning:
+          lmbGame.inning?.number,
+
+        inningState:
+          lmbGame.inning?.part,
+
+        stage: "LMB",
+      };
+    }
+  }
   /*
     Primero revisamos si es uno de nuestros
     partidos LMB administrados localmente.
