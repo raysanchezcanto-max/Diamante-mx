@@ -15,25 +15,72 @@ function mexicoDateKey(date: Date) {
   }).format(date);
 }
 function formatInningHalf(
-  inningState?: string
+  inningState?: string,
+  inning?: number
 ) {
-  if (!inningState) return "";
+  if (!inningState) {
+    return {
+      half: "",
+      inning,
+    };
+  }
 
   const value =
-    inningState.toLowerCase();
+    inningState
+      .trim()
+      .toLowerCase();
 
-  if (value === "top") return "ALTA";
-  if (value === "bottom") return "BAJA";
+  if (value === "top") {
+    return {
+      half: "ALTA",
+      inning,
+    };
+  }
 
-  return inningState.toUpperCase();
+  if (value === "middle") {
+    return {
+      half: "BAJA",
+      inning,
+    };
+  }
+
+  if (value === "bottom") {
+    return {
+      half: "BAJA",
+      inning,
+    };
+  }
+
+  if (value === "end") {
+    return {
+      half: "ALTA",
+      inning:
+        typeof inning === "number"
+          ? inning + 1
+          : inning,
+    };
+  }
+
+  return {
+    half: "",
+    inning,
+  };
 }
 function gameTime(
   game: Game,
   league: LeagueCode
 ) {
   if (game.status === "Live") {
-  const inning = game.inning
-    ? `${formatInningHalf(game.inningState)} ${game.inning}`
+ const inningInfo =
+  formatInningHalf(
+    game.inningState,
+    game.inning
+  );
+
+const inning =
+  inningInfo.half &&
+  inningInfo.inning
+    ? `${inningInfo.half} ${inningInfo.inning}`
     : game.detailedState;
 
   return `EN VIVO · ${inning}`;
