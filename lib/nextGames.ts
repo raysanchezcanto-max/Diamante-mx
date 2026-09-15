@@ -242,22 +242,30 @@ export async function getNextGames(
                     : "Programado"),
 
               awayId: 0,
-              away:
-                 getOfficialLmbTeamName(
-                g.awayTeam?.name ??
-                "Visitante",
 
-              homeId: 0,
-              home:
-                    getOfficialLmbTeamName(
-                g.localTeam?.name ??
-                "Local",
+away:
+  getOfficialLmbTeamName(
+    g.awayTeam?.name ??
+      "Visitante"
+  ),
 
-              awayRuns:
-                g.awayTeam?.runsScored,
+homeId: 0,
 
-              homeRuns:
-                g.localTeam?.runsScored,
+home:
+  getOfficialLmbTeamName(
+    g.localTeam?.name ??
+      "Local"
+  ),
+
+awayRuns:
+  status === "Preview"
+    ? undefined
+    : g.awayTeam?.runsScored,
+
+homeRuns:
+  status === "Preview"
+    ? undefined
+    : g.localTeam?.runsScored,
 
               inning:
                 g.inning?.number,
