@@ -211,36 +211,34 @@ export async function getGameDetails(
             lmbGame.awayTeam?.teamId ??
             0
           ),
+away:
+  getOfficialLmbTeamName(
+    lmbGame.awayTeam?.name ??
+      "Visitante"
+  ),
 
-        away:
-            getOfficialLmbTeamName(
-          lmbGame.awayTeam?.name ??
-          "Visitante",
-
-        awayRuns:
-        
+awayRuns:
   status === "Preview"
     ? undefined
-    : lmbGame.awayTeam
-        ?.runsScored,
-        homeId:
-          Number(
-            lmbGame.localTeam?.id ??
-            lmbGame.localTeam?.teamId ??
-            0
-          ),
+    : lmbGame.awayTeam?.runsScored,
 
-        home:
-                getOfficialLmbTeamName(
-          lmbGame.localTeam?.name ??
-          "Local",
+homeId:
+  Number(
+    lmbGame.localTeam?.id ??
+      lmbGame.localTeam?.teamId ??
+      0
+  ),
 
-        homeRuns:
-        
+home:
+  getOfficialLmbTeamName(
+    lmbGame.localTeam?.name ??
+      "Local"
+  ),
+
+homeRuns:
   status === "Preview"
     ? undefined
-    : lmbGame.localTeam
-        ?.runsScored,
+    : lmbGame.localTeam?.runsScored,
 
         venue,
 
