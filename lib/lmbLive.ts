@@ -1,3 +1,29 @@
+export async function getLmbGameInfo(
+  permalink: number
+) {
+  try {
+    const response = await fetch(
+      `https://lmb.com.mx/juegos/api/detail?permalink=${permalink}`,
+      {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data =
+      await response.json();
+
+    return data?.games_info?.[0] ?? null;
+  } catch {
+    return null;
+  }
+}
 export type LmbLiveScore = {
   status: "Preview" | "Live" | "Final";
 
