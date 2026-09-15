@@ -374,13 +374,13 @@ const finalDescription =
       linescore?.offense ?? {};
 const currentInning =
   Number(
-    currentPlay?.about?.inning ??
     linescore?.currentInning ??
+    currentPlay?.about?.inning ??
     0
   );
-
 const currentHalf =
   String(
+    linescore?.inningState ??
     currentPlay?.about?.halfInning ??
     ""
   ).toLowerCase();
@@ -449,10 +449,10 @@ const plays =
         0
       ),
 
-      inningState:
-        currentPlay?.about?.halfInning ??
-        linescore?.inningState ??
-        "",
+    inningState:
+  linescore?.inningState ??
+  currentPlay?.about?.halfInning ??
+  "",
 
      description:
   finalDescription,
