@@ -203,4 +203,3 @@ export async function getLmbChampion(): Promise<
   } catch {
     return null;
   }
-}
