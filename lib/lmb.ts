@@ -518,15 +518,32 @@ async function getLmbLeaderCategory(
   category: string
 ): Promise<Leader[]> {
   try {
-    const season = seasonYear();
+   const currentSeason = seasonYear();
 
-    const data = await lmbFetch(
-      `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&leagueId=${LMB_LEAGUE_ID}&sportId=${LMB_SPORT_ID}&leaderGameTypes=R&limit=10`
-    );
+let season = currentSeason;
 
-    const list =
-      data?.leagueLeaders?.[0]
-        ?.leaders ?? [];
+let data = await lmbFetch(
+  `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&leagueId=${LMB_LEAGUE_ID}&sportId=${LMB_SPORT_ID}&leaderGameTypes=R&limit=10`
+);
+
+let list =
+  data?.leagueLeaders?.[0]
+    ?.leaders ?? [];
+
+if (
+  !Array.isArray(list) ||
+  list.length === 0
+) {
+  season = currentSeason - 1;
+
+  data = await lmbFetch(
+    `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&leagueId=${LMB_LEAGUE_ID}&sportId=${LMB_SPORT_ID}&leaderGameTypes=R&limit=10`
+  );
+
+  list =
+    data?.leagueLeaders?.[0]
+      ?.leaders ?? [];
+}
 
     return list.map(
       (item: any) => ({
