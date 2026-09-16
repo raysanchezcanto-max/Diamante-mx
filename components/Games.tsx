@@ -418,18 +418,13 @@ const hasAnyGames =
       🏆
     </div>
 
-    <div className="championInfo">
-      <span className="championMiniText">
-        TEMPORADA {lmbChampion.year} FINALIZADA
-      </span>
+   
 
       <h3 className="championTeamName">
         {lmbChampion.champion}
       </h3>
 
-      <p className="championSubtitle">
-        Campeón de la Serie del Rey
-      </p>
+     
 
       <div className="championResultPill">
         <span className="championResultLabel">
@@ -446,32 +441,6 @@ const hasAnyGames =
       </div>
     </div>
   </div>
-
-  <div className="championCardBottom">
-    <div className="championBottomItem">
-      <span className="championBottomLabel">
-        CAMPEÓN
-      </span>
-      <strong>{lmbChampion.champion}</strong>
-    </div>
-
-    <div className="championBottomItem">
-      <span className="championBottomLabel">
-        SUBCAMPEÓN
-      </span>
-      <strong>{lmbChampion.runnerUp}</strong>
-    </div>
-
-    <div className="championBottomItem">
-      <span className="championBottomLabel">
-        MARCADOR FINAL
-      </span>
-      <strong>
-        {lmbChampion.championWins}–{lmbChampion.runnerUpWins}
-      </strong>
-    </div>
-  </div>
-</div>
       </>
     ) : (
       <>
