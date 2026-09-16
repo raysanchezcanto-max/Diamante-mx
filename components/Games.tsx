@@ -240,8 +240,7 @@ mlbChampion?: {
   championWins: number;
   runnerUpWins: number;
 } | null;
-
-league?: LeagueCode;
+  
   league?: LeagueCode;
 }) {
   const championLogo =
