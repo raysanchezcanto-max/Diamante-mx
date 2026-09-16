@@ -139,8 +139,22 @@ if (league === "LMB") {
   const normalizedName =
     normalizeTeamName(teamName);
 
-  return LMB_LOGOS[normalizedName] ?? null;
-}
+  const exactLogo =
+    LMB_LOGOS[normalizedName];
 
-return null;
+  if (exactLogo) {
+    return exactLogo;
+  }
+
+  const matchingKey =
+    Object.keys(LMB_LOGOS).find(
+      (key) =>
+        key === normalizedName ||
+        key.startsWith(`${normalizedName} `) ||
+        normalizedName.startsWith(`${key} `)
+    );
+
+  return matchingKey
+    ? LMB_LOGOS[matchingKey]
+    : null;
 }
