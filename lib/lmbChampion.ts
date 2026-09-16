@@ -18,11 +18,6 @@ export async function getLmbChampion(): Promise<
   LmbChampion | null
 > {
   try {
-    /*
-     * Revisamos 45 días hacia atrás.
-     * Es suficiente para cubrir una Serie del Rey
-     * aun cuando haya días de descanso.
-     */
     const days = await Promise.all(
       Array.from(
         { length: 45 },
@@ -34,14 +29,13 @@ export async function getLmbChampion(): Promise<
     const finalGames = days
       .flat()
       .filter((game: any) => {
-        const status =
-          String(game?.status ?? "")
-            .toUpperCase();
+        const status = String(
+          game?.status ?? ""
+        ).toUpperCase();
 
-        const detailed =
-          String(
-            game?.detailedStatus ?? ""
-          ).toLowerCase();
+        const detailed = String(
+          game?.detailedStatus ?? ""
+        ).toLowerCase();
 
         return (
           status === "F" ||
@@ -49,57 +43,42 @@ export async function getLmbChampion(): Promise<
         );
       })
       .sort((a: any, b: any) => {
-        const aDate =
-          Number(a?.date_time ?? 0);
-
-        const bDate =
-          Number(b?.date_time ?? 0);
-
-        return bDate - aDate;
+        return (
+          Number(b?.date_time ?? 0) -
+          Number(a?.date_time ?? 0)
+        );
       });
 
     if (finalGames.length === 0) {
       return null;
     }
 
-    /*
-     * El último juego finalizado define
-     * los dos equipos candidatos.
-     */
-    const lastGame =
-      finalGames[0];
+    const lastGame = finalGames[0];
 
-    const awayName =
-      lastGame?.awayTeam?.name;
+    const awayName = String(
+      lastGame?.awayTeam?.name ?? ""
+    ).trim();
 
-    const homeName =
-      lastGame?.localTeam?.name;
+    const homeName = String(
+      lastGame?.localTeam?.name ?? ""
+    ).trim();
 
     if (!awayName || !homeName) {
       return null;
     }
 
-    const teamA =
-      normalizeTeam(awayName);
+    const teamA = normalizeTeam(awayName);
+    const teamB = normalizeTeam(homeName);
 
-    const teamB =
-      normalizeTeam(homeName);
+    const seriesGames = finalGames.filter(
+      (game: any) => {
+        const away = normalizeTeam(
+          game?.awayTeam?.name
+        );
 
-    /*
-     * Tomamos únicamente juegos entre
-     * estos mismos dos equipos.
-     */
-    const seriesGames =
-      finalGames.filter((game: any) => {
-        const away =
-          normalizeTeam(
-            game?.awayTeam?.name
-          );
-
-        const home =
-          normalizeTeam(
-            game?.localTeam?.name
-          );
+        const home = normalizeTeam(
+          game?.localTeam?.name
+        );
 
         return (
           (away === teamA &&
@@ -107,31 +86,28 @@ export async function getLmbChampion(): Promise<
           (away === teamB &&
             home === teamA)
         );
-      });
+      }
+    );
 
     let winsA = 0;
     let winsB = 0;
 
     for (const game of seriesGames) {
-      const away =
-        normalizeTeam(
-          game?.awayTeam?.name
-        );
+      const away = normalizeTeam(
+        game?.awayTeam?.name
+      );
 
-      const home =
-        normalizeTeam(
-          game?.localTeam?.name
-        );
+      const home = normalizeTeam(
+        game?.localTeam?.name
+      );
 
-      const awayRuns =
-        Number(
-          game?.awayTeam?.runsScored ?? 0
-        );
+      const awayRuns = Number(
+        game?.awayTeam?.runsScored ?? 0
+      );
 
-      const homeRuns =
-        Number(
-          game?.localTeam?.runsScored ?? 0
-        );
+      const homeRuns = Number(
+        game?.localTeam?.runsScored ?? 0
+      );
 
       if (awayRuns === homeRuns) {
         continue;
@@ -148,58 +124,49 @@ export async function getLmbChampion(): Promise<
 
       if (winner === teamB) {
         winsB += 1;
-        if (winsA >= 4 || winsB >= 4) {
-  break;
       }
 
-    /*
-     * Serie del Rey: se requieren 4 victorias.
-     */
-    if (
-      winsA < 4 &&
-      winsB < 4
-    ) {
+      if (winsA >= 4 || winsB >= 4) {
+        break;
+      }
+    }
+
+    if (winsA < 4 && winsB < 4) {
       return null;
     }
 
-    const championIsA =
-      winsA > winsB;
+    const championIsA = winsA > winsB;
 
-    const champion =
-      championIsA
-        ? awayName
-        : homeName;
+    const champion = championIsA
+      ? awayName
+      : homeName;
 
-    const runnerUp =
-      championIsA
-        ? homeName
-        : awayName;
+    const runnerUp = championIsA
+      ? homeName
+      : awayName;
 
-    const latestTimestamp =
-      Number(
-        lastGame?.date_time ?? 0
-      );
+    const latestTimestamp = Number(
+      lastGame?.date_time ?? 0
+    );
 
-    const year =
-      latestTimestamp
-        ? new Date(
-            latestTimestamp * 1000
-          ).getFullYear()
-        : new Date().getFullYear();
+    const year = latestTimestamp
+      ? new Date(
+          latestTimestamp * 1000
+        ).getFullYear()
+      : new Date().getFullYear();
 
     return {
       champion,
       runnerUp,
-      championWins:
-        championIsA
-          ? winsA
-          : winsB,
-      runnerUpWins:
-        championIsA
-          ? winsB
-          : winsA,
+      championWins: championIsA
+        ? winsA
+        : winsB,
+      runnerUpWins: championIsA
+        ? winsB
+        : winsA,
       year,
     };
   } catch {
     return null;
   }
+}
