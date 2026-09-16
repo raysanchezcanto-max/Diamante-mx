@@ -424,7 +424,7 @@ const hasAnyGames =
         <div className="sectionHeader">
           <div>
             <span className="eyebrow">
-              TEMPORADA {hampionData.year} · FINALIZADA
+              TEMPORADA {championData.year} · FINALIZADA
             </span>
 
             <h2>{championTitle}</h2>
