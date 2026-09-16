@@ -440,6 +440,7 @@ const gameInfo =
 
 const inningLines =
   Array.isArray(gameInfo?.lineScore)
+    ? gameInfo.lineScore.map(
         (item: any) => ({
           inning: Number(item?.inningNumber ?? 0),
           away: Number(item?.awayTeamRuns ?? 0),
