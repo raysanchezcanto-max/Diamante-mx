@@ -171,11 +171,12 @@ const nextGames =
       )}
 
    <div id="juegos">
-  <Games
-    games={games}
-    nextGames={nextGames}
-    league={selectedLeague}
-  />
+ <Games
+  games={games}
+  nextGames={nextGames}
+  recentGames={recentGames}
+  league={selectedLeague}
+/>
 </div>
       <RecentResults
   games={recentGames}
