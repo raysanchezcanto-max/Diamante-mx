@@ -217,6 +217,7 @@ export default function Games({
   nextGames = [],
   recentGames = [],
   lmbChampion = null,
+  mlbChampion = null,
   league = "MLB",
 }: {
   games: Game[];
