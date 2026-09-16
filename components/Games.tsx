@@ -1,3 +1,4 @@
+import { getTeamLogo } from "@/lib/teamLogos";
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 
@@ -231,6 +232,14 @@ export default function Games({
   } | null;
   league?: LeagueCode;
 }) {
+  const championLogo =
+  league === "LMB" && lmbChampion
+    ? getTeamLogo(
+        "LMB",
+        0,
+        lmbChampion.champion
+      )
+    : null;
   const today = mexicoDateKey(new Date());
 
   /*
@@ -414,9 +423,17 @@ const hasAnyGames =
   </div>
 
   <div className="championCardBody">
-    <div className="championTrophy">
-      🏆
-    </div>
+   <div className="championTrophy">
+  {championLogo ? (
+    <img
+      src={championLogo}
+      alt={lmbChampion.champion}
+      className="championTeamLogo"
+    />
+  ) : (
+    <span>🏆</span>
+  )}
+</div>
 
    
 
