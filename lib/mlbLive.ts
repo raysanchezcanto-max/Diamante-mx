@@ -405,6 +405,48 @@ const finalDescription =
 
     const linescore =
       data?.liveData?.linescore;
+    const inningLines =
+  (linescore?.innings ?? []).map(
+    (item: any) => ({
+      inning: Number(item?.num ?? 0),
+
+      away:
+        typeof item?.away?.runs === "number"
+          ? item.away.runs
+          : undefined,
+
+      home:
+        typeof item?.home?.runs === "number"
+          ? item.home.runs
+          : undefined,
+    })
+  );
+
+const lineScoreTotals = {
+  away: {
+    runs: Number(
+      linescore?.teams?.away?.runs ?? 0
+    ),
+    hits: Number(
+      linescore?.teams?.away?.hits ?? 0
+    ),
+    errors: Number(
+      linescore?.teams?.away?.errors ?? 0
+    ),
+  },
+
+  home: {
+    runs: Number(
+      linescore?.teams?.home?.runs ?? 0
+    ),
+    hits: Number(
+      linescore?.teams?.home?.hits ?? 0
+    ),
+    errors: Number(
+      linescore?.teams?.home?.errors ?? 0
+    ),
+  },
+};
 
     if (!currentPlay || !linescore) {
       return null;
