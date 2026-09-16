@@ -1,3 +1,4 @@
+import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
 import { getLmbChampion } from "@/lib/lmbChampion";
 import AutoRefresh from "@/components/AutoRefresh";
@@ -81,6 +82,10 @@ const nextGames =
 const lmbChampion =
   selectedLeague === "LMB"
     ? await getLmbChampion()
+    : null;
+  const mlbChampion =
+  selectedLeague === "MLB"
+    ? await getMlbChampion()
     : null;
 
 const lmbNextSeasonYear =
