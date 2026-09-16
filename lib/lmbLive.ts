@@ -331,12 +331,14 @@ function collectInnings(
     ) {
       results.push(value);
     }
-
-    Object.values(value).forEach(
+ Object.values(value).forEach(
       (item) =>
         collectInnings(item, results)
     );
   }
+
+  return results;
+}
 function findCurrentBatterName(
   value: any
 ): string | undefined {
