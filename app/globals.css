@@ -901,6 +901,7 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 
   margin-top: 18px;
   padding: 13px 17px;
+  min-width: 220px;
 
   border: 1px solid rgba(202, 255, 51, 0.16);
   border-radius: 16px;
@@ -921,6 +922,7 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 
   font-size: 17px;
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .championCardBottom {
