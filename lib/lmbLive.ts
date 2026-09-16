@@ -18,52 +18,10 @@ export async function getLmbGameInfo(
 
     const data =
       await response.json();
-    const gameInfo =
-  await getLmbGameInfo(permalink);
-
-const inningLines =
-  Array.isArray(gameInfo?.lineScore)
-    ? gameInfo.lineScore.map(
-        (item: any) => ({
-          inning: Number(item?.inningNumber ?? 0),
-          away: Number(item?.awayTeamRuns ?? 0),
-          home: Number(item?.homeTeamRuns ?? 0),
-        })
-      )
-    : undefined;
-
-const lineScoreTotals =
-  gameInfo
-    ? {
-        away: {
-          runs: Number(
-            gameInfo?.awayTeam?.runsScored ?? 0
-          ),
-          hits: Number(
-            gameInfo?.awayTeam?.totalHits ?? 0
-          ),
-          errors: Number(
-            gameInfo?.awayTeam?.totalErrors ?? 0
-          ),
-        },
-        home: {
-          runs: Number(
-            gameInfo?.localTeam?.runsScored ?? 0
-          ),
-          hits: Number(
-            gameInfo?.localTeam?.totalHits ?? 0
-          ),
-          errors: Number(
-            gameInfo?.localTeam?.totalErrors ?? 0
-          ),
-        },
-      }
-    : undefined;
-
-    return data?.games_info?.[0] ?? null;
-  } catch {
-    return null;
-  }
+   return data?.games_info?.[0] ?? null;
+} catch {
+  return null;
+}
 }
 export type LmbLiveScore = {
   status: "Preview" | "Live" | "Final";
