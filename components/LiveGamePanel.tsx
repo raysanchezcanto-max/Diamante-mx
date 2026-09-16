@@ -92,7 +92,7 @@ const battingTeam =
           SITUACIÓN DEL JUEGO
         </span>
 
-   {inning && (
+  {inning && (
   <div
     className="liveGameInningBlock"
     style={{
@@ -139,28 +139,29 @@ const battingTeam =
       </span>
     )}
 
-  {pitcherName && (
-  <span
-    style={{
-      display: "block",
-      fontSize: "11px",
-      fontWeight: 600,
-      color: "#c7d3cf",
-      letterSpacing: "0.03em",
-      whiteSpace: "nowrap",
-    }}
-  >
-    LANZANDO · {pitcherName}
-    {typeof pitchCount === "number"
-      ? ` · ${pitchCount} P`
-      : ""}
-  </span>
-)}
-</div>
+    {pitcherName && (
+      <span
+        style={{
+          display: "block",
+          fontSize: "11px",
+          fontWeight: 600,
+          color: "#c7d3cf",
+          letterSpacing: "0.03em",
+          whiteSpace: "nowrap",
+        }}
+      >
+        LANZANDO · {pitcherName}
+        {typeof pitchCount === "number"
+          ? ` · ${pitchCount} P`
+          : ""}
+      </span>
+    )}
+  </div>
 )}
 
 </div>
 
+<div className="liveGamePanelBody">
 <div className="liveGamePanelBody">
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
