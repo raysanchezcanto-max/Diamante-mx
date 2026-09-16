@@ -541,6 +541,8 @@ const plays =
       batterName,
 pitcherName,
 pitchCount,
+      inningLines,
+lineScoreTotals,
       plays,
   
     };
