@@ -190,10 +190,9 @@ export async function getLmbNextSeasonStart(
   seasonYear: number
 ): Promise<Date | null> {
   try {
-    const searchDate =
-      new Date(
-        `${seasonYear}-01-01T12:00:00-06:00`
-      );
+    const searchDate = new Date(
+      `${seasonYear}-01-01T12:00:00-06:00`
+    );
 
     const parts =
       new Intl.DateTimeFormat(
