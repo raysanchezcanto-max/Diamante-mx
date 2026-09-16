@@ -424,7 +424,7 @@ const hasAnyGames =
         <div className="sectionHeader">
           <div>
             <span className="eyebrow">
-              TEMPORADA {lmbChampion.year} · FINALIZADA
+              TEMPORADA {hampionData.year} · FINALIZADA
             </span>
 
             <h2>{championTitle}</h2>
