@@ -216,11 +216,19 @@ export default function Games({
   games,
   nextGames = [],
   recentGames = [],
+  lmbChampion = null,
   league = "MLB",
 }: {
   games: Game[];
   nextGames?: Game[];
   recentGames?: Game[];
+  lmbChampion?: {
+    champion: string;
+    runnerUp: string;
+    championWins: number;
+    runnerUpWins: number;
+    year: number;
+  } | null;
   league?: LeagueCode;
 }) {
   const today = mexicoDateKey(new Date());
