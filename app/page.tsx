@@ -107,13 +107,7 @@ const showLmbSeasonNotice =
     !lmbNextSeasonStart ||
     Date.now() < lmbNextSeasonStart.getTime()
   );
-const showLmbSeasonNotice =
-  selectedLeague === "LMB" &&
-  Boolean(lmbChampion) &&
-  (
-    !lmbNextSeasonStart ||
-    Date.now() < lmbNextSeasonStart.getTime()
-  );
+
 
 const daysUntilLmb =
   lmbNextSeasonStart
