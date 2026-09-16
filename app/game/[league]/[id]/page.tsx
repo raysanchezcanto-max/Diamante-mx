@@ -417,17 +417,30 @@ const broadcasts =
       EQUIPO
     </div>
 
-    {Array.from({ length: 9 }, (_, index) => (
-      <div
-        key={`header-${index + 1}`}
-        style={{
-          textAlign: "center",
-          color: "#9fb1ab",
-          fontWeight: 700,
-        }}
-      >
-        {index + 1}
-      </div>
+   {Array.from({ length: 9 }, (_, index) => (
+  <div
+    key={`header-${index + 1}`}
+    style={{
+      textAlign: "center",
+      color:
+        playState.inning === index + 1
+          ? "#caff33"
+          : "#9fb1ab",
+      fontWeight:
+        playState.inning === index + 1
+          ? 900
+          : 700,
+      background:
+        playState.inning === index + 1
+          ? "#173221"
+          : "transparent",
+      borderRadius: "8px",
+      padding: "5px 0",
+    }}
+  >
+    {index + 1}
+  </div>
+))}
     ))}
 
     <div
