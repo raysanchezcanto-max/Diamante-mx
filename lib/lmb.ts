@@ -467,17 +467,25 @@ if (!hasCurrentSeasonData) {
     for (
       const record of data?.records ?? []
     ) {
-      const division =
-        record?.division?.nameShort ??
-        record?.division?.name ??
-        "LMB";
+     const divisionName = String(
+  record?.division?.nameShort ??
+  record?.division?.name ??
+  ""
+).toLowerCase();
 
+const officialZone =
+  divisionName.includes("norte")
+    ? "Zona Norte"
+    : divisionName.includes("sur")
+      ? "Zona Sur"
+      : null;
       for (
         const item of
           record?.teamRecords ?? []
       ) {
         rows.push({
-         division:
+     division:
+  officialZone ??
   getLmbZone(
     item.team?.name ?? ""
   ),
