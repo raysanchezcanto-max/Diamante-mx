@@ -398,66 +398,80 @@ const hasAnyGames =
           </span>
         </div>
 
-        <div
-          className="empty"
-          style={{
-            textAlign: "center",
-            padding: "34px 24px",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "38px",
-              marginBottom: "10px",
-            }}
-          >
-            🏆
-          </div>
+       <div className="championCardPro">
+  <div className="championGlow championGlowLeft" />
+  <div className="championGlow championGlowRight" />
+  <div className="championPattern" />
 
-          <div
-            style={{
-              color: "#caff33",
-              fontSize: "12px",
-              fontWeight: 900,
-              letterSpacing: "0.12em",
-              marginBottom: "8px",
-            }}
-          >
-            CAMPEÓN LMB {lmbChampion.year}
-          </div>
+  <div className="championCardTop">
+    <span className="championBadge">
+      🏆 CAMPEÓN LMB {lmbChampion.year}
+    </span>
 
-          <div
-            style={{
-              fontSize: "30px",
-              fontWeight: 900,
-              marginBottom: "8px",
-            }}
-          >
-            {lmbChampion.champion}
-          </div>
+    <span className="championChip">
+      SERIE DEL REY
+    </span>
+  </div>
 
-          <div
-            style={{
-              opacity: 0.75,
-              marginBottom: "14px",
-            }}
-          >
-            Campeón de la Serie del Rey
-          </div>
+  <div className="championCardBody">
+    <div className="championTrophy">
+      🏆
+    </div>
 
-          <div
-            style={{
-              fontSize: "14px",
-              fontWeight: 700,
-            }}
-          >
-            {lmbChampion.champion}{" "}
-            {lmbChampion.championWins}
-            {" – "}
-            {lmbChampion.runnerUpWins}{" "}
-            {lmbChampion.runnerUp}
-          </div>
-        </div>
+    <div className="championInfo">
+      <span className="championMiniText">
+        TEMPORADA {lmbChampion.year} FINALIZADA
+      </span>
+
+      <h3 className="championTeamName">
+        {lmbChampion.champion}
+      </h3>
+
+      <p className="championSubtitle">
+        Campeón de la Serie del Rey
+      </p>
+
+      <div className="championResultPill">
+        <span className="championResultLabel">
+          RESULTADO DE LA SERIE
+        </span>
+
+        <strong className="championResultText">
+          {lmbChampion.champion}{" "}
+          {lmbChampion.championWins}
+          {" – "}
+          {lmbChampion.runnerUpWins}{" "}
+          {lmbChampion.runnerUp}
+        </strong>
+      </div>
+    </div>
+  </div>
+
+  <div className="championCardBottom">
+    <div className="championBottomItem">
+      <span className="championBottomLabel">
+        CAMPEÓN
+      </span>
+      <strong>{lmbChampion.champion}</strong>
+    </div>
+
+    <div className="championBottomItem">
+      <span className="championBottomLabel">
+        SUBCAMPEÓN
+      </span>
+      <strong>{lmbChampion.runnerUp}</strong>
+    </div>
+
+    <div className="championBottomItem">
+      <span className="championBottomLabel">
+        MARCADOR FINAL
+      </span>
+      <strong>
+        {lmbChampion.championWins}–{lmbChampion.runnerUpWins}
+      </strong>
+    </div>
+  </div>
+</div>
       </>
     ) : (
       <>
