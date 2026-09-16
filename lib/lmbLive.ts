@@ -186,6 +186,97 @@ export async function getLmbCalendar(
     return [];
   }
 }
+export async function getLmbNextSeasonStart(): Promise<Date | null> {
+  try {
+    const {
+      date,
+      startDate,
+      endDate,
+    } = getMexicoDateRange();
+
+    const response = await fetch(
+      `https://lmb.com.mx/juegos/api/calendar?date=${date}&daysFromNow=0&startDate=${startDate}&endDate=${endDate}`,
+      {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data =
+      await response.json();
+
+    const nextGameDate =
+      data?.nextGameDate;
+
+    if (!nextGameDate) {
+      return null;
+    }
+
+    if (
+      typeof nextGameDate === "number"
+    ) {
+      const timestamp =
+        nextGameDate > 10000000000
+          ? nextGameDate
+          : nextGameDate * 1000;
+
+      const parsed =
+        new Date(timestamp);
+
+      return Number.isNaN(
+        parsed.getTime()
+      )
+        ? null
+        : parsed;
+    }
+
+    const raw =
+      String(nextGameDate).trim();
+
+    if (!raw) {
+      return null;
+    }
+
+    const numeric =
+      Number(raw);
+
+    if (
+      Number.isFinite(numeric) &&
+      numeric > 0
+    ) {
+      const timestamp =
+        numeric > 10000000000
+          ? numeric
+          : numeric * 1000;
+
+      const parsed =
+        new Date(timestamp);
+
+      return Number.isNaN(
+        parsed.getTime()
+      )
+        ? null
+        : parsed;
+    }
+
+    const parsed =
+      new Date(raw);
+
+    return Number.isNaN(
+      parsed.getTime()
+    )
+      ? null
+      : parsed;
+  } catch {
+    return null;
+  }
+}
 export async function getLmbLiveScore(
   permalink: number
 ): Promise<LmbLiveScore | null> {
