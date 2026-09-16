@@ -80,9 +80,12 @@ const nextGames =
   selectedLeague === "LMB"
     ? await getLmbChampion()
     : null;
-  const lmbNextSeasonStart =
+ const recentGames =
+  await getRecentGames(selectedLeague);
+
+const lmbChampion =
   selectedLeague === "LMB"
-    ? await getLmbNextSeasonStart()
+    ? await getLmbChampion()
     : null;
 
 const lmbNextSeasonYear =
@@ -90,6 +93,20 @@ const lmbNextSeasonYear =
     ? lmbChampion.year + 1
     : new Date().getFullYear() + 1;
 
+const lmbNextSeasonStart =
+  selectedLeague === "LMB"
+    ? await getLmbNextSeasonStart(
+        lmbNextSeasonYear
+      )
+    : null;
+
+const showLmbSeasonNotice =
+  selectedLeague === "LMB" &&
+  Boolean(lmbChampion) &&
+  (
+    !lmbNextSeasonStart ||
+    Date.now() < lmbNextSeasonStart.getTime()
+  );
 const showLmbSeasonNotice =
   selectedLeague === "LMB" &&
   Boolean(lmbChampion) &&
