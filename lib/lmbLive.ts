@@ -311,15 +311,6 @@ export async function getLmbNextSeasonStart(
           ? numeric
           : numeric * 1000;
 
-      const parsed =
-        new Date(timestamp);
-
-      return Number.isNaN(
-        parsed.getTime()
-      )
-        ? null
-        : parsed;
-    }
 
     const parsed =
       new Date(raw);
