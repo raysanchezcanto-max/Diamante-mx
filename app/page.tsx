@@ -1,3 +1,4 @@
+import { getLmbNextSeasonStart } from "@/lib/lmbLive";
 import { getLmbChampion } from "@/lib/lmbChampion";
 import AutoRefresh from "@/components/AutoRefresh";
 import LeagueTabs from "@/components/LeagueTabs";
@@ -78,6 +79,37 @@ const nextGames =
   const lmbChampion =
   selectedLeague === "LMB"
     ? await getLmbChampion()
+    : null;
+  const lmbNextSeasonStart =
+  selectedLeague === "LMB"
+    ? await getLmbNextSeasonStart()
+    : null;
+
+const lmbNextSeasonYear =
+  lmbChampion?.year
+    ? lmbChampion.year + 1
+    : new Date().getFullYear() + 1;
+
+const showLmbSeasonNotice =
+  selectedLeague === "LMB" &&
+  Boolean(lmbChampion) &&
+  (
+    !lmbNextSeasonStart ||
+    Date.now() < lmbNextSeasonStart.getTime()
+  );
+
+const daysUntilLmb =
+  lmbNextSeasonStart
+    ? Math.max(
+        0,
+        Math.ceil(
+          (
+            lmbNextSeasonStart.getTime() -
+            Date.now()
+          ) /
+            (1000 * 60 * 60 * 24)
+        )
+      )
     : null;
 
 
