@@ -148,6 +148,8 @@ export async function getLmbChampion(): Promise<
 
       if (winner === teamB) {
         winsB += 1;
+        if (winsA >= 4 || winsB >= 4) {
+  break;
       }
     }
 
