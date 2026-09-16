@@ -696,3 +696,337 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   letter-spacing: 0.03em;
   white-space: nowrap;
 }
+/* =========================================
+   LMB · TARJETA CAMPEÓN SERIE DEL REY
+   ========================================= */
+
+.championCardPro {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18px;
+  padding: 30px;
+  border: 1px solid rgba(202, 255, 51, 0.22);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(202, 255, 51, 0.13),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(39, 166, 103, 0.16),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(8, 31, 23, 0.98),
+      rgba(3, 19, 14, 0.99)
+    );
+
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.championCardPro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      rgba(202, 255, 51, 0.04) 45%,
+      transparent 70%
+    );
+}
+
+.championGlow {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.championGlowLeft {
+  top: -120px;
+  left: -80px;
+  background: #caff33;
+}
+
+.championGlowRight {
+  right: -100px;
+  bottom: -130px;
+  background: #2fa66d;
+}
+
+.championPattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(202, 255, 51, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(202, 255, 51, 0.2) 1px,
+      transparent 1px
+    );
+
+  background-size: 30px 30px;
+}
+
+.championCardTop {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 30px;
+}
+
+.championBadge,
+.championChip {
+  display: inline-flex;
+  align-items: center;
+
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.championBadge {
+  padding: 10px 15px;
+
+  color: #caff33;
+  background: rgba(202, 255, 51, 0.1);
+  border: 1px solid rgba(202, 255, 51, 0.2);
+}
+
+.championChip {
+  padding: 9px 14px;
+
+  color: #b7c9c0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.championCardBody {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 28px;
+}
+
+.championTrophy {
+  width: 130px;
+  height: 130px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 58px;
+
+  border-radius: 28px;
+  border: 1px solid rgba(202, 255, 51, 0.18);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(202, 255, 51, 0.15),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.championInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.championMiniText {
+  margin-bottom: 7px;
+
+  color: #caff33;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.championTeamName {
+  margin: 0 0 8px;
+
+  color: #f2f4ed;
+
+  font-size: clamp(36px, 5vw, 58px);
+  line-height: 0.95;
+  font-weight: 950;
+  letter-spacing: -0.035em;
+}
+
+.championSubtitle {
+  margin: 0;
+
+  color: #91a39b;
+
+  font-size: 17px;
+}
+
+.championResultPill {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+
+  margin-top: 18px;
+  padding: 13px 17px;
+
+  border: 1px solid rgba(202, 255, 51, 0.16);
+  border-radius: 16px;
+
+  background: rgba(202, 255, 51, 0.06);
+}
+
+.championResultLabel {
+  color: #9fb1a9;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+}
+
+.championResultText {
+  color: #f2f4ed;
+
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.championCardBottom {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  margin-top: 30px;
+  padding-top: 20px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.championBottomItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 14px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.championBottomLabel {
+  color: #758a80;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.championBottomItem strong {
+  color: #eef3ef;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* Hover solamente en equipos con mouse */
+@media (hover: hover) {
+  .championCardPro {
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .championCardPro:hover {
+    transform: translateY(-2px);
+
+    border-color: rgba(202, 255, 51, 0.34);
+
+    box-shadow:
+      0 30px 70px rgba(0, 0, 0, 0.38),
+      0 0 40px rgba(202, 255, 51, 0.04);
+  }
+}
+
+/* Móvil */
+@media (max-width: 720px) {
+  .championCardPro {
+    padding: 22px 18px;
+  }
+
+  .championCardTop {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
+
+  .championCardBody {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .championTrophy {
+    width: 105px;
+    height: 105px;
+    margin: 0 auto;
+
+    font-size: 48px;
+  }
+
+  .championInfo {
+    align-items: center;
+  }
+
+  .championTeamName {
+    font-size: 40px;
+  }
+
+  .championResultPill {
+    align-items: center;
+  }
+
+  .championCardBottom {
+    grid-template-columns: 1fr;
+  }
+
+  .championBottomItem {
+    text-align: center;
+  }
+}
