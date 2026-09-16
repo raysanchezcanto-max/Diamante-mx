@@ -161,8 +161,6 @@ const battingTeam =
 
 </div>
 
-<div className="liveGamePanelBody">
-
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
           <BaseDiamond
