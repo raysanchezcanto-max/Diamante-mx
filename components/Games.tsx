@@ -1,4 +1,3 @@
-import { getTeamLogo } from "@/lib/teamLogos";
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 
