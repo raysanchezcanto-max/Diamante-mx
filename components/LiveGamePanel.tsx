@@ -133,17 +133,14 @@ const battingTeam =
       whiteSpace: "nowrap",
     }}
   >
-    AL BAT · {batterName}
-  </span>
-)}
-
-{pitcherName && (
+   
+   {pitcherName && (
   <span
     style={{
       display: "block",
-      fontSize: "11px",
+      fontSize: "10px",
       fontWeight: 600,
-      color: "#ffffff",
+      color: "#9fb1ab",
       letterSpacing: "0.03em",
       whiteSpace: "nowrap",
     }}
@@ -153,8 +150,6 @@ const battingTeam =
       ? ` · ${pitchCount} P`
       : ""}
   </span>
-)}
-  </div>
 )}
         </div>
      
