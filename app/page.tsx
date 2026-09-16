@@ -216,6 +216,69 @@ const daysUntilLmb =
   league={selectedLeague}
 />
 </div>
+      {showLmbSeasonNotice && (
+  <div className="seasonNotice">
+    <div>
+      <span className="eyebrow">
+        PRÓXIMA TEMPORADA · LMB {lmbNextSeasonYear}
+      </span>
+
+      <h3>
+        {lmbNextSeasonStart
+          ? `El béisbol de verano regresa el ${new Intl.DateTimeFormat(
+              "es-MX",
+              {
+                day: "numeric",
+                month: "long",
+                timeZone: "America/Mexico_City",
+              }
+            ).format(lmbNextSeasonStart)}`
+          : "Calendario 2027 por confirmar"}
+      </h3>
+
+      <p>
+        {lmbNextSeasonStart ? (
+          <>
+            La temporada {lmbNextSeasonYear} de la Liga Mexicana de Beisbol
+            inicia el{" "}
+            <strong>
+              {new Intl.DateTimeFormat(
+                "es-MX",
+                {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "America/Mexico_City",
+                }
+              ).format(lmbNextSeasonStart)}
+            </strong>
+            .
+          </>
+        ) : (
+          <>
+            La LMB todavía no ha publicado la fecha oficial de inicio de la
+            temporada {lmbNextSeasonYear}. En cuanto aparezca en el calendario
+            oficial, Diamante MX la detectará automáticamente.
+          </>
+        )}
+      </p>
+    </div>
+
+    <div className="seasonCountdown">
+      {daysUntilLmb !== null ? (
+        <>
+          <strong>{daysUntilLmb}</strong>
+          <span>DÍAS PARA EL PLAYBALL</span>
+        </>
+      ) : (
+        <>
+          <strong>—</strong>
+          <span>CALENDARIO PENDIENTE</span>
+        </>
+      )}
+    </div>
+  </div>
+)}
       <RecentResults
   games={recentGames}
   league={selectedLeague}
