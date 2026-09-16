@@ -441,7 +441,6 @@ const broadcasts =
     {index + 1}
   </div>
 ))}
-    ))}
 
     <div
       style={{
