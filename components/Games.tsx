@@ -243,14 +243,20 @@ mlbChampion?: {
   
   league?: LeagueCode;
 }) {
-  const championLogo =
+ const championLogo =
   league === "LMB" && lmbChampion
     ? getTeamLogo(
         "LMB",
         0,
         lmbChampion.champion
       )
-    : null;
+    : league === "MLB" && mlbChampion
+      ? getTeamLogo(
+          "MLB",
+          mlbChampion.championId,
+          mlbChampion.champion
+        )
+      : null;
   const today = mexicoDateKey(new Date());
 
   /*
