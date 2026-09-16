@@ -140,23 +140,21 @@ const battingTeam =
     )}
 
     {pitcherName && (
-      <span
-        style={{
-          display: "block",
-          fontSize: "10px",
-          fontWeight: 600,
-          color: "#9fb1ab",
-          letterSpacing: "0.03em",
-          whiteSpace: "nowrap",
-        }}
-      >
-        LANZANDO · {pitcherName}
-        {typeof pitchCount === "number"
-          ? ` · ${pitchCount} P`
-          : ""}
-      </span>
-    )}
-  </div>
+  <span
+    style={{
+      display: "block",
+      fontSize: "11px",
+      fontWeight: 600,
+      color: "#c7d3cf",
+      letterSpacing: "0.03em",
+      whiteSpace: "nowrap",
+    }}
+  >
+    LANZANDO · {pitcherName}
+    {typeof pitchCount === "number"
+      ? ` · ${pitchCount} P`
+      : ""}
+  </span>
 )}
 
 </div>
