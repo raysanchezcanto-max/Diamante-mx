@@ -190,48 +190,15 @@ export async function getLmbNextSeasonStart(
   seasonYear: number
 ): Promise<Date | null> {
   try {
-    const searchDate = new Date(
-      `${seasonYear}-01-01T12:00:00-06:00`
-    );
+    const date = `01/01/${seasonYear}`;
 
-    const parts =
-      new Intl.DateTimeFormat(
-        "en-US",
-        {
-          timeZone: "America/Mexico_City",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        }
-      ).formatToParts(searchDate);
+    const startDate = new Date(
+      `${seasonYear}-01-01T00:00:00-06:00`
+    ).getTime();
 
-    const year =
-      parts.find(
-        (part) => part.type === "year"
-      )?.value ?? "";
-
-    const month =
-      parts.find(
-        (part) => part.type === "month"
-      )?.value ?? "";
-
-    const day =
-      parts.find(
-        (part) => part.type === "day"
-      )?.value ?? "";
-
-    const date =
-      `${month}/${day}/${year}`;
-
-    const startDate =
-      new Date(
-        `${year}-${month}-${day}T00:00:00-06:00`
-      ).getTime();
-
-    const endDate =
-      new Date(
-        `${year}-${month}-${day}T23:59:59.999-06:00`
-      ).getTime();
+    const endDate = new Date(
+      `${seasonYear}-12-31T23:59:59.999-06:00`
+    ).getTime();
 
     const response = await fetch(
       `https://lmb.com.mx/juegos/api/calendar?date=${date}&daysFromNow=0&startDate=${startDate}&endDate=${endDate}`,
@@ -247,77 +214,37 @@ export async function getLmbNextSeasonStart(
       return null;
     }
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
-    const nextGameDate =
-      data?.nextGameDate;
+    const nextGameDate = data?.nextGameDate;
 
     if (!nextGameDate) {
       return null;
     }
 
-    const numeric =
-      Number(nextGameDate);
+    const numericDate = Number(nextGameDate);
 
     if (
-      Number.isFinite(numeric) &&
-      numeric > 0
+      Number.isFinite(numericDate) &&
+      numericDate > 0
     ) {
       const timestamp =
-        numeric > 10000000000
-          ? numeric
-          : numeric * 1000;
+        numericDate > 10000000000
+          ? numericDate
+          : numericDate * 1000;
 
-      const parsed =
-        new Date(timestamp);
+      const parsed = new Date(timestamp);
 
-      return Number.isNaN(
-        parsed.getTime()
-      )
+      return Number.isNaN(parsed.getTime())
         ? null
         : parsed;
     }
 
-    const parsed =
-      new Date(String(nextGameDate));
+    const parsed = new Date(
+      String(nextGameDate)
+    );
 
-    return Number.isNaN(
-      parsed.getTime()
-    )
-      ? null
-      : parsed;
-  } catch {
-    return null;
-  }
-}
-
-    const raw =
-      String(nextGameDate).trim();
-
-    if (!raw) {
-      return null;
-    }
-
-    const numeric =
-      Number(raw);
-
-    if (
-      Number.isFinite(numeric) &&
-      numeric > 0
-    ) {
-      const timestamp =
-        numeric > 10000000000
-          ? numeric
-          : numeric * 1000;
-
-
-    const parsed =
-      new Date(raw);
-
-    return Number.isNaN(
-      parsed.getTime()
-    )
+    return Number.isNaN(parsed.getTime())
       ? null
       : parsed;
   } catch {
