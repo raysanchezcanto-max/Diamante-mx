@@ -215,10 +215,12 @@ function GameCards({
 export default function Games({
   games,
   nextGames = [],
+  recentGames = [],
   league = "MLB",
 }: {
   games: Game[];
   nextGames?: Game[];
+  recentGames?: Game[];
   league?: LeagueCode;
 }) {
   const today = mexicoDateKey(new Date());
