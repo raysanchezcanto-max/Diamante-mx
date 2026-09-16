@@ -125,13 +125,41 @@ const mlbChampionYear =
     ? mlbCurrentYear - 1
     : mlbCurrentYear;
 
-const mlbChampion =
-  selectedLeague === "MLB"
-    ? await getMlbChampion(
-        mlbChampionYear
+const mlbNextSeasonYear =
+  mlbChampion?.year
+    ? mlbChampion.year + 1
+    : mlbCurrentYear + 1;
+
+const mlbNextSeasonStart =
+  selectedLeague === "MLB" &&
+  mlbChampion
+    ? await getMlbNextSeasonStart(
+        mlbNextSeasonYear
       )
     : null;
 
+const showMlbSeasonNotice =
+  selectedLeague === "MLB" &&
+  Boolean(mlbChampion) &&
+  (
+    !mlbNextSeasonStart ||
+    Date.now() <
+      mlbNextSeasonStart.getTime()
+  );
+
+const daysUntilMlb =
+  mlbNextSeasonStart
+    ? Math.max(
+        0,
+        Math.ceil(
+          (
+            mlbNextSeasonStart.getTime() -
+            Date.now()
+          ) /
+            (1000 * 60 * 60 * 24)
+        )
+      )
+    : null;
 const lmbNextSeasonYear =
   lmbChampion?.year
     ? lmbChampion.year + 1
