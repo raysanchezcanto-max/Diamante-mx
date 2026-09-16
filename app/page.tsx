@@ -74,12 +74,7 @@ const nextGames =
     "2026-10-13T00:00:00-06:00"
       );
 
-      const recentGames =
-  await getRecentGames(selectedLeague);
-  const lmbChampion =
-  selectedLeague === "LMB"
-    ? await getLmbChampion()
-    : null;
+     
  const recentGames =
   await getRecentGames(selectedLeague);
 
