@@ -419,7 +419,7 @@ const hasAnyGames =
 
      {!hasAnyGames && (
   <section className="section">
-    {league === "LMB" && lmbChampion ? (
+    {championData ? (
       <>
         <div className="sectionHeader">
           <div>
@@ -427,11 +427,11 @@ const hasAnyGames =
               TEMPORADA {lmbChampion.year} · FINALIZADA
             </span>
 
-            <h2>Campeón de la Serie del Rey</h2>
+            <h2>{championTitle}</h2>
           </div>
 
           <span className="liveDot">
-            ● Datos LMB
+      • Datos {league}
           </span>
         </div>
 
@@ -442,11 +442,13 @@ const hasAnyGames =
 
   <div className="championCardTop">
     <span className="championBadge">
-      🏆 CAMPEÓN LMB {lmbChampion.year}
+     🏆 CAMPEÓN {league} {championData.year}
     </span>
 
     <span className="championChip">
-      SERIE DEL REY
+      {league === "MLB"
+  ? "SERIE MUNDIAL"
+  : "SERIE DEL REY"}
     </span>
   </div>
 
@@ -455,7 +457,7 @@ const hasAnyGames =
   {championLogo ? (
     <img
       src={championLogo}
-      alt={lmbChampion.champion}
+    alt={championData.champion}
       className="championTeamLogo"
     />
   ) : (
@@ -466,7 +468,7 @@ const hasAnyGames =
    
 
       <h3 className="championTeamName">
-        {lmbChampion.champion}
+       {championData.champion}
       </h3>
 
      
@@ -477,11 +479,11 @@ const hasAnyGames =
         </span>
 
         <strong className="championResultText">
-          {lmbChampion.champion}{" "}
-          {lmbChampion.championWins}
-          {" – "}
-          {lmbChampion.runnerUpWins}{" "}
-          {lmbChampion.runnerUp}
+         {championData.champion}{" "}
+{championData.championWins}
+{" – "}
+{championData.runnerUpWins}{" "}
+{championData.runnerUp}
         </strong>
       </div>
     </div>
