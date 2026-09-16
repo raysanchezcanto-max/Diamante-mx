@@ -387,12 +387,224 @@ const broadcasts =
         LÍNEA DEL JUEGO
       </div>
 
+   <div
+  style={{
+    overflowX: "auto",
+  }}
+>
+  <div
+    style={{
+      minWidth: "760px",
+      display: "grid",
+      gridTemplateColumns:
+        "220px repeat(9, 42px) 1px repeat(3, 48px)",
+      alignItems: "center",
+      columnGap: "6px",
+      fontSize: "13px",
+      fontVariantNumeric: "tabular-nums",
+    }}
+  >
+    {/* ENCABEZADOS */}
+    <div
+      style={{
+        padding: "8px 10px",
+        color: "#9fb1ab",
+        fontSize: "10px",
+        fontWeight: 800,
+        letterSpacing: "0.06em",
+      }}
+    >
+      EQUIPO
+    </div>
+
+    {Array.from({ length: 9 }, (_, index) => (
       <div
+        key={`header-${index + 1}`}
         style={{
-          overflowX: "auto",
+          textAlign: "center",
+          color: "#9fb1ab",
+          fontWeight: 700,
         }}
       >
-        <table
+        {index + 1}
+      </div>
+    ))}
+
+    <div
+      style={{
+        width: "1px",
+        height: "24px",
+        background: "#29463b",
+      }}
+    />
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#caff33",
+        fontWeight: 900,
+      }}
+    >
+      R
+    </div>
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#6dd5ff",
+        fontWeight: 900,
+      }}
+    >
+      H
+    </div>
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#ffb45c",
+        fontWeight: 900,
+      }}
+    >
+      E
+    </div>
+
+    {/* VISITANTE */}
+    <div
+      style={{
+        padding: "10px",
+        fontWeight: 700,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {game.away}
+    </div>
+
+    {Array.from({ length: 9 }, (_, index) => {
+      const inning =
+        playState.inningLines?.find(
+          (line) => line.inning === index + 1
+        );
+
+      return (
+        <div
+          key={`away-${index + 1}`}
+          style={{
+            textAlign: "center",
+            fontWeight: 600,
+          }}
+        >
+          {inning?.away ?? "–"}
+        </div>
+      );
+    })}
+
+    <div
+      style={{
+        width: "1px",
+        height: "28px",
+        background: "#29463b",
+      }}
+    />
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#caff33",
+        fontWeight: 900,
+      }}
+    >
+      {playState.lineScoreTotals.away.runs}
+    </div>
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#6dd5ff",
+        fontWeight: 800,
+      }}
+    >
+      {playState.lineScoreTotals.away.hits}
+    </div>
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#ffb45c",
+        fontWeight: 800,
+      }}
+    >
+      {playState.lineScoreTotals.away.errors}
+    </div>
+
+    {/* LOCAL */}
+    <div
+      style={{
+        padding: "10px",
+        fontWeight: 700,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {game.home}
+    </div>
+
+    {Array.from({ length: 9 }, (_, index) => {
+      const inning =
+        playState.inningLines?.find(
+          (line) => line.inning === index + 1
+        );
+
+      return (
+        <div
+          key={`home-${index + 1}`}
+          style={{
+            textAlign: "center",
+            fontWeight: 600,
+          }}
+        >
+          {inning?.home ?? "–"}
+        </div>
+      );
+    })}
+
+    <div
+      style={{
+        width: "1px",
+        height: "28px",
+        background: "#29463b",
+      }}
+    />
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#caff33",
+        fontWeight: 900,
+      }}
+    >
+      {playState.lineScoreTotals.home.runs}
+    </div>
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#6dd5ff",
+        fontWeight: 800,
+      }}
+    >
+      {playState.lineScoreTotals.home.hits}
+    </div>
+
+    <div
+      style={{
+        textAlign: "center",
+        color: "#ffb45c",
+        fontWeight: 800,
+      }}
+    >
+      {playState.lineScoreTotals.home.errors}
+    </div>
+  </div>
+</div>
           style={{
 borderCollapse: "collapse",
 fontSize: "13px",
