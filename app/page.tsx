@@ -1,3 +1,4 @@
+import { getLmbChampion } from "@/lib/lmbChampion";
 import AutoRefresh from "@/components/AutoRefresh";
 import LeagueTabs from "@/components/LeagueTabs";
 import Games from "@/components/Games";
@@ -74,6 +75,10 @@ const nextGames =
 
       const recentGames =
   await getRecentGames(selectedLeague);
+  const lmbChampion =
+  selectedLeague === "LMB"
+    ? await getLmbChampion()
+    : null;
 
 
   const showLmpSeasonNotice =
@@ -172,9 +177,10 @@ const nextGames =
 
    <div id="juegos">
  <Games
-  games={games}
+   games={games}
   nextGames={nextGames}
   recentGames={recentGames}
+  lmbChampion={lmbChampion}
   league={selectedLeague}
 />
 </div>
