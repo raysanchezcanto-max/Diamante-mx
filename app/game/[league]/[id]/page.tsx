@@ -394,10 +394,11 @@ const broadcasts =
       >
         <table
           style={{
-            width: "100%",
-            minWidth: "720px",
-            borderCollapse: "collapse",
-            fontSize: "13px",
+           minWidth: "760px",
+tableLayout: "fixed",
+borderCollapse: "collapse",
+fontSize: "13px",
+fontVariantNumeric: "tabular-nums",
           }}
         >
           <thead>
@@ -416,12 +417,16 @@ const broadcasts =
               {playState.inningLines.map((line) => (
                 <th
                   key={line.inning}
-                  style={{
-                    padding: "6px 8px",
-                    color: "#8fa9a0",
-                    textAlign: "center",
-                  }}
-                >
+                 style={{
+  width: "260px",
+  textAlign: "left",
+  padding: "7px 10px",
+  color: "#9fb1ab",
+  fontSize: "11px",
+  fontWeight: 800,
+  letterSpacing: "0.06em",
+}}
+    >               
                   {line.inning}
                 </th>
               ))}
@@ -447,10 +452,13 @@ const broadcasts =
               {playState.inningLines.map((line) => (
                 <td
                   key={`away-${line.inning}`}
-                  style={{
-                    padding: "8px",
-                    textAlign: "center",
-                  }}
+                style={{
+  width: "44px",
+  padding: "7px 4px",
+  color: "#9fb1ab",
+  textAlign: "center",
+  fontWeight: 700,
+}}
                 >
                   {line.away ?? "–"}
                 </td>
