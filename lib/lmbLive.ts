@@ -283,6 +283,24 @@ export type LmbPlayState = {
   batterName?: string;
   pitcherName?: string;
 pitchCount?: number;
+  inningLines?: {
+  inning: number;
+  away?: number;
+  home?: number;
+}[];
+
+lineScoreTotals?: {
+  away: {
+    runs: number;
+    hits: number;
+    errors: number;
+  };
+  home: {
+    runs: number;
+    hits: number;
+    errors: number;
+  };
+};
   plays?: string[];
   inning?: number;
 inningState?: string;
