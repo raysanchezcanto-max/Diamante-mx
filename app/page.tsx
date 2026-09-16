@@ -223,18 +223,18 @@ const daysUntilLmb =
         PRÓXIMA TEMPORADA · LMB {lmbNextSeasonYear}
       </span>
 
-      <h3>
-        {lmbNextSeasonStart
-          ? `El béisbol de verano regresa el ${new Intl.DateTimeFormat(
-              "es-MX",
-              {
-                day: "numeric",
-                month: "long",
-                timeZone: "America/Mexico_City",
-              }
-            ).format(lmbNextSeasonStart)}`
-        : `La temporada ${lmbNextSeasonYear} está por anunciarse`
-      </h3>
+     <h3>
+  {lmbNextSeasonStart
+    ? `El béisbol de verano regresa el ${new Intl.DateTimeFormat(
+        "es-MX",
+        {
+          day: "numeric",
+          month: "long",
+          timeZone: "America/Mexico_City",
+        }
+      ).format(lmbNextSeasonStart)}`
+    : `La temporada ${lmbNextSeasonYear} está por anunciarse`}
+</h3>
 
       <p>
         {lmbNextSeasonStart ? (
