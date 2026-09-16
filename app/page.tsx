@@ -124,6 +124,12 @@ const mlbChampionYear =
   mlbBeforeCurrentSeason
     ? mlbCurrentYear - 1
     : mlbCurrentYear;
+  const mlbChampion =
+  selectedLeague === "MLB"
+    ? await getMlbChampion(
+        mlbChampionYear
+      )
+    : null;
 
 const mlbNextSeasonYear =
   mlbChampion?.year
