@@ -186,13 +186,53 @@ export async function getLmbCalendar(
     return [];
   }
 }
-export async function getLmbNextSeasonStart(): Promise<Date | null> {
+export async function getLmbNextSeasonStart(
+  seasonYear: number
+): Promise<Date | null> {
   try {
-    const {
-      date,
-      startDate,
-      endDate,
-    } = getMexicoDateRange();
+    const searchDate =
+      new Date(
+        `${seasonYear}-01-01T12:00:00-06:00`
+      );
+
+    const parts =
+      new Intl.DateTimeFormat(
+        "en-US",
+        {
+          timeZone: "America/Mexico_City",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }
+      ).formatToParts(searchDate);
+
+    const year =
+      parts.find(
+        (part) => part.type === "year"
+      )?.value ?? "";
+
+    const month =
+      parts.find(
+        (part) => part.type === "month"
+      )?.value ?? "";
+
+    const day =
+      parts.find(
+        (part) => part.type === "day"
+      )?.value ?? "";
+
+    const date =
+      `${month}/${day}/${year}`;
+
+    const startDate =
+      new Date(
+        `${year}-${month}-${day}T00:00:00-06:00`
+      ).getTime();
+
+    const endDate =
+      new Date(
+        `${year}-${month}-${day}T23:59:59.999-06:00`
+      ).getTime();
 
     const response = await fetch(
       `https://lmb.com.mx/juegos/api/calendar?date=${date}&daysFromNow=0&startDate=${startDate}&endDate=${endDate}`,
@@ -218,13 +258,17 @@ export async function getLmbNextSeasonStart(): Promise<Date | null> {
       return null;
     }
 
+    const numeric =
+      Number(nextGameDate);
+
     if (
-      typeof nextGameDate === "number"
+      Number.isFinite(numeric) &&
+      numeric > 0
     ) {
       const timestamp =
-        nextGameDate > 10000000000
-          ? nextGameDate
-          : nextGameDate * 1000;
+        numeric > 10000000000
+          ? numeric
+          : numeric * 1000;
 
       const parsed =
         new Date(timestamp);
@@ -235,6 +279,19 @@ export async function getLmbNextSeasonStart(): Promise<Date | null> {
         ? null
         : parsed;
     }
+
+    const parsed =
+      new Date(String(nextGameDate));
+
+    return Number.isNaN(
+      parsed.getTime()
+    )
+      ? null
+      : parsed;
+  } catch {
+    return null;
+  }
+}
 
     const raw =
       String(nextGameDate).trim();
