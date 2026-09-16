@@ -224,6 +224,15 @@ export default function Games({
   nextGames?: Game[];
   recentGames?: Game[];
   lmbChampion?: {
+    mlbChampion?: {
+  year: number;
+  champion: string;
+  championId: number;
+  runnerUp: string;
+  runnerUpId: number;
+  championWins: number;
+  runnerUpWins: number;
+} | null;
     champion: string;
     runnerUp: string;
     championWins: number;
