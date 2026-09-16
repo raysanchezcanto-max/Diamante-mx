@@ -380,28 +380,109 @@ const hasAnyGames =
         </section>
       )}
 
-      {!hasAnyGames && (
-        <section className="section">
-          <div className="sectionHeader">
-            <div>
-              <span className="eyebrow">
-                PRÓXIMA FECHA
-              </span>
-
-              <h2>Próximos juegos</h2>
-            </div>
-
-            <span className="liveDot">
-              ● Datos {league}
+     {!hasAnyGames && (
+  <section className="section">
+    {league === "LMB" && lmbChampion ? (
+      <>
+        <div className="sectionHeader">
+          <div>
+            <span className="eyebrow">
+              TEMPORADA {lmbChampion.year} · FINALIZADA
             </span>
+
+            <h2>Campeón de la Serie del Rey</h2>
           </div>
 
-          <div className="empty">
-            No hay próximos juegos disponibles
-            en el calendario.
+          <span className="liveDot">
+            ● Datos LMB
+          </span>
+        </div>
+
+        <div
+          className="empty"
+          style={{
+            textAlign: "center",
+            padding: "34px 24px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "38px",
+              marginBottom: "10px",
+            }}
+          >
+            🏆
           </div>
-        </section>
-      )}
+
+          <div
+            style={{
+              color: "#caff33",
+              fontSize: "12px",
+              fontWeight: 900,
+              letterSpacing: "0.12em",
+              marginBottom: "8px",
+            }}
+          >
+            CAMPEÓN LMB {lmbChampion.year}
+          </div>
+
+          <div
+            style={{
+              fontSize: "30px",
+              fontWeight: 900,
+              marginBottom: "8px",
+            }}
+          >
+            {lmbChampion.champion}
+          </div>
+
+          <div
+            style={{
+              opacity: 0.75,
+              marginBottom: "14px",
+            }}
+          >
+            Campeón de la Serie del Rey
+          </div>
+
+          <div
+            style={{
+              fontSize: "14px",
+              fontWeight: 700,
+            }}
+          >
+            {lmbChampion.champion}{" "}
+            {lmbChampion.championWins}
+            {" – "}
+            {lmbChampion.runnerUpWins}{" "}
+            {lmbChampion.runnerUp}
+          </div>
+        </div>
+      </>
+    ) : (
+      <>
+        <div className="sectionHeader">
+          <div>
+            <span className="eyebrow">
+              PRÓXIMA FECHA
+            </span>
+
+            <h2>Próximos juegos</h2>
+          </div>
+
+          <span className="liveDot">
+            ● Datos {league}
+          </span>
+        </div>
+
+        <div className="empty">
+          No hay próximos juegos disponibles
+          en el calendario.
+        </div>
+      </>
+    )}
+  </section>
+)}
     </>
   );
 }
