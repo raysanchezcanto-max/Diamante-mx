@@ -442,11 +442,25 @@ export async function getLmbStandings():
     : "Zona Sur";
 }
   try {
-    const season = seasonYear();
+   const currentSeason = seasonYear();
 
-    const data = await lmbFetch(
-      `/standings?leagueId=${LMB_LEAGUE_ID}&season=${season}&standingsTypes=regularSeason&hydrate=team`
-    );
+let season = currentSeason;
+
+let data = await lmbFetch(
+  `/standings?leagueId=${LMB_LEAGUE_ID}&season=${season}&standingsTypes=regularSeason&hydrate=team`
+);
+
+const hasCurrentSeasonData =
+  Array.isArray(data?.records) &&
+  data.records.length > 0;
+
+if (!hasCurrentSeasonData) {
+  season = currentSeason - 1;
+
+  data = await lmbFetch(
+    `/standings?leagueId=${LMB_LEAGUE_ID}&season=${season}&standingsTypes=regularSeason&hydrate=team`
+  );
+}
 
     const rows: Standing[] = [];
 
