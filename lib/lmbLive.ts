@@ -469,14 +469,22 @@ const play =
       (item) =>
         String(item.playDescription).trim()
     );
+    const currentAtBatPlay =
+  [...currentPlays]
+    .reverse()
+    .find(
+      (item: any) =>
+        String(item?.playDescription ?? "")
+          .trim()
+          .toLowerCase() === "al bat"
+    );
     const batterName =
-  latestInning?.chupa?.batter?.name ??
-  data?.chupa?.batter?.name ??
+  currentAtBatPlay?.batter?.name ??
   play?.batter?.name ??
   undefined;
-    const pitcherName =
-  latestInning?.chupa?.pitcher?.name ??
-  data?.chupa?.pitcher?.name ??
+
+const pitcherName =
+  currentAtBatPlay?.pitcher?.name ??
   play?.pitcher?.name ??
   undefined;
 
