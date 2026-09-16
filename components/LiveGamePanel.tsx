@@ -92,6 +92,8 @@ export default function LiveGamePanel({
 batterName,
 pitcherName,
 pitchCount,
+  inningLines = [],
+lineScoreTotals,
 plays = [],
 }: LiveGamePanelProps) {
  const formattedInningState =
