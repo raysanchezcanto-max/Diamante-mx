@@ -476,16 +476,18 @@ export async function getLmbPlayState(
       }
     );
 
-    if (!response.ok) {
-      return null;
-    }
+  if (!response.ok) {
+  return null;
+}
 
-   const gameInfo =
+const data =
+  await response.json();
+
+const gameInfo =
   await getLmbGameInfo(permalink);
 
 const inningLines =
   Array.isArray(gameInfo?.lineScore)
-    ? gameInfo.lineScore.map(
         (item: any) => ({
           inning: Number(item?.inningNumber ?? 0),
           away: Number(item?.awayTeamRuns ?? 0),
