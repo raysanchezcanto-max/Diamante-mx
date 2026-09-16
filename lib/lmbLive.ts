@@ -516,14 +516,10 @@ const play =
         item?.pitcher?.name
     );
    const batterName =
-  latestPlayWithPlayers?.batter?.name ??
-  play?.batter?.name ??
-  undefined;
+  findCurrentBatterName(data);
 
 const pitcherName =
-  latestPlayWithPlayers?.pitcher?.name ??
-  play?.pitcher?.name ??
-  undefined;
+  findCurrentPitcherName(data);
 
     return {
       first:
