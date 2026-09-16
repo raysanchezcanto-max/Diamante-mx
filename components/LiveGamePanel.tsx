@@ -45,14 +45,14 @@ function formatInningState(
     normalized === "middle" ||
     normalized === "mitad"
   ) {
-    return "MITAD";
+    return "BAJA";
   }
 
   if (
     normalized === "end" ||
     normalized === "fin"
   ) {
-    return "FIN";
+    return "ALTA";
   }
 
   return value?.toUpperCase() ?? "";
@@ -78,7 +78,17 @@ plays = [],
 }: LiveGamePanelProps) {
  const formattedInningState =
   formatInningState(inningState);
+const normalizedInningState =
+  inningState?.trim().toLowerCase() ?? "";
 
+const displayInning =
+  (
+    normalizedInningState.includes("end") ||
+    normalizedInningState.includes("fin")
+  ) &&
+  typeof inning === "number"
+    ? inning + 1
+    : inning;
 const battingTeam =
   formattedInningState === "ALTA"
     ? away
@@ -104,7 +114,7 @@ const battingTeam =
   >
     <strong className="liveGameInning">
       {formattedInningState}{" "}
-      {inning}
+      {displayInning}
     </strong>
 
     {battingTeam && (
