@@ -394,8 +394,6 @@ const broadcasts =
       >
         <table
           style={{
-           minWidth: "760px",
-tableLayout: "fixed",
 borderCollapse: "collapse",
 fontSize: "13px",
 fontVariantNumeric: "tabular-nums",
@@ -418,7 +416,8 @@ fontVariantNumeric: "tabular-nums",
                 <th
                   key={line.inning}
                  style={{
-  width: "260px",
+width: "220px",
+minWidth: "220px",
   textAlign: "left",
   padding: "7px 10px",
   color: "#9fb1ab",
@@ -452,9 +451,8 @@ fontVariantNumeric: "tabular-nums",
               {playState.inningLines.map((line) => (
                 <td
                   key={`away-${line.inning}`}
-                style={{
-  width: "44px",
-  padding: "7px 4px",
+style={{
+  padding: "7px 6px",
   color: "#9fb1ab",
   textAlign: "center",
   fontWeight: 700,
