@@ -151,7 +151,6 @@ export async function getLmbChampion(): Promise<
         if (winsA >= 4 || winsB >= 4) {
   break;
       }
-    }
 
     /*
      * Serie del Rey: se requieren 4 victorias.
