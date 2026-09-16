@@ -25,15 +25,9 @@ const inningLines =
   Array.isArray(gameInfo?.lineScore)
     ? gameInfo.lineScore.map(
         (item: any) => ({
-          inning: Number(
-            item?.inningNumber ?? 0
-          ),
-          away: Number(
-            item?.awayTeamRuns ?? 0
-          ),
-          home: Number(
-            item?.homeTeamRuns ?? 0
-          ),
+          inning: Number(item?.inningNumber ?? 0),
+          away: Number(item?.awayTeamRuns ?? 0),
+          home: Number(item?.homeTeamRuns ?? 0),
         })
       )
     : undefined;
