@@ -233,7 +233,7 @@ const daysUntilLmb =
                 timeZone: "America/Mexico_City",
               }
             ).format(lmbNextSeasonStart)}`
-          : "Calendario 2027 por confirmar"}
+        : `La temporada ${lmbNextSeasonYear} está por anunciarse`
       </h3>
 
       <p>
