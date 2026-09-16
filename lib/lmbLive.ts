@@ -309,11 +309,11 @@ inningState?: string;
 function collectInnings(
   value: any,
   results: any[] = []
-) {
+): any[] {
   if (Array.isArray(value)) {
-    value.forEach((item) =>
-      collectInnings(item, results)
-    );
+    value.forEach((item) => {
+      collectInnings(item, results);
+    });
 
     return results;
   }
@@ -331,14 +331,15 @@ function collectInnings(
     ) {
       results.push(value);
     }
- Object.values(value).forEach(
-      (item) =>
-        collectInnings(item, results)
-    );
+
+    Object.values(value).forEach((item) => {
+      collectInnings(item, results);
+    });
   }
 
   return results;
 }
+
 function findCurrentBatterName(
   value: any
 ): string | undefined {
@@ -357,8 +358,8 @@ function findCurrentBatterName(
     }
 
     const name =
-  item?.batter?.name ??
-  item?.chupa?.batter?.name;
+      item?.batter?.name ??
+      item?.chupa?.batter?.name;
 
     if (
       typeof name === "string" &&
@@ -376,7 +377,8 @@ function findCurrentBatterName(
     ? names[names.length - 1]
     : undefined;
 }
-  function findCurrentPitcherName(
+
+function findCurrentPitcherName(
   value: any
 ): string | undefined {
   const names: string[] = [];
@@ -413,9 +415,6 @@ function findCurrentBatterName(
     ? names[names.length - 1]
     : undefined;
 }
-  return results;
-}
-
 export async function getLmbPlayState(
   permalink: number
 ): Promise<LmbPlayState | null> {
