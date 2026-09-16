@@ -421,22 +421,37 @@ const broadcasts =
   <div
     key={`header-${index + 1}`}
     style={{
-      textAlign: "center",
-      color:
-        playState.inning === index + 1
-          ? "#caff33"
-          : "#9fb1ab",
-      fontWeight:
-        playState.inning === index + 1
-          ? 900
-          : 700,
-      background:
-        playState.inning === index + 1
-          ? "#173221"
-          : "transparent",
-      borderRadius: "8px",
-      padding: "5px 0",
-    }}
+  textAlign: "center",
+  color:
+    Number(
+      playState?.inning ??
+      game.inning ??
+      0
+    ) === index + 1
+      ? "#caff33"
+      : "#9fb1ab",
+
+  fontWeight:
+    Number(
+      playState?.inning ??
+      game.inning ??
+      0
+    ) === index + 1
+      ? 900
+      : 700,
+
+  background:
+    Number(
+      playState?.inning ??
+      game.inning ??
+      0
+    ) === index + 1
+      ? "#173221"
+      : "transparent",
+
+  borderRadius: "8px",
+  padding: "5px 0",
+}}
   >
     {index + 1}
   </div>
