@@ -363,8 +363,6 @@ const broadcasts =
       </section>
       {isLive &&
   playState &&
-  "inningLines" in playState &&
-  "lineScoreTotals" in playState &&
   Array.isArray(playState.inningLines) &&
   playState.inningLines.length > 0 &&
   playState.lineScoreTotals && (
@@ -545,16 +543,8 @@ home={game.home}
     batterName={playState.batterName}
     pitcherName={playState.pitcherName}
 pitchCount={playState.pitchCount}
-    inningLines={
-  "inningLines" in playState
-    ? playState.inningLines
-    : undefined
-}
-lineScoreTotals={
-  "lineScoreTotals" in playState
-    ? playState.lineScoreTotals
-    : undefined
-}
+inningLines={playState.inningLines}
+lineScoreTotals={playState.lineScoreTotals}
     plays={playState.plays}
   
   />
