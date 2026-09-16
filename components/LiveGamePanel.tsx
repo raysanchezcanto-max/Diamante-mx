@@ -139,7 +139,7 @@ const battingTeam =
       </span>
     )}
 
-    {pitcherName && (
+  {pitcherName && (
   <span
     style={{
       display: "block",
@@ -156,8 +156,12 @@ const battingTeam =
       : ""}
   </span>
 )}
+</div>
+)}
 
 </div>
+
+<div className="liveGamePanelBody">
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
           <BaseDiamond
