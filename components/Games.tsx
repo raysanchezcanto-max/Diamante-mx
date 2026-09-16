@@ -257,6 +257,17 @@ mlbChampion?: {
           mlbChampion.champion
         )
       : null;
+  const championData =
+  league === "LMB"
+    ? lmbChampion
+    : league === "MLB"
+      ? mlbChampion
+      : null;
+
+const championTitle =
+  league === "MLB"
+    ? "Campeón de la Serie Mundial"
+    : "Campeón de la Serie del Rey";
   const today = mexicoDateKey(new Date());
 
   /*
