@@ -1,3 +1,4 @@
+import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
 import { getLmbChampion } from "@/lib/lmbChampion";
@@ -83,9 +84,52 @@ const lmbChampion =
   selectedLeague === "LMB"
     ? await getLmbChampion()
     : null;
-  const mlbChampion =
+ const mlbCurrentYear = Number(
+  new Intl.DateTimeFormat(
+    "en-US",
+    {
+      timeZone: "America/Mexico_City",
+      year: "numeric",
+    }
+  ).format(new Date())
+);
+
+const mlbCurrentMonth = Number(
+  new Intl.DateTimeFormat(
+    "en-US",
+    {
+      timeZone: "America/Mexico_City",
+      month: "2-digit",
+    }
+  ).format(new Date())
+);
+
+const mlbCurrentSeasonStart =
   selectedLeague === "MLB"
-    ? await getMlbChampion()
+    ? await getMlbNextSeasonStart(
+        mlbCurrentYear
+      )
+    : null;
+
+const mlbBeforeCurrentSeason =
+  selectedLeague === "MLB" &&
+  (
+    mlbCurrentSeasonStart
+      ? Date.now() <
+        mlbCurrentSeasonStart.getTime()
+      : mlbCurrentMonth <= 3
+  );
+
+const mlbChampionYear =
+  mlbBeforeCurrentSeason
+    ? mlbCurrentYear - 1
+    : mlbCurrentYear;
+
+const mlbChampion =
+  selectedLeague === "MLB"
+    ? await getMlbChampion(
+        mlbChampionYear
+      )
     : null;
 
 const lmbNextSeasonYear =
