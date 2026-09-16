@@ -361,6 +361,168 @@ const broadcasts =
           </div>
         </div>
       </section>
+      {isLive &&
+  playState &&
+  "inningLines" in playState &&
+  "lineScoreTotals" in playState &&
+  Array.isArray(playState.inningLines) &&
+  playState.inningLines.length > 0 &&
+  playState.lineScoreTotals && (
+    <section
+      style={{
+        marginBottom: "24px",
+        padding: "14px 18px",
+        border: "1px solid #24452f",
+        borderRadius: "16px",
+        background: "#0b1c16",
+      }}
+    >
+      <div
+        style={{
+          marginBottom: "10px",
+          fontSize: "11px",
+          fontWeight: 800,
+          letterSpacing: "0.08em",
+          color: "#caff33",
+        }}
+      >
+        LÍNEA DEL JUEGO
+      </div>
+
+      <div
+        style={{
+          overflowX: "auto",
+        }}
+      >
+        <table
+          style={{
+            width: "100%",
+            minWidth: "720px",
+            borderCollapse: "collapse",
+            fontSize: "13px",
+          }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{
+                  textAlign: "left",
+                  padding: "6px 10px",
+                  color: "#8fa9a0",
+                  fontSize: "10px",
+                }}
+              >
+                EQUIPO
+              </th>
+
+              {playState.inningLines.map((line) => (
+                <th
+                  key={line.inning}
+                  style={{
+                    padding: "6px 8px",
+                    color: "#8fa9a0",
+                    textAlign: "center",
+                  }}
+                >
+                  {line.inning}
+                </th>
+              ))}
+
+              <th style={{ padding: "6px 8px" }}>R</th>
+              <th style={{ padding: "6px 8px" }}>H</th>
+              <th style={{ padding: "6px 8px" }}>E</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td
+                style={{
+                  padding: "8px 10px",
+                  fontWeight: 700,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {game.away}
+              </td>
+
+              {playState.inningLines.map((line) => (
+                <td
+                  key={`away-${line.inning}`}
+                  style={{
+                    padding: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {line.away ?? "–"}
+                </td>
+              ))}
+
+              <td
+                style={{
+                  textAlign: "center",
+                  fontWeight: 800,
+                  color: "#caff33",
+                }}
+              >
+                {playState.lineScoreTotals.away.runs}
+              </td>
+
+              <td style={{ textAlign: "center" }}>
+                {playState.lineScoreTotals.away.hits}
+              </td>
+
+              <td style={{ textAlign: "center" }}>
+                {playState.lineScoreTotals.away.errors}
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                style={{
+                  padding: "8px 10px",
+                  fontWeight: 700,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {game.home}
+              </td>
+
+              {playState.inningLines.map((line) => (
+                <td
+                  key={`home-${line.inning}`}
+                  style={{
+                    padding: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {line.home ?? "–"}
+                </td>
+              ))}
+
+              <td
+                style={{
+                  textAlign: "center",
+                  fontWeight: 800,
+                  color: "#caff33",
+                }}
+              >
+                {playState.lineScoreTotals.home.runs}
+              </td>
+
+              <td style={{ textAlign: "center" }}>
+                {playState.lineScoreTotals.home.hits}
+              </td>
+
+              <td style={{ textAlign: "center" }}>
+                {playState.lineScoreTotals.home.errors}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+)}
     {isLive && playState && (
   <LiveGamePanel
   inning={
