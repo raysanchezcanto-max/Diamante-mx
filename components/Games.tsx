@@ -223,8 +223,15 @@ export default function Games({
   games: Game[];
   nextGames?: Game[];
   recentGames?: Game[];
-  lmbChampion?: {
-    mlbChampion?: {
+ lmbChampion?: {
+  champion: string;
+  runnerUp: string;
+  championWins: number;
+  runnerUpWins: number;
+  year: number;
+} | null;
+
+mlbChampion?: {
   year: number;
   champion: string;
   championId: number;
@@ -233,12 +240,8 @@ export default function Games({
   championWins: number;
   runnerUpWins: number;
 } | null;
-    champion: string;
-    runnerUp: string;
-    championWins: number;
-    runnerUpWins: number;
-    year: number;
-  } | null;
+
+league?: LeagueCode;
   league?: LeagueCode;
 }) {
   const championLogo =
