@@ -474,6 +474,11 @@ const play =
   data?.chupa?.batter?.name ??
   play?.batter?.name ??
   undefined;
+    const pitcherName =
+  latestInning?.chupa?.pitcher?.name ??
+  data?.chupa?.pitcher?.name ??
+  play?.pitcher?.name ??
+  undefined;
 
     return {
       first:
@@ -512,6 +517,7 @@ const play =
   "",
       
      batterName,
+      pitcherName,
       plays: inningPlays,
       };
  
