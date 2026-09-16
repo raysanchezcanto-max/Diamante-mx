@@ -92,7 +92,7 @@ const battingTeam =
           SITUACIÓN DEL JUEGO
         </span>
 
-    {inning && (
+   {inning && (
   <div
     className="liveGameInningBlock"
     style={{
@@ -122,38 +122,44 @@ const battingTeam =
         BATEANDO · {battingTeam}
       </span>
     )}
-    {batterName && (
-  <span
-    style={{
-      display: "block",
-      fontSize: "11px",
-      fontWeight: 600,
-      color: "#ffffff",
-      letterSpacing: "0.03em",
-      whiteSpace: "nowrap",
-    }}
-  >
-   
-   {pitcherName && (
-  <span
-    style={{
-      display: "block",
-      fontSize: "10px",
-      fontWeight: 600,
-      color: "#9fb1ab",
-      letterSpacing: "0.03em",
-      whiteSpace: "nowrap",
-    }}
-  >
-    LANZANDO · {pitcherName}
-    {typeof pitchCount === "number"
-      ? ` · ${pitchCount} P`
-      : ""}
-  </span>
-)}
-        </div>
-     
 
+    {batterName && (
+      <span
+        style={{
+          display: "block",
+          marginTop: "2px",
+          fontSize: "11px",
+          fontWeight: 700,
+          color: "#e6efec",
+          letterSpacing: "0.03em",
+          whiteSpace: "nowrap",
+        }}
+      >
+        AL BAT · {batterName}
+      </span>
+    )}
+
+    {pitcherName && (
+      <span
+        style={{
+          display: "block",
+          fontSize: "10px",
+          fontWeight: 600,
+          color: "#9fb1ab",
+          letterSpacing: "0.03em",
+          whiteSpace: "nowrap",
+        }}
+      >
+        LANZANDO · {pitcherName}
+        {typeof pitchCount === "number"
+          ? ` · ${pitchCount} P`
+          : ""}
+      </span>
+    )}
+  </div>
+)}
+
+</div>
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
           <BaseDiamond
