@@ -321,6 +321,44 @@ const todayGames = allGames.filter(
       new Date(game.startTime)
     ) === today
 );
+  const sortedTodayGames = [
+  ...todayGames,
+].sort((a, b) => {
+  const getPriority = (game: Game) => {
+    const status = `${game.status ?? ""} ${
+      game.detailedState ?? ""
+    }`
+      .toLowerCase()
+      .trim();
+
+    const isLive =
+      status.includes("live") ||
+      status.includes("in progress") ||
+      status.includes("en vivo");
+
+    const isFinal =
+      status.includes("final") ||
+      status.includes("game over") ||
+      status.includes("completed");
+
+    if (isLive) return 0;
+    if (isFinal) return 2;
+
+    return 1;
+  };
+
+  const priorityDifference =
+    getPriority(a) - getPriority(b);
+
+  if (priorityDifference !== 0) {
+    return priorityDifference;
+  }
+
+  return (
+    new Date(a.startTime).getTime() -
+    new Date(b.startTime).getTime()
+  );
+});
 
 const futureGames = allGames.filter(
   (game) =>
