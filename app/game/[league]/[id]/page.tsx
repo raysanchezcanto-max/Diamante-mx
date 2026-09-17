@@ -346,9 +346,17 @@ const isTied =
             </h1>
 
             {hasScore ? (
-              <strong className="matchupScore">
-                {game.awayRuns}
-              </strong>
+              <strong
+  className={`matchupScore ${
+    awayIsWinning
+      ? "scoreWinning"
+      : homeIsWinning
+        ? "scoreLosing"
+        : "scoreTied"
+  }`}
+>
+  {game.awayRuns}
+</strong>
             ) : null}
           </div>
 
@@ -375,9 +383,17 @@ const isTied =
             </h1>
 
             {hasScore ? (
-              <strong className="matchupScore">
-                {game.homeRuns}
-              </strong>
+              <strong
+  className={`matchupScore ${
+    homeIsWinning
+      ? "scoreWinning"
+      : awayIsWinning
+        ? "scoreLosing"
+        : "scoreTied"
+  }`}
+>
+  {game.homeRuns}
+</strong>
             ) : null}
           </div>
         </div>
