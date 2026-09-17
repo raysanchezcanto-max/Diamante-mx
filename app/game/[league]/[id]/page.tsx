@@ -203,6 +203,17 @@ const broadcasts =
   const hasScore =
     game.awayRuns !== undefined &&
     game.homeRuns !== undefined;
+  const awayIsWinning =
+  hasScore &&
+  game.awayRuns! > game.homeRuns!;
+
+const homeIsWinning =
+  hasScore &&
+  game.homeRuns! > game.awayRuns!;
+
+const isTied =
+  hasScore &&
+  game.awayRuns === game.homeRuns;
 
   const date =
     formatGameDate(
