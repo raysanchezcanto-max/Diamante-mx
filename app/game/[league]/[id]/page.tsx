@@ -291,22 +291,32 @@ const broadcasts =
       )}
 
           <span
-            className={
-              isLive
-                ? "gameDetailStatus live"
-                : "gameDetailStatus"
-            }
-          >
-          {isLive
-  ? "● EN VIVO"
-  : isFinal
-    ? "FINAL"
-    : game.detailedState
-        ?.toLowerCase() ===
-        "scheduled"
-      ? "PROGRAMADO"
-      : game.detailedState}
-          </span>
+  className={
+    isLive
+      ? "gameDetailStatus live"
+      : "gameDetailStatus"
+  }
+>
+  {isLive ? (
+    <>
+      <span
+        className="livePulseDot"
+        aria-hidden="true"
+      />
+
+      <span className="livePulseText">
+        EN VIVO
+      </span>
+    </>
+  ) : isFinal ? (
+    "FINAL"
+  ) : game.detailedState
+      ?.toLowerCase() === "scheduled" ? (
+    "PROGRAMADO"
+  ) : (
+    game.detailedState
+  )}
+</span>
         </div>
 
         <div className="matchup">
