@@ -1091,4 +1091,14 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   align-items: center;
   gap: 6px;
 }
+.matchupScore.scoreWinning {
+  color: #c7ff32;
+}
 
+.matchupScore.scoreLosing {
+  color: #8fa3a8;
+}
+
+.matchupScore.scoreTied {
+  color: #f4f4f0;
+}
