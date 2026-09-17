@@ -1045,16 +1045,16 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 }
 
 .livePulseDot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: currentColor;
+  background: #ff4d5a;
   flex: 0 0 auto;
-  animation: livePulse 1.4s ease-in-out infinite;
+  animation: livePulse 1s ease-in-out infinite;
 }
 
 .livePulseText {
-  animation: liveTextPulse 1.4s ease-in-out infinite;
+  animation: liveTextPulse 1s ease-in-out infinite;
 }
 
 .liveInningText {
@@ -1066,11 +1066,13 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   100% {
     opacity: 1;
     transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 77, 90, 0.7);
   }
 
   50% {
-    opacity: 0.35;
-    transform: scale(1.45);
+    opacity: 0.45;
+    transform: scale(1.25);
+    box-shadow: 0 0 0 6px rgba(255, 77, 90, 0);
   }
 }
 
@@ -1081,13 +1083,8 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   }
 
   50% {
-    opacity: 0.6;
+    opacity: 0.55;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .livePulseDot,
-  .livePulseText {
-    animation: none;
-  }
-}
+
