@@ -512,7 +512,7 @@ const isTied =
     <div
       style={{
         textAlign: "center",
-        color: "#caff33",
+        color: "#9fb1ab",
         fontWeight: 900,
       }}
     >
