@@ -228,11 +228,30 @@ export async function getGames(): Promise<Game[]> {
 
 export async function getStandings(): Promise<Standing[]> {
   try {
-    const season = seasonYear();
+   const currentSeason =
+  seasonYear();
 
-    const data = await mlbFetch(
+let season =
+  currentSeason;
+
+let data =
+  await mlbFetch(
+    `/standings?leagueId=103,104&season=${season}&standingsTypes=regularSeason&hydrate=team`
+  );
+
+const hasCurrentSeasonData =
+  Array.isArray(data?.records) &&
+  data.records.length > 0;
+
+if (!hasCurrentSeasonData) {
+  season =
+    currentSeason - 1;
+
+  data =
+    await mlbFetch(
       `/standings?leagueId=103,104&season=${season}&standingsTypes=regularSeason&hydrate=team`
     );
+}
 
     const rows: Standing[] = [];
 
