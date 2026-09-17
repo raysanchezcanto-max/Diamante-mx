@@ -153,15 +153,36 @@ function GameCards({
             className="gameCard gameCardLink"
             key={game.id}
           >
-            <div
-              className={
-                game.status === "Live"
-                  ? "gameStatus live"
-                  : "gameStatus"
-              }
-            >
-              {gameTime(game, league)}
-            </div>
+           <div
+  className={
+    game.status === "Live"
+      ? "gameStatus live"
+      : "gameStatus"
+  }
+>
+  {game.status === "Live" ? (
+    <>
+      <span
+        className="livePulseDot"
+        aria-hidden="true"
+      />
+
+      <span className="livePulseText">
+        EN VIVO
+      </span>
+
+      <span className="liveInningText">
+        {" · "}
+        {gameTime(game, league).replace(
+          /^EN VIVO\s*·\s*/,
+          ""
+        )}
+      </span>
+    </>
+  ) : (
+    gameTime(game, league)
+  )}
+</div>
 
             <div className="teamRow">
               <div className="teamIdentity">
