@@ -306,30 +306,30 @@ const daysUntilLmb =
   league={selectedLeague}
 />
 </div>
-      {showLmbSeasonNotice && (
+   {showMlbSeasonNotice && (
   <div className="seasonNotice">
     <div>
       <span className="eyebrow">
-        PRÓXIMA TEMPORADA · LMB {lmbNextSeasonYear}
+        PRÓXIMA TEMPORADA · MLB {mlbNextSeasonYear}
       </span>
 
-     <h3>
-  {lmbNextSeasonStart
-    ? `El béisbol de verano regresa el ${new Intl.DateTimeFormat(
-        "es-MX",
-        {
-          day: "numeric",
-          month: "long",
-          timeZone: "America/Mexico_City",
-        }
-      ).format(lmbNextSeasonStart)}`
-    : `La temporada ${lmbNextSeasonYear} está por anunciarse`}
-</h3>
+      <h3>
+        {mlbNextSeasonStart
+          ? `El béisbol regresa el ${new Intl.DateTimeFormat(
+              "es-MX",
+              {
+                day: "numeric",
+                month: "long",
+                timeZone: "America/Mexico_City",
+              }
+            ).format(mlbNextSeasonStart)}`
+          : `La temporada ${mlbNextSeasonYear} está por anunciarse`}
+      </h3>
 
       <p>
-        {lmbNextSeasonStart ? (
+        {mlbNextSeasonStart ? (
           <>
-            La temporada {lmbNextSeasonYear} de la Liga Mexicana de Beisbol
+            La temporada {mlbNextSeasonYear} de MLB
             inicia el{" "}
             <strong>
               {new Intl.DateTimeFormat(
@@ -340,24 +340,25 @@ const daysUntilLmb =
                   year: "numeric",
                   timeZone: "America/Mexico_City",
                 }
-              ).format(lmbNextSeasonStart)}
+              ).format(mlbNextSeasonStart)}
             </strong>
             .
           </>
         ) : (
           <>
-            La LMB todavía no ha publicado la fecha oficial de inicio de la
-            temporada {lmbNextSeasonYear}. En cuanto aparezca en el calendario
-            oficial, Diamante MX la detectará automáticamente.
+            MLB todavía no tiene disponible la fecha de
+            inicio de la temporada {mlbNextSeasonYear}.
+            En cuanto aparezca en el calendario oficial,
+            Diamante MX la detectará automáticamente.
           </>
         )}
       </p>
     </div>
 
     <div className="seasonCountdown">
-      {daysUntilLmb !== null ? (
+      {daysUntilMlb !== null ? (
         <>
-          <strong>{daysUntilLmb}</strong>
+          <strong>{daysUntilMlb}</strong>
           <span>DÍAS PARA EL PLAYBALL</span>
         </>
       ) : (
