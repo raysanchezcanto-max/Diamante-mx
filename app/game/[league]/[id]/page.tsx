@@ -465,8 +465,8 @@ const isTied =
       game.inning ??
       0
     ) === index + 1
-      ? "#caff33"
-      : "#9fb1ab",
+     ? "#e8f0f2"
+: "#9fb1ab",
 
   fontWeight:
     Number(
@@ -483,9 +483,16 @@ const isTied =
       game.inning ??
       0
     ) === index + 1
-      ? "#173221"
-      : "transparent",
-
+      ? "rgba(255,255,255,0.06)"
+: "transparent",
+      border:
+  Number(
+    playState?.inning ??
+    game.inning ??
+    0
+  ) === index + 1
+    ? "1px solid rgba(255,255,255,0.22)"
+    : "1px solid transparent",
   borderRadius: "8px",
   padding: "5px 0",
 }}
