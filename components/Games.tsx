@@ -418,7 +418,7 @@ const hasAnyGames =
           </div>
 
           <GameCards
-            games={todayGames}
+           games={sortedTodayGames}
             league={league}
           />
         </section>
