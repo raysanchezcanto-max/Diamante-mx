@@ -645,7 +645,11 @@ const isTied =
     <div
       style={{
         textAlign: "center",
-        color: "#caff33",
+        color:  homeIsWinning
+      ? "#c7ff32"
+      : awayIsWinning
+        ? "#8fa3a8"
+        : "#f4f4f0",
         fontWeight: 900,
       }}
     >
@@ -655,7 +659,11 @@ const isTied =
     <div
       style={{
         textAlign: "center",
-        color: "#6dd5ff",
+        color:  homeIsWinning
+      ? "#c7ff32"
+      : awayIsWinning
+        ? "#8fa3a8"
+        : "#f4f4f0",
         fontWeight: 800,
       }}
     >
