@@ -296,15 +296,35 @@ async function getLeaderCategory(
   category: string
 ): Promise<Leader[]> {
   try {
-    const season = seasonYear();
+   const currentSeason =
+  seasonYear();
 
-    const data = await mlbFetch(
+let season =
+  currentSeason;
+
+let data =
+  await mlbFetch(
+    `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&sportId=1&limit=10`
+  );
+
+let list =
+  data?.leagueLeaders?.[0]?.leaders ?? [];
+
+if (
+  !Array.isArray(list) ||
+  list.length === 0
+) {
+  season =
+    currentSeason - 1;
+
+  data =
+    await mlbFetch(
       `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&sportId=1&limit=10`
     );
 
-    const list =
-      data?.leagueLeaders?.[0]?.leaders ?? [];
-
+  list =
+    data?.leagueLeaders?.[0]?.leaders ?? [];
+}
     return list.map((item: any) => ({
   rank:
     item.rank,
