@@ -445,21 +445,21 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
+  padding: 8px 14px;
   border-radius: 999px;
-  background: var(--accent);
+  background: rgba(199, 255, 50, 0.72);
   color: #07110d;
   text-decoration: none;
-  font-weight: 800;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 13px;
   transition:
-    transform 0.18s ease,
-    opacity 0.18s ease;
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .watchButton:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+  background: #c7ff32;
+  transform: translateY(-1px);
 }
 
 .watchButtonDisabled {
