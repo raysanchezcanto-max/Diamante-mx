@@ -171,11 +171,25 @@ const lmbNextSeasonYear =
     ? lmbChampion.year + 1
     : new Date().getFullYear() + 1;
 
-const lmbNextSeasonStart =
+const lmbNextSeasonStartRaw =
   selectedLeague === "LMB"
     ? await getLmbNextSeasonStart(
         lmbNextSeasonYear
       )
+    : null;
+
+const lmbNextSeasonStart =
+  lmbNextSeasonStartRaw &&
+  Number(
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+      }
+    ).format(lmbNextSeasonStartRaw)
+  ) === lmbNextSeasonYear
+    ? lmbNextSeasonStartRaw
     : null;
 
 const showLmbSeasonNotice =
