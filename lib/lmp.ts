@@ -137,9 +137,9 @@ export async function getLmpSeasonYear():
   }
 
   /*
-    Si el calendario todavía no está disponible,
-    verificamos si la nueva temporada ya tiene
-    standings oficiales.
+    Si el calendario oficial todavía no está
+    disponible, comprobamos si la nueva temporada
+    ya tiene standings publicados.
   */
   try {
     const standingsData =
