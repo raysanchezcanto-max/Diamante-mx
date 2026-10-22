@@ -140,7 +140,15 @@ async function getLmpOfficialBroadcasts(
       String(
         game?.teams?.home?.team?.name ?? ""
       );
+const awayTeamId =
+  Number(
+    game?.teams?.away?.team?.id ?? 0
+  );
 
+const homeTeamId =
+  Number(
+    game?.teams?.home?.team?.id ?? 0
+  );
     const gameDate =
       new Date(game.gameDate);
 
@@ -253,43 +261,56 @@ async function getLmpOfficialBroadcasts(
     const normalizedHome =
       normalize(homeName);
 
-    const lmpGame =
-      games.find((item: any) => {
-        const awayNames = [
-          item.awayTeamShort,
-          item.awayTeam,
-        ]
-          .map((name) =>
-            normalize(
-              String(name ?? "")
-            )
-          )
-          .filter(Boolean);
+   const lmpGame =
+  games.find(
+    (item: any) =>
+      Number(item?.awayTeamId) ===
+        awayTeamId &&
+      Number(item?.homeTeamId) ===
+        homeTeamId
+  ) ??
+  games.find((item: any) => {
+    const awayNames = [
+      item.awayTeamShort,
+      item.awayTeam,
+    ]
+      .map((name) =>
+        normalize(
+          String(name ?? "")
+        )
+      )
+      .filter(Boolean);
 
-        const homeNames = [
-          item.homeTeamShort,
-          item.homeTeam,
-        ]
-          .map((name) =>
-            normalize(
-              String(name ?? "")
-            )
-          )
-          .filter(Boolean);
+    const homeNames = [
+      item.homeTeamShort,
+      item.homeTeam,
+    ]
+      .map((name) =>
+        normalize(
+          String(name ?? "")
+        )
+      )
+      .filter(Boolean);
 
-        const awayMatches =
-          awayNames.some(
-            (name) =>
-              normalizedAway.includes(name) ||
-              name.includes(normalizedAway)
-          );
+    const awayMatches =
+      awayNames.some(
+        (name) =>
+          normalizedAway.includes(name) ||
+          name.includes(normalizedAway)
+      );
 
-        const homeMatches =
-          homeNames.some(
-            (name) =>
-              normalizedHome.includes(name) ||
-              name.includes(normalizedHome)
-          );
+    const homeMatches =
+      homeNames.some(
+        (name) =>
+          normalizedHome.includes(name) ||
+          name.includes(normalizedHome)
+      );
+
+    return (
+      awayMatches &&
+      homeMatches
+    );
+  });
 
         return (
           awayMatches &&
