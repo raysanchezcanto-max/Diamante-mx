@@ -653,11 +653,23 @@ export async function getGameBroadcasts(
     return getMlbBroadcasts(gameId);
   }
 if (league === "LMP") {
-  const statsApi =
-    await getMlbBroadcasts(
-      gameId,
-      17
-    );
+  const [official, statsApi] =
+    await Promise.all([
+      getLmpOfficialBroadcasts(gameId),
+      getMlbBroadcasts(gameId, 17),
+    ]);
+
+  return Array.from(
+    new Map(
+      [...official, ...statsApi].map(
+        (broadcast) => [
+          broadcast.name.toLowerCase(),
+          broadcast,
+        ]
+      )
+    ).values()
+  );
+}
 
   const official: Broadcast[] = [
     {
