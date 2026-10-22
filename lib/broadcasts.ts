@@ -108,9 +108,10 @@ async function getMlbBroadcasts(
   gameId: number,
   sportId = 1
 ): Promise<Broadcast[]> {
+): Promise<Broadcast[]> {
   try {
     const response = await fetch(
-      `${MLB_API}/schedule?gamePk=${gameId}&sportId=${sportId}&hydrate=broadcasts`,
+     `${MLB_API}/schedule?gamePk=${gameId}&sportId=${sportId}&hydrate=broadcasts`,
       {
         next: {
           revalidate: 300,
