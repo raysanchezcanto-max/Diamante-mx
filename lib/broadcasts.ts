@@ -218,8 +218,25 @@ console.log("[LMP DEBUG FETCH]", {
     ),
 });
     if (!lmpResponse.ok) {
-      return [];
+  const errorBody =
+    await lmpResponse.text();
+
+  console.error(
+    "[LMP DEBUG HTTP ERROR]",
+    {
+      status: lmpResponse.status,
+      statusText:
+        lmpResponse.statusText,
+      url: lmpResponse.url,
+      redirected:
+        lmpResponse.redirected,
+      body:
+        errorBody.slice(0, 800),
     }
+  );
+
+  return [];
+}
 
     const lmpData =
       await lmpResponse.json();
