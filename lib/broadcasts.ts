@@ -544,10 +544,19 @@ async function getLmpOfficialBroadcasts(
       });
     }
 
-    return broadcasts;
-  } catch {
-    return [];
-  }
+ return lmpGame.channels
+  .filter(
+    (channel: any) =>
+      channel?.title
+  )
+  .map(
+    (channel: any): Broadcast => {
+      // ...
+    }
+  );
+} catch {
+  return [];
+}
 }
 async function getMlbBroadcasts(
   gameId: number,
