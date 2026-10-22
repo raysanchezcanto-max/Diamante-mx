@@ -108,9 +108,7 @@ async function getLmpOfficialBroadcasts(
   gameId: number
 ): Promise<Broadcast[]> {
   try {
-    console.log("[LMP DEBUG START]", {
-  gameId,
-});
+   
     const gameResponse = await fetch(
       `${MLB_API}/schedule?gamePk=${gameId}&sportId=17`,
       {
@@ -206,42 +204,14 @@ const homeTeamId =
   }
 );
      
-console.log("[LMP DEBUG FETCH]", {
-  status: lmpResponse.status,
-  ok: lmpResponse.ok,
-  contentType:
-    lmpResponse.headers.get(
-      "content-type"
-    ),
-});
-    if (!lmpResponse.ok) {
-  const errorBody =
-    await lmpResponse.text();
 
-  console.error(
-    "[LMP DEBUG HTTP ERROR]",
-    {
-      status: lmpResponse.status,
-      statusText:
-        lmpResponse.statusText,
-      url: lmpResponse.url,
-      redirected:
-        lmpResponse.redirected,
-      body:
-        errorBody.slice(0, 800),
-    }
-  );
-
+   if (!lmpResponse.ok) {
   return [];
 }
 
     const lmpData =
       await lmpResponse.json();
-    console.log("[LMP DEBUG RESPONSE]", {
-  status: lmpResponse.status,
-  date,
-  keys: Object.keys(lmpData ?? {}),
-});
+    
 
     const games: any[] = [];
 
