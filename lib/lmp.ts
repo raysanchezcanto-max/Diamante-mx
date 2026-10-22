@@ -259,7 +259,34 @@ export async function getLmpStandings(): Promise<
       }
     }
 
-    return rows;
+    if (rows.length === 0) {
+  return rows;
+}
+
+const leader = rows.reduce((best, row) => {
+  const bestPct = Number(best.pct);
+  const rowPct = Number(row.pct);
+
+  return rowPct > bestPct
+    ? row
+    : best;
+});
+
+return rows.map((row) => {
+  const gamesBack =
+    (
+      (leader.wins - row.wins) +
+      (row.losses - leader.losses)
+    ) / 2;
+
+  return {
+    ...row,
+    gamesBack:
+      gamesBack <= 0
+        ? "-"
+        : gamesBack.toFixed(1),
+  };
+});
   } catch {
     return [];
   }
