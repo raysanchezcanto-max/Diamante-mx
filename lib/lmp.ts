@@ -73,11 +73,7 @@ export async function getLmpSeasonYear():
       : year - 1;
   }
 
-/*
-  Obtiene el Opening Day real de una temporada LMP
-  desde el calendario oficial.
-*/
-export async function getLmpOpeningDay(
+
   season: number
 ): Promise<string | null> {
   try {
