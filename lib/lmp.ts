@@ -74,34 +74,6 @@ export async function getLmpSeasonYear():
   }
 
 
-  season: number
-): Promise<string | null> {
-  try {
-    const data = await lmpFetch(
-      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&season=${season}&gameType=R`
-    );
-
-    const dates =
-      Array.isArray(data?.dates)
-        ? data.dates
-        : [];
-
-    const firstGameDay =
-      dates.find(
-        (item: any) =>
-          item?.date &&
-          Array.isArray(item?.games) &&
-          item.games.length > 0
-      );
-
-    return firstGameDay?.date
-      ? String(firstGameDay.date)
-      : null;
-  } catch {
-    return null;
-  }
-}
-
 
 function mexicoDate() {
   return new Intl.DateTimeFormat("en-CA", {
