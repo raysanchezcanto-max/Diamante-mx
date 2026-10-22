@@ -261,7 +261,7 @@ const homeTeamId =
     const normalizedHome =
       normalize(homeName);
 
-   const lmpGame =
+  const lmpGame =
   games.find(
     (item: any) =>
       Number(item?.awayTeamId) ===
@@ -312,12 +312,7 @@ const homeTeamId =
     );
   });
 
-        return (
-          awayMatches &&
-          homeMatches
-        );
-      });
-
+       
     if (
       !lmpGame ||
       !Array.isArray(
