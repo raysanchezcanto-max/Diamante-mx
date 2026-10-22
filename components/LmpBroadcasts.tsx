@@ -207,11 +207,11 @@ const response =
         }
 
         const officialChannels =
-          Array.isArray(
-            lmpGame.channels
-          )
-            ? lmpGame.channels
-            : [];
+  Array.isArray(
+    lmpGame.tvChannels
+  )
+    ? lmpGame.tvChannels
+    : [];
 
         const mapped =
           officialChannels
