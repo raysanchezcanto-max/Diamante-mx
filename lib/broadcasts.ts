@@ -109,7 +109,8 @@ async function getLmpOfficialBroadcasts(
 ): Promise<Broadcast[]> {
   try {
     /*
-     * 1. Obtenemos los equipos del juego desde StatsAPI.
+     * Primero obtenemos los equipos y la fecha
+     * del juego desde StatsAPI.
      */
     const gameResponse = await fetch(
       `${MLB_API}/schedule?gamePk=${gameId}&sportId=17`,
@@ -130,6 +131,10 @@ async function getLmpOfficialBroadcasts(
     const game =
       gameData?.dates?.[0]?.games?.[0];
 
+    if (!game) {
+      return [];
+    }
+
     const awayName =
       String(
         game?.teams?.away?.team?.name ??
@@ -142,15 +147,58 @@ async function getLmpOfficialBroadcasts(
           ""
       );
 
-    if (!awayName || !homeName) {
+    const gameDate =
+      new Date(game.gameDate);
+
+    if (
+      !awayName ||
+      !homeName ||
+      Number.isNaN(gameDate.getTime())
+    ) {
       return [];
     }
 
     /*
-     * 2. Descargamos la cartelera oficial de LMP.
+     * Convertimos la fecha a horario de México.
      */
-    const response = await fetch(
-      "https://www.lmp.mx/",
+    const parts =
+      new Intl.DateTimeFormat(
+        "en-US",
+        {
+          timeZone: "America/Mexico_City",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }
+      ).formatToParts(gameDate);
+
+    const year =
+      parts.find(
+        (part) => part.type === "year"
+      )?.value;
+
+    const month =
+      parts.find(
+        (part) => part.type === "month"
+      )?.value;
+
+    const day =
+      parts.find(
+        (part) => part.type === "day"
+      )?.value;
+
+    if (!year || !month || !day) {
+      return [];
+    }
+
+    const date =
+      `${year}-${month}-${day}`;
+
+    /*
+     * API OFICIAL DE LMP.
+     */
+    const lmpResponse = await fetch(
+      `https://api.lmp.mx/3.00/scoreboard?date=${date}&days_next=0&days_prev=0`,
       {
         next: {
           revalidate: 300,
@@ -158,9 +206,172 @@ async function getLmpOfficialBroadcasts(
       }
     );
 
-    if (!response.ok) {
+    if (!lmpResponse.ok) {
       return [];
     }
+
+    const lmpData =
+      await lmpResponse.json();
+
+    /*
+     * La respuesta puede contener los juegos
+     * dentro de distintos niveles.
+     * Los localizamos de forma recursiva.
+     */
+    const games: any[] = [];
+
+    const collectGames = (
+      value: any
+    ) => {
+      if (!value) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach(collectGames);
+        return;
+      }
+
+      if (typeof value !== "object") {
+        return;
+      }
+
+      if (
+        (
+          value.awayTeamShort ||
+          value.awayTeam
+        ) &&
+        (
+          value.homeTeamShort ||
+          value.homeTeam
+        )
+      ) {
+        games.push(value);
+      }
+
+      Object.values(value).forEach(
+        collectGames
+      );
+    };
+
+    collectGames(lmpData);
+
+    const normalize = (
+      value: string
+    ) =>
+      value
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        )
+        .toLowerCase()
+        .trim();
+
+    const normalizedAway =
+      normalize(awayName);
+
+    const normalizedHome =
+      normalize(homeName);
+
+    const lmpGame =
+      games.find((item: any) => {
+        const awayNames = [
+          item.awayTeamShort,
+          item.awayTeam,
+        ]
+          .map((name) =>
+            normalize(
+              String(name ?? "")
+            )
+          )
+          .filter(Boolean);
+
+        const homeNames = [
+          item.homeTeamShort,
+          item.homeTeam,
+        ]
+          .map((name) =>
+            normalize(
+              String(name ?? "")
+            )
+          )
+          .filter(Boolean);
+
+        const awayMatches =
+          awayNames.some(
+            (name) =>
+              normalizedAway.includes(
+                name
+              ) ||
+              name.includes(
+                normalizedAway
+              )
+          );
+
+        const homeMatches =
+          homeNames.some(
+            (name) =>
+              normalizedHome.includes(
+                name
+              ) ||
+              name.includes(
+                normalizedHome
+              )
+          );
+
+        return (
+          awayMatches &&
+          homeMatches
+        );
+      });
+
+    if (
+      !lmpGame ||
+      !Array.isArray(
+        lmpGame.channels
+      )
+    ) {
+      return [];
+    }
+
+    return lmpGame.channels
+      .filter(
+        (channel: any) =>
+          channel?.title
+      )
+      .map(
+        (channel: any): Broadcast => {
+          const title =
+            String(channel.title);
+
+          const url =
+            String(
+              channel.url ?? ""
+            ).trim();
+
+          const isYoutube =
+            title
+              .toLowerCase()
+              .includes("youtube");
+
+          return {
+            name: isYoutube
+              ? "YouTube · LMP"
+              : title,
+            type: isYoutube
+              ? "Streaming"
+              : "TV",
+            url:
+              url || undefined,
+            fallback: !url,
+          };
+        }
+      );
+  } catch {
+    return [];
+  }
+}
 
     const html =
       await response.text();
