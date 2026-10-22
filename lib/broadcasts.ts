@@ -213,6 +213,11 @@ const homeTeamId =
 
     const lmpData =
       await lmpResponse.json();
+    console.log("[LMP DEBUG RESPONSE]", {
+  status: lmpResponse.status,
+  date,
+  keys: Object.keys(lmpData ?? {}),
+});
 
     const games: any[] = [];
 
@@ -247,6 +252,24 @@ const homeTeamId =
     };
 
     collectGames(lmpData);
+    console.log(
+  "[LMP DEBUG GAMES]",
+  games.map((item: any) => ({
+    awayTeamID:
+      item?.awayTeamID ??
+      item?.awayTeamId,
+    awayTeam: item?.awayTeam,
+    awayTeamShort:
+      item?.awayTeamShort,
+    homeTeamID:
+      item?.homeTeamID ??
+      item?.homeTeamId,
+    homeTeam: item?.homeTeam,
+    homeTeamShort:
+      item?.homeTeamShort,
+    channels: item?.channels,
+  }))
+);
 
     const normalize = (
       value: string
