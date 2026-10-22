@@ -441,12 +441,21 @@ export async function getGameBroadcasts(
   if (league === "MLB") {
     return getMlbBroadcasts(gameId);
   }
- if (league === "LMP") {
-  const [official, statsApi] =
-    await Promise.all([
-      getLmpOfficialBroadcasts(gameId),
-      getMlbBroadcasts(gameId, 17),
-    ]);
+if (league === "LMP") {
+  const statsApi =
+    await getMlbBroadcasts(
+      gameId,
+      17
+    );
+
+  const official: Broadcast[] = [
+    {
+      name: "YouTube · LMP",
+      type: "Streaming",
+      url: "https://www.youtube.com/@lmp_beisbol",
+      fallback: false,
+    },
+  ];
 
   return Array.from(
     new Map(
