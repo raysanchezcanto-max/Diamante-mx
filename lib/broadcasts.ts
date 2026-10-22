@@ -269,10 +269,14 @@ const homeTeamId =
   const lmpGame =
   games.find(
     (item: any) =>
-      Number(item?.awayTeamId) ===
-        awayTeamId &&
-      Number(item?.homeTeamId) ===
-        homeTeamId
+      Number(
+  item?.awayTeamID ??
+    item?.awayTeamId
+) === awayTeamId &&
+Number(
+  item?.homeTeamID ??
+    item?.homeTeamId
+) === homeTeamId
   ) ??
   games.find((item: any) => {
     const awayNames = [
