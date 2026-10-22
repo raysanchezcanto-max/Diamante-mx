@@ -1,3 +1,4 @@
+import LmpBroadcasts from "@/components/LmpBroadcasts";
 import { getMlbPlayState } from "@/lib/mlbLive";
 import { getLmpPlayState } from "@/lib/lmpLive";
 import LiveGamePanel from "@/components/LiveGamePanel";
@@ -277,6 +278,14 @@ const isTied =
 
   {broadcasts.length > 0 ? (
   <div className="broadcastLinks">
+    {league === "LMP" && (
+  <LmpBroadcasts
+    awayTeamId={game.awayId}
+    homeTeamId={game.homeId}
+    awayTeamName={game.away}
+    homeTeamName={game.home}
+  />
+)}
     {broadcasts.map((broadcast, index) =>
       broadcast.url ? (
         <a
