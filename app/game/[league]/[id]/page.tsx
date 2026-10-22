@@ -16,7 +16,7 @@ import {
   getTeamLogo,
   type LeagueCode,
 } from "@/lib/teamLogos";
-export const dynamic = "force-dynamic";
+
 type GamePageProps = {
   params: Promise<{
     league: string;
@@ -172,11 +172,7 @@ const broadcasts =
     league,
     gameId
   );
-console.log("[LMP PAGE DEBUG]", {
-  league,
-  gameId,
-  broadcasts,
-});
+
   const awayLogo =
     getTeamLogo(
       league,
