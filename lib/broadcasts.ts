@@ -429,6 +429,41 @@ console.log("[LMP DEBUG MATCH]", {
     return [];
   }
 }
+function getLmpSeasonYear(
+  gameDate?: string
+): number {
+  const date = gameDate
+    ? new Date(gameDate)
+    : new Date();
+
+  const year = Number(
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          "America/Mexico_City",
+        year: "numeric",
+      }
+    ).format(date)
+  );
+
+  const month = Number(
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          "America/Mexico_City",
+        month: "numeric",
+      }
+    ).format(date)
+  );
+
+  // La temporada LMP comienza en otoño
+  // y continúa hasta enero del año siguiente.
+  return month <= 3
+    ? year - 1
+    : year;
+}
 async function getMlbBroadcasts(
   gameId: number,
   sportId = 1
@@ -487,7 +522,16 @@ async function getMlbBroadcasts(
     .map(
   (broadcast: any): Broadcast => {
     const directUrl =
-      getMlbBroadcastUrl(
+  sportId === 17 &&
+  String(
+    broadcast.name
+  )
+    .toLowerCase()
+    .includes("mlb.tv")
+    ? `https://www.mlb.com/live-stream-games/lmp/${getLmpSeasonYear(
+        game?.gameDate
+      )}-schedule`
+    : getMlbBroadcastsUrl(
         broadcast.name
       );
 
