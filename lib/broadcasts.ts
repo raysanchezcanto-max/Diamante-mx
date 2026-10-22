@@ -107,7 +107,7 @@ const LMB_BROADCASTS:
 async function getMlbBroadcasts(
   gameId: number,
   sportId = 1
-): Promise<Broadcast[]> {
+
 ): Promise<Broadcast[]> {
   try {
     const response = await fetch(
