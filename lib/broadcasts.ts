@@ -343,7 +343,21 @@ Number(
       homeMatches
     );
   });
-
+console.log("[LMP DEBUG MATCH]", {
+  gameId,
+  awayTeamId,
+  homeTeamId,
+  awayName,
+  homeName,
+  found: Boolean(lmpGame),
+  lmpAwayTeamID:
+    lmpGame?.awayTeamID ??
+    lmpGame?.awayTeamId,
+  lmpHomeTeamID:
+    lmpGame?.homeTeamID ??
+    lmpGame?.homeTeamId,
+  channels: lmpGame?.channels,
+});
        
     if (
       !lmpGame ||
