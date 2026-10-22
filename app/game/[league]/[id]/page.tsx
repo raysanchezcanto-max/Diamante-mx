@@ -297,6 +297,9 @@ const isTied =
         >
          {broadcast.fallback
   ? `Ver opciones para ${broadcast.name}`
+  : league === "LMP" &&
+    broadcast.name === "MLB.TV"
+  ? "MLB.TV · Suscripción"
   : `Ver en ${broadcast.name}`}
         </a>
       ) : (
