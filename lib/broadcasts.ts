@@ -446,65 +446,47 @@ export async function getGameBroadcasts(
   if (league === "MLB") {
     return getMlbBroadcasts(gameId);
   }
-if (league === "LMP") {
-  const [official, statsApi] =
-    await Promise.all([
-      getLmpOfficialBroadcasts(gameId),
-      getMlbBroadcasts(gameId, 17),
-    ]);
 
-  return Array.from(
-    new Map(
-      [...official, ...statsApi].map(
-        (broadcast) => [
-          broadcast.name.toLowerCase(),
-          broadcast,
-        ]
-      )
-    ).values()
-  );
-}
+  if (league === "LMP") {
+    const [official, statsApi] =
+      await Promise.all([
+        getLmpOfficialBroadcasts(gameId),
+        getMlbBroadcasts(gameId, 17),
+      ]);
 
-  const official: Broadcast[] = [
-    {
-      name: "YouTube · LMP",
-      type: "Streaming",
-      url: "https://www.youtube.com/@lmp_beisbol",
-      fallback: false,
-    },
-  ];
-
-  return Array.from(
-    new Map(
-      [...official, ...statsApi].map(
-        (broadcast) => [
-          broadcast.name.toLowerCase(),
-          broadcast,
-        ]
-      )
-    ).values()
-  );
-}
-
- if (league === "LMB") {
-  const official =
-    await getLmbOfficialBroadcasts(
-      gameId
-    );
-
-  if (official.length > 0) {
-    return official.map(
-      (broadcast): Broadcast => ({
-        name: broadcast.name,
-        type: "Streaming",
-        url: broadcast.url,
-        fallback: !broadcast.url,
-      })
+    return Array.from(
+      new Map(
+        [...official, ...statsApi].map(
+          (broadcast) => [
+            broadcast.name.toLowerCase(),
+            broadcast,
+          ]
+        )
+      ).values()
     );
   }
 
-  if (LMB_BROADCASTS[gameId]) {
-    return LMB_BROADCASTS[gameId];
+  if (league === "LMB") {
+    const official =
+      await getLmbOfficialBroadcasts(
+        gameId
+      );
+
+    if (official.length > 0) {
+      return official.map(
+        (broadcast): Broadcast => ({
+          name: broadcast.name,
+          type: "Streaming",
+          url: broadcast.url,
+          fallback: !broadcast.url,
+        })
+      );
+    }
+
+    if (LMB_BROADCASTS[gameId]) {
+      return LMB_BROADCASTS[gameId];
+    }
   }
 
-
+  return [];
+}
