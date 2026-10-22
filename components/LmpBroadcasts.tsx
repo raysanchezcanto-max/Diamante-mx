@@ -82,15 +82,19 @@ export default function LmpBroadcasts({
           gameDate?.slice(0, 10) ||
           mexicoToday();
 
-        const response =
-          await fetch(
-            `https://api.lmp.mx/3.00/scoreboard?date=${encodeURIComponent(
-              date
-            )}&days_next=1&days_prev=1`,
-            {
-              cache: "no-store",
-            }
-          );
+        const [year, month, day] =
+  date.split("-");
+
+const response =
+  await fetch(
+    `https://api.lmp.mx/3.0.0/scoreboard/${year}/${month}/${day}`,
+    {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    }
+  );
 
         if (!response.ok) {
           return;
