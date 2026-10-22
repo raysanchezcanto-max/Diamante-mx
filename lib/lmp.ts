@@ -6,30 +6,80 @@ const LMP_SPORT_ID = 17;
 const LMP_LEAGUE_ID = 132;
 
 /*
-  La temporada de LMP cruza dos años.
-
-  Ejemplo:
-  octubre 2025 - enero 2026 = season 2025
-  octubre 2026 - enero 2027 = season 2026
-
-  Por eso, antes de octubre usamos el año anterior.
+  Obtiene el Opening Day real de una temporada LMP
+  desde el calendario oficial disponible en StatsAPI.
 */
-function lmpSeasonYear() {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Mexico_City",
-    year: "numeric",
-    month: "numeric",
-  }).formatToParts(new Date());
+export async function getLmpOpeningDay(
+  season: number
+): Promise<string | null> {
+  try {
+    const data = await lmpFetch(
+      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&season=${season}&gameType=R`
+    );
 
-  const year = Number(
-    parts.find((part) => part.type === "year")?.value
-  );
+    const dates =
+      Array.isArray(data?.dates)
+        ? data.dates
+        : [];
 
-  const month = Number(
-    parts.find((part) => part.type === "month")?.value
-  );
+    const firstGameDay =
+      dates.find(
+        (item: any) =>
+          item?.date &&
+          Array.isArray(item?.games) &&
+          item.games.length > 0
+      );
 
-  return month >= 10 ? year : year - 1;
+    return firstGameDay?.date
+      ? String(firstGameDay.date)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+/*
+  Determina la temporada LMP activa.
+
+  Antes del Opening Day de la nueva campaña:
+  mantiene la temporada anterior.
+
+  Desde Opening Day:
+  cambia automáticamente a la nueva temporada.
+*/
+export async function getLmpSeasonYear():
+  Promise<number> {
+  const today =
+    mexicoDate();
+
+  const year =
+    Number(
+      today.slice(0, 4)
+    );
+
+  const month =
+    Number(
+      today.slice(5, 7)
+    );
+
+  const openingDay =
+    await getLmpOpeningDay(
+      year
+    );
+
+  if (openingDay) {
+    return today >= openingDay
+      ? year
+      : year - 1;
+  }
+
+  /*
+    Respaldo únicamente si el calendario
+    oficial no está disponible.
+  */
+  return month >= 10
+    ? year
+    : year - 1;
 }
 
 function mexicoDate() {
@@ -219,7 +269,8 @@ export async function getLmpStandings(): Promise<
   Standing[]
 > {
   try {
-    const season = lmpSeasonYear();
+   const season =
+  await getLmpSeasonYear();
 
     const data = await lmpFetch(
       `/standings?leagueId=${LMP_LEAGUE_ID}&season=${season}&standingsTypes=regularSeason&hydrate=team`
@@ -299,7 +350,8 @@ async function getLmpLeaderCategory(
   category: string
 ): Promise<Leader[]> {
   try {
-    const season = lmpSeasonYear();
+ const season =
+  await getLmpSeasonYear();
 
     const data = await lmpFetch(
       `/stats/leaders?leaderCategories=${category}&statGroup=hitting&season=${season}&leagueId=${LMP_LEAGUE_ID}&sportId=${LMP_SPORT_ID}&leaderGameTypes=R&limit=10`
