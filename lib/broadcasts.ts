@@ -104,6 +104,127 @@ const LMB_BROADCASTS:
   },
 ],
 };
+async function getLmpOfficialBroadcasts(
+  gameId: number
+): Promise<Broadcast[]> {
+  try {
+    const response = await fetch(
+      "https://www.lmp.mx/",
+      {
+        next: {
+          revalidate: 300,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const html = await response.text();
+
+    /*
+     * Cada juego de LMP utiliza el gamePk de StatsAPI.
+     * Buscamos ese ID dentro de la cartelera oficial y
+     * analizamos solamente el bloque cercano al partido.
+     */
+    const gameMarker =
+      html.indexOf(String(gameId));
+
+    if (gameMarker === -1) {
+      return [];
+    }
+
+    const start =
+      Math.max(0, gameMarker - 5000);
+
+    const end =
+      Math.min(
+        html.length,
+        gameMarker + 5000
+      );
+
+    const gameBlock =
+      html.slice(start, end);
+
+    const broadcasts: Broadcast[] = [];
+
+    /*
+     * Mega Sports
+     */
+    if (/mega\s*sports\s*3/i.test(gameBlock)) {
+      broadcasts.push({
+        name: "Mega Sports 3",
+        type: "TV",
+        fallback: true,
+      });
+    } else if (
+      /mega\s*sports\s*2/i.test(gameBlock)
+    ) {
+      broadcasts.push({
+        name: "Mega Sports 2",
+        type: "TV",
+        fallback: true,
+      });
+    } else if (
+      /mega\s*sports/i.test(gameBlock)
+    ) {
+      broadcasts.push({
+        name: "Mega Sports",
+        type: "TV",
+        fallback: true,
+      });
+    }
+
+    /*
+     * TVC Deportes
+     */
+    if (
+      /tvc\s*deportes\s*2/i.test(gameBlock)
+    ) {
+      broadcasts.push({
+        name: "TVC Deportes 2",
+        type: "TV",
+        fallback: true,
+      });
+    } else if (
+      /tvc\s*deportes/i.test(gameBlock)
+    ) {
+      broadcasts.push({
+        name: "TVC Deportes",
+        type: "TV",
+        fallback: true,
+      });
+    }
+
+    /*
+     * FOX
+     */
+    if (/\bfox\b/i.test(gameBlock)) {
+      broadcasts.push({
+        name: "FOX",
+        type: "TV",
+        fallback: true,
+      });
+    }
+
+    /*
+     * Canal oficial de LMP en YouTube
+     */
+    if (/youtube/i.test(gameBlock)) {
+      broadcasts.push({
+        name: "YouTube · LMP",
+        type: "Streaming",
+        url: "https://www.youtube.com/@lmp_beisbol",
+        fallback: false,
+      });
+    }
+
+    return broadcasts;
+  } catch {
+    return [];
+  }
+}
 async function getMlbBroadcasts(
   gameId: number,
   sportId = 1
@@ -207,8 +328,23 @@ export async function getGameBroadcasts(
   if (league === "MLB") {
     return getMlbBroadcasts(gameId);
   }
-  if (league === "LMP") {
-  return getMlbBroadcasts(gameId, 17);
+ if (league === "LMP") {
+  const [official, statsApi] =
+    await Promise.all([
+      getLmpOfficialBroadcasts(gameId),
+      getMlbBroadcasts(gameId, 17),
+    ]);
+
+  return Array.from(
+    new Map(
+      [...official, ...statsApi].map(
+        (broadcast) => [
+          broadcast.name.toLowerCase(),
+          broadcast,
+        ]
+      )
+    ).values()
+  );
 }
 
  if (league === "LMB") {
