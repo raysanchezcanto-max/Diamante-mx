@@ -186,7 +186,7 @@ async function getLmpOfficialBroadcasts(
       `${year}-${month}-${day}`;
 
     const lmpResponse = await fetch(
-      `https://api.lmp.mx/3.00/scoreboard?date=${date}&days_next=0&days_prev=0`,
+    `https://api.lmp.mx/3.00/scoreboard?date=${date}&days_next=21&days_prev=0`,
       {
         next: {
           revalidate: 300,
