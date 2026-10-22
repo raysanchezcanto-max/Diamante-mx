@@ -335,42 +335,51 @@ async function getLmpOfficialBroadcasts(
       return [];
     }
 
-    return lmpGame.channels
-      .filter(
-        (channel: any) =>
-          channel?.title
-      )
-      .map(
-        (channel: any): Broadcast => {
-          const title =
-            String(channel.title);
+   if (
+  !lmpGame ||
+  !Array.isArray(
+    lmpGame.channels
+  )
+) {
+  return [];
+}
 
-          const url =
-            String(
-              channel.url ?? ""
-            ).trim();
+return lmpGame.channels
+  .filter(
+    (channel: any) =>
+      channel?.title
+  )
+  .map(
+    (channel: any): Broadcast => {
+      const title =
+        String(channel.title);
 
-          const isYoutube =
-            title
-              .toLowerCase()
-              .includes("youtube");
+      const url =
+        String(
+          channel.url ?? ""
+        ).trim();
 
-          return {
-            name: isYoutube
-              ? "YouTube · LMP"
-              : title,
-            type: isYoutube
-              ? "Streaming"
-              : "TV",
-            url:
-              url || undefined,
-            fallback: !url,
-          };
-        }
-      );
-  } catch {
-    return [];
-  }
+      const isYoutube =
+        title
+          .toLowerCase()
+          .includes("youtube");
+
+      return {
+        name: isYoutube
+          ? "YouTube · LMP"
+          : title,
+        type: isYoutube
+          ? "Streaming"
+          : "TV",
+        url:
+          url || undefined,
+        fallback: !url,
+      };
+    }
+  );
+} catch {
+  return [];
+}
 }
 
     const html =
