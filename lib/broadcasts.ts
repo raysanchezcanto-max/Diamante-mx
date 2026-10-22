@@ -531,9 +531,9 @@ async function getMlbBroadcasts(
     ? `https://www.mlb.com/live-stream-games/lmp/${getLmpSeasonYear(
         game?.gameDate
       )}-schedule`
-    : getMlbBroadcastsUrl(
-        broadcast.name
-      );
+    : getMlbBroadcastUrl(
+  broadcast.name
+)
 
     return {
       name: broadcast.name,
