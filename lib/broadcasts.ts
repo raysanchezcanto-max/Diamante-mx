@@ -105,11 +105,12 @@ const LMB_BROADCASTS:
 ],
 };
 async function getMlbBroadcasts(
-  gameId: number
+  gameId: number,
+  sportId = 1
 ): Promise<Broadcast[]> {
   try {
     const response = await fetch(
-      `${MLB_API}/schedule?gamePk=${gameId}&sportId=1&hydrate=broadcasts`,
+      `${MLB_API}/schedule?gamePk=${gameId}&sportId=${sportId}&hydrate=broadcasts`,
       {
         next: {
           revalidate: 300,
@@ -205,6 +206,9 @@ export async function getGameBroadcasts(
   if (league === "MLB") {
     return getMlbBroadcasts(gameId);
   }
+  if (league === "LMP") {
+  return getMlbBroadcasts(gameId, 17);
+}
 
  if (league === "LMB") {
   const official =
