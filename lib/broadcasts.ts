@@ -108,10 +108,6 @@ async function getLmpOfficialBroadcasts(
   gameId: number
 ): Promise<Broadcast[]> {
   try {
-    /*
-     * Primero obtenemos los equipos y la fecha
-     * del juego desde StatsAPI.
-     */
     const gameResponse = await fetch(
       `${MLB_API}/schedule?gamePk=${gameId}&sportId=17`,
       {
@@ -137,14 +133,12 @@ async function getLmpOfficialBroadcasts(
 
     const awayName =
       String(
-        game?.teams?.away?.team?.name ??
-          ""
+        game?.teams?.away?.team?.name ?? ""
       );
 
     const homeName =
       String(
-        game?.teams?.home?.team?.name ??
-          ""
+        game?.teams?.home?.team?.name ?? ""
       );
 
     const gameDate =
@@ -158,10 +152,7 @@ async function getLmpOfficialBroadcasts(
       return [];
     }
 
-    /*
-     * Convertimos la fecha a horario de México.
-     */
-    const parts =
+    const dateParts =
       new Intl.DateTimeFormat(
         "en-US",
         {
@@ -173,17 +164,17 @@ async function getLmpOfficialBroadcasts(
       ).formatToParts(gameDate);
 
     const year =
-      parts.find(
+      dateParts.find(
         (part) => part.type === "year"
       )?.value;
 
     const month =
-      parts.find(
+      dateParts.find(
         (part) => part.type === "month"
       )?.value;
 
     const day =
-      parts.find(
+      dateParts.find(
         (part) => part.type === "day"
       )?.value;
 
@@ -194,9 +185,6 @@ async function getLmpOfficialBroadcasts(
     const date =
       `${year}-${month}-${day}`;
 
-    /*
-     * API OFICIAL DE LMP.
-     */
     const lmpResponse = await fetch(
       `https://api.lmp.mx/3.00/scoreboard?date=${date}&days_next=0&days_prev=0`,
       {
@@ -213,11 +201,6 @@ async function getLmpOfficialBroadcasts(
     const lmpData =
       await lmpResponse.json();
 
-    /*
-     * La respuesta puede contener los juegos
-     * dentro de distintos niveles.
-     * Los localizamos de forma recursiva.
-     */
     const games: any[] = [];
 
     const collectGames = (
@@ -237,14 +220,10 @@ async function getLmpOfficialBroadcasts(
       }
 
       if (
-        (
-          value.awayTeamShort ||
-          value.awayTeam
-        ) &&
-        (
-          value.homeTeamShort ||
-          value.homeTeam
-        )
+        (value.awayTeamShort ||
+          value.awayTeam) &&
+        (value.homeTeamShort ||
+          value.homeTeam)
       ) {
         games.push(value);
       }
@@ -301,23 +280,15 @@ async function getLmpOfficialBroadcasts(
         const awayMatches =
           awayNames.some(
             (name) =>
-              normalizedAway.includes(
-                name
-              ) ||
-              name.includes(
-                normalizedAway
-              )
+              normalizedAway.includes(name) ||
+              name.includes(normalizedAway)
           );
 
         const homeMatches =
           homeNames.some(
             (name) =>
-              normalizedHome.includes(
-                name
-              ) ||
-              name.includes(
-                normalizedHome
-              )
+              normalizedHome.includes(name) ||
+              name.includes(normalizedHome)
           );
 
         return (
@@ -335,237 +306,42 @@ async function getLmpOfficialBroadcasts(
       return [];
     }
 
-   if (
-  !lmpGame ||
-  !Array.isArray(
-    lmpGame.channels
-  )
-) {
-  return [];
-}
+    return lmpGame.channels
+      .filter(
+        (channel: any) =>
+          channel?.title
+      )
+      .map(
+        (channel: any): Broadcast => {
+          const title =
+            String(channel.title);
 
-return lmpGame.channels
-  .filter(
-    (channel: any) =>
-      channel?.title
-  )
-  .map(
-    (channel: any): Broadcast => {
-      const title =
-        String(channel.title);
+          const url =
+            String(
+              channel.url ?? ""
+            ).trim();
 
-      const url =
-        String(
-          channel.url ?? ""
-        ).trim();
+          const isYoutube =
+            title
+              .toLowerCase()
+              .includes("youtube");
 
-      const isYoutube =
-        title
-          .toLowerCase()
-          .includes("youtube");
-
-      return {
-        name: isYoutube
-          ? "YouTube · LMP"
-          : title,
-        type: isYoutube
-          ? "Streaming"
-          : "TV",
-        url:
-          url || undefined,
-        fallback: !url,
-      };
-    }
-  );
-} catch {
-  return [];
-}
-}
-
-    const html =
-      await response.text();
-
-    /*
-     * Conservamos el ALT de las imágenes,
-     * porque ahí aparecen FOX, YouTube,
-     * Mega Sports, TVC Deportes, etc.
-     */
-    const pageText =
-      html
-        .replace(
-          /<img[^>]+alt=["']([^"']+)["'][^>]*>/gi,
-          " $1 "
-        )
-        .replace(/<script[\s\S]*?<\/script>/gi, " ")
-        .replace(/<style[\s\S]*?<\/style>/gi, " ")
-        .replace(/<[^>]+>/g, " ")
-        .replace(/&aacute;/gi, "á")
-        .replace(/&eacute;/gi, "é")
-        .replace(/&iacute;/gi, "í")
-        .replace(/&oacute;/gi, "ó")
-        .replace(/&uacute;/gi, "ú")
-        .replace(/&ntilde;/gi, "ñ")
-        .replace(/&nbsp;/gi, " ")
-        .replace(/\s+/g, " ");
-
-    const normalize = (
-      value: string
-    ) =>
-      value
-        .normalize("NFD")
-        .replace(
-          /[\u0300-\u036f]/g,
-          ""
-        )
-        .toLowerCase();
-
-    const normalizedPage =
-      normalize(pageText);
-
-    /*
-     * En LMP el primer término identifica
-     * de forma suficientemente específica
-     * a los clubes:
-     * Mayos, Tomateros, Cañeros, Yaquis, etc.
-     */
-    const awayKey =
-      normalize(awayName)
-        .split(" ")
-        .filter(Boolean)[0];
-
-    const homeKey =
-      normalize(homeName)
-        .split(" ")
-        .filter(Boolean)[0];
-
-    const awayIndex =
-      normalizedPage.indexOf(awayKey);
-
-    if (awayIndex === -1) {
-      return [];
-    }
-
-    const homeIndex =
-      normalizedPage.indexOf(
-        homeKey,
-        awayIndex
+          return {
+            name: isYoutube
+              ? "YouTube · LMP"
+              : title,
+            type: isYoutube
+              ? "Streaming"
+              : "TV",
+            url:
+              url || undefined,
+            fallback: !url,
+          };
+        }
       );
-
-    if (homeIndex === -1) {
-      return [];
-    }
-
-    /*
-     * Cortamos únicamente el bloque de ese juego
-     * para no mezclar transmisiones con el siguiente.
-     */
-    const sponsoredIndex =
-      normalizedPage.indexOf(
-        "juego patrocinado por",
-        homeIndex
-      );
-
-    const blockEnd =
-      sponsoredIndex !== -1
-        ? sponsoredIndex
-        : homeIndex + 1500;
-
-    const gameBlock =
-      normalizedPage.slice(
-        awayIndex,
-        blockEnd
-      );
-
-    const broadcasts: Broadcast[] = [];
-
-    if (
-      gameBlock.includes(
-        "mega sports 3"
-      )
-    ) {
-      broadcasts.push({
-        name: "Mega Sports 3",
-        type: "TV",
-        fallback: true,
-      });
-    } else if (
-      gameBlock.includes(
-        "mega sports 2"
-      )
-    ) {
-      broadcasts.push({
-        name: "Mega Sports 2",
-        type: "TV",
-        fallback: true,
-      });
-    } else if (
-      gameBlock.includes(
-        "mega sports"
-      )
-    ) {
-      broadcasts.push({
-        name: "Mega Sports",
-        type: "TV",
-        fallback: true,
-      });
-    }
-
-    if (
-      gameBlock.includes(
-        "tvc deportes 2"
-      )
-    ) {
-      broadcasts.push({
-        name: "TVC Deportes 2",
-        type: "TV",
-        fallback: true,
-      });
-    } else if (
-      gameBlock.includes(
-        "tvc deportes"
-      )
-    ) {
-      broadcasts.push({
-        name: "TVC Deportes",
-        type: "TV",
-        fallback: true,
-      });
-    }
-
-    if (
-      /\bfox\b/.test(gameBlock)
-    ) {
-      broadcasts.push({
-        name: "FOX",
-        type: "TV",
-        fallback: true,
-      });
-    }
-
-    if (
-      gameBlock.includes("youtube")
-    ) {
-      broadcasts.push({
-        name: "YouTube · LMP",
-        type: "Streaming",
-        url: "https://www.youtube.com/@lmp_beisbol",
-        fallback: false,
-      });
-    }
-
- return lmpGame.channels
-  .filter(
-    (channel: any) =>
-      channel?.title
-  )
-  .map(
-    (channel: any): Broadcast => {
-      // ...
-    }
-  );
-} catch {
-  return [];
-}
+  } catch {
+    return [];
+  }
 }
 async function getMlbBroadcasts(
   gameId: number,
