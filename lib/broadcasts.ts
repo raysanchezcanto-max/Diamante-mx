@@ -108,6 +108,47 @@ async function getLmpOfficialBroadcasts(
   gameId: number
 ): Promise<Broadcast[]> {
   try {
+    /*
+     * 1. Obtenemos los equipos del juego desde StatsAPI.
+     */
+    const gameResponse = await fetch(
+      `${MLB_API}/schedule?gamePk=${gameId}&sportId=17`,
+      {
+        next: {
+          revalidate: 300,
+        },
+      }
+    );
+
+    if (!gameResponse.ok) {
+      return [];
+    }
+
+    const gameData =
+      await gameResponse.json();
+
+    const game =
+      gameData?.dates?.[0]?.games?.[0];
+
+    const awayName =
+      String(
+        game?.teams?.away?.team?.name ??
+          ""
+      );
+
+    const homeName =
+      String(
+        game?.teams?.home?.team?.name ??
+          ""
+      );
+
+    if (!awayName || !homeName) {
+      return [];
+    }
+
+    /*
+     * 2. Descargamos la cartelera oficial de LMP.
+     */
     const response = await fetch(
       "https://www.lmp.mx/",
       {
@@ -121,45 +162,116 @@ async function getLmpOfficialBroadcasts(
       return [];
     }
 
-    const html = await response.text();
+    const html =
+      await response.text();
 
     /*
-     * Cada juego de LMP utiliza el gamePk de StatsAPI.
-     * Buscamos ese ID dentro de la cartelera oficial y
-     * analizamos solamente el bloque cercano al partido.
+     * Conservamos el ALT de las imágenes,
+     * porque ahí aparecen FOX, YouTube,
+     * Mega Sports, TVC Deportes, etc.
      */
-    const gameMarker =
-      html.indexOf(String(gameId));
+    const pageText =
+      html
+        .replace(
+          /<img[^>]+alt=["']([^"']+)["'][^>]*>/gi,
+          " $1 "
+        )
+        .replace(/<script[\s\S]*?<\/script>/gi, " ")
+        .replace(/<style[\s\S]*?<\/style>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/&aacute;/gi, "á")
+        .replace(/&eacute;/gi, "é")
+        .replace(/&iacute;/gi, "í")
+        .replace(/&oacute;/gi, "ó")
+        .replace(/&uacute;/gi, "ú")
+        .replace(/&ntilde;/gi, "ñ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/\s+/g, " ");
 
-    if (gameMarker === -1) {
+    const normalize = (
+      value: string
+    ) =>
+      value
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        )
+        .toLowerCase();
+
+    const normalizedPage =
+      normalize(pageText);
+
+    /*
+     * En LMP el primer término identifica
+     * de forma suficientemente específica
+     * a los clubes:
+     * Mayos, Tomateros, Cañeros, Yaquis, etc.
+     */
+    const awayKey =
+      normalize(awayName)
+        .split(" ")
+        .filter(Boolean)[0];
+
+    const homeKey =
+      normalize(homeName)
+        .split(" ")
+        .filter(Boolean)[0];
+
+    const awayIndex =
+      normalizedPage.indexOf(awayKey);
+
+    if (awayIndex === -1) {
       return [];
     }
 
-    const start =
-      Math.max(0, gameMarker - 5000);
-
-    const end =
-      Math.min(
-        html.length,
-        gameMarker + 5000
+    const homeIndex =
+      normalizedPage.indexOf(
+        homeKey,
+        awayIndex
       );
 
+    if (homeIndex === -1) {
+      return [];
+    }
+
+    /*
+     * Cortamos únicamente el bloque de ese juego
+     * para no mezclar transmisiones con el siguiente.
+     */
+    const sponsoredIndex =
+      normalizedPage.indexOf(
+        "juego patrocinado por",
+        homeIndex
+      );
+
+    const blockEnd =
+      sponsoredIndex !== -1
+        ? sponsoredIndex
+        : homeIndex + 1500;
+
     const gameBlock =
-      html.slice(start, end);
+      normalizedPage.slice(
+        awayIndex,
+        blockEnd
+      );
 
     const broadcasts: Broadcast[] = [];
 
-    /*
-     * Mega Sports
-     */
-    if (/mega\s*sports\s*3/i.test(gameBlock)) {
+    if (
+      gameBlock.includes(
+        "mega sports 3"
+      )
+    ) {
       broadcasts.push({
         name: "Mega Sports 3",
         type: "TV",
         fallback: true,
       });
     } else if (
-      /mega\s*sports\s*2/i.test(gameBlock)
+      gameBlock.includes(
+        "mega sports 2"
+      )
     ) {
       broadcasts.push({
         name: "Mega Sports 2",
@@ -167,7 +279,9 @@ async function getLmpOfficialBroadcasts(
         fallback: true,
       });
     } else if (
-      /mega\s*sports/i.test(gameBlock)
+      gameBlock.includes(
+        "mega sports"
+      )
     ) {
       broadcasts.push({
         name: "Mega Sports",
@@ -176,11 +290,10 @@ async function getLmpOfficialBroadcasts(
       });
     }
 
-    /*
-     * TVC Deportes
-     */
     if (
-      /tvc\s*deportes\s*2/i.test(gameBlock)
+      gameBlock.includes(
+        "tvc deportes 2"
+      )
     ) {
       broadcasts.push({
         name: "TVC Deportes 2",
@@ -188,7 +301,9 @@ async function getLmpOfficialBroadcasts(
         fallback: true,
       });
     } else if (
-      /tvc\s*deportes/i.test(gameBlock)
+      gameBlock.includes(
+        "tvc deportes"
+      )
     ) {
       broadcasts.push({
         name: "TVC Deportes",
@@ -197,10 +312,9 @@ async function getLmpOfficialBroadcasts(
       });
     }
 
-    /*
-     * FOX
-     */
-    if (/\bfox\b/i.test(gameBlock)) {
+    if (
+      /\bfox\b/.test(gameBlock)
+    ) {
       broadcasts.push({
         name: "FOX",
         type: "TV",
@@ -208,10 +322,9 @@ async function getLmpOfficialBroadcasts(
       });
     }
 
-    /*
-     * Canal oficial de LMP en YouTube
-     */
-    if (/youtube/i.test(gameBlock)) {
+    if (
+      gameBlock.includes("youtube")
+    ) {
       broadcasts.push({
         name: "YouTube · LMP",
         type: "Streaming",
