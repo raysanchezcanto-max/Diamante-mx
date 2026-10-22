@@ -195,7 +195,6 @@ const homeTeamId =
 
     const date =
       `${year}-${month}-${day}`;
-const [year, month, day] =
   date.split("-");
    const lmpResponse = await fetch(
   `https://api.lmp.mx/3.0.0/scoreboard/${year}/${month}/${day}`,
