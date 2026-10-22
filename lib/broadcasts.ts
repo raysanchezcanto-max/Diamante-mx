@@ -507,6 +507,4 @@ if (league === "LMP") {
     return LMB_BROADCASTS[gameId];
   }
 
-  return [];
-}
- 
+
