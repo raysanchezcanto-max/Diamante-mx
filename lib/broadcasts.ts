@@ -194,13 +194,18 @@ const homeTeamId =
       `${year}-${month}-${day}`;
 
     const lmpResponse = await fetch(
-    `https://api.lmp.mx/3.00/scoreboard?date=${date}&days_next=21&days_prev=0`,
-      {
-        next: {
-          revalidate: 300,
-        },
-      }
-    );
+  `https://api.lmp.mx/3.00/scoreboard?date=${date}&days_next=21&days_prev=0`,
+  {
+    cache: "no-store",
+    headers: {
+      Accept: "application/json",
+      Referer: "https://www.lmp.mx/",
+      Origin: "https://www.lmp.mx",
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/156 Safari/537.36",
+    },
+  }
+);
 
     if (!lmpResponse.ok) {
       return [];
