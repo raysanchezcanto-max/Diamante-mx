@@ -73,13 +73,34 @@ export async function getLmpSeasonYear():
       : year - 1;
   }
 
-  /*
-    Respaldo únicamente si el calendario
-    oficial no está disponible.
-  */
-  return month >= 10
+ /*
+  Si el calendario oficial todavía no está
+  disponible, comprobamos si la nueva temporada
+  ya tiene standings publicados.
+*/
+try {
+  const standingsData =
+    await lmpFetch(
+      `/standings?leagueId=${LMP_LEAGUE_ID}&season=${year}&standingsTypes=regularSeason&hydrate=team`
+    );
+
+  const hasCurrentSeasonData =
+    Array.isArray(
+      standingsData?.records
+    ) &&
+    standingsData.records.some(
+      (record: any) =>
+        Array.isArray(
+          record?.teamRecords
+        ) &&
+        record.teamRecords.length > 0
+    );
+
+  return hasCurrentSeasonData
     ? year
     : year - 1;
+} catch {
+  return year - 1;
 }
 
 function mexicoDate() {
