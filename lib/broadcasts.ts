@@ -509,10 +509,4 @@ if (league === "LMP") {
 
   return [];
 }
-  /*
-    LMP se conectará cuando se publiquen
-    oficialmente las transmisiones de la
-    temporada 2026-2027.
-  */
-  return [];
-}
+ 
