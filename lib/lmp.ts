@@ -73,36 +73,99 @@ export async function getLmpSeasonYear():
       : year - 1;
   }
 
- /*
-  Si el calendario oficial todavía no está
-  disponible, comprobamos si la nueva temporada
-  ya tiene standings publicados.
+/*
+  Obtiene el Opening Day real de una temporada LMP
+  desde el calendario oficial.
 */
-try {
-  const standingsData =
-    await lmpFetch(
-      `/standings?leagueId=${LMP_LEAGUE_ID}&season=${year}&standingsTypes=regularSeason&hydrate=team`
+export async function getLmpOpeningDay(
+  season: number
+): Promise<string | null> {
+  try {
+    const data = await lmpFetch(
+      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&season=${season}&gameType=R`
     );
 
-  const hasCurrentSeasonData =
-    Array.isArray(
-      standingsData?.records
-    ) &&
-    standingsData.records.some(
-      (record: any) =>
-        Array.isArray(
-          record?.teamRecords
-        ) &&
-        record.teamRecords.length > 0
-    );
+    const dates =
+      Array.isArray(data?.dates)
+        ? data.dates
+        : [];
 
-  return hasCurrentSeasonData
-    ? year
-    : year - 1;
-} catch {
-  return year - 1;
+    const firstGameDay =
+      dates.find(
+        (item: any) =>
+          item?.date &&
+          Array.isArray(item?.games) &&
+          item.games.length > 0
+      );
+
+    return firstGameDay?.date
+      ? String(firstGameDay.date)
+      : null;
+  } catch {
+    return null;
+  }
 }
 
+/*
+  Determina la temporada LMP activa.
+
+  Antes del Opening Day de la nueva campaña,
+  conserva la temporada anterior.
+
+  Desde Opening Day,
+  cambia automáticamente a la nueva temporada.
+*/
+export async function getLmpSeasonYear():
+  Promise<number> {
+  const today =
+    mexicoDate();
+
+  const year =
+    Number(
+      today.slice(0, 4)
+    );
+
+  const openingDay =
+    await getLmpOpeningDay(
+      year
+    );
+
+  if (openingDay) {
+    return today >= openingDay
+      ? year
+      : year - 1;
+  }
+
+  /*
+    Si el calendario todavía no está disponible,
+    verificamos si la nueva temporada ya tiene
+    standings oficiales.
+  */
+  try {
+    const standingsData =
+      await lmpFetch(
+        `/standings?leagueId=${LMP_LEAGUE_ID}&season=${year}&standingsTypes=regularSeason&hydrate=team`
+      );
+
+    const hasCurrentSeasonData =
+      Array.isArray(
+        standingsData?.records
+      ) &&
+      standingsData.records.some(
+        (record: any) =>
+          Array.isArray(
+            record?.teamRecords
+          ) &&
+          record.teamRecords.length > 0
+      );
+
+    return hasCurrentSeasonData
+      ? year
+      : year - 1;
+  } catch {
+    return year - 1;
+  }
+}
 function mexicoDate() {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Mexico_City",
