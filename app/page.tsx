@@ -1,3 +1,4 @@
+import { getMlbPostseason } from "@/lib/mlbPostseason";
 import { getMlbWorldSeriesStats } from "@/lib/mlbWorldSeriesStats";
 import { getMlbPlayState } from "@/lib/mlbLive";
 import {
@@ -167,6 +168,12 @@ const mlbChampionYear =
 const mlbWorldSeries =
   selectedLeague === "MLB"
     ? await getMlbWorldSeries(
+        mlbChampionYear
+      )
+    : null;
+  const mlbPostseason =
+  selectedLeague === "MLB"
+    ? await getMlbPostseason(
         mlbChampionYear
       )
     : null;
@@ -446,6 +453,7 @@ const daysUntilLmp =
    lmpChampion={lmpChampion}
    mlbChampion={mlbChampion}
    mlbWorldSeries={mlbWorldSeries}
+   mlbPostseason={mlbPostseason}
    mlbWorldSeriesStats={mlbWorldSeriesStats}
    mlbWorldSeriesLiveState={mlbWorldSeriesLiveState}
   league={selectedLeague}
