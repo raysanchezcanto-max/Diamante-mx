@@ -1126,7 +1126,15 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-size: 22px;
   line-height: 1.1;
 }
+.mlbWorldSeriesGameToday {
+  border-color: rgba(190, 255, 0, 0.55);
+  background: rgba(190, 255, 0, 0.06);
+}
 
+.mlbWorldSeriesGameToday > div:first-child span {
+  font-weight: 800;
+  opacity: 1;
+}
 .mlbWorldSeriesTeam .championTeamLogo {
   width: 86px;
   height: 86px;
