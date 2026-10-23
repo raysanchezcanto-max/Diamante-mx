@@ -19,8 +19,10 @@ import {
 
 import {
   getLmpGames,
-  getLmpLeaders,
   getLmpStandings,
+  getLmpLeaders,
+  getLmpOpeningDay,
+  getLmpSeasonYear,
 } from "@/lib/lmp";
 import {
   getLmbGames,
@@ -73,9 +75,31 @@ const selectedLeague:
 
 const nextGames =
   await getNextGames(selectedLeague);
-    const lmpSeasonStart = new Date(
-    "2026-10-13T00:00:00-06:00"
-      );
+    const lmpCurrentSeason =
+  selectedLeague === "LMP"
+    ? await getLmpSeasonYear()
+    : null;
+
+const lmpNextSeasonYear =
+  lmpCurrentSeason !== null
+    ? lmpCurrentSeason + 1
+    : null;
+
+const lmpNextSeasonStartRaw =
+  selectedLeague === "LMP" &&
+  lmpChampion &&
+  lmpNextSeasonYear !== null
+    ? await getLmpOpeningDay(
+        lmpNextSeasonYear
+      )
+    : null;
+
+const lmpNextSeasonStart =
+  lmpNextSeasonStartRaw
+    ? new Date(
+        `${lmpNextSeasonStartRaw}T00:00:00-06:00`
+      )
+    : null;
 
      
  const recentGames =
