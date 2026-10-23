@@ -503,20 +503,28 @@ export async function getMlbPostseason(
           )
       );
 
-    const currentPhase =
-      (
-        [
-          "L",
-          "D",
-          "F",
-        ] as MlbPostseasonGameType[]
-      ).find((phase) =>
+  const postseasonPhaseOrder: MlbPostseasonGameType[] =
+  ["F", "D", "L"];
+
+const currentPhase =
+  postseasonPhaseOrder.find(
+    (phase) =>
+      series.some(
+        (item) =>
+          item.gameType === phase &&
+          !item.winner
+      )
+  ) ??
+  [...postseasonPhaseOrder]
+    .reverse()
+    .find(
+      (phase) =>
         series.some(
           (item) =>
-            item.gameType ===
-            phase
+            item.gameType === phase
         )
-      ) ?? null;
+    ) ??
+  null;
 
     return {
       year: season,
