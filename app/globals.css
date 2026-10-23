@@ -2268,3 +2268,39 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-weight: 900;
   line-height: 1;
 }
+.mlbWorldSeriesSeriesScore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.mlbWorldSeriesSeriesScore small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  opacity: 0.55;
+}
+
+.mlbWorldSeriesSeriesScoreNumbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+}
+
+.mlbWorldSeriesSeriesScoreNumbers strong {
+  min-width: 24px;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+}
+
+.mlbWorldSeriesSeriesScoreNumbers span {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.5;
+}
