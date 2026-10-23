@@ -551,12 +551,21 @@ const hasAnyGames =
           </span>
 
           <span className="championChip">
-            JUEGO{" "}
-            {mlbWorldSeries.currentGameNumber ?? "—"}
-            {" · "}
-            AL MEJOR DE{" "}
-            {mlbWorldSeries.gamesInSeries}
-          </span>
+  {mlbWorldSeriesCurrentGame ? (
+    <>
+      JUEGO{" "}
+      {mlbWorldSeriesCurrentGame.gameNumber}
+      {" · "}
+      AL MEJOR DE{" "}
+      {mlbWorldSeries.gamesInSeries}
+    </>
+  ) : (
+    <>
+      SERIE AL MEJOR DE{" "}
+      {mlbWorldSeries.gamesInSeries}
+    </>
+  )}
+</span>
         </div>
 
         <div className="mlbWorldSeriesTeams">
