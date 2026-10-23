@@ -3,13 +3,13 @@ function getMlbDivisionName(
   divisionId: number
 ): string {
   const divisions: Record<number, string> = {
-    200: "AL West",
-    201: "AL East",
-    202: "AL Central",
-    203: "NL West",
-    204: "NL East",
-    205: "NL Central",
-  };
+  200: "Liga Americana Oeste",
+  201: "Liga Americana Este",
+  202: "Liga Americana Central",
+  203: "Liga Nacional Oeste",
+  204: "Liga Nacional Este",
+  205: "Liga Nacional Central",
+};
 
   return divisions[divisionId] ?? "División";
 }
