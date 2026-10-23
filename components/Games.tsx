@@ -368,6 +368,9 @@ const championTitle =
   league === "MLB" &&
   Boolean(mlbWorldSeries) &&
   !mlbWorldSeries?.champion;
+  const hideMlbRegularGameSections =
+  league === "MLB" &&
+  Boolean(mlbWorldSeries);
 
 const mlbWorldSeriesTeamALogo =
   mlbWorldSeries
@@ -869,7 +872,8 @@ const hasAnyGames =
       </div>
     </section>
   )}
-      {todayGames.length > 0 && (
+     {!hideMlbRegularGameSections &&
+  todayGames.length > 0 && (
         <section className="section">
           <div className="sectionHeader">
             <div>
@@ -892,7 +896,8 @@ const hasAnyGames =
         </section>
       )}
 
-      {upcomingGames.length > 0 && (
+     {!hideMlbRegularGameSections &&
+  upcomingGames.length > 0 && (
         <section className="section">
           <div className="sectionHeader">
             <div>
