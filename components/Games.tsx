@@ -705,21 +705,14 @@ const hasAnyGames =
 )}
  
    
- <div className="mlbWorldSeriesScoreNumbers">
-  <span>
-    {mlbWorldSeries.teamA.wins}
-  </span>
+ <div className="mlbWorldSeriesSeriesScore">
+  <small>SERIE</small>
 
-  <small>
-    SERIE{" "}
+  <strong>
     {mlbWorldSeries.teamA.wins}
     {"–"}
     {mlbWorldSeries.teamB.wins}
-  </small>
-
-  <span>
-    {mlbWorldSeries.teamB.wins}
-  </span>
+  </strong>
 </div>
 </div>
 
