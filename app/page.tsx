@@ -578,7 +578,10 @@ const daysUntilLmp =
     </div>
   </div>
 )}
-      {!mlbWorldSeriesActive && (
+      {!(
+  selectedLeague === "MLB" &&
+  mlbWorldSeries
+) && (
   <RecentResults
     games={recentGames}
     league={selectedLeague}
