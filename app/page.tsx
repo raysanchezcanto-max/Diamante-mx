@@ -420,6 +420,7 @@ const daysUntilLmp =
   lmbChampion={lmbChampion}
    lmpChampion={lmpChampion}
    mlbChampion={mlbChampion}
+   mlbWorldSeries={mlbWorldSeries}
   league={selectedLeague}
 />
 </div>
