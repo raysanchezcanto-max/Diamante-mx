@@ -374,7 +374,11 @@ const mlbWorldSeriesTeamBLogo =
         (game) => game.live
       ) ??
       mlbWorldSeries.games.find(
-        (game) => !game.final
+        (game) =>
+          !game.final &&
+          mexicoDateKey(
+            new Date(game.gameDate)
+          ) === today
       ) ??
       null
     : null;
