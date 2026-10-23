@@ -148,6 +148,20 @@ export async function getGames(): Promise<Game[]> {
         inningState:
           g.linescore?.inningState,
         gameType:
+  g.gameType ?? "",
+
+seriesDescription:
+  g.seriesDescription ?? "",
+
+seriesGameNumber:
+  g.seriesGameNumber
+    ? Number(g.seriesGameNumber)
+    : undefined,
+
+gamesInSeries:
+  g.gamesInSeries
+    ? Number(g.gamesInSeries)
+    : undefined,
   
         startTime:
           g.gameDate,
