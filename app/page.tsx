@@ -1,3 +1,4 @@
+import { getMlbWorldSeriesStats } from "@/lib/mlbWorldSeriesStats";
 import { getMlbPlayState } from "@/lib/mlbLive";
 import {
   getMlbWorldSeries,
@@ -167,6 +168,17 @@ const mlbWorldSeries =
   selectedLeague === "MLB"
     ? await getMlbWorldSeries(
         mlbChampionYear
+      )
+    : null;
+  const mlbWorldSeriesStats =
+  selectedLeague === "MLB" &&
+  mlbWorldSeries
+    ? await getMlbWorldSeriesStats(
+        mlbWorldSeries.year,
+        [
+          mlbWorldSeries.teamA.id,
+          mlbWorldSeries.teamB.id,
+        ]
       )
     : null;
 
@@ -434,6 +446,7 @@ const daysUntilLmp =
    lmpChampion={lmpChampion}
    mlbChampion={mlbChampion}
    mlbWorldSeries={mlbWorldSeries}
+   mlbWorldSeriesStats={mlbWorldSeriesStats}
    mlbWorldSeriesLiveState={mlbWorldSeriesLiveState}
   league={selectedLeague}
 />
