@@ -1,3 +1,6 @@
+import {
+  getMlbWorldSeries,
+} from "@/lib/mlbWorldSeries";
 import { getLmpChampion } from "@/lib/lmpChampion";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
@@ -159,7 +162,18 @@ const mlbChampionYear =
         mlbChampionYear
       )
     : null;
+const mlbWorldSeries =
+  selectedLeague === "MLB"
+    ? await getMlbWorldSeries(
+        mlbChampionYear
+      )
+    : null;
 
+const mlbWorldSeriesActive =
+  Boolean(
+    mlbWorldSeries &&
+    !mlbWorldSeries.champion
+  );
 const mlbNextSeasonYear =
   mlbChampion?.year
     ? mlbChampion.year + 1
