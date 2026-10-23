@@ -446,6 +446,29 @@ const mlbWorldSeriesTeamBProbablePitcher =
           .homeProbablePitcher
       : undefined
     : undefined;
+  const mlbWorldSeriesTeamAGameRuns =
+  mlbWorldSeries &&
+  mlbWorldSeriesCurrentGame
+    ? mlbWorldSeriesCurrentGame.awayId ===
+      mlbWorldSeries.teamA.id
+      ? mlbWorldSeriesCurrentGame.awayRuns
+      : mlbWorldSeriesCurrentGame.homeId ===
+        mlbWorldSeries.teamA.id
+      ? mlbWorldSeriesCurrentGame.homeRuns
+      : undefined
+    : undefined;
+
+const mlbWorldSeriesTeamBGameRuns =
+  mlbWorldSeries &&
+  mlbWorldSeriesCurrentGame
+    ? mlbWorldSeriesCurrentGame.awayId ===
+      mlbWorldSeries.teamB.id
+      ? mlbWorldSeriesCurrentGame.awayRuns
+      : mlbWorldSeriesCurrentGame.homeId ===
+        mlbWorldSeries.teamB.id
+      ? mlbWorldSeriesCurrentGame.homeRuns
+      : undefined
+    : undefined;
   const mlbWorldSeriesNextGame =
   mlbWorldSeries
     ? mlbWorldSeries.games.find(
