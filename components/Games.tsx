@@ -661,62 +661,8 @@ const hasAnyGames =
           </div>
 
          <div className="mlbWorldSeriesScore">
-  {mlbWorldSeriesCurrentGame && (
-   <strong className="mlbWorldSeriesCurrentGameTitle">
-  {mlbWorldSeriesCurrentGameIsToday
-    ? "HOY"
-    : new Intl.DateTimeFormat(
-        "es-MX",
-        {
-          day: "numeric",
-          month: "short",
-          timeZone:
-            "America/Mexico_City",
-        }
-      )
-        .format(
-          new Date(
-            mlbWorldSeriesCurrentGame.gameDate
-          )
-        )
-        .toUpperCase()}
-  {" · "}
-  JUEGO{" "}
-  {mlbWorldSeriesCurrentGame.gameNumber}
-</strong>
-
-<span className="mlbWorldSeriesCurrentGameTime">
-  {new Intl.DateTimeFormat(
-    "es-MX",
-    {
-      hour: "numeric",
-      minute: "2-digit",
-      timeZone:
-        "America/Mexico_City",
-    }
-  ).format(
-    new Date(
-      mlbWorldSeriesCurrentGame.gameDate
-    )
-  )}
-</span>
-        {new Intl.DateTimeFormat(
-          "es-MX",
-          {
-            hour: "numeric",
-            minute: "2-digit",
-            timeZone:
-              "America/Mexico_City",
-          }
-        ).format(
-          new Date(
-            mlbWorldSeriesCurrentGame.gameDate
-          )
-        )}
-      </span>
-    </div>
-  )}
-
+ 
+   
   <div className="mlbWorldSeriesScoreNumbers">
     <span>
       {mlbWorldSeries.teamA.wins}
