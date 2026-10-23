@@ -345,6 +345,27 @@ const championTitle =
     : league === "LMP"
     ? "Campeón de la Liga Mexicana del Pacífico"
     : "Campeón de la Serie del Rey";
+  const showMlbWorldSeriesCard =
+  league === "MLB" &&
+  Boolean(mlbWorldSeries);
+
+const mlbWorldSeriesTeamALogo =
+  mlbWorldSeries
+    ? getTeamLogo(
+        "MLB",
+        mlbWorldSeries.teamA.id,
+        mlbWorldSeries.teamA.name
+      )
+    : null;
+
+const mlbWorldSeriesTeamBLogo =
+  mlbWorldSeries
+    ? getTeamLogo(
+        "MLB",
+        mlbWorldSeries.teamB.id,
+        mlbWorldSeries.teamB.name
+      )
+    : null;
   const today = mexicoDateKey(new Date());
 
   /*
