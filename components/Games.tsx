@@ -283,6 +283,7 @@ export default function Games({
   lmpChampion = null,
   mlbChampion = null,
   mlbWorldSeries = null,
+  mlbWorldSeriesLiveState = null,
   league = "MLB",
 }: {
   games: Game[];
@@ -306,6 +307,18 @@ mlbChampion?: {
   runnerUpWins: number;
 } | null;
   mlbWorldSeries?: MlbWorldSeries | null;
+  mlbWorldSeriesLiveState?: {
+  inning?: number;
+  inningState?: string;
+  balls?: number;
+  strikes?: number;
+  outs?: number;
+  first?: boolean;
+  second?: boolean;
+  third?: boolean;
+  batterName?: string;
+  pitcherName?: string;
+} | null;
   league?: LeagueCode;
 }) {
 const championLogo =
@@ -391,7 +404,19 @@ const mlbWorldSeriesCurrentGameIsToday =
         )
       ) === today
     : false;
+const mlbWorldSeriesInningState =
+  String(
+    mlbWorldSeriesLiveState?.inningState ?? ""
+  ).toLowerCase();
 
+const mlbWorldSeriesInningArrow =
+  mlbWorldSeriesInningState.includes("top") ||
+  mlbWorldSeriesInningState.includes("alta")
+    ? "▲"
+    : mlbWorldSeriesInningState.includes("bottom") ||
+      mlbWorldSeriesInningState.includes("baja")
+    ? "▼"
+    : "•";
   /*
     Algunas funciones antiguas ya pueden
     devolver la próxima fecha cuando hoy
@@ -658,6 +683,92 @@ const hasAnyGames =
         <div className="mlbWorldSeriesGoal">
           PRIMERO EN LLEGAR A 4 VICTORIAS
         </div>
+        {mlbWorldSeriesCurrentGame?.live &&
+  mlbWorldSeriesLiveState && (
+    <div className="mlbWorldSeriesLiveStrip">
+      <div className="mlbWorldSeriesLiveCount">
+        <div className="mlbWorldSeriesLiveInning">
+          <span>
+            {mlbWorldSeriesInningArrow}
+          </span>
+
+          <strong>
+            {mlbWorldSeriesLiveState.inning ?? "—"}
+          </strong>
+        </div>
+
+        <div className="mlbWorldSeriesBSO">
+          <span>
+            B{" "}
+            <strong>
+              {mlbWorldSeriesLiveState.balls ?? 0}
+            </strong>
+          </span>
+
+          <span>
+            S{" "}
+            <strong>
+              {mlbWorldSeriesLiveState.strikes ?? 0}
+            </strong>
+          </span>
+
+          <span>
+            O{" "}
+            <strong>
+              {mlbWorldSeriesLiveState.outs ?? 0}
+            </strong>
+          </span>
+        </div>
+      </div>
+
+      <div
+        className="mlbWorldSeriesMiniDiamond"
+        aria-label="Corredores en base"
+      >
+        <span
+          className={`mlbWsBase mlbWsBaseSecond ${
+            mlbWorldSeriesLiveState.second
+              ? "occupied"
+              : ""
+          }`}
+        />
+
+        <span
+          className={`mlbWsBase mlbWsBaseThird ${
+            mlbWorldSeriesLiveState.third
+              ? "occupied"
+              : ""
+          }`}
+        />
+
+        <span
+          className={`mlbWsBase mlbWsBaseFirst ${
+            mlbWorldSeriesLiveState.first
+              ? "occupied"
+              : ""
+          }`}
+        />
+      </div>
+
+      <div className="mlbWorldSeriesMatchup">
+        <div>
+          <span>AL BAT</span>
+          <strong>
+            {mlbWorldSeriesLiveState.batterName ||
+              "—"}
+          </strong>
+        </div>
+
+        <div>
+          <span>PITCHER</span>
+          <strong>
+            {mlbWorldSeriesLiveState.pitcherName ||
+              "—"}
+          </strong>
+        </div>
+      </div>
+    </div>
+  )}
 
         <div className="mlbWorldSeriesSchedule">
      {mlbWorldSeries.games
