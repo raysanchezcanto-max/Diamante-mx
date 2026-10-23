@@ -31,7 +31,10 @@ export type Game = {
 
   inning?: number;
   inningState?: string;
-
+gameType?: string;
+seriesDescription?: string;
+seriesGameNumber?: number;
+gamesInSeries?: number;
   startTime: string;
 };
 
