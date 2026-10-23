@@ -1,3 +1,4 @@
+import { getLmpChampion } from "@/lib/lmpChampion";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
@@ -83,6 +84,10 @@ const nextGames =
 const lmbChampion =
   selectedLeague === "LMB"
     ? await getLmbChampion()
+    : null;
+  const lmpChampion =
+  selectedLeague === "LMP"
+    ? await getLmpChampion()
     : null;
  const mlbCurrentYear = Number(
   new Intl.DateTimeFormat(
