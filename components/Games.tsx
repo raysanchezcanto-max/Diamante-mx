@@ -497,7 +497,11 @@ const hasAnyGames =
         <div className="sectionHeader">
           <div>
             <span className="eyebrow">
-              TEMPORADA {championData.year} · FINALIZADA
+              TEMPORADA{" "}
+{league === "LMP"
+  ? `${championData.year}-${championData.year + 1}`
+  : championData.year}{" "}
+· FINALIZADA
             </span>
 
             <h2>{championTitle}</h2>
@@ -515,12 +519,17 @@ const hasAnyGames =
 
   <div className="championCardTop">
     <span className="championBadge">
-     🏆 CAMPEÓN {league} {championData.year}
+    🏆 CAMPEÓN {league}{" "}
+{league === "LMP"
+  ? `${championData.year}-${championData.year + 1}`
+  : championData.year}
     </span>
 
     <span className="championChip">
-      {league === "MLB"
+     {league === "MLB"
   ? "SERIE MUNDIAL"
+  : league === "LMP"
+  ? "SERIE FINAL"
   : "SERIE DEL REY"}
     </span>
   </div>
