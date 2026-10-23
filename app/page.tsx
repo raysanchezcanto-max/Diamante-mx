@@ -551,10 +551,12 @@ const daysUntilLmp =
     </div>
   </div>
 )}
-      <RecentResults
-  games={recentGames}
-  league={selectedLeague}
-/>
+      {!mlbWorldSeriesActive && (
+  <RecentResults
+    games={recentGames}
+    league={selectedLeague}
+  />
+)}
 
 <div id="posiciones">
   <Standings
