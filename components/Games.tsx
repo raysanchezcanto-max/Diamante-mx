@@ -800,41 +800,7 @@ const hasAnyGames =
         <div className="mlbWorldSeriesGoal">
           PRIMERO EN LLEGAR A 4 VICTORIAS
         </div>
-        {mlbWorldSeriesCurrentGame && (
-  <div className="mlbWorldSeriesGameInfo">
-    <div className="mlbWorldSeriesGameInfoItem">
-      <span>SEDE</span>
-
-      <strong>
-        {mlbWorldSeriesCurrentGame.venueName ??
-          "Por confirmar"}
-      </strong>
-
-      <small>
-        LOCAL ·{" "}
-        {mlbWorldSeriesCurrentGame.home}
-      </small>
-    </div>
-
-    <div className="mlbWorldSeriesGameInfoItem">
-      <span>PITCHERS PROBABLES</span>
-
-      <strong>
-        {mlbWorldSeriesCurrentGame.awayProbablePitcher?.name ??
-          "Por confirmar"}
-        {" · "}
-        {mlbWorldSeriesCurrentGame.homeProbablePitcher?.name ??
-          "Por confirmar"}
-      </strong>
-
-      <small>
-        {mlbWorldSeriesCurrentGame.away}
-        {" · "}
-        {mlbWorldSeriesCurrentGame.home}
-      </small>
-    </div>
-  </div>
-)}
+       
         {mlbWorldSeriesCurrentGame?.live &&
   mlbWorldSeriesLiveState && (
     <div className="mlbWorldSeriesLiveStrip">
