@@ -32,6 +32,18 @@ savePitcher?: {
   id: number;
   name: string;
 };
+  venueId?: number;
+venueName?: string;
+
+awayProbablePitcher?: {
+  id: number;
+  name: string;
+};
+
+homeProbablePitcher?: {
+  id: number;
+  name: string;
+};
   final: boolean;
   live: boolean;
 };
@@ -100,7 +112,7 @@ export async function getMlbWorldSeries(
 ): Promise<MlbWorldSeries | null> {
   try {
     const response = await fetch(
-    `${MLB_API}/schedule?sportId=1&season=${season}&gameType=W&hydrate=team,decisions`,
+    `${MLB_API}/schedule?sportId=1&season=${season}&gameType=W&hydrate=team,decisions,probablePitcher`,
       {
         next: {
           revalidate: 60,
@@ -204,6 +216,39 @@ export async function getMlbWorldSeries(
 
           const live =
             isLiveGame(game);
+          const venueId =
+  game?.venue?.id
+    ? Number(game.venue.id)
+    : undefined;
+
+const venueName =
+  game?.venue?.name
+    ? String(game.venue.name)
+    : undefined;
+
+const awayProbablePitcher =
+  game?.teams?.away?.probablePitcher
+    ? {
+        id: Number(
+          game.teams.away.probablePitcher.id ?? 0
+        ),
+        name: String(
+          game.teams.away.probablePitcher.fullName ?? ""
+        ),
+      }
+    : undefined;
+
+const homeProbablePitcher =
+  game?.teams?.home?.probablePitcher
+    ? {
+        id: Number(
+          game.teams.home.probablePitcher.id ?? 0
+        ),
+        name: String(
+          game.teams.home.probablePitcher.fullName ?? ""
+        ),
+      }
+    : undefined;
           const winningPitcher =
   game?.decisions?.winner
     ? {
@@ -319,6 +364,10 @@ const savePitcher =
               homeRuns !== undefined
                 ? Number(homeRuns)
                 : undefined,
+            venueId,
+venueName,
+awayProbablePitcher,
+homeProbablePitcher,
 winningPitcher,
 losingPitcher,
 savePitcher,
