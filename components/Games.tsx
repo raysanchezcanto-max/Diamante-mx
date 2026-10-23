@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
+import type { LmpChampion } from "@/lib/lmpChampion";
 
 import {
   getTeamLogo,
@@ -238,6 +239,7 @@ export default function Games({
   nextGames = [],
   recentGames = [],
   lmbChampion = null,
+  lmpChampion = null,
   mlbChampion = null,
   league = "MLB",
 }: {
@@ -251,7 +253,7 @@ export default function Games({
   runnerUpWins: number;
   year: number;
 } | null;
-
+lmpChampion?: LmpChampion | null;
 mlbChampion?: {
   year: number;
   champion: string;
