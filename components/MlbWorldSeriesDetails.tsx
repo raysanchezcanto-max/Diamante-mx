@@ -340,6 +340,9 @@ export default function MlbWorldSeriesDetails({
     )}
   </div>
 )}
+                <div className="mlbWsGameLinkHint">
+  VER JUEGO →
+</div>
 </Link>
 )
 )}
