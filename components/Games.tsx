@@ -313,9 +313,9 @@ mlbChampion?: {
   balls?: number;
   strikes?: number;
   outs?: number;
-  first?: boolean;
-  second?: boolean;
-  third?: boolean;
+  first?: number;
+second?: number;
+third?: number;
   batterName?: string;
   pitcherName?: string;
 } | null;
