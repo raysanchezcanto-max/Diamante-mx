@@ -2406,3 +2406,19 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-weight: 650;
   opacity: 0.64;
 }
+.mlbWorldSeriesIfNecessary {
+  display: block;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  opacity: 0.62;
+}
+
+.mlbWorldSeriesGameVenue {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+  font-weight: 650;
+  opacity: 0.62;
+}
