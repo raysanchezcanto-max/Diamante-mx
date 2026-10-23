@@ -856,138 +856,15 @@ const hasAnyGames =
             )
           )}
         </div>
-     <MlbWorldSeriesDetails
-  worldSeries={mlbWorldSeries}
-  stats={mlbWorldSeriesStats}
-/>
+     <details className="mlbWorldSeriesDetails">
   <summary>
     Ver detalle de la Serie Mundial
   </summary>
 
-  <div className="mlbWorldSeriesDetailsContent">
-    <div className="mlbWorldSeriesDetailTabs">
-      <span className="active">
-        PARTIDOS
-      </span>
-
-      <span>
-        BATEO · PRÓXIMAMENTE
-      </span>
-
-      <span>
-        PITCHEO · PRÓXIMAMENTE
-      </span>
-    </div>
-
-    <div className="mlbWorldSeriesResults">
-      {mlbWorldSeries.games.map(
-        (seriesGame) => (
-          <Link
-            key={seriesGame.id}
-            href={`/game/mlb/${seriesGame.id}`}
-            className="mlbWorldSeriesResultGame"
-          >
-            <div className="mlbWorldSeriesResultHeader">
-              <div>
-                <strong>
-                  JUEGO {seriesGame.gameNumber}
-                </strong>
-
-                <span>
-                  {new Intl.DateTimeFormat(
-                    "es-MX",
-                    {
-                      day: "numeric",
-                      month: "short",
-                      timeZone:
-                        "America/Mexico_City",
-                    }
-                  ).format(
-                    new Date(
-                      seriesGame.gameDate
-                    )
-                  )}
-                </span>
-              </div>
-
-              <strong>
-                {seriesGame.final
-                  ? "FINAL"
-                  : seriesGame.live
-                  ? "EN VIVO"
-                  : "PROGRAMADO"}
-              </strong>
-            </div>
-
-            <div className="mlbWorldSeriesResultScore">
-              <div>
-                <span>
-                  {seriesGame.away}
-                </span>
-
-                <strong>
-                  {seriesGame.awayRuns ?? "—"}
-                </strong>
-              </div>
-
-              <div>
-                <span>
-                  {seriesGame.home}
-                </span>
-
-                <strong>
-                  {seriesGame.homeRuns ?? "—"}
-                </strong>
-              </div>
-            </div>
-
-            {seriesGame.final && (
-              <div className="mlbWorldSeriesDecisions">
-                {seriesGame.winningPitcher && (
-                  <div>
-                    <span>GANADOR</span>
-                    <strong>
-                      {
-                        seriesGame
-                          .winningPitcher
-                          .name
-                      }
-                    </strong>
-                  </div>
-                )}
-
-                {seriesGame.losingPitcher && (
-                  <div>
-                    <span>PERDEDOR</span>
-                    <strong>
-                      {
-                        seriesGame
-                          .losingPitcher
-                          .name
-                      }
-                    </strong>
-                  </div>
-                )}
-
-                {seriesGame.savePitcher && (
-                  <div>
-                    <span>SALVAMENTO</span>
-                    <strong>
-                      {
-                        seriesGame
-                          .savePitcher
-                          .name
-                      }
-                    </strong>
-                  </div>
-                )}
-              </div>
-            )}
-          </Link>
-        )
-      )}
-  
-  
+  <MlbWorldSeriesDetails
+    worldSeries={mlbWorldSeries}
+    stats={mlbWorldSeriesStats}
+  />
 </details>
       </div>
     </section>
