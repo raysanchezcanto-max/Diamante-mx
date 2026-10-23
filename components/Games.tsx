@@ -305,7 +305,7 @@ mlbChampion?: {
   championWins: number;
   runnerUpWins: number;
 } | null;
-  
+  mlbWorldSeries?: MlbWorldSeries | null;
   league?: LeagueCode;
 }) {
 const championLogo =
