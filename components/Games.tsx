@@ -650,30 +650,40 @@ const hasAnyGames =
           {mlbWorldSeries.games.map(
             (seriesGame) => (
               <Link
-                key={seriesGame.id}
-                href={`/game/mlb/${seriesGame.id}`}
-                className="mlbWorldSeriesGame"
-              >
+  key={seriesGame.id}
+  href={`/game/mlb/${seriesGame.id}`}
+  className={`mlbWorldSeriesGame ${
+    mexicoDateKey(
+      new Date(seriesGame.gameDate)
+    ) === today
+      ? "mlbWorldSeriesGameToday"
+      : ""
+  }`}
+>
                 <div>
                   <strong>
                     JUEGO {seriesGame.gameNumber}
                   </strong>
 
-                  <span>
-                    {new Intl.DateTimeFormat(
-                      "es-MX",
-                      {
-                        day: "numeric",
-                        month: "short",
-                        timeZone:
-                          "America/Mexico_City",
-                      }
-                    ).format(
-                      new Date(
-                        seriesGame.gameDate
-                      )
-                    )}
-                  </span>
+                 <span>
+  {mexicoDateKey(
+    new Date(seriesGame.gameDate)
+  ) === today
+    ? "HOY"
+    : new Intl.DateTimeFormat(
+        "es-MX",
+        {
+          day: "numeric",
+          month: "short",
+          timeZone:
+            "America/Mexico_City",
+        }
+      ).format(
+        new Date(
+          seriesGame.gameDate
+        )
+      )}
+</span>
                 </div>
 
                 <div>
