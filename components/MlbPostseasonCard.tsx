@@ -59,44 +59,26 @@ function SeriesCard({
       </div>
 
       <div className="mlbPostseasonSeriesTeams">
-        <div className="mlbPostseasonSeriesTeam">
-          <div>
-            {teamALogo && (
-              <img
-                src={teamALogo}
-                alt=""
-              />
-            )}
-
-            <span>
-              {series.teamA.name}
-            </span>
-          </div>
-
-          <strong>
-            {series.teamA.wins}
-          </strong>
-        </div>
-
-        <div className="mlbPostseasonSeriesTeam">
-          <div>
-            {teamBLogo && (
-              <img
-                src={teamBLogo}
-                alt=""
-              />
-            )}
-
-            <span>
-              {series.teamB.name}
-            </span>
-          </div>
-
-          <strong>
-            {series.teamB.wins}
-          </strong>
-        </div>
-      </div>
+       <div
+  className={`mlbPostseasonSeriesTeam ${
+    compact && series.winner
+      ? series.winner.id ===
+        series.teamA.id
+        ? "mlbPostseasonSeriesTeamWinner"
+        : "mlbPostseasonSeriesTeamLoser"
+      : ""
+  }`}
+>
+       <div
+  className={`mlbPostseasonSeriesTeam ${
+    compact && series.winner
+      ? series.winner.id ===
+        series.teamB.id
+        ? "mlbPostseasonSeriesTeamWinner"
+        : "mlbPostseasonSeriesTeamLoser"
+      : ""
+  }`}
+>
 
       {!compact && (
         <div className="mlbPostseasonSeriesStatus">
@@ -146,14 +128,7 @@ function SeriesCard({
         </div>
       )}
 
-      {compact && series.winner && (
-        <div className="mlbPostseasonHistoryWinner">
-          <span>AVANZÓ</span>
-          <strong>
-            {series.winner.name}
-          </strong>
-        </div>
-      )}
+      
     </div>
   );
 }
