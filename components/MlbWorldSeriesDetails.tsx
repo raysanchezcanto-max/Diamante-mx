@@ -259,62 +259,87 @@ export default function MlbWorldSeriesDetails({
                   </div>
                 </div>
 
-                {seriesGame.final && (
-                  <div className="mlbWorldSeriesDecisions">
-                    {seriesGame.winningPitcher && (
-                      <div>
-                        <span>
-                          GANADOR
-                        </span>
+               {seriesGame.final && (
+  <div className="mlbWorldSeriesDecisions">
+    {seriesGame.winningPitcher && (
+      <div className="mlbWsDecision">
+        <span>GANADOR</span>
 
-                        <strong>
-                          {
-                            seriesGame
-                              .winningPitcher
-                              .name
-                          }
-                        </strong>
-                      </div>
-                    )}
+        <div className="mlbWsDecisionPlayer">
+          <PlayerPhoto
+            id={
+              seriesGame
+                .winningPitcher.id
+            }
+            name={
+              seriesGame
+                .winningPitcher.name
+            }
+          />
 
-                    {seriesGame.losingPitcher && (
-                      <div>
-                        <span>
-                          PERDEDOR
-                        </span>
-
-                        <strong>
-                          {
-                            seriesGame
-                              .losingPitcher
-                              .name
-                          }
-                        </strong>
-                      </div>
-                    )}
-
-                    {seriesGame.savePitcher && (
-                      <div>
-                        <span>
-                          SALVAMENTO
-                        </span>
-
-                        <strong>
-                          {
-                            seriesGame
-                              .savePitcher
-                              .name
-                          }
-                        </strong>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Link>
-            )
-          )}
+          <strong>
+            {
+              seriesGame
+                .winningPitcher.name
+            }
+          </strong>
         </div>
-      )}
+      </div>
+    )}
+
+    {seriesGame.losingPitcher && (
+      <div className="mlbWsDecision">
+        <span>PERDEDOR</span>
+
+        <div className="mlbWsDecisionPlayer">
+          <PlayerPhoto
+            id={
+              seriesGame
+                .losingPitcher.id
+            }
+            name={
+              seriesGame
+                .losingPitcher.name
+            }
+          />
+
+          <strong>
+            {
+              seriesGame
+                .losingPitcher.name
+            }
+          </strong>
+        </div>
+      </div>
+    )}
+
+    {seriesGame.savePitcher && (
+      <div className="mlbWsDecision">
+        <span>SALVAMENTO</span>
+
+        <div className="mlbWsDecisionPlayer">
+          <PlayerPhoto
+            id={
+              seriesGame
+                .savePitcher.id
+            }
+            name={
+              seriesGame
+                .savePitcher.name
+            }
+          />
+
+          <strong>
+            {
+              seriesGame
+                .savePitcher.name
+            }
+          </strong>
+        </div>
+      </div>
+    )}
+  </div>
+)}
 
       {tab === "hitting" && (
         <>
