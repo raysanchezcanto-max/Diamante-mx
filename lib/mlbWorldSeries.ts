@@ -18,7 +18,20 @@ export type MlbWorldSeriesGame = {
   homeId: number;
   home: string;
   homeRuns?: number;
+winningPitcher?: {
+  id: number;
+  name: string;
+};
 
+losingPitcher?: {
+  id: number;
+  name: string;
+};
+
+savePitcher?: {
+  id: number;
+  name: string;
+};
   final: boolean;
   live: boolean;
 };
@@ -87,7 +100,7 @@ export async function getMlbWorldSeries(
 ): Promise<MlbWorldSeries | null> {
   try {
     const response = await fetch(
-      `${MLB_API}/schedule?sportId=1&season=${season}&gameType=W&hydrate=team`,
+    `${MLB_API}/schedule?sportId=1&season=${season}&gameType=W&hydrate=team,decisions`,
       {
         next: {
           revalidate: 60,
@@ -191,6 +204,44 @@ export async function getMlbWorldSeries(
 
           const live =
             isLiveGame(game);
+          const winningPitcher =
+  game?.decisions?.winner
+    ? {
+        id: Number(
+          game.decisions.winner.id ?? 0
+        ),
+        name: String(
+          game.decisions.winner.fullName ??
+            ""
+        ),
+      }
+    : undefined;
+
+const losingPitcher =
+  game?.decisions?.loser
+    ? {
+        id: Number(
+          game.decisions.loser.id ?? 0
+        ),
+        name: String(
+          game.decisions.loser.fullName ??
+            ""
+        ),
+      }
+    : undefined;
+
+const savePitcher =
+  game?.decisions?.save
+    ? {
+        id: Number(
+          game.decisions.save.id ?? 0
+        ),
+        name: String(
+          game.decisions.save.fullName ??
+            ""
+        ),
+      }
+    : undefined;
 
           if (
             final &&
@@ -268,7 +319,12 @@ export async function getMlbWorldSeries(
               homeRuns !== undefined
                 ? Number(homeRuns)
                 : undefined,
+winningPitcher,
+losingPitcher,
+savePitcher,
 
+final,
+live,
             final,
             live,
           };
