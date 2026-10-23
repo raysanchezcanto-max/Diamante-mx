@@ -1,14 +1,21 @@
 import type {
   MlbPostseason,
   MlbPostseasonSeries,
+  MlbPostseasonGameType,
 } from "@/lib/mlbPostseason";
 
 import { getTeamLogo } from "@/lib/teamLogos";
 
+type MlbPostseasonCardMode =
+  | "current"
+  | "history";
+
 function SeriesCard({
   series,
+  compact = false,
 }: {
   series: MlbPostseasonSeries;
+  compact?: boolean;
 }) {
   const teamALogo = getTeamLogo(
     "MLB",
@@ -33,14 +40,22 @@ function SeriesCard({
     ) ?? null;
 
   return (
-    <div className="mlbPostseasonSeriesCard">
+    <div
+      className={`mlbPostseasonSeriesCard ${
+        compact
+          ? "mlbPostseasonSeriesCardCompact"
+          : ""
+      }`}
+    >
       <div className="mlbPostseasonSeriesTop">
         <strong>{series.title}</strong>
 
-        <span>
-          AL MEJOR DE{" "}
-          {series.gamesInSeries}
-        </span>
+        {!compact && (
+          <span>
+            AL MEJOR DE{" "}
+            {series.gamesInSeries}
+          </span>
+        )}
       </div>
 
       <div className="mlbPostseasonSeriesTeams">
@@ -83,60 +98,148 @@ function SeriesCard({
         </div>
       </div>
 
-      <div className="mlbPostseasonSeriesStatus">
-        {series.winner ? (
-          <strong>
-            {series.winner.name} AVANZA
-          </strong>
-        ) : liveGame ? (
-          <strong className="mlbPostseasonLive">
-            <span
-              className="livePulseDot"
-              aria-hidden="true"
-            />
-            EN VIVO · JUEGO{" "}
-            {liveGame.gameNumber}
-          </strong>
-        ) : nextGame ? (
-          <>
-            <span>
-              PRÓXIMO · JUEGO{" "}
-              {nextGame.gameNumber}
-            </span>
-
+      {!compact && (
+        <div className="mlbPostseasonSeriesStatus">
+          {series.winner ? (
             <strong>
-              {new Intl.DateTimeFormat(
-                "es-MX",
-                {
-                  day: "numeric",
-                  month: "short",
-                  hour: "numeric",
-                  minute: "2-digit",
-                  timeZone:
-                    "America/Mexico_City",
-                }
-              ).format(
-                new Date(
-                  nextGame.gameDate
-                )
-              )}
+              {series.winner.name} AVANZA
             </strong>
-          </>
-        ) : (
-          <span>
-            SERIE EN DISPUTA
-          </span>
-        )}
-      </div>
+          ) : liveGame ? (
+            <strong className="mlbPostseasonLive">
+              <span
+                className="livePulseDot"
+                aria-hidden="true"
+              />
+              EN VIVO · JUEGO{" "}
+              {liveGame.gameNumber}
+            </strong>
+          ) : nextGame ? (
+            <>
+              <span>
+                PRÓXIMO · JUEGO{" "}
+                {nextGame.gameNumber}
+              </span>
+
+              <strong>
+                {new Intl.DateTimeFormat(
+                  "es-MX",
+                  {
+                    day: "numeric",
+                    month: "short",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    timeZone:
+                      "America/Mexico_City",
+                  }
+                ).format(
+                  new Date(
+                    nextGame.gameDate
+                  )
+                )}
+              </strong>
+            </>
+          ) : (
+            <span>
+              SERIE EN DISPUTA
+            </span>
+          )}
+        </div>
+      )}
+
+      {compact && series.winner && (
+        <div className="mlbPostseasonHistoryWinner">
+          <span>AVANZÓ</span>
+          <strong>
+            {series.winner.name}
+          </strong>
+        </div>
+      )}
     </div>
   );
 }
 
+function phaseName(
+  phase: MlbPostseasonGameType
+) {
+  if (phase === "F") {
+    return "Wild Card";
+  }
+
+  if (phase === "D") {
+    return "Series Divisionales";
+  }
+
+  return "Series de Campeonato";
+}
+
 export default function MlbPostseasonCard({
   postseason,
+  mode = "current",
 }: {
   postseason: MlbPostseason;
+  mode?: MlbPostseasonCardMode;
 }) {
+  if (mode === "history") {
+    const phases:
+      MlbPostseasonGameType[] = [
+        "L",
+        "D",
+        "F",
+      ];
+
+    return (
+      <section className="section mlbPostseasonHistorySection">
+        <details className="mlbPostseasonHistory">
+          <summary>
+            Camino a la Serie Mundial
+          </summary>
+
+          <div className="mlbPostseasonHistoryContent">
+            {phases.map((phase) => {
+              const phaseSeries =
+                postseason.series.filter(
+                  (series) =>
+                    series.gameType ===
+                    phase
+                );
+
+              if (
+                phaseSeries.length === 0
+              ) {
+                return null;
+              }
+
+              return (
+                <div
+                  key={phase}
+                  className="mlbPostseasonHistoryPhase"
+                >
+                  <div className="mlbPostseasonHistoryPhaseHeader">
+                    <span>
+                      {phaseName(phase)}
+                    </span>
+                  </div>
+
+                  <div className="mlbPostseasonHistoryGrid">
+                    {phaseSeries.map(
+                      (series) => (
+                        <SeriesCard
+                          key={series.key}
+                          series={series}
+                          compact
+                        />
+                      )
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </details>
+      </section>
+    );
+  }
+
   if (!postseason.currentPhase) {
     return null;
   }
@@ -167,7 +270,9 @@ export default function MlbPostseasonCard({
           </span>
 
           <h2>
-            {postseason.currentPhaseTitle}
+            {
+              postseason.currentPhaseTitle
+            }
           </h2>
         </div>
 
