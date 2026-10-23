@@ -772,33 +772,37 @@ const hasAnyGames =
 </div>
 
           <div className="mlbWorldSeriesTeam">
-            {mlbWorldSeriesTeamBLogo && (
-              <img
-                src={mlbWorldSeriesTeamBLogo}
-                alt={mlbWorldSeries.teamB.name}
-                className="championTeamLogo"
-              />
-            )}
+  {mlbWorldSeriesTeamBLogo && (
+    <img
+      src={mlbWorldSeriesTeamBLogo}
+      alt={mlbWorldSeries.teamB.name}
+      className="championTeamLogo"
+    />
+  )}
 
-            <strong>
-              {mlbWorldSeriesTeamBProbablePitcher && (
-  <div className="mlbWorldSeriesProbablePitcher">
-    <small>P. PROBABLE</small>
-    <span>
-      {mlbWorldSeriesTeamBProbablePitcher.name}
-    </span>
-  </div>
-)}
+  <strong>
+    {mlbWorldSeries.teamB.name}
+  </strong>
 
-{mlbWorldSeriesCurrentGame && (
-  <small className="mlbWorldSeriesHomeAway">
-    {mlbWorldSeriesCurrentGame.homeId ===
-    mlbWorldSeries.teamB.id
-      ? "LOCAL"
-      : "VISITANTE"}
-  </small>
-)}
-          </div>
+  {mlbWorldSeriesTeamBProbablePitcher && (
+    <div className="mlbWorldSeriesProbablePitcher">
+      <small>P. PROBABLE</small>
+
+      <span>
+        {mlbWorldSeriesTeamBProbablePitcher.name}
+      </span>
+    </div>
+  )}
+
+  {mlbWorldSeriesCurrentGame && (
+    <small className="mlbWorldSeriesHomeAway">
+      {mlbWorldSeriesCurrentGame.homeId ===
+      mlbWorldSeries.teamB.id
+        ? "LOCAL"
+        : "VISITANTE"}
+    </small>
+  )}
+</div>
         </div>
 
         <div className="mlbWorldSeriesGoal">
