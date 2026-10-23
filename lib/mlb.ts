@@ -1,4 +1,33 @@
 const MLB_API = "https://statsapi.mlb.com/api/v1";
+function getMlbDivisionName(
+  divisionId: number
+): string {
+  const divisions: Record<number, string> = {
+    200: "AL West",
+    201: "AL East",
+    202: "AL Central",
+    203: "NL West",
+    204: "NL East",
+    205: "NL Central",
+  };
+
+  return divisions[divisionId] ?? "División";
+}
+
+function getMlbDivisionName(
+  divisionId: number
+): string {
+  const divisions: Record<number, string> = {
+    200: "AL West",
+    201: "AL East",
+    202: "AL Central",
+    203: "NL West",
+    204: "NL East",
+    205: "NL Central",
+  };
+
+  return divisions[divisionId] ?? "División";
+}
 
 export type Game = {
   id: number;
@@ -257,9 +286,9 @@ if (!hasCurrentSeasonData) {
 
     for (const record of data?.records ?? []) {
       const division =
-        record?.division?.nameShort ??
-        record?.division?.name ??
-        "División";
+  getMlbDivisionName(
+    Number(record?.division?.id ?? 0)
+  );
 
       for (const item of record?.teamRecords ?? []) {
         rows.push({
