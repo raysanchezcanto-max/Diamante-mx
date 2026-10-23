@@ -266,30 +266,42 @@ mlbChampion?: {
   
   league?: LeagueCode;
 }) {
- const championLogo =
+const championLogo =
   league === "LMB" && lmbChampion
     ? getTeamLogo(
         "LMB",
         0,
         lmbChampion.champion
       )
+    : league === "LMP" && lmpChampion
+    ? getTeamLogo(
+        "LMP",
+        0,
+        lmpChampion.champion
+      )
     : league === "MLB" && mlbChampion
-      ? getTeamLogo(
-          "MLB",
-          mlbChampion.championId,
-          mlbChampion.champion
-        )
-      : null;
-  const championData =
+    ? getTeamLogo(
+        "MLB",
+        mlbChampion.championId,
+        mlbChampion.champion
+      )
+    : null;
+ const championData =
   league === "LMB"
     ? lmbChampion
+    : league === "LMP" && lmpChampion
+    ? {
+        ...lmpChampion,
+        year: lmpChampion.season,
+      }
     : league === "MLB"
-      ? mlbChampion
-      : null;
-
+    ? mlbChampion
+    : null;
 const championTitle =
   league === "MLB"
     ? "Campeón de la Serie Mundial"
+    : league === "LMP"
+    ? "Campeón de la Liga Mexicana del Pacífico"
     : "Campeón de la Serie del Rey";
   const today = mexicoDateKey(new Date());
 
