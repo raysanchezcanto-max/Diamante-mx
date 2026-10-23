@@ -1627,3 +1627,28 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.mlbWsGameLinkHint {
+  margin-top: 12px;
+  text-align: right;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.42;
+  transition: opacity 0.2s ease;
+}
+
+.mlbWorldSeriesResultGame {
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.mlbWorldSeriesResultGame:hover {
+  border-color: rgba(190, 255, 0, 0.3);
+  background: rgba(190, 255, 0, 0.025);
+}
+
+.mlbWorldSeriesResultGame:hover
+  .mlbWsGameLinkHint {
+  opacity: 1;
+}
