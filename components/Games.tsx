@@ -647,8 +647,15 @@ const hasAnyGames =
         </div>
 
         <div className="mlbWorldSeriesSchedule">
-          {mlbWorldSeries.games.map(
-            (seriesGame) => (
+         {mlbWorldSeries.games
+  .filter(
+    (seriesGame) =>
+      mexicoDateKey(
+        new Date(seriesGame.gameDate)
+      ) !== today
+  )
+  .map(
+    (seriesGame) => (
               <Link
   key={seriesGame.id}
   href={`/game/mlb/${seriesGame.id}`}
