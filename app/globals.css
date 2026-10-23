@@ -1135,19 +1135,45 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 
 .mlbWorldSeriesScore {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 12px;
   min-width: 180px;
 }
 
-.mlbWorldSeriesScore span {
+.mlbWorldSeriesCurrentGame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+
+.mlbWorldSeriesCurrentGame strong {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.mlbWorldSeriesCurrentGame span {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.mlbWorldSeriesScoreNumbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.mlbWorldSeriesScoreNumbers span {
   font-size: 46px;
   font-weight: 800;
   line-height: 1;
 }
 
-.mlbWorldSeriesScore small {
+.mlbWorldSeriesScoreNumbers small {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.14em;
