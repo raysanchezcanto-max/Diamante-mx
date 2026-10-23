@@ -325,8 +325,7 @@ savePitcher,
 
 final,
 live,
-            final,
-            live,
+         
           };
         }
       );
