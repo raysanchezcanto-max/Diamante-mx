@@ -986,8 +986,8 @@ const hasAnyGames =
           </Link>
         )
       )}
-    </div>
-  </div>
+  
+  
 </details>
       </div>
     </section>
