@@ -75,7 +75,20 @@ const selectedLeague:
 
 const nextGames =
   await getNextGames(selectedLeague);
-    const lmpCurrentSeason =
+   
+     
+ const recentGames =
+  await getRecentGames(selectedLeague);
+
+const lmbChampion =
+  selectedLeague === "LMB"
+    ? await getLmbChampion()
+    : null;
+  const lmpChampion =
+  selectedLeague === "LMP"
+    ? await getLmpChampion()
+    : null;
+  const lmpCurrentSeason =
   selectedLeague === "LMP"
     ? await getLmpSeasonYear()
     : null;
@@ -99,19 +112,6 @@ const lmpNextSeasonStart =
     ? new Date(
         `${lmpNextSeasonStartRaw}T00:00:00-06:00`
       )
-    : null;
-
-     
- const recentGames =
-  await getRecentGames(selectedLeague);
-
-const lmbChampion =
-  selectedLeague === "LMB"
-    ? await getLmbChampion()
-    : null;
-  const lmpChampion =
-  selectedLeague === "LMP"
-    ? await getLmpChampion()
     : null;
  const mlbCurrentYear = Number(
   new Intl.DateTimeFormat(
@@ -246,16 +246,26 @@ const daysUntilLmb =
 
 
   const showLmpSeasonNotice =
-    selectedLeague === "LMP" &&
-    new Date() < lmpSeasonStart;
-
-  const daysUntilLmp = Math.max(
-    0,
-    Math.ceil(
-      (lmpSeasonStart.getTime() - Date.now()) /
-        (1000 * 60 * 60 * 24)
-    )
+  selectedLeague === "LMP" &&
+  Boolean(lmpChampion) &&
+  (
+    !lmpNextSeasonStart ||
+    Date.now() < lmpNextSeasonStart.getTime()
   );
+
+const daysUntilLmp =
+  lmpNextSeasonStart
+    ? Math.max(
+        0,
+        Math.ceil(
+          (
+            lmpNextSeasonStart.getTime() -
+            Date.now()
+          ) /
+            (1000 * 60 * 60 * 24)
+        )
+      )
+    : null;
   return (
     <main>
       <AutoRefresh
