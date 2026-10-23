@@ -321,6 +321,7 @@ const daysUntilLmb =
   nextGames={nextGames}
   recentGames={recentGames}
   lmbChampion={lmbChampion}
+   lmpChampion={lmpChampion}
    mlbChampion={mlbChampion}
   league={selectedLeague}
 />
