@@ -340,7 +340,11 @@ export default function MlbWorldSeriesDetails({
     )}
   </div>
 )}
-
+</Link>
+)
+)}
+</div>
+)}
       {tab === "hitting" && (
         <>
           {stats &&
