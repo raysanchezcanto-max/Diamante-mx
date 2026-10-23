@@ -1,6 +1,9 @@
 import type {
   MlbWorldSeries,
 } from "@/lib/mlbWorldSeries";
+import type {
+  MlbWorldSeriesStats,
+} from "@/lib/mlbWorldSeriesStats";
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 import type { LmpChampion } from "@/lib/lmpChampion";
@@ -283,6 +286,7 @@ export default function Games({
   lmpChampion = null,
   mlbChampion = null,
   mlbWorldSeries = null,
+  mlbWorldSeriesStats = null,
   mlbWorldSeriesLiveState = null,
   league = "MLB",
 }: {
@@ -307,6 +311,7 @@ mlbChampion?: {
   runnerUpWins: number;
 } | null;
   mlbWorldSeries?: MlbWorldSeries | null;
+  mlbWorldSeriesStats?: MlbWorldSeriesStats | null;
   mlbWorldSeriesLiveState?: {
   inning?: number;
   inningState?: string;
