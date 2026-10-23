@@ -550,22 +550,34 @@ const hasAnyGames =
             ⚾ SERIE MUNDIAL {mlbWorldSeries.year}
           </span>
 
-          <span className="championChip">
-  {mlbWorldSeriesCurrentGame ? (
-    <>
-      JUEGO{" "}
-      {mlbWorldSeriesCurrentGame.gameNumber}
-      {" · "}
-      AL MEJOR DE{" "}
-      {mlbWorldSeries.gamesInSeries}
-    </>
-  ) : (
-    <>
-      SERIE AL MEJOR DE{" "}
-      {mlbWorldSeries.gamesInSeries}
-    </>
+        <div className="mlbWorldSeriesTopStatus">
+  {mlbWorldSeriesCurrentGame?.live && (
+    <span className="mlbWorldSeriesLive">
+      <span
+        className="livePulseDot"
+        aria-hidden="true"
+      />
+      EN VIVO
+    </span>
   )}
-</span>
+
+  <span className="championChip">
+    {mlbWorldSeriesCurrentGame ? (
+      <>
+        JUEGO{" "}
+        {mlbWorldSeriesCurrentGame.gameNumber}
+        {" · "}
+        AL MEJOR DE{" "}
+        {mlbWorldSeries.gamesInSeries}
+      </>
+    ) : (
+      <>
+        SERIE AL MEJOR DE{" "}
+        {mlbWorldSeries.gamesInSeries}
+      </>
+    )}
+  </span>
+</div>
         </div>
 
         <div className="mlbWorldSeriesTeams">
