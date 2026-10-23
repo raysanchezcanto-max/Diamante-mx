@@ -660,12 +660,13 @@ const hasAnyGames =
         </div>
 
         <div className="mlbWorldSeriesSchedule">
-         {mlbWorldSeries.games
+     {mlbWorldSeries.games
   .filter(
     (seriesGame) =>
+      !seriesGame.final &&
       mexicoDateKey(
         new Date(seriesGame.gameDate)
-      ) !== today
+      ) > today
   )
   .map(
     (seriesGame) => (
