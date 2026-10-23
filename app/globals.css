@@ -2422,3 +2422,53 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-weight: 650;
   opacity: 0.62;
 }
+.mlbWorldSeriesLiveCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.mlbWorldSeriesLiveLabel {
+  color: #ff4d4f;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.mlbWorldSeriesLiveGameScore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.mlbWorldSeriesLiveGameScore strong {
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mlbWorldSeriesLiveGameScore span {
+  font-size: 24px;
+  font-weight: 700;
+  opacity: 0.5;
+}
+
+.mlbWorldSeriesLiveMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 750;
+  opacity: 0.78;
+}
+
+.mlbWorldSeriesSeriesMini {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.58;
+}
