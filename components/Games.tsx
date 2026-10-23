@@ -368,6 +368,25 @@ const mlbWorldSeriesTeamBLogo =
       )
     : null;
   const today = mexicoDateKey(new Date());
+  const mlbWorldSeriesCurrentGame =
+  mlbWorldSeries
+    ? mlbWorldSeries.games.find(
+        (game) => game.live
+      ) ??
+      mlbWorldSeries.games.find(
+        (game) => !game.final
+      ) ??
+      null
+    : null;
+
+const mlbWorldSeriesCurrentGameIsToday =
+  mlbWorldSeriesCurrentGame
+    ? mexicoDateKey(
+        new Date(
+          mlbWorldSeriesCurrentGame.gameDate
+        )
+      ) === today
+    : false;
 
   /*
     Algunas funciones antiguas ya pueden
@@ -551,17 +570,62 @@ const hasAnyGames =
             </strong>
           </div>
 
-          <div className="mlbWorldSeriesScore">
-            <span>
-              {mlbWorldSeries.teamA.wins}
-            </span>
+         <div className="mlbWorldSeriesScore">
+  {mlbWorldSeriesCurrentGame && (
+    <div className="mlbWorldSeriesCurrentGame">
+      <strong>
+        {mlbWorldSeriesCurrentGameIsToday
+          ? "HOY"
+          : new Intl.DateTimeFormat(
+              "es-MX",
+              {
+                day: "numeric",
+                month: "short",
+                timeZone:
+                  "America/Mexico_City",
+              }
+            )
+              .format(
+                new Date(
+                  mlbWorldSeriesCurrentGame.gameDate
+                )
+              )
+              .toUpperCase()}
+        {" · "}
+        JUEGO{" "}
+        {mlbWorldSeriesCurrentGame.gameNumber}
+      </strong>
 
-            <small>SERIE</small>
+      <span>
+        {new Intl.DateTimeFormat(
+          "es-MX",
+          {
+            hour: "numeric",
+            minute: "2-digit",
+            timeZone:
+              "America/Mexico_City",
+          }
+        ).format(
+          new Date(
+            mlbWorldSeriesCurrentGame.gameDate
+          )
+        )}
+      </span>
+    </div>
+  )}
 
-            <span>
-              {mlbWorldSeries.teamB.wins}
-            </span>
-          </div>
+  <div className="mlbWorldSeriesScoreNumbers">
+    <span>
+      {mlbWorldSeries.teamA.wins}
+    </span>
+
+    <small>SERIE</small>
+
+    <span>
+      {mlbWorldSeries.teamB.wins}
+    </span>
+  </div>
+</div>
 
           <div className="mlbWorldSeriesTeam">
             {mlbWorldSeriesTeamBLogo && (
