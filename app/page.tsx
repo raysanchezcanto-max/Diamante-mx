@@ -323,32 +323,81 @@ const daysUntilLmp =
 
       <LeagueTabs activeLeague={selectedLeague} />
             {showLmpSeasonNotice && (
-        <div className="seasonNotice">
-          <div>
-            <span className="eyebrow">
-              PRÓXIMA TEMPORADA · LMP 2026–2027
-            </span>
+  <div className="seasonNotice">
+    <div>
+      <span className="eyebrow">
+        PRÓXIMA TEMPORADA · LMP{" "}
+        {lmpNextSeasonYear !== null
+          ? `${lmpNextSeasonYear}-${lmpNextSeasonYear + 1}`
+          : ""}
+      </span>
 
-            <h3>
-              El béisbol del Pacífico regresa el 13 de octubre
-            </h3>
+      <h3>
+        {lmpNextSeasonStart
+          ? `El béisbol del Pacífico regresa el ${new Intl.DateTimeFormat(
+              "es-MX",
+              {
+                day: "numeric",
+                month: "long",
+                timeZone: "America/Mexico_City",
+              }
+            ).format(lmpNextSeasonStart)}`
+          : "La próxima temporada está por anunciarse"}
+      </h3>
 
-            <p>
-              La nueva temporada de la Liga Mexicana del
-              Pacífico inicia el{" "}
-              <strong>13 de octubre de 2026</strong>.
-              Mientras tanto, puedes consultar las
-              estadísticas de la temporada 2025–2026.
-            </p>
-          </div>
+      <p>
+        {lmpNextSeasonStart ? (
+          <>
+            La nueva temporada de la Liga Mexicana del
+            Pacífico inicia el{" "}
+            <strong>
+              {new Intl.DateTimeFormat(
+                "es-MX",
+                {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "America/Mexico_City",
+                }
+              ).format(lmpNextSeasonStart)}
+            </strong>
+            .
+          </>
+        ) : (
+          <>
+            La LMP todavía no ha publicado la fecha oficial
+            de inicio de la próxima temporada. En cuanto
+            aparezca en el calendario oficial, Diamante MX
+            la detectará automáticamente.
+          </>
+        )}
 
-          <div className="seasonCountdown">
-            <strong>{daysUntilLmp}</strong>
-            <span>DÍAS PARA EL PLAYBALL</span>
-          </div>
-        </div>
+        {lmpCurrentSeason !== null && (
+          <>
+            {" "}
+            Mientras tanto, puedes consultar las estadísticas
+            de la temporada{" "}
+            {`${lmpCurrentSeason}-${lmpCurrentSeason + 1}`}.
+          </>
+        )}
+      </p>
+    </div>
+
+    <div className="seasonCountdown">
+      {daysUntilLmp !== null ? (
+        <>
+          <strong>{daysUntilLmp}</strong>
+          <span>DÍAS PARA EL PLAYBALL</span>
+        </>
+      ) : (
+        <>
+          <strong>—</strong>
+          <span>CALENDARIO PENDIENTE</span>
+        </>
       )}
-
+    </div>
+  </div>
+)}
    <div id="juegos">
  <Games
    games={games}
