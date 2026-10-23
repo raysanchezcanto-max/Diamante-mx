@@ -1,3 +1,4 @@
+import MlbPostseasonCard from "@/components/MlbPostseasonCard";
 import type {
   MlbPostseason,
 } from "@/lib/mlbPostseason";
@@ -562,6 +563,13 @@ const hasAnyGames =
 
   return (
     <>
+      {league === "MLB" &&
+  mlbPostseason &&
+  !mlbWorldSeries && (
+    <MlbPostseasonCard
+      postseason={mlbPostseason}
+    />
+  )}
       {showMlbWorldSeriesCard &&
   mlbWorldSeries && (
     <section className="section">
