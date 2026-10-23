@@ -419,6 +419,33 @@ const mlbWorldSeriesCurrentGameIsToday =
         )
       ) === today
     : false;
+  const mlbWorldSeriesTeamAProbablePitcher =
+  mlbWorldSeries &&
+  mlbWorldSeriesCurrentGame
+    ? mlbWorldSeriesCurrentGame.awayId ===
+      mlbWorldSeries.teamA.id
+      ? mlbWorldSeriesCurrentGame
+          .awayProbablePitcher
+      : mlbWorldSeriesCurrentGame.homeId ===
+        mlbWorldSeries.teamA.id
+      ? mlbWorldSeriesCurrentGame
+          .homeProbablePitcher
+      : undefined
+    : undefined;
+
+const mlbWorldSeriesTeamBProbablePitcher =
+  mlbWorldSeries &&
+  mlbWorldSeriesCurrentGame
+    ? mlbWorldSeriesCurrentGame.awayId ===
+      mlbWorldSeries.teamB.id
+      ? mlbWorldSeriesCurrentGame
+          .awayProbablePitcher
+      : mlbWorldSeriesCurrentGame.homeId ===
+        mlbWorldSeries.teamB.id
+      ? mlbWorldSeriesCurrentGame
+          .homeProbablePitcher
+      : undefined
+    : undefined;
   const mlbWorldSeriesNextGame =
   mlbWorldSeries
     ? mlbWorldSeries.games.find(
@@ -658,6 +685,20 @@ const hasAnyGames =
             <strong>
               {mlbWorldSeries.teamA.name}
             </strong>
+            {mlbWorldSeriesTeamAProbablePitcher && (
+  <span className="mlbWorldSeriesProbablePitcher">
+    {mlbWorldSeriesTeamAProbablePitcher.name}
+  </span>
+)}
+
+{mlbWorldSeriesCurrentGame && (
+  <small className="mlbWorldSeriesHomeAway">
+    {mlbWorldSeriesCurrentGame.homeId ===
+    mlbWorldSeries.teamA.id
+      ? "LOCAL"
+      : "VISITANTE"}
+  </small>
+)}
           </div>
 
          <div className="mlbWorldSeriesScore">
@@ -701,6 +742,11 @@ const hasAnyGames =
         )
       )}
     </span>
+    {mlbWorldSeriesCurrentGame.venueName && (
+  <span className="mlbWorldSeriesCurrentVenue">
+    {mlbWorldSeriesCurrentGame.venueName}
+  </span>
+)}
   </div>
 )}
  
@@ -734,6 +780,20 @@ const hasAnyGames =
             <strong>
               {mlbWorldSeries.teamB.name}
             </strong>
+            {mlbWorldSeriesTeamBProbablePitcher && (
+  <span className="mlbWorldSeriesProbablePitcher">
+    {mlbWorldSeriesTeamBProbablePitcher.name}
+  </span>
+)}
+
+{mlbWorldSeriesCurrentGame && (
+  <small className="mlbWorldSeriesHomeAway">
+    {mlbWorldSeriesCurrentGame.homeId ===
+    mlbWorldSeries.teamB.id
+      ? "LOCAL"
+      : "VISITANTE"}
+  </small>
+)}
           </div>
         </div>
 
