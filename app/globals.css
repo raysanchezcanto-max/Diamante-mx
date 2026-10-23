@@ -364,6 +364,9 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   .gamePage {
     padding: 22px 16px 52px;
   }
+  .mlbPostseasonHistoryGrid {
+  grid-template-columns: 1fr;
+}
   .mlbPostseasonGrid {
   grid-template-columns: 1fr;
 }
@@ -1746,4 +1749,102 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+.mlbPostseasonHistorySection {
+  margin-top: -8px;
+}
+
+.mlbPostseasonHistory {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+}
+
+.mlbPostseasonHistory summary {
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+}
+
+.mlbPostseasonHistory summary::-webkit-details-marker {
+  display: none;
+}
+
+.mlbPostseasonHistory summary::after {
+  content: " ↓";
+}
+
+.mlbPostseasonHistory[open] summary::after {
+  content: " ↑";
+}
+
+.mlbPostseasonHistoryContent {
+  margin-top: 20px;
+}
+
+.mlbPostseasonHistoryPhase {
+  margin-top: 20px;
+}
+
+.mlbPostseasonHistoryPhase:first-child {
+  margin-top: 0;
+}
+
+.mlbPostseasonHistoryPhaseHeader {
+  margin-bottom: 10px;
+}
+
+.mlbPostseasonHistoryPhaseHeader span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+.mlbPostseasonHistoryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mlbPostseasonSeriesCardCompact {
+  padding: 12px;
+}
+
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTop {
+  margin-bottom: 10px;
+}
+
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTeam img {
+  width: 24px;
+  height: 24px;
+}
+
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTeam > strong {
+  font-size: 18px;
+}
+
+.mlbPostseasonHistoryWinner {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mlbPostseasonHistoryWinner span {
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+}
+
+.mlbPostseasonHistoryWinner strong {
+  font-size: 9px;
 }
