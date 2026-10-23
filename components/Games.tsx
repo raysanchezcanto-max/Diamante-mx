@@ -922,6 +922,11 @@ const hasAnyGames =
                   <strong>
                     JUEGO {seriesGame.gameNumber}
                   </strong>
+                  {seriesGame.gameNumber >= 5 && (
+  <small className="mlbWorldSeriesIfNecessary">
+    SI ES NECESARIO
+  </small>
+)}
 
                  <span>
   {mexicoDateKey(
@@ -971,6 +976,11 @@ const hasAnyGames =
                       )}
                     </span>
                   )}
+                  {seriesGame.venueName && (
+  <small className="mlbWorldSeriesGameVenue">
+    {seriesGame.venueName}
+  </small>
+)}
                 </div>
               </Link>
             )
