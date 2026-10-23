@@ -1267,18 +1267,33 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 
 .mlbWorldSeriesDetailTabs {
   display: flex;
-  gap: 22px;
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.mlbWorldSeriesDetailTabs button {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
+  cursor: pointer;
+  opacity: 0.5;
 }
 
-.mlbWorldSeriesDetailTabs span {
-  opacity: 0.45;
+.mlbWorldSeriesDetailTabs button:hover {
+  opacity: 0.8;
 }
 
-.mlbWorldSeriesDetailTabs .active {
+.mlbWorldSeriesDetailTabs button.active {
+  border-color: rgba(190, 255, 0, 0.35);
+  background: rgba(190, 255, 0, 0.08);
   opacity: 1;
 }
 
