@@ -184,7 +184,45 @@ function GameCards({
     gameTime(game, league)
   )}
 </div>
+{league === "MLB" &&
+  (game.seriesDescription ||
+    game.seriesGameNumber ||
+    game.gamesInSeries) && (
+    <div className="mlbSeriesMeta">
+      {game.seriesDescription && (
+        <strong>
+          {game.seriesDescription
+            .replace("World Series", "SERIE MUNDIAL")
+            .replace(
+              "League Championship Series",
+              "SERIE DE CAMPEONATO"
+            )
+            .replace(
+              "Division Series",
+              "SERIE DIVISIONAL"
+            )
+            .replace(
+              "Wild Card Series",
+              "SERIE DE COMODÍN"
+            )}
+        </strong>
+      )}
 
+      {game.seriesGameNumber && (
+        <span>
+          {" · "}
+          JUEGO {game.seriesGameNumber}
+        </span>
+      )}
+
+      {game.gamesInSeries && (
+        <span>
+          {" · "}
+          SERIE AL MEJOR DE {game.gamesInSeries}
+        </span>
+      )}
+    </div>
+  )}
             <div className="teamRow">
               <div className="teamIdentity">
                 {awayLogo && (
