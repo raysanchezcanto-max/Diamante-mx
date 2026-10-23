@@ -347,7 +347,8 @@ const championTitle =
     : "Campeón de la Serie del Rey";
   const showMlbWorldSeriesCard =
   league === "MLB" &&
-  Boolean(mlbWorldSeries);
+  Boolean(mlbWorldSeries) &&
+  !mlbWorldSeries?.champion;
 
 const mlbWorldSeriesTeamALogo =
   mlbWorldSeries
@@ -499,6 +500,153 @@ const hasAnyGames =
 
   return (
     <>
+      {showMlbWorldSeriesCard &&
+  mlbWorldSeries && (
+    <section className="section">
+      <div className="sectionHeader">
+        <div>
+          <span className="eyebrow">
+            POSTEMPORADA · MLB {mlbWorldSeries.year}
+          </span>
+
+          <h2>Serie Mundial</h2>
+        </div>
+
+        <span className="liveDot">
+          ● EN DISPUTA
+        </span>
+      </div>
+
+      <div className="championCardPro mlbWorldSeriesCard">
+        <div className="championGlow championGlowLeft" />
+        <div className="championGlow championGlowRight" />
+        <div className="championPattern" />
+
+        <div className="championCardTop">
+          <span className="championBadge">
+            ⚾ SERIE MUNDIAL {mlbWorldSeries.year}
+          </span>
+
+          <span className="championChip">
+            JUEGO{" "}
+            {mlbWorldSeries.currentGameNumber ?? "—"}
+            {" · "}
+            AL MEJOR DE{" "}
+            {mlbWorldSeries.gamesInSeries}
+          </span>
+        </div>
+
+        <div className="mlbWorldSeriesTeams">
+          <div className="mlbWorldSeriesTeam">
+            {mlbWorldSeriesTeamALogo && (
+              <img
+                src={mlbWorldSeriesTeamALogo}
+                alt={mlbWorldSeries.teamA.name}
+                className="championTeamLogo"
+              />
+            )}
+
+            <strong>
+              {mlbWorldSeries.teamA.name}
+            </strong>
+          </div>
+
+          <div className="mlbWorldSeriesScore">
+            <span>
+              {mlbWorldSeries.teamA.wins}
+            </span>
+
+            <small>SERIE</small>
+
+            <span>
+              {mlbWorldSeries.teamB.wins}
+            </span>
+          </div>
+
+          <div className="mlbWorldSeriesTeam">
+            {mlbWorldSeriesTeamBLogo && (
+              <img
+                src={mlbWorldSeriesTeamBLogo}
+                alt={mlbWorldSeries.teamB.name}
+                className="championTeamLogo"
+              />
+            )}
+
+            <strong>
+              {mlbWorldSeries.teamB.name}
+            </strong>
+          </div>
+        </div>
+
+        <div className="mlbWorldSeriesGoal">
+          PRIMERO EN LLEGAR A 4 VICTORIAS
+        </div>
+
+        <div className="mlbWorldSeriesSchedule">
+          {mlbWorldSeries.games.map(
+            (seriesGame) => (
+              <Link
+                key={seriesGame.id}
+                href={`/game/mlb/${seriesGame.id}`}
+                className="mlbWorldSeriesGame"
+              >
+                <div>
+                  <strong>
+                    JUEGO {seriesGame.gameNumber}
+                  </strong>
+
+                  <span>
+                    {new Intl.DateTimeFormat(
+                      "es-MX",
+                      {
+                        day: "numeric",
+                        month: "short",
+                        timeZone:
+                          "America/Mexico_City",
+                      }
+                    ).format(
+                      new Date(
+                        seriesGame.gameDate
+                      )
+                    )}
+                  </span>
+                </div>
+
+                <div>
+                  {seriesGame.final ? (
+                    <strong>
+                      FINAL ·{" "}
+                      {seriesGame.awayRuns ?? "-"}
+                      {" – "}
+                      {seriesGame.homeRuns ?? "-"}
+                    </strong>
+                  ) : seriesGame.live ? (
+                    <strong>EN VIVO</strong>
+                  ) : (
+                    <span>
+                      {new Intl.DateTimeFormat(
+                        "es-MX",
+                        {
+                          hour: "numeric",
+                          minute: "2-digit",
+                          timeZone:
+                            "America/Mexico_City",
+                        }
+                      ).format(
+                        new Date(
+                          seriesGame.gameDate
+                        )
+                      )}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            )
+          )}
+        </div>
+      </div>
+    </section>
+  )}
       {todayGames.length > 0 && (
         <section className="section">
           <div className="sectionHeader">
