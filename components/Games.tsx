@@ -1,3 +1,6 @@
+import type {
+  MlbWorldSeries,
+} from "@/lib/mlbWorldSeries";
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 import type { LmpChampion } from "@/lib/lmpChampion";
@@ -279,6 +282,7 @@ export default function Games({
   lmbChampion = null,
   lmpChampion = null,
   mlbChampion = null,
+  mlbWorldSeries = null,
   league = "MLB",
 }: {
   games: Game[];
