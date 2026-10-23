@@ -777,21 +777,66 @@ const hasAnyGames =
 )}
  
    
-<div className="mlbWorldSeriesSeriesScore">
-  <small>SERIE</small>
+{mlbWorldSeriesCurrentGame?.live ? (
+  <div className="mlbWorldSeriesLiveCenter">
+    <span className="mlbWorldSeriesLiveLabel">
+      EN VIVO
+    </span>
 
-  <div className="mlbWorldSeriesSeriesScoreNumbers">
-    <strong>
+    <div className="mlbWorldSeriesLiveGameScore">
+      <strong>
+        {mlbWorldSeriesTeamAGameRuns ?? 0}
+      </strong>
+
+      <span>–</span>
+
+      <strong>
+        {mlbWorldSeriesTeamBGameRuns ?? 0}
+      </strong>
+    </div>
+
+    {mlbWorldSeriesLiveState && (
+      <div className="mlbWorldSeriesLiveMeta">
+        <span>
+          {mlbWorldSeriesInningArrow}
+          {" "}
+          {mlbWorldSeriesLiveState.inning ?? "-"}
+        </span>
+
+        <span>
+          B {mlbWorldSeriesLiveState.balls ?? 0}
+          {" · "}
+          S {mlbWorldSeriesLiveState.strikes ?? 0}
+          {" · "}
+          O {mlbWorldSeriesLiveState.outs ?? 0}
+        </span>
+      </div>
+    )}
+
+    <div className="mlbWorldSeriesSeriesMini">
+      SERIE{" "}
       {mlbWorldSeries.teamA.wins}
-    </strong>
-
-    <span>–</span>
-
-    <strong>
+      {"–"}
       {mlbWorldSeries.teamB.wins}
-    </strong>
+    </div>
   </div>
-</div>
+) : (
+  <div className="mlbWorldSeriesSeriesScore">
+    <small>SERIE</small>
+
+    <div className="mlbWorldSeriesSeriesScoreNumbers">
+      <strong>
+        {mlbWorldSeries.teamA.wins}
+      </strong>
+
+      <span>–</span>
+
+      <strong>
+        {mlbWorldSeries.teamB.wins}
+      </strong>
+    </div>
+  </div>
+)}
 </div>
 
           <div className="mlbWorldSeriesTeam">
