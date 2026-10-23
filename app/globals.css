@@ -2120,3 +2120,26 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 .mlbPostseasonHistory:hover summary {
   opacity: 1;
 }
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTeamWinner
+  > strong {
+  color: #beff00;
+}
+
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTeamLoser
+  > strong {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTeamWinner
+  span {
+  opacity: 1;
+}
+
+.mlbPostseasonSeriesCardCompact
+  .mlbPostseasonSeriesTeamLoser
+  span {
+  opacity: 0.62;
+}
