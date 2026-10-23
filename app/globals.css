@@ -2143,3 +2143,49 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   span {
   opacity: 0.62;
 }
+.mlbWorldSeriesSectionStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.mlbWorldSeriesStatusDot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.mlbWorldSeriesSectionStatus-live {
+  color: #ff4d4f;
+}
+
+.mlbWorldSeriesSectionStatus-live
+  .mlbWorldSeriesStatusDot {
+  animation: livePulse 1.2s infinite;
+}
+
+.mlbWorldSeriesSectionStatus-upcoming {
+  color: #f2b84b;
+}
+
+.mlbWorldSeriesSectionStatus-scheduled {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.mlbWorldSeriesCurrentGameTitle {
+  font-size: 13px !important;
+  font-weight: 900;
+  letter-spacing: 0.05em !important;
+}
+
+.mlbWorldSeriesCurrentGameTime {
+  margin-top: 3px;
+  font-size: 11px !important;
+  font-weight: 700;
+  opacity: 0.78 !important;
+}
