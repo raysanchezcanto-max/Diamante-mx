@@ -1370,3 +1370,18 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.mlbWorldSeriesTopStatus {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.mlbWorldSeriesLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
