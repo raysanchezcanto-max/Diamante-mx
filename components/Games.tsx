@@ -1,3 +1,4 @@
+import MlbWorldSeriesDetails from "@/components/MlbWorldSeriesDetails";
 import type {
   MlbWorldSeries,
 } from "@/lib/mlbWorldSeries";
@@ -855,7 +856,10 @@ const hasAnyGames =
             )
           )}
         </div>
-        <details className="mlbWorldSeriesDetails">
+     <MlbWorldSeriesDetails
+  worldSeries={mlbWorldSeries}
+  stats={mlbWorldSeriesStats}
+/>
   <summary>
     Ver detalle de la Serie Mundial
   </summary>
