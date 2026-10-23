@@ -686,9 +686,12 @@ const hasAnyGames =
               {mlbWorldSeries.teamA.name}
             </strong>
             {mlbWorldSeriesTeamAProbablePitcher && (
-  <span className="mlbWorldSeriesProbablePitcher">
-    {mlbWorldSeriesTeamAProbablePitcher.name}
-  </span>
+  <div className="mlbWorldSeriesProbablePitcher">
+    <small>P. PROBABLE</small>
+    <span>
+      {mlbWorldSeriesTeamAProbablePitcher.name}
+    </span>
+  </div>
 )}
 
 {mlbWorldSeriesCurrentGame && (
@@ -778,12 +781,13 @@ const hasAnyGames =
             )}
 
             <strong>
-              {mlbWorldSeries.teamB.name}
-            </strong>
-            {mlbWorldSeriesTeamBProbablePitcher && (
-  <span className="mlbWorldSeriesProbablePitcher">
-    {mlbWorldSeriesTeamBProbablePitcher.name}
-  </span>
+              {mlbWorldSeriesTeamBProbablePitcher && (
+  <div className="mlbWorldSeriesProbablePitcher">
+    <small>P. PROBABLE</small>
+    <span>
+      {mlbWorldSeriesTeamBProbablePitcher.name}
+    </span>
+  </div>
 )}
 
 {mlbWorldSeriesCurrentGame && (
