@@ -2249,3 +2249,22 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 .mlbPostseasonHistory[open] summary {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
+.mlbWorldSeriesSeriesScore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.mlbWorldSeriesSeriesScore small {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.mlbWorldSeriesSeriesScore strong {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+}
