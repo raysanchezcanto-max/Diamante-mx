@@ -1,3 +1,6 @@
+import type {
+  MlbPostseason,
+} from "@/lib/mlbPostseason";
 import MlbWorldSeriesDetails from "@/components/MlbWorldSeriesDetails";
 import type {
   MlbWorldSeries,
@@ -287,6 +290,7 @@ export default function Games({
   lmpChampion = null,
   mlbChampion = null,
   mlbWorldSeries = null,
+  mlbPostseason = null,
   mlbWorldSeriesStats = null,
   mlbWorldSeriesLiveState = null,
   league = "MLB",
