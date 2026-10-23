@@ -419,6 +419,30 @@ const mlbWorldSeriesCurrentGameIsToday =
         )
       ) === today
     : false;
+  const mlbWorldSeriesNextGame =
+  mlbWorldSeries
+    ? mlbWorldSeries.games.find(
+        (game) =>
+          !game.final &&
+          !game.live
+      ) ?? null
+    : null;
+
+const mlbWorldSeriesStatusType =
+  mlbWorldSeriesCurrentGame?.live
+    ? "live"
+    : mlbWorldSeriesCurrentGameIsToday
+    ? "upcoming"
+    : "scheduled";
+
+const mlbWorldSeriesStatusLabel =
+  mlbWorldSeriesCurrentGame?.live
+    ? "EN VIVO"
+    : mlbWorldSeriesCurrentGameIsToday
+    ? "INICIA HOY"
+    : mlbWorldSeriesNextGame
+    ? "PRÓXIMO JUEGO"
+    : "EN DISPUTA";
 const mlbWorldSeriesInningState =
   String(
     mlbWorldSeriesLiveState?.inningState ?? ""
@@ -581,10 +605,16 @@ const hasAnyGames =
 
           <h2>Serie Mundial</h2>
         </div>
+<span
+  className={`mlbWorldSeriesSectionStatus mlbWorldSeriesSectionStatus-${mlbWorldSeriesStatusType}`}
+>
+  <span
+    className="mlbWorldSeriesStatusDot"
+    aria-hidden="true"
+  />
 
-        <span className="liveDot">
-          ● EN DISPUTA
-        </span>
+  {mlbWorldSeriesStatusLabel}
+</span>
       </div>
 
       <div className="championCardPro mlbWorldSeriesCard">
@@ -632,31 +662,44 @@ const hasAnyGames =
 
          <div className="mlbWorldSeriesScore">
   {mlbWorldSeriesCurrentGame && (
-    <div className="mlbWorldSeriesCurrentGame">
-      <strong>
-        {mlbWorldSeriesCurrentGameIsToday
-          ? "HOY"
-          : new Intl.DateTimeFormat(
-              "es-MX",
-              {
-                day: "numeric",
-                month: "short",
-                timeZone:
-                  "America/Mexico_City",
-              }
-            )
-              .format(
-                new Date(
-                  mlbWorldSeriesCurrentGame.gameDate
-                )
-              )
-              .toUpperCase()}
-        {" · "}
-        JUEGO{" "}
-        {mlbWorldSeriesCurrentGame.gameNumber}
-      </strong>
+   <strong className="mlbWorldSeriesCurrentGameTitle">
+  {mlbWorldSeriesCurrentGameIsToday
+    ? "HOY"
+    : new Intl.DateTimeFormat(
+        "es-MX",
+        {
+          day: "numeric",
+          month: "short",
+          timeZone:
+            "America/Mexico_City",
+        }
+      )
+        .format(
+          new Date(
+            mlbWorldSeriesCurrentGame.gameDate
+          )
+        )
+        .toUpperCase()}
+  {" · "}
+  JUEGO{" "}
+  {mlbWorldSeriesCurrentGame.gameNumber}
+</strong>
 
-      <span>
+<span className="mlbWorldSeriesCurrentGameTime">
+  {new Intl.DateTimeFormat(
+    "es-MX",
+    {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone:
+        "America/Mexico_City",
+    }
+  ).format(
+    new Date(
+      mlbWorldSeriesCurrentGame.gameDate
+    )
+  )}
+</span>
         {new Intl.DateTimeFormat(
           "es-MX",
           {
