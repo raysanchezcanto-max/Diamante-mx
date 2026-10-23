@@ -1002,6 +1002,19 @@ const hasAnyGames =
         </strong>
       </div>
     </div>
+         {league === "MLB" &&
+  mlbWorldSeries?.champion && (
+    <details className="mlbWorldSeriesDetails">
+      <summary>
+        Ver detalle de la Serie Mundial
+      </summary>
+
+      <MlbWorldSeriesDetails
+        worldSeries={mlbWorldSeries}
+        stats={mlbWorldSeriesStats}
+      />
+    </details>
+  )}
   </div>
       </>
     ) : (
