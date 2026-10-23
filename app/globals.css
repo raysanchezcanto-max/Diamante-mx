@@ -1605,3 +1605,25 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-size: 11px;
   opacity: 0.65;
 }
+.mlbWsDecision {
+  min-width: 0;
+}
+
+.mlbWsDecisionPlayer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.mlbWsDecisionPlayer .mlbWsPlayerPhoto {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+}
+
+.mlbWsDecisionPlayer strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
