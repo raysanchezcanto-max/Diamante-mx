@@ -317,6 +317,7 @@ mlbChampion?: {
 } | null;
   mlbWorldSeries?: MlbWorldSeries | null;
   mlbWorldSeriesStats?: MlbWorldSeriesStats | null;
+  mlbPostseason?: MlbPostseason | null;
   mlbWorldSeriesLiveState?: {
   inning?: number;
   inningState?: string;
