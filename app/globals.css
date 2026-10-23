@@ -364,6 +364,14 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   .gamePage {
     padding: 22px 16px 52px;
   }
+  .mlbPostseasonGrid {
+  grid-template-columns: 1fr;
+}
+
+.mlbPostseasonSeriesTop {
+  align-items: flex-start;
+  flex-direction: column;
+}
   .mlbWorldSeriesDetailTabs {
   overflow-x: auto;
 }
