@@ -1385,3 +1385,92 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-weight: 800;
   letter-spacing: 0.08em;
 }
+.mlbWorldSeriesLiveStrip {
+  display: grid;
+  grid-template-columns: auto 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  max-width: 620px;
+  margin: 18px auto 0;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mlbWorldSeriesLiveCount {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mlbWorldSeriesLiveInning {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.mlbWorldSeriesLiveInning span {
+  font-size: 10px;
+}
+
+.mlbWorldSeriesBSO {
+  display: flex;
+  gap: 8px;
+  font-size: 10px;
+}
+
+.mlbWorldSeriesMiniDiamond {
+  position: relative;
+  width: 38px;
+  height: 38px;
+}
+
+.mlbWsBase {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transform: rotate(45deg);
+}
+
+.mlbWsBaseSecond {
+  top: 2px;
+  left: 15px;
+}
+
+.mlbWsBaseThird {
+  top: 15px;
+  left: 2px;
+}
+
+.mlbWsBaseFirst {
+  top: 15px;
+  right: 2px;
+}
+
+.mlbWsBase.occupied {
+  background: currentColor;
+}
+
+.mlbWorldSeriesMatchup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.mlbWorldSeriesMatchup > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mlbWorldSeriesMatchup span {
+  font-size: 9px;
+  opacity: 0.55;
+  letter-spacing: 0.08em;
+}
+
+.mlbWorldSeriesMatchup strong {
+  font-size: 11px;
+}
