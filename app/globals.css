@@ -1234,10 +1234,132 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-size: 11px;
   opacity: 0.75;
 }
+.mlbWorldSeriesDetails {
+  margin-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
 
+.mlbWorldSeriesDetails summary {
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.mlbWorldSeriesDetails summary::-webkit-details-marker {
+  display: none;
+}
+
+.mlbWorldSeriesDetails summary::after {
+  content: " ↓";
+}
+
+.mlbWorldSeriesDetails[open] summary::after {
+  content: " ↑";
+}
+
+.mlbWorldSeriesDetailsContent {
+  margin-top: 22px;
+}
+
+.mlbWorldSeriesDetailTabs {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 16px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.mlbWorldSeriesDetailTabs span {
+  opacity: 0.45;
+}
+
+.mlbWorldSeriesDetailTabs .active {
+  opacity: 1;
+}
+
+.mlbWorldSeriesResults {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mlbWorldSeriesResultGame {
+  display: block;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.12);
+  color: inherit;
+  text-decoration: none;
+}
+
+.mlbWorldSeriesResultHeader,
+.mlbWorldSeriesResultScore > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mlbWorldSeriesResultHeader > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mlbWorldSeriesResultHeader span {
+  font-size: 10px;
+  opacity: 0.65;
+}
+
+.mlbWorldSeriesResultScore {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.mlbWorldSeriesResultScore strong {
+  font-size: 18px;
+}
+
+.mlbWorldSeriesDecisions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mlbWorldSeriesDecisions > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mlbWorldSeriesDecisions span {
+  font-size: 9px;
+  opacity: 0.55;
+}
+
+.mlbWorldSeriesDecisions strong {
+  font-size: 11px;
+}
 @media (max-width: 760px) {
   .mlbWorldSeriesTeams {
     grid-template-columns: 1fr;
+    .mlbWorldSeriesResults {
+  grid-template-columns: 1fr;
+}
+
+.mlbWorldSeriesDecisions {
+  grid-template-columns: 1fr;
+}
   }
 
   .mlbWorldSeriesScore {
