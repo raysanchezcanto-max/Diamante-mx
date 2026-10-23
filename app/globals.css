@@ -2365,3 +2365,44 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-weight: 700;
   opacity: 0.68;
 }
+.mlbWorldSeriesProbablePitcher {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: -2px;
+}
+
+.mlbWorldSeriesProbablePitcher small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.68;
+}
+
+.mlbWorldSeriesProbablePitcher span {
+  font-size: 12px;
+  font-weight: 750;
+  opacity: 0.9;
+}
+
+.mlbWorldSeriesHomeAway {
+  margin-top: -2px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+}
+
+.mlbWorldSeriesCurrentGameTime {
+  font-size: 12px !important;
+  font-weight: 800;
+  opacity: 0.9 !important;
+}
+
+.mlbWorldSeriesCurrentVenue {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 650;
+  opacity: 0.64;
+}
