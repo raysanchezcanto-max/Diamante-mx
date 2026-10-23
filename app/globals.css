@@ -2191,3 +2191,61 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-weight: 700;
   opacity: 0.78 !important;
 }
+.mlbWorldSeriesDetails,
+.mlbPostseasonHistory {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.mlbWorldSeriesDetails summary,
+.mlbPostseasonHistory summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.78;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.mlbWorldSeriesDetails summary::-webkit-details-marker,
+.mlbPostseasonHistory summary::-webkit-details-marker {
+  display: none;
+}
+
+.mlbWorldSeriesDetails summary::after,
+.mlbPostseasonHistory summary::after {
+  content: "›";
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0.55;
+  transition: transform 0.2s ease;
+}
+
+.mlbWorldSeriesDetails[open] summary::after,
+.mlbPostseasonHistory[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.mlbWorldSeriesDetails summary:hover,
+.mlbPostseasonHistory summary:hover {
+  background: rgba(190, 255, 0, 0.035);
+  opacity: 1;
+}
+
+.mlbWorldSeriesDetails[open] summary,
+.mlbPostseasonHistory[open] summary {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
