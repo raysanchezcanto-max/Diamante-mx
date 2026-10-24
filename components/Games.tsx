@@ -511,6 +511,30 @@ const mlbWorldSeriesGoalText =
           !game.live
       ) ?? null
     : null;
+  const mlbWorldSeriesHasStarted =
+  Boolean(
+    mlbWorldSeries?.games.some(
+      (game) =>
+        game.final ||
+        game.live
+    )
+  );
+
+const showMlbWorldSeriesFullSchedule =
+  Boolean(
+    mlbWorldSeries &&
+    !mlbWorldSeriesHasStarted &&
+    !mlbWorldSeries.champion
+  );
+
+const showMlbWorldSeriesNextGameOnly =
+  Boolean(
+    mlbWorldSeries &&
+    mlbWorldSeriesHasStarted &&
+    !mlbWorldSeriesCurrentGame?.live &&
+    !mlbWorldSeries.champion &&
+    mlbWorldSeriesNextGame
+  );
   const mlbWorldSeriesLastFinalGame =
   mlbWorldSeries
     ? [...mlbWorldSeries.games]
