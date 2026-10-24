@@ -818,27 +818,27 @@ const hasAnyGames =
 {mlbWorldSeriesCurrentGame?.live ? (
   <div className="mlbWorldSeriesLiveCenter">
     <span className="mlbWorldSeriesLiveLabel">
-  <span
-    className="livePulseDot"
-    aria-hidden="true"
-  />
+      <span
+        className="livePulseDot"
+        aria-hidden="true"
+      />
 
-  EN VIVO
-  {mlbWorldSeriesLiveState?.inning && (
-    <>
-      {" · "}
-      {mlbWorldSeriesInningState.includes("top") ||
-      mlbWorldSeriesInningState.includes("alta")
-        ? "ALTA"
-        : mlbWorldSeriesInningState.includes("bottom") ||
-          mlbWorldSeriesInningState.includes("baja")
-        ? "BAJA"
-        : ""}
-      {" "}
-      {mlbWorldSeriesLiveState.inning}
-    </>
-  )}
-</span>
+      EN VIVO
+      {mlbWorldSeriesLiveState?.inning && (
+        <>
+          {" · "}
+          {mlbWorldSeriesInningState.includes("top") ||
+          mlbWorldSeriesInningState.includes("alta")
+            ? "ALTA"
+            : mlbWorldSeriesInningState.includes("bottom") ||
+              mlbWorldSeriesInningState.includes("baja")
+            ? "BAJA"
+            : ""}
+          {" "}
+          {mlbWorldSeriesLiveState.inning}
+        </>
+      )}
+    </span>
 
     <div className="mlbWorldSeriesLiveGameScore">
       <strong>
@@ -852,13 +852,73 @@ const hasAnyGames =
       </strong>
     </div>
 
-    
-
     <div className="mlbWorldSeriesSeriesMini">
       SERIE{" "}
       {mlbWorldSeries.teamA.wins}
       {"–"}
       {mlbWorldSeries.teamB.wins}
+    </div>
+  </div>
+) : mlbWorldSeriesBetweenGames &&
+  mlbWorldSeriesLastFinalGame &&
+  mlbWorldSeriesNextGame ? (
+  <div className="mlbWorldSeriesBetweenGames">
+    <div className="mlbWorldSeriesLastResult">
+      <small>ÚLTIMO RESULTADO</small>
+
+      <strong>
+        JUEGO{" "}
+        {mlbWorldSeriesLastFinalGame.gameNumber}
+      </strong>
+
+      <div>
+        <span>
+          {mlbWorldSeriesLastFinalGame.away}
+        </span>
+
+        <b>
+          {mlbWorldSeriesLastFinalGame.awayRuns ?? "-"}
+          {" – "}
+          {mlbWorldSeriesLastFinalGame.homeRuns ?? "-"}
+        </b>
+
+        <span>
+          {mlbWorldSeriesLastFinalGame.home}
+        </span>
+      </div>
+    </div>
+
+    <div className="mlbWorldSeriesNextGameCompact">
+      <small>PRÓXIMO JUEGO</small>
+
+      <strong>
+        JUEGO{" "}
+        {mlbWorldSeriesNextGame.gameNumber}
+      </strong>
+
+      <span>
+        {new Intl.DateTimeFormat(
+          "es-MX",
+          {
+            day: "numeric",
+            month: "short",
+            hour: "numeric",
+            minute: "2-digit",
+            timeZone:
+              "America/Mexico_City",
+          }
+        ).format(
+          new Date(
+            mlbWorldSeriesNextGame.gameDate
+          )
+        )}
+      </span>
+
+      {mlbWorldSeriesNextGame.venueName && (
+        <span>
+          {mlbWorldSeriesNextGame.venueName}
+        </span>
+      )}
     </div>
   </div>
 ) : (
@@ -878,7 +938,6 @@ const hasAnyGames =
     </div>
   </div>
 )}
-</div>
 
           <div className="mlbWorldSeriesTeam">
   {mlbWorldSeriesTeamBLogo && (
