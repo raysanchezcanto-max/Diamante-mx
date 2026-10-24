@@ -241,10 +241,20 @@ export default function MlbWorldSeriesDetails({
                       {seriesGame.away}
                     </span>
 
-                    <strong>
-                      {seriesGame.awayRuns ??
-                        "—"}
-                    </strong>
+                    <strong
+  className={
+    seriesGame.final &&
+    seriesGame.awayRuns !== undefined &&
+    seriesGame.homeRuns !== undefined
+      ? seriesGame.awayRuns >
+        seriesGame.homeRuns
+        ? "mlbWorldSeriesScoreWinner"
+        : "mlbWorldSeriesScoreLoser"
+      : ""
+  }
+>
+  {seriesGame.awayRuns ?? "-"}
+</strong>
                   </div>
 
                   <div>
@@ -252,10 +262,20 @@ export default function MlbWorldSeriesDetails({
                       {seriesGame.home}
                     </span>
 
-                    <strong>
-                      {seriesGame.homeRuns ??
-                        "—"}
-                    </strong>
+                    <strong
+  className={
+    seriesGame.final &&
+    seriesGame.awayRuns !== undefined &&
+    seriesGame.homeRuns !== undefined
+      ? seriesGame.homeRuns >
+        seriesGame.awayRuns
+        ? "mlbWorldSeriesScoreWinner"
+        : "mlbWorldSeriesScoreLoser"
+      : ""
+  }
+>
+  {seriesGame.homeRuns ?? "-"}
+</strong>
                   </div>
                 </div>
 
