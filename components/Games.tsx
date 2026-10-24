@@ -508,6 +508,25 @@ const mlbWorldSeriesGoalText =
           !game.live
       ) ?? null
     : null;
+  const mlbWorldSeriesLastFinalGame =
+  mlbWorldSeries
+    ? [...mlbWorldSeries.games]
+        .filter((game) => game.final)
+        .sort(
+          (a, b) =>
+            new Date(b.gameDate).getTime() -
+            new Date(a.gameDate).getTime()
+        )[0] ?? null
+    : null;
+
+const mlbWorldSeriesBetweenGames =
+  Boolean(
+    mlbWorldSeries &&
+    mlbWorldSeriesLastFinalGame &&
+    mlbWorldSeriesNextGame &&
+    !mlbWorldSeriesCurrentGame?.live &&
+    !mlbWorldSeriesCurrentGameIsToday
+  );
 
 const mlbWorldSeriesStatusType =
   mlbWorldSeriesCurrentGameIsToday &&
