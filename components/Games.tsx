@@ -479,19 +479,15 @@ const mlbWorldSeriesTeamBGameRuns =
     : null;
 
 const mlbWorldSeriesStatusType =
-  mlbWorldSeriesCurrentGame?.live
-    ? "live"
-    : mlbWorldSeriesCurrentGameIsToday
+  mlbWorldSeriesCurrentGameIsToday &&
+  !mlbWorldSeriesCurrentGame?.live
     ? "upcoming"
     : "scheduled";
 
 const mlbWorldSeriesStatusLabel =
-  mlbWorldSeriesCurrentGame?.live
-    ? "EN VIVO"
-    : mlbWorldSeriesCurrentGameIsToday
+  mlbWorldSeriesCurrentGameIsToday &&
+  !mlbWorldSeriesCurrentGame?.live
     ? "INICIA HOY"
-    : mlbWorldSeriesNextGame
-    ? "PRÓXIMO JUEGO"
     : "EN DISPUTA";
 const mlbWorldSeriesInningState =
   String(
