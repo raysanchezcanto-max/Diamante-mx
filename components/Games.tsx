@@ -674,16 +674,7 @@ const hasAnyGames =
           </span>
 
         <div className="mlbWorldSeriesTopStatus">
-  {mlbWorldSeriesCurrentGame?.live && (
-    <span className="mlbWorldSeriesLive">
-      <span
-        className="livePulseDot"
-        aria-hidden="true"
-      />
-      EN VIVO
-    </span>
-  )}
-
+ 
  <span className="championChip">
   AL MEJOR DE{" "}
   {mlbWorldSeries.gamesInSeries}
