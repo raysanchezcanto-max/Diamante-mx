@@ -518,6 +518,14 @@ const mlbWorldSeriesGoalText =
             new Date(a.gameDate).getTime()
         )[0] ?? null
     : null;
+  const mlbWorldSeriesLastFinalGameIsToday =
+  mlbWorldSeriesLastFinalGame
+    ? mexicoDateKey(
+        new Date(
+          mlbWorldSeriesLastFinalGame.gameDate
+        )
+      ) === today
+    : false;
 
 const mlbWorldSeriesBetweenGames =
   Boolean(
@@ -529,14 +537,34 @@ const mlbWorldSeriesBetweenGames =
   );
 
 const mlbWorldSeriesStatusType =
-  mlbWorldSeriesCurrentGameIsToday &&
-  !mlbWorldSeriesCurrentGame?.live
+  mlbWorldSeriesCurrentGame?.live
+    ? "scheduled"
+    : mlbWorldSeriesCurrentGameIsToday
+    ? "upcoming"
+    : mlbWorldSeriesLastFinalGameIsToday
+    ? "finished"
+    : mlbWorldSeriesNextGame &&
+      mexicoDateKey(
+        new Date(
+          mlbWorldSeriesNextGame.gameDate
+        )
+      ) === today
     ? "upcoming"
     : "scheduled";
 
 const mlbWorldSeriesStatusLabel =
-  mlbWorldSeriesCurrentGameIsToday &&
-  !mlbWorldSeriesCurrentGame?.live
+  mlbWorldSeriesCurrentGame?.live
+    ? "EN DISPUTA"
+    : mlbWorldSeriesCurrentGameIsToday
+    ? "INICIA HOY"
+    : mlbWorldSeriesLastFinalGameIsToday
+    ? "JUEGO FINALIZADO"
+    : mlbWorldSeriesNextGame &&
+      mexicoDateKey(
+        new Date(
+          mlbWorldSeriesNextGame.gameDate
+        )
+      ) === today
     ? "INICIA HOY"
     : "EN DISPUTA";
 const mlbWorldSeriesInningState =
