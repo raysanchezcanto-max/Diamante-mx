@@ -836,50 +836,7 @@ const hasAnyGames =
 )}
  
    
-{mlbWorldSeriesCurrentGame?.live ? (
-  <div className="mlbWorldSeriesLiveCenter">
-    <span className="mlbWorldSeriesLiveLabel">
-      <span
-        className="livePulseDot"
-        aria-hidden="true"
-      />
 
-      EN VIVO
-      {mlbWorldSeriesLiveState?.inning && (
-        <>
-          {" · "}
-          {mlbWorldSeriesInningState.includes("top") ||
-          mlbWorldSeriesInningState.includes("alta")
-            ? "ALTA"
-            : mlbWorldSeriesInningState.includes("bottom") ||
-              mlbWorldSeriesInningState.includes("baja")
-            ? "BAJA"
-            : ""}
-          {" "}
-          {mlbWorldSeriesLiveState.inning}
-        </>
-      )}
-    </span>
-
-    <div className="mlbWorldSeriesLiveGameScore">
-      <strong>
-        {mlbWorldSeriesTeamAGameRuns ?? 0}
-      </strong>
-
-      <span>–</span>
-
-      <strong>
-        {mlbWorldSeriesTeamBGameRuns ?? 0}
-      </strong>
-    </div>
-
-    <div className="mlbWorldSeriesSeriesMini">
-      SERIE{" "}
-      {mlbWorldSeries.teamA.wins}
-      {"–"}
-      {mlbWorldSeries.teamB.wins}
-    </div>
-  </div>
 {mlbWorldSeriesCurrentGame?.live ? (
   <div className="mlbWorldSeriesLiveCenter">
     <span className="mlbWorldSeriesLiveLabel">
