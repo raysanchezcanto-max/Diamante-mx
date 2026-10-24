@@ -955,7 +955,15 @@ const hasAnyGames =
       </div>
     </div>
   )}
-
+{mlbWorldSeriesCurrentGame?.live && (
+  <Link
+    href={`/game/mlb/${mlbWorldSeriesCurrentGame.id}`}
+    className="mlbWorldSeriesLiveGameLink"
+  >
+    <span>VER JUEGO EN VIVO</span>
+    <span aria-hidden="true">→</span>
+  </Link>
+)}
         <div className="mlbWorldSeriesSchedule">
      {mlbWorldSeries.games
   .filter(
