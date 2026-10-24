@@ -695,7 +695,8 @@ const hasAnyGames =
             <strong>
               {mlbWorldSeries.teamA.name}
             </strong>
-            {mlbWorldSeriesTeamAProbablePitcher && (
+           {mlbWorldSeriesTeamAProbablePitcher &&
+  !mlbWorldSeriesCurrentGame?.live && (
   <div className="mlbWorldSeriesProbablePitcher">
     <small>P. PROBABLE</small>
     <span>
@@ -767,8 +768,27 @@ const hasAnyGames =
 {mlbWorldSeriesCurrentGame?.live ? (
   <div className="mlbWorldSeriesLiveCenter">
     <span className="mlbWorldSeriesLiveLabel">
-      EN VIVO
-    </span>
+  <span
+    className="livePulseDot"
+    aria-hidden="true"
+  />
+
+  EN VIVO
+  {mlbWorldSeriesLiveState?.inning && (
+    <>
+      {" · "}
+      {mlbWorldSeriesInningState.includes("top") ||
+      mlbWorldSeriesInningState.includes("alta")
+        ? "ALTA"
+        : mlbWorldSeriesInningState.includes("bottom") ||
+          mlbWorldSeriesInningState.includes("baja")
+        ? "BAJA"
+        : ""}
+      {" "}
+      {mlbWorldSeriesLiveState.inning}
+    </>
+  )}
+</span>
 
     <div className="mlbWorldSeriesLiveGameScore">
       <strong>
@@ -782,23 +802,7 @@ const hasAnyGames =
       </strong>
     </div>
 
-    {mlbWorldSeriesLiveState && (
-      <div className="mlbWorldSeriesLiveMeta">
-        <span>
-          {mlbWorldSeriesInningArrow}
-          {" "}
-          {mlbWorldSeriesLiveState.inning ?? "-"}
-        </span>
-
-        <span>
-          B {mlbWorldSeriesLiveState.balls ?? 0}
-          {" · "}
-          S {mlbWorldSeriesLiveState.strikes ?? 0}
-          {" · "}
-          O {mlbWorldSeriesLiveState.outs ?? 0}
-        </span>
-      </div>
-    )}
+    
 
     <div className="mlbWorldSeriesSeriesMini">
       SERIE{" "}
@@ -839,7 +843,8 @@ const hasAnyGames =
     {mlbWorldSeries.teamB.name}
   </strong>
 
-  {mlbWorldSeriesTeamBProbablePitcher && (
+  {mlbWorldSeriesTeamBProbablePitcher &&
+  !mlbWorldSeriesCurrentGame?.live && (
     <div className="mlbWorldSeriesProbablePitcher">
       <small>P. PROBABLE</small>
 
