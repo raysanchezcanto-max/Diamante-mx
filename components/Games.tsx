@@ -904,8 +904,7 @@ const hasAnyGames =
             month: "short",
             hour: "numeric",
             minute: "2-digit",
-            timeZone:
-              "America/Mexico_City",
+            timeZone: "America/Mexico_City",
           }
         ).format(
           new Date(
