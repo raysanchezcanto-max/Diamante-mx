@@ -171,6 +171,40 @@ const mlbWorldSeries =
         mlbChampionYear
       )
     : null;
+  const mlbChampionResolved =
+  mlbChampion ??
+  (
+    mlbWorldSeries?.champion
+      ? {
+          year: mlbWorldSeries.year,
+          champion:
+            mlbWorldSeries.champion.name,
+          championId:
+            mlbWorldSeries.champion.id,
+
+          runnerUp:
+            mlbWorldSeries.teamA.id ===
+            mlbWorldSeries.champion.id
+              ? mlbWorldSeries.teamB.name
+              : mlbWorldSeries.teamA.name,
+
+          runnerUpId:
+            mlbWorldSeries.teamA.id ===
+            mlbWorldSeries.champion.id
+              ? mlbWorldSeries.teamB.id
+              : mlbWorldSeries.teamA.id,
+
+          championWins:
+            mlbWorldSeries.champion.wins,
+
+          runnerUpWins:
+            mlbWorldSeries.teamA.id ===
+            mlbWorldSeries.champion.id
+              ? mlbWorldSeries.teamB.wins
+              : mlbWorldSeries.teamA.wins,
+        }
+      : null
+  );
   const mlbPostseason =
   selectedLeague === "MLB"
     ? await getMlbPostseason(
@@ -454,7 +488,7 @@ const daysUntilLmp =
   recentGames={recentGames}
   lmbChampion={lmbChampion}
    lmpChampion={lmpChampion}
-   mlbChampion={mlbChampion}
+  mlbChampion={mlbChampionResolved}
    mlbWorldSeries={mlbWorldSeries}
    mlbPostseason={mlbPostseason}
    mlbWorldSeriesStats={mlbWorldSeriesStats}
