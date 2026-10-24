@@ -469,6 +469,37 @@ const mlbWorldSeriesTeamBGameRuns =
       ? mlbWorldSeriesCurrentGame.homeRuns
       : undefined
     : undefined;
+  const mlbWorldSeriesLeader =
+  mlbWorldSeries &&
+  mlbWorldSeries.teamA.wins !==
+    mlbWorldSeries.teamB.wins
+    ? mlbWorldSeries.teamA.wins >
+      mlbWorldSeries.teamB.wins
+      ? mlbWorldSeries.teamA
+      : mlbWorldSeries.teamB
+    : null;
+
+const mlbWorldSeriesWinsToTitle =
+  mlbWorldSeriesLeader
+    ? Math.max(
+        0,
+        4 - mlbWorldSeriesLeader.wins
+      )
+    : null;
+
+const mlbWorldSeriesGoalText =
+  mlbWorldSeries?.champion
+    ? `${mlbWorldSeries.champion.name} CAMPEÓN`
+    : mlbWorldSeriesLeader &&
+      mlbWorldSeriesWinsToTitle
+    ? `${mlbWorldSeriesLeader.name} A ${
+        mlbWorldSeriesWinsToTitle
+      } ${
+        mlbWorldSeriesWinsToTitle === 1
+          ? "VICTORIA"
+          : "VICTORIAS"
+      } DEL TÍTULO`
+    : "PRIMERO EN LLEGAR A 4 VICTORIAS";
   const mlbWorldSeriesNextGame =
   mlbWorldSeries
     ? mlbWorldSeries.games.find(
@@ -865,9 +896,9 @@ const hasAnyGames =
 </div>
         </div>
 
-        {!mlbWorldSeriesCurrentGame?.live && (
+       {!mlbWorldSeriesCurrentGame?.live && (
   <div className="mlbWorldSeriesGoal">
-    PRIMERO EN LLEGAR A 4 VICTORIAS
+    {mlbWorldSeriesGoalText}
   </div>
 )}
        
