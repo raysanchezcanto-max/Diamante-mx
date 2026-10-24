@@ -935,7 +935,7 @@ const hasAnyGames =
   )}
 </div>
         </div>
-  </div>
+  
 
        {!mlbWorldSeriesCurrentGame?.live && (
   <div className="mlbWorldSeriesGoal">
