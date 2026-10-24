@@ -489,13 +489,13 @@ const mlbWorldSeriesWinsToTitle =
 
 const mlbWorldSeriesGoalText =
   mlbWorldSeries?.champion
-    ? `${mlbWorldSeries.champion.name} CAMPEÓN`
+    ? `${mlbWorldSeries.champion.name.toUpperCase()} CAMPEÓN`
     : mlbWorldSeriesLeader &&
       mlbWorldSeriesWinsToTitle
-   `${mlbWorldSeriesLeader.name
-  .split(" ")
-  .slice(-1)[0]
-  .toUpperCase()} A ${
+    ? `${mlbWorldSeriesLeader.name
+        .split(" ")
+        .slice(-1)[0]
+        .toUpperCase()} A ${
         mlbWorldSeriesWinsToTitle
       } ${
         mlbWorldSeriesWinsToTitle === 1
