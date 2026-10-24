@@ -2509,3 +2509,66 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   border-color: rgba(255, 77, 79, 0.38);
   background: rgba(255, 77, 79, 0.055);
 }
+.mlbWorldSeriesBetweenGames {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: min(520px, 100%);
+}
+
+.mlbWorldSeriesLastResult,
+.mlbWorldSeriesNextGameCompact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.mlbWorldSeriesLastResult small,
+.mlbWorldSeriesNextGameCompact small {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.58;
+}
+
+.mlbWorldSeriesLastResult strong,
+.mlbWorldSeriesNextGameCompact strong {
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.mlbWorldSeriesLastResult > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 2px;
+}
+
+.mlbWorldSeriesLastResult > div span {
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.mlbWorldSeriesLastResult > div b {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.mlbWorldSeriesNextGameCompact span {
+  font-size: 10px;
+  font-weight: 650;
+  opacity: 0.72;
+}
+
+@media (max-width: 760px) {
+  .mlbWorldSeriesBetweenGames {
+    grid-template-columns: 1fr;
+  }
+}
