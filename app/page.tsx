@@ -623,8 +623,7 @@ const daysUntilLmp =
     </div>
   </div>
 )}
-      {!(
-  selectedLeague === "MLB" &&
+     
  {!hideMlbRecentResults && (
   <RecentResults
     games={recentGames}
