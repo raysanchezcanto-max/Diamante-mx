@@ -1083,96 +1083,135 @@ const hasAnyGames =
     <span aria-hidden="true">→</span>
   </Link>
 )}
-        <div className="mlbWorldSeriesSchedule">
-     {mlbWorldSeries.games
-  .filter(
-    (seriesGame) =>
-      !seriesGame.final &&
-      mexicoDateKey(
-        new Date(seriesGame.gameDate)
-      ) > today
-  )
-  .map(
-    (seriesGame) => (
-              <Link
-  key={seriesGame.id}
-  href={`/game/mlb/${seriesGame.id}`}
-  className={`mlbWorldSeriesGame ${
-    mexicoDateKey(
-      new Date(seriesGame.gameDate)
-    ) === today
-      ? "mlbWorldSeriesGameToday"
-      : ""
-  }`}
->
-                <div>
-                  <strong>
-                    JUEGO {seriesGame.gameNumber}
-                  </strong>
-                  {seriesGame.gameNumber >= 5 && (
-  <small className="mlbWorldSeriesIfNecessary">
-    SI ES NECESARIO
-  </small>
+      {showMlbWorldSeriesFullSchedule && (
+  <div className="mlbWorldSeriesSchedule">
+    {mlbWorldSeries.games
+      .filter(
+        (seriesGame) =>
+          !seriesGame.final &&
+          mexicoDateKey(
+            new Date(seriesGame.gameDate)
+          ) > today
+      )
+      .map((seriesGame) => (
+        <Link
+          key={seriesGame.id}
+          href={`/game/mlb/${seriesGame.id}`}
+          className="mlbWorldSeriesGame"
+        >
+          <div>
+            <strong>
+              JUEGO {seriesGame.gameNumber}
+            </strong>
+
+            {seriesGame.gameNumber >= 5 && (
+              <small className="mlbWorldSeriesIfNecessary">
+                SI ES NECESARIO
+              </small>
+            )}
+
+            <span>
+              {new Intl.DateTimeFormat(
+                "es-MX",
+                {
+                  day: "numeric",
+                  month: "short",
+                  timeZone:
+                    "America/Mexico_City",
+                }
+              ).format(
+                new Date(
+                  seriesGame.gameDate
+                )
+              )}
+            </span>
+          </div>
+
+          <div>
+            <span>
+              {new Intl.DateTimeFormat(
+                "es-MX",
+                {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  timeZone:
+                    "America/Mexico_City",
+                }
+              ).format(
+                new Date(
+                  seriesGame.gameDate
+                )
+              )}
+            </span>
+
+            {seriesGame.venueName && (
+              <small className="mlbWorldSeriesGameVenue">
+                {seriesGame.venueName}
+              </small>
+            )}
+          </div>
+        </Link>
+      ))}
+  </div>
 )}
 
-                 <span>
-  {mexicoDateKey(
-    new Date(seriesGame.gameDate)
-  ) === today
-    ? "HOY"
-    : new Intl.DateTimeFormat(
-        "es-MX",
-        {
-          day: "numeric",
-          month: "short",
-          timeZone:
-            "America/Mexico_City",
-        }
-      ).format(
-        new Date(
-          seriesGame.gameDate
-        )
+{showMlbWorldSeriesNextGameOnly &&
+  mlbWorldSeriesNextGame && (
+    <div className="mlbWorldSeriesNextOnly">
+      <span className="mlbWorldSeriesNextOnlyLabel">
+        PRÓXIMO JUEGO
+      </span>
+
+      <strong>
+        JUEGO {mlbWorldSeriesNextGame.gameNumber}
+      </strong>
+
+      <span>
+        {new Intl.DateTimeFormat(
+          "es-MX",
+          {
+            day: "numeric",
+            month: "short",
+            hour: "numeric",
+            minute: "2-digit",
+            timeZone:
+              "America/Mexico_City",
+          }
+        ).format(
+          new Date(
+            mlbWorldSeriesNextGame.gameDate
+          )
+        )}
+      </span>
+
+      {mlbWorldSeriesNextGame.venueName && (
+        <span>
+          {mlbWorldSeriesNextGame.venueName}
+        </span>
       )}
-</span>
-                </div>
 
-                <div>
-                  {seriesGame.final ? (
-                    <strong>
-                      FINAL ·{" "}
-                      {seriesGame.awayRuns ?? "-"}
-                      {" – "}
-                      {seriesGame.homeRuns ?? "-"}
-                    </strong>
-                  ) : seriesGame.live ? (
-                    <strong>EN VIVO</strong>
-                  ) : (
-                    <span>
-                      {new Intl.DateTimeFormat(
-                        "es-MX",
-                        {
-                          hour: "numeric",
-                          minute: "2-digit",
-                          timeZone:
-                            "America/Mexico_City",
-                        }
-                      ).format(
-                        new Date(
-                          seriesGame.gameDate
-                        )
-                      )}
-                    </span>
-                  )}
-                  {seriesGame.venueName && (
-  <small className="mlbWorldSeriesGameVenue">
-    {seriesGame.venueName}
-  </small>
-)}
-                </div>
-              </Link>
-            )
-          )}
+      {(mlbWorldSeriesNextGame.awayProbablePitcher ||
+        mlbWorldSeriesNextGame.homeProbablePitcher) && (
+        <div className="mlbWorldSeriesNextPitchers">
+          <div>
+            <small>P. PROBABLE</small>
+            <strong>
+              {mlbWorldSeriesNextGame.awayProbablePitcher?.name ??
+                "Por confirmar"}
+            </strong>
+          </div>
+
+          <div>
+            <small>P. PROBABLE</small>
+            <strong>
+              {mlbWorldSeriesNextGame.homeProbablePitcher?.name ??
+                "Por confirmar"}
+            </strong>
+          </div>
         </div>
+      )}
+    </div>
+  )}
      <details className="mlbWorldSeriesDetails">
   <summary>
     Ver detalle de la Serie Mundial
