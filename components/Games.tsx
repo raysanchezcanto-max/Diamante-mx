@@ -530,34 +530,14 @@ const mlbWorldSeriesGoalText =
 
 
 const mlbWorldSeriesStatusType =
-  mlbWorldSeriesCurrentGame?.live
-    ? "scheduled"
-    : mlbWorldSeriesCurrentGameIsToday
-    ? "upcoming"
-    : mlbWorldSeriesLastFinalGameIsToday
-    ? "finished"
-    : mlbWorldSeriesNextGame &&
-      mexicoDateKey(
-        new Date(
-          mlbWorldSeriesNextGame.gameDate
-        )
-      ) === today
+  mlbWorldSeriesCurrentGameIsToday &&
+  !mlbWorldSeriesCurrentGame?.live
     ? "upcoming"
     : "scheduled";
 
 const mlbWorldSeriesStatusLabel =
-  mlbWorldSeriesCurrentGame?.live
-    ? "EN DISPUTA"
-    : mlbWorldSeriesCurrentGameIsToday
-    ? "INICIA HOY"
-    : mlbWorldSeriesLastFinalGameIsToday
-    ? "JUEGO FINALIZADO"
-    : mlbWorldSeriesNextGame &&
-      mexicoDateKey(
-        new Date(
-          mlbWorldSeriesNextGame.gameDate
-        )
-      ) === today
+  mlbWorldSeriesCurrentGameIsToday &&
+  !mlbWorldSeriesCurrentGame?.live
     ? "INICIA HOY"
     : "EN DISPUTA";
 const mlbWorldSeriesInningState =
@@ -885,20 +865,38 @@ const hasAnyGames =
   <div className="mlbWorldSeriesSeriesScore">
     <small>SERIE</small>
 
-    <div className="mlbWorldSeriesSeriesScoreNumbers">
-      <strong>
-        {mlbWorldSeries.teamA.wins}
-      </strong>
+   <div className="mlbWorldSeriesSeriesScoreNumbers">
+  <strong
+    className={
+      mlbWorldSeries.teamA.wins >
+      mlbWorldSeries.teamB.wins
+        ? "mlbWorldSeriesScoreWinner"
+        : mlbWorldSeries.teamA.wins <
+          mlbWorldSeries.teamB.wins
+        ? "mlbWorldSeriesScoreLoser"
+        : ""
+    }
+  >
+    {mlbWorldSeries.teamA.wins}
+  </strong>
 
-      <span>–</span>
+  <span>–</span>
 
-      <strong>
-        {mlbWorldSeries.teamB.wins}
-      </strong>
-    </div>
-  </div>
-)}
-           </div>
+  <strong
+    className={
+      mlbWorldSeries.teamB.wins >
+      mlbWorldSeries.teamA.wins
+        ? "mlbWorldSeriesScoreWinner"
+        : mlbWorldSeries.teamB.wins <
+          mlbWorldSeries.teamA.wins
+        ? "mlbWorldSeriesScoreLoser"
+        : ""
+    }
+  >
+    {mlbWorldSeries.teamB.wins}
+  </strong>
+</div>
+          
 
           <div className="mlbWorldSeriesTeam">
   {mlbWorldSeriesTeamBLogo && (
