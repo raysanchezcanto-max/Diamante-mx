@@ -2582,3 +2582,66 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 .mlbWorldSeriesScoreLoser {
   color: rgba(255, 255, 255, 0.42);
 }
+.mlbWorldSeriesNextOnly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.mlbWorldSeriesNextOnlyLabel {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  opacity: 0.6;
+}
+
+.mlbWorldSeriesNextOnly > strong {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.mlbWorldSeriesNextOnly > span {
+  font-size: 11px;
+  font-weight: 650;
+  opacity: 0.72;
+}
+
+.mlbWorldSeriesNextPitchers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 8px;
+}
+
+.mlbWorldSeriesNextPitchers > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mlbWorldSeriesNextPitchers small {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
+.mlbWorldSeriesNextPitchers strong {
+  font-size: 11px;
+  font-weight: 750;
+}
+
+@media (max-width: 760px) {
+  .mlbWorldSeriesNextPitchers {
+    grid-template-columns: 1fr;
+  }
+}
