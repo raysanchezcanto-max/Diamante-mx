@@ -865,9 +865,11 @@ const hasAnyGames =
 </div>
         </div>
 
-        <div className="mlbWorldSeriesGoal">
-          PRIMERO EN LLEGAR A 4 VICTORIAS
-        </div>
+        {!mlbWorldSeriesCurrentGame?.live && (
+  <div className="mlbWorldSeriesGoal">
+    PRIMERO EN LLEGAR A 4 VICTORIAS
+  </div>
+)}
        
         {mlbWorldSeriesCurrentGame?.live &&
   mlbWorldSeriesLiveState && (
