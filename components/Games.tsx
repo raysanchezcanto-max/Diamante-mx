@@ -769,135 +769,156 @@ const hasAnyGames =
 )}
           </div>
 
-         <div className="mlbWorldSeriesScore">
-           {mlbWorldSeriesCurrentGame && (
-  <div className="mlbWorldSeriesCurrentGame">
-    <strong className="mlbWorldSeriesCurrentGameTitle">
-      {mlbWorldSeriesCurrentGameIsToday
-        ? "HOY"
-        : new Intl.DateTimeFormat(
+     <div className="mlbWorldSeriesScore">
+  {mlbWorldSeriesCurrentGame && (
+    <div className="mlbWorldSeriesCurrentGame">
+      <strong className="mlbWorldSeriesCurrentGameTitle">
+        {mlbWorldSeriesCurrentGame.live ? (
+          <>
+            JUEGO{" "}
+            {mlbWorldSeriesCurrentGame.gameNumber}
+          </>
+        ) : (
+          <>
+            {mlbWorldSeriesCurrentGameIsToday
+              ? "HOY"
+              : new Intl.DateTimeFormat(
+                  "es-MX",
+                  {
+                    day: "numeric",
+                    month: "short",
+                    timeZone:
+                      "America/Mexico_City",
+                  }
+                )
+                  .format(
+                    new Date(
+                      mlbWorldSeriesCurrentGame.gameDate
+                    )
+                  )
+                  .toUpperCase()}
+            {" · "}
+            JUEGO{" "}
+            {mlbWorldSeriesCurrentGame.gameNumber}
+          </>
+        )}
+      </strong>
+
+      {!mlbWorldSeriesCurrentGame.live && (
+        <span className="mlbWorldSeriesCurrentGameTime">
+          {new Intl.DateTimeFormat(
             "es-MX",
             {
-              day: "numeric",
-              month: "short",
+              hour: "numeric",
+              minute: "2-digit",
               timeZone:
                 "America/Mexico_City",
             }
-          )
-            .format(
-              new Date(
-                mlbWorldSeriesCurrentGame.gameDate
-              )
+          ).format(
+            new Date(
+              mlbWorldSeriesCurrentGame.gameDate
             )
-            .toUpperCase()}
-      {" · "}
-      JUEGO{" "}
-      {mlbWorldSeriesCurrentGame.gameNumber}
-    </strong>
-
-    <span className="mlbWorldSeriesCurrentGameTime">
-      {new Intl.DateTimeFormat(
-        "es-MX",
-        {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone:
-            "America/Mexico_City",
-        }
-      ).format(
-        new Date(
-          mlbWorldSeriesCurrentGame.gameDate
-        )
+          )}
+        </span>
       )}
-    </span>
-    {mlbWorldSeriesCurrentGame.venueName && (
-  <span className="mlbWorldSeriesCurrentVenue">
-    {mlbWorldSeriesCurrentGame.venueName}
-  </span>
-)}
-  </div>
-)}
- 
-   
 
-{mlbWorldSeriesCurrentGame?.live ? (
-  <div className="mlbWorldSeriesLiveCenter">
-    <span className="mlbWorldSeriesLiveLabel">
-      <span
-        className="livePulseDot"
-        aria-hidden="true"
-      />
-
-      EN VIVO
-      {mlbWorldSeriesLiveState?.inning && (
-        <>
-          {" · "}
-          {mlbWorldSeriesInningState.includes("top") ||
-          mlbWorldSeriesInningState.includes("alta")
-            ? "ALTA"
-            : mlbWorldSeriesInningState.includes("bottom") ||
-              mlbWorldSeriesInningState.includes("baja")
-            ? "BAJA"
-            : ""}
-          {" "}
-          {mlbWorldSeriesLiveState.inning}
-        </>
+      {mlbWorldSeriesCurrentGame.venueName && (
+        <span className="mlbWorldSeriesCurrentVenue">
+          {mlbWorldSeriesCurrentGame.venueName}
+        </span>
       )}
-    </span>
-
-    <div className="mlbWorldSeriesLiveGameScore">
-      <strong>
-        {mlbWorldSeriesTeamAGameRuns ?? 0}
-      </strong>
-
-      <span>–</span>
-
-      <strong>
-        {mlbWorldSeriesTeamBGameRuns ?? 0}
-      </strong>
     </div>
+  )}
 
-    <div className="mlbWorldSeriesSeriesMini">
-      SERIE{" "}
-      {mlbWorldSeries.teamA.wins}
-      {"–"}
-      {mlbWorldSeries.teamB.wins}
+  {mlbWorldSeriesCurrentGame?.live ? (
+    <div className="mlbWorldSeriesLiveCenter">
+      <span className="mlbWorldSeriesLiveLabel">
+        <span
+          className="livePulseDot"
+          aria-hidden="true"
+        />
+
+        EN VIVO
+        {mlbWorldSeriesLiveState?.inning && (
+          <>
+            {" · "}
+            {mlbWorldSeriesInningState.includes(
+              "top"
+            ) ||
+            mlbWorldSeriesInningState.includes(
+              "alta"
+            )
+              ? "ALTA"
+              : mlbWorldSeriesInningState.includes(
+                  "bottom"
+                ) ||
+                mlbWorldSeriesInningState.includes(
+                  "baja"
+                )
+              ? "BAJA"
+              : ""}
+            {" "}
+            {mlbWorldSeriesLiveState.inning}
+          </>
+        )}
+      </span>
+
+      <div className="mlbWorldSeriesLiveGameScore">
+        <strong>
+          {mlbWorldSeriesTeamAGameRuns ?? 0}
+        </strong>
+
+        <span>–</span>
+
+        <strong>
+          {mlbWorldSeriesTeamBGameRuns ?? 0}
+        </strong>
+      </div>
+
+      <div className="mlbWorldSeriesSeriesMini">
+        SERIE{" "}
+        {mlbWorldSeries.teamA.wins}
+        {"–"}
+        {mlbWorldSeries.teamB.wins}
+      </div>
     </div>
-  </div>
-) : (
-  <div className="mlbWorldSeriesSeriesScore">
-    <small>SERIE</small>
+  ) : (
+    <div className="mlbWorldSeriesSeriesScore">
+      <small>SERIE</small>
 
-   <div className="mlbWorldSeriesSeriesScoreNumbers">
-  <strong
-    className={
-      mlbWorldSeries.teamA.wins >
-      mlbWorldSeries.teamB.wins
-        ? "mlbWorldSeriesScoreWinner"
-        : mlbWorldSeries.teamA.wins <
-          mlbWorldSeries.teamB.wins
-        ? "mlbWorldSeriesScoreLoser"
-        : ""
-    }
-  >
-    {mlbWorldSeries.teamA.wins}
-  </strong>
+      <div className="mlbWorldSeriesSeriesScoreNumbers">
+        <strong
+          className={
+            mlbWorldSeries.teamA.wins >
+            mlbWorldSeries.teamB.wins
+              ? "mlbWorldSeriesScoreWinner"
+              : mlbWorldSeries.teamA.wins <
+                mlbWorldSeries.teamB.wins
+              ? "mlbWorldSeriesScoreLoser"
+              : ""
+          }
+        >
+          {mlbWorldSeries.teamA.wins}
+        </strong>
 
-  <span>–</span>
+        <span>–</span>
 
-  <strong
-    className={
-      mlbWorldSeries.teamB.wins >
-      mlbWorldSeries.teamA.wins
-        ? "mlbWorldSeriesScoreWinner"
-        : mlbWorldSeries.teamB.wins <
-          mlbWorldSeries.teamA.wins
-        ? "mlbWorldSeriesScoreLoser"
-        : ""
-    }
-  >
-    {mlbWorldSeries.teamB.wins}
-  </strong>
+        <strong
+          className={
+            mlbWorldSeries.teamB.wins >
+            mlbWorldSeries.teamA.wins
+              ? "mlbWorldSeriesScoreWinner"
+              : mlbWorldSeries.teamB.wins <
+                mlbWorldSeries.teamA.wins
+              ? "mlbWorldSeriesScoreLoser"
+              : ""
+          }
+        >
+          {mlbWorldSeries.teamB.wins}
+        </strong>
+      </div>
+    </div>
+  )}
 </div>
           
 
