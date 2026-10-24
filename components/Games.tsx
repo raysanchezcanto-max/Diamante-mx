@@ -937,6 +937,7 @@ const hasAnyGames =
     </div>
   </div>
 )}
+           </div>
 
           <div className="mlbWorldSeriesTeam">
   {mlbWorldSeriesTeamBLogo && (
