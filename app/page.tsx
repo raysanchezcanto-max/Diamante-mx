@@ -194,6 +194,9 @@ const mlbWorldSeriesActive =
     mlbWorldSeries &&
     !mlbWorldSeries.champion
   );
+  const hideMlbRecentResults =
+  selectedLeague === "MLB" &&
+  Boolean(mlbWorldSeries);
   const mlbWorldSeriesLiveGame =
   mlbWorldSeries?.games.find(
     (game) => game.live
@@ -588,8 +591,7 @@ const daysUntilLmp =
 )}
       {!(
   selectedLeague === "MLB" &&
-  mlbWorldSeries
-) && (
+ {!hideMlbRecentResults && (
   <RecentResults
     games={recentGames}
     league={selectedLeague}
