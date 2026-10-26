@@ -360,9 +360,11 @@ export default function MlbWorldSeriesDetails({
     )}
   </div>
 )}
-                <div className="mlbWsGameLinkHint">
-  VER JUEGO →
-</div>
+                {seriesGame.live && (
+  <div className="mlbWsGameLinkHint">
+    VER JUEGO EN VIVO →
+  </div>
+)}
 </Link>
 )
 )}
