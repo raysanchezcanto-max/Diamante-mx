@@ -293,6 +293,7 @@ export default function MlbWorldSeriesDetails({
         : "mlbWorldSeriesScoreLoser"
       : ""
   }
+ >                     
 {seriesGame.live || seriesGame.final
   ? seriesGame.homeRuns ?? 0
   : "-"}
