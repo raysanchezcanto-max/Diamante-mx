@@ -2762,3 +2762,7 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   color: rgba(255, 255, 255, 0.35) !important;
   font-weight: 600 !important;
 }
+.mlbWsGameDateToday {
+  color: #beff00;
+  font-weight: 850;
+}
