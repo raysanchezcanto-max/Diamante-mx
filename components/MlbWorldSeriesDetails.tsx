@@ -215,7 +215,7 @@ export default function MlbWorldSeriesDetails({
                       }
                     </strong>
     
-            <span
+            
  <span
   className={`mlbWsGameDate ${
     mexicoDateKey(new Date(seriesGame.gameDate)) ===
