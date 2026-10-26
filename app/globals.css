@@ -2737,19 +2737,35 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   min-height: 0;
 }
 
+.mlbWorldSeriesSectionStatus-scheduled {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .mlbWorldSeriesNextOnlyCompact {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.58);
   text-align: center;
+  width: 100%;
 }
 
 .mlbWorldSeriesNextOnlyCompact strong {
-  color: #beff00;
-  font-size: 10px;
-  font-weight: 900;
+  color: inherit;
+  font-size: 11px;
+  font-weight: 800;
 }
+
+.mlbWsGameDateToday {
+  color: #f4b942;
+  font-weight: 850;
+}
+mlbWorldSeriesNextOnlyCompact strong {
+  color: inherit;
+  font-size: 11px;
+  font-weight: 800;
+}
+
 .mlbWsIfNecessary {
   display: block;
   margin-top: 2px;
