@@ -14,7 +14,13 @@ import type {
 } from "@/lib/mlbWorldSeriesStats";
 
 import { getTeamLogo } from "@/lib/teamLogos";
-
+const mexicoDateKey = (date: Date) =>
+  new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: "America/Mexico_City",
+  }).format(date);
 type Tab =
   | "games"
   | "hitting"
@@ -214,22 +220,35 @@ export default function MlbWorldSeriesDetails({
   </span>
 )}
 
-                <span className="mlbWsGameDate">
-  {new Intl.DateTimeFormat(
-    "es-MX",
-    {
+            <span
+  className={`mlbWsGameDate ${
+    mexicoDateKey(new Date(seriesGame.gameDate)) ===
+      mexicoDateKey(new Date()) &&
+    !seriesGame.final
+      ? "mlbWsGameDateToday"
+      : ""
+  }`}
+>
+  {mexicoDateKey(new Date(seriesGame.gameDate)) ===
+    mexicoDateKey(new Date()) &&
+  !seriesGame.final ? (
+    <>
+      HOY ·{" "}
+      {new Intl.DateTimeFormat("es-MX", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: "America/Mexico_City",
+      }).format(new Date(seriesGame.gameDate))}
+    </>
+  ) : (
+    new Intl.DateTimeFormat("es-MX", {
       day: "numeric",
       month: "short",
-      timeZone:
-        "America/Mexico_City",
-    }
-  )
-    .format(
-      new Date(
-        seriesGame.gameDate
-      )
-    )
-    .toUpperCase()}
+      timeZone: "America/Mexico_City",
+    })
+      .format(new Date(seriesGame.gameDate))
+      .toUpperCase()
+  )}
 </span>
                   </div>
 
