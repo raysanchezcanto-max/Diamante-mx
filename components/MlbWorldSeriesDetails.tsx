@@ -214,12 +214,7 @@ export default function MlbWorldSeriesDetails({
                         seriesGame.gameNumber
                       }
                     </strong>
-                    {seriesGame.gameNumber >= 5 && (
-  <span className="mlbWsIfNecessary">
-    SI ES NECESARIO
-  </span>
-)}
-
+    
             <span
   className={`mlbWsGameDate ${
     mexicoDateKey(new Date(seriesGame.gameDate)) ===
@@ -252,13 +247,22 @@ export default function MlbWorldSeriesDetails({
 </span>
                   </div>
 
-                  <strong>
-                    {seriesGame.final
-                      ? "FINAL"
-                      : seriesGame.live
-                      ? "EN VIVO"
-                      : "PROGRAMADO"}
-                  </strong>
+                 <strong>
+  {seriesGame.final
+    ? "FINAL"
+    : seriesGame.live
+    ? "EN VIVO"
+    : seriesGame.gameNumber >= 5
+    ? worldSeries.games.find(
+        (game) =>
+          game.gameNumber ===
+          seriesGame.gameNumber - 1
+      )?.final &&
+      !worldSeries.champion
+      ? "CONFIRMADO"
+      : "SI ES NECESARIO"
+    : "PROGRAMADO"}
+</strong>
                 </div>
 
                 <div className="mlbWorldSeriesResultScore">
