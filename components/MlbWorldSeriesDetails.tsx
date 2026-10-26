@@ -285,7 +285,7 @@ export default function MlbWorldSeriesDetails({
 </strong>
                   </div>
                 </div>
-                {!seriesGame.final && !seriesGame.live && (
+     {!seriesGame.final && !seriesGame.live && (
   <div className="mlbWsScheduledInfo">
     <div className="mlbWsScheduledMeta">
       <strong>
@@ -304,36 +304,38 @@ export default function MlbWorldSeriesDetails({
       )}
     </div>
 
- {(seriesGame.awayProbablePitcher ||
-  seriesGame.homeProbablePitcher) && (
-  <div className="mlbWsScheduledPitchers">
-    <div>
-      <span>P. PROBABLE</span>
-      <strong
-        className={
-          !seriesGame.awayProbablePitcher
-            ? "mlbWsPitcherPending"
-            : ""
-        }
-      >
-        {seriesGame.awayProbablePitcher?.name ??
-          "Por confirmar"}
-      </strong>
-    </div>
+    {(seriesGame.awayProbablePitcher ||
+      seriesGame.homeProbablePitcher) && (
+      <div className="mlbWsScheduledPitchers">
+        <div>
+          <span>P. PROBABLE</span>
+          <strong
+            className={
+              !seriesGame.awayProbablePitcher
+                ? "mlbWsPitcherPending"
+                : ""
+            }
+          >
+            {seriesGame.awayProbablePitcher?.name ??
+              "Por confirmar"}
+          </strong>
+        </div>
 
-    <div>
-      <span>P. PROBABLE</span>
-      <strong
-        className={
-          !seriesGame.homeProbablePitcher
-            ? "mlbWsPitcherPending"
-            : ""
-        }
-      >
-        {seriesGame.homeProbablePitcher?.name ??
-          "Por confirmar"}
-      </strong>
-    </div>
+        <div>
+          <span>P. PROBABLE</span>
+          <strong
+            className={
+              !seriesGame.homeProbablePitcher
+                ? "mlbWsPitcherPending"
+                : ""
+            }
+          >
+            {seriesGame.homeProbablePitcher?.name ??
+              "Por confirmar"}
+          </strong>
+        </div>
+      </div>
+    )}
   </div>
 )}
 
