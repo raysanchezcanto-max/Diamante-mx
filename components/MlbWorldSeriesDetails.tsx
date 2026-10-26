@@ -247,7 +247,23 @@ export default function MlbWorldSeriesDetails({
 </span>
                   </div>
 
-                 <strong>
+                <strong
+  className={
+    seriesGame.gameNumber >= 5 &&
+    !seriesGame.final &&
+    !seriesGame.live &&
+    !(
+      worldSeries.games.find(
+        (game) =>
+          game.gameNumber ===
+          seriesGame.gameNumber - 1
+      )?.final &&
+      !worldSeries.champion
+    )
+      ? "mlbWsStatusConditional"
+      : ""
+  }
+>
   {seriesGame.final
     ? "FINAL"
     : seriesGame.live
