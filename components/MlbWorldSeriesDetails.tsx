@@ -216,61 +216,41 @@ export default function MlbWorldSeriesDetails({
                     </strong>
     
             
- <span
-  className={`mlbWsGameDate ${
-    mexicoDateKey(new Date(seriesGame.gameDate)) ===
-      mexicoDateKey(new Date()) &&
-    !seriesGame.final
-      ? "mlbWsGameDateToday"
-      : ""
-  }`}
->
-  {mexicoDateKey(new Date(seriesGame.gameDate)) ===
+{!(
+  mexicoDateKey(new Date(seriesGame.gameDate)) ===
     mexicoDateKey(new Date()) &&
   !seriesGame.final
-    ? "HOY"
-    : new Intl.DateTimeFormat("es-MX", {
-        day: "numeric",
-        month: "short",
-        timeZone: "America/Mexico_City",
-      })
-        .format(new Date(seriesGame.gameDate))
-        .toUpperCase()}
-</span>
+) && (
+  <span className="mlbWsGameDate">
+    {new Intl.DateTimeFormat("es-MX", {
+      day: "numeric",
+      month: "short",
+      timeZone: "America/Mexico_City",
+    })
+      .format(new Date(seriesGame.gameDate))
+      .toUpperCase()}
+  </span>
+)}
                   </div>
 
-                <strong
-  className={
-    seriesGame.gameNumber >= 5 &&
-    !seriesGame.final &&
-    !seriesGame.live &&
-    !(
-      worldSeries.games.find(
-        (game) =>
-          game.gameNumber ===
-          seriesGame.gameNumber - 1
-      )?.final &&
-      !worldSeries.champion
-    )
-      ? "mlbWsStatusConditional"
-      : ""
-  }
->
-  {seriesGame.final
-    ? "FINAL"
-    : seriesGame.live
-    ? "EN VIVO"
-    : seriesGame.gameNumber >= 5
-    ? worldSeries.games.find(
-        (game) =>
-          game.gameNumber ===
-          seriesGame.gameNumber - 1
-      )?.final &&
-      !worldSeries.champion
-      ? "CONFIRMADO"
-      : "SI ES NECESARIO"
-    : "PROGRAMADO"}
-</strong>
+            {seriesGame.final ? (
+  <strong className="mlbWsStatusFinal">
+    FINAL
+  </strong>
+) : seriesGame.live ? (
+  <strong className="mlbWsStatusLive">
+    EN VIVO
+  </strong>
+) : mexicoDateKey(new Date(seriesGame.gameDate)) ===
+    mexicoDateKey(new Date()) ? (
+  <strong className="mlbWsStatusToday">
+    HOY
+  </strong>
+) : seriesGame.gameNumber >= 5 ? (
+  <strong className="mlbWsStatusConditional">
+    SI ES NECESARIO
+  </strong>
+) : null}
                 </div>
 
                 <div className="mlbWorldSeriesResultScore">
