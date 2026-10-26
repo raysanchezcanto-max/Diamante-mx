@@ -2584,11 +2584,11 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 }
 .mlbWorldSeriesNextOnly {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 5px;
-  margin-top: 20px;
-  padding: 16px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  min-height: 0;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.1);
