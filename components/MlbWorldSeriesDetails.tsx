@@ -347,7 +347,13 @@ export default function MlbWorldSeriesDetails({
       seriesGame.homeProbablePitcher) && (
       <div className="mlbWsScheduledPitchers">
         <div>
-          <span>P. PROBABLE</span>
+          <span>
+  P. PROBABLE ·{" "}
+  {seriesGame.away
+    .split(" ")
+    .slice(-1)[0]
+    .toUpperCase()}
+</span>
           <strong
             className={
               !seriesGame.awayProbablePitcher
@@ -361,7 +367,13 @@ export default function MlbWorldSeriesDetails({
         </div>
 
         <div>
-          <span>P. PROBABLE</span>
+         <span>
+  P. PROBABLE ·{" "}
+  {seriesGame.home
+    .split(" ")
+    .slice(-1)[0]
+    .toUpperCase()}
+</span>
           <strong
             className={
               !seriesGame.homeProbablePitcher
