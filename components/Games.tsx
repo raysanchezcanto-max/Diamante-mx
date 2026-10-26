@@ -561,15 +561,18 @@ const showMlbWorldSeriesNextGameOnly =
 
 
 
-const mlbWorldSeriesStatusType =
+const mlbWorldSeriesIsOpeningDay =
   mlbWorldSeriesCurrentGameIsToday &&
-  !mlbWorldSeriesCurrentGame?.live
+  mlbWorldSeriesCurrentGame?.gameNumber === 1 &&
+  !mlbWorldSeriesCurrentGame?.live;
+
+const mlbWorldSeriesStatusType =
+  mlbWorldSeriesIsOpeningDay
     ? "upcoming"
     : "scheduled";
 
 const mlbWorldSeriesStatusLabel =
-  mlbWorldSeriesCurrentGameIsToday &&
-  !mlbWorldSeriesCurrentGame?.live
+  mlbWorldSeriesIsOpeningDay
     ? "INICIA HOY"
     : "EN DISPUTA";
 const mlbWorldSeriesInningState =
