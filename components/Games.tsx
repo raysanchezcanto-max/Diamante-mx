@@ -1165,20 +1165,21 @@ const hasAnyGames =
 
 {showMlbWorldSeriesNextGameOnly &&
   mlbWorldSeriesNextGame && (
-    <div className="mlbWorldSeriesNextOnly">
-      <span className="mlbWorldSeriesNextOnlyLabel">
-        PRÓXIMO JUEGO
-      </span>
+  <span className="mlbWorldSeriesNextOnlyCompact">
+  <strong>
+    {mlbWorldSeriesCurrentGameIsToday
+      ? "DESPUÉS"
+      : "PRÓXIMO"}
+  </strong>
 
-      <strong>
-        JUEGO {mlbWorldSeriesNextGame.gameNumber}
-      </strong>
+  {" · "}
 
-      <span>
+  JUEGO {mlbWorldSeriesNextGame.gameNumber}
+
+  {" · "}
+
   {mexicoDateKey(
-    new Date(
-      mlbWorldSeriesNextGame.gameDate
-    )
+    new Date(mlbWorldSeriesNextGame.gameDate)
   ) === tomorrowMexicoDateKey
     ? "MAÑANA"
     : new Intl.DateTimeFormat(
@@ -1186,8 +1187,7 @@ const hasAnyGames =
         {
           day: "numeric",
           month: "short",
-          timeZone:
-            "America/Mexico_City",
+          timeZone: "America/Mexico_City",
         }
       )
         .format(
@@ -1196,28 +1196,29 @@ const hasAnyGames =
           )
         )
         .toUpperCase()}
+
   {" · "}
+
   {new Intl.DateTimeFormat(
     "es-MX",
     {
       hour: "numeric",
       minute: "2-digit",
-      timeZone:
-        "America/Mexico_City",
+      timeZone: "America/Mexico_City",
     }
   ).format(
     new Date(
       mlbWorldSeriesNextGame.gameDate
     )
   )}
-</span>
 
-      {mlbWorldSeriesNextGame.venueName && (
-        <span>
-          {mlbWorldSeriesNextGame.venueName}
-        </span>
-      )}
-</div>
+  {mlbWorldSeriesNextGame.venueName && (
+    <>
+      {" · "}
+      {mlbWorldSeriesNextGame.venueName}
+    </>
+  )}
+</span>
 )}
      
      <details className="mlbWorldSeriesDetails">
