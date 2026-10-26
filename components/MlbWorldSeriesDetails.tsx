@@ -208,6 +208,11 @@ export default function MlbWorldSeriesDetails({
                         seriesGame.gameNumber
                       }
                     </strong>
+                    {seriesGame.gameNumber >= 5 && (
+  <span className="mlbWsIfNecessary">
+    SI ES NECESARIO
+  </span>
+)}
 
                 <span className="mlbWsGameDate">
   {new Intl.DateTimeFormat(
