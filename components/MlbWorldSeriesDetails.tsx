@@ -280,6 +280,44 @@ export default function MlbWorldSeriesDetails({
 </strong>
                   </div>
                 </div>
+                {!seriesGame.final && !seriesGame.live && (
+  <div className="mlbWsScheduledInfo">
+    <div className="mlbWsScheduledMeta">
+      <strong>
+        {new Intl.DateTimeFormat(
+          "es-MX",
+          {
+            hour: "numeric",
+            minute: "2-digit",
+            timeZone: "America/Mexico_City",
+          }
+        ).format(new Date(seriesGame.gameDate))}
+      </strong>
+
+      {seriesGame.venueName && (
+        <span>{seriesGame.venueName}</span>
+      )}
+    </div>
+
+    <div className="mlbWsScheduledPitchers">
+      <div>
+        <span>P. PROBABLE</span>
+        <strong>
+          {seriesGame.awayProbablePitcher?.name ??
+            "Por confirmar"}
+        </strong>
+      </div>
+
+      <div>
+        <span>P. PROBABLE</span>
+        <strong>
+          {seriesGame.homeProbablePitcher?.name ??
+            "Por confirmar"}
+        </strong>
+      </div>
+    </div>
+  </div>
+)}
 
                {seriesGame.final && (
   <div className="mlbWorldSeriesDecisions">
