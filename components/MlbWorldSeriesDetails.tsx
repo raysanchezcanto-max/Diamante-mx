@@ -216,6 +216,7 @@ export default function MlbWorldSeriesDetails({
                     </strong>
     
             <span
+ <span
   className={`mlbWsGameDate ${
     mexicoDateKey(new Date(seriesGame.gameDate)) ===
       mexicoDateKey(new Date()) &&
@@ -226,18 +227,15 @@ export default function MlbWorldSeriesDetails({
 >
   {mexicoDateKey(new Date(seriesGame.gameDate)) ===
     mexicoDateKey(new Date()) &&
-  !seriesGame.final ? (
-    <>
-      <>HOY</>
-  ) : (
-    new Intl.DateTimeFormat("es-MX", {
-      day: "numeric",
-      month: "short",
-      timeZone: "America/Mexico_City",
-    })
-      .format(new Date(seriesGame.gameDate))
-      .toUpperCase()
-  )}
+  !seriesGame.final
+    ? "HOY"
+    : new Intl.DateTimeFormat("es-MX", {
+        day: "numeric",
+        month: "short",
+        timeZone: "America/Mexico_City",
+      })
+        .format(new Date(seriesGame.gameDate))
+        .toUpperCase()}
 </span>
                   </div>
 
