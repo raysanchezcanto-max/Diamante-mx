@@ -209,21 +209,23 @@ export default function MlbWorldSeriesDetails({
                       }
                     </strong>
 
-                    <span>
-                      {new Intl.DateTimeFormat(
-                        "es-MX",
-                        {
-                          day: "numeric",
-                          month: "short",
-                          timeZone:
-                            "America/Mexico_City",
-                        }
-                      ).format(
-                        new Date(
-                          seriesGame.gameDate
-                        )
-                      )}
-                    </span>
+                <span className="mlbWsGameDate">
+  {new Intl.DateTimeFormat(
+    "es-MX",
+    {
+      day: "numeric",
+      month: "short",
+      timeZone:
+        "America/Mexico_City",
+    }
+  )
+    .format(
+      new Date(
+        seriesGame.gameDate
+      )
+    )
+    .toUpperCase()}
+</span>
                   </div>
 
                   <strong>
