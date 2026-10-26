@@ -228,13 +228,7 @@ export default function MlbWorldSeriesDetails({
     mexicoDateKey(new Date()) &&
   !seriesGame.final ? (
     <>
-      HOY ·{" "}
-      {new Intl.DateTimeFormat("es-MX", {
-        hour: "numeric",
-        minute: "2-digit",
-        timeZone: "America/Mexico_City",
-      }).format(new Date(seriesGame.gameDate))}
-    </>
+      <>HOY</>
   ) : (
     new Intl.DateTimeFormat("es-MX", {
       day: "numeric",
