@@ -2657,3 +2657,77 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.68);
 }
+.mlbWsScheduledInfo {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mlbWsScheduledMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mlbWsScheduledMeta strong {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.mlbWsScheduledMeta span {
+  font-size: 10px;
+  font-weight: 650;
+  color: rgba(255, 255, 255, 0.58);
+  text-align: right;
+}
+
+.mlbWsScheduledPitchers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mlbWsScheduledPitchers > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.mlbWsScheduledPitchers span {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.mlbWsScheduledPitchers strong {
+  font-size: 10px;
+  font-weight: 750;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.25;
+}
+
+@media (max-width: 760px) {
+  .mlbWsScheduledMeta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mlbWsScheduledMeta span {
+    text-align: left;
+  }
+
+  .mlbWsScheduledPitchers {
+    grid-template-columns: 1fr;
+  }
+}
