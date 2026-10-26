@@ -304,22 +304,35 @@ export default function MlbWorldSeriesDetails({
       )}
     </div>
 
-    <div className="mlbWsScheduledPitchers">
-      <div>
-        <span>P. PROBABLE</span>
-        <strong>
-          {seriesGame.awayProbablePitcher?.name ??
-            "Por confirmar"}
-        </strong>
-      </div>
+ {(seriesGame.awayProbablePitcher ||
+  seriesGame.homeProbablePitcher) && (
+  <div className="mlbWsScheduledPitchers">
+    <div>
+      <span>P. PROBABLE</span>
+      <strong
+        className={
+          !seriesGame.awayProbablePitcher
+            ? "mlbWsPitcherPending"
+            : ""
+        }
+      >
+        {seriesGame.awayProbablePitcher?.name ??
+          "Por confirmar"}
+      </strong>
+    </div>
 
-      <div>
-        <span>P. PROBABLE</span>
-        <strong>
-          {seriesGame.homeProbablePitcher?.name ??
-            "Por confirmar"}
-        </strong>
-      </div>
+    <div>
+      <span>P. PROBABLE</span>
+      <strong
+        className={
+          !seriesGame.homeProbablePitcher
+            ? "mlbWsPitcherPending"
+            : ""
+        }
+      >
+        {seriesGame.homeProbablePitcher?.name ??
+          "Por confirmar"}
+      </strong>
     </div>
   </div>
 )}
