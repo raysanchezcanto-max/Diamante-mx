@@ -271,7 +271,9 @@ export default function MlbWorldSeriesDetails({
       : ""
   }
 >
-  {seriesGame.awayRuns ?? "-"}
+  {seriesGame.live || seriesGame.final
+  ? seriesGame.awayRuns ?? 0
+  : "-"}
 </strong>
                   </div>
 
@@ -291,8 +293,9 @@ export default function MlbWorldSeriesDetails({
         : "mlbWorldSeriesScoreLoser"
       : ""
   }
->
-  {seriesGame.homeRuns ?? "-"}
+{seriesGame.live || seriesGame.final
+  ? seriesGame.homeRuns ?? 0
+  : "-"}
 </strong>
                   </div>
                 </div>
