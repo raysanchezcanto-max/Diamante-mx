@@ -2750,3 +2750,11 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   font-size: 10px;
   font-weight: 900;
 }
+.mlbWsIfNecessary {
+  display: block;
+  margin-top: 2px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+}
