@@ -536,6 +536,10 @@ const showMlbWorldSeriesNextGameOnly =
     !mlbWorldSeries.champion &&
     mlbWorldSeriesNextGame
   );
+  const tomorrowMexicoDateKey =
+  mexicoDateKey(
+    new Date(Date.now() + 24 * 60 * 60 * 1000)
+  );
   const mlbWorldSeriesLastFinalGame =
   mlbWorldSeries
     ? [...mlbWorldSeries.games]
@@ -1168,22 +1172,42 @@ const hasAnyGames =
       </strong>
 
       <span>
-        {new Intl.DateTimeFormat(
-          "es-MX",
-          {
-            day: "numeric",
-            month: "short",
-            hour: "numeric",
-            minute: "2-digit",
-            timeZone:
-              "America/Mexico_City",
-          }
-        ).format(
+  {mexicoDateKey(
+    new Date(
+      mlbWorldSeriesNextGame.gameDate
+    )
+  ) === tomorrowMexicoDateKey
+    ? "MAÑANA"
+    : new Intl.DateTimeFormat(
+        "es-MX",
+        {
+          day: "numeric",
+          month: "short",
+          timeZone:
+            "America/Mexico_City",
+        }
+      )
+        .format(
           new Date(
             mlbWorldSeriesNextGame.gameDate
           )
-        )}
-      </span>
+        )
+        .toUpperCase()}
+  {" · "}
+  {new Intl.DateTimeFormat(
+    "es-MX",
+    {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone:
+        "America/Mexico_City",
+    }
+  ).format(
+    new Date(
+      mlbWorldSeriesNextGame.gameDate
+    )
+  )}
+</span>
 
       {mlbWorldSeriesNextGame.venueName && (
         <span>
