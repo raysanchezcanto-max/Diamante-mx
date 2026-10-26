@@ -1294,7 +1294,13 @@ const hasAnyGames =
         </section>
       )}
 
-     {!hasAnyGames && (
+ {(
+  !hasAnyGames ||
+  (
+    league === "MLB" &&
+    Boolean(mlbWorldSeries?.champion)
+  )
+) && (
   <section className="section">
     {championData ? (
       <>
