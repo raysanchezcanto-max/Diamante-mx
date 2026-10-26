@@ -1190,7 +1190,8 @@ const hasAnyGames =
           {mlbWorldSeriesNextGame.venueName}
         </span>
       )}
-
+</div>
+)}
      
      <details className="mlbWorldSeriesDetails">
   <summary>
