@@ -504,11 +504,12 @@ const mlbWorldSeriesGoalText =
       } DEL TÍTULO`
     : "PRIMERO EN LLEGAR A 4 VICTORIAS";
   const mlbWorldSeriesNextGame =
-  mlbWorldSeries
+  mlbWorldSeries && mlbWorldSeriesCurrentGame
     ? mlbWorldSeries.games.find(
         (game) =>
           !game.final &&
-          !game.live
+          game.gameNumber >
+            mlbWorldSeriesCurrentGame.gameNumber
       ) ?? null
     : null;
   const mlbWorldSeriesHasStarted =
@@ -1190,28 +1191,7 @@ const hasAnyGames =
         </span>
       )}
 
-      {(mlbWorldSeriesNextGame.awayProbablePitcher ||
-        mlbWorldSeriesNextGame.homeProbablePitcher) && (
-        <div className="mlbWorldSeriesNextPitchers">
-          <div>
-            <small>P. PROBABLE</small>
-            <strong>
-              {mlbWorldSeriesNextGame.awayProbablePitcher?.name ??
-                "Por confirmar"}
-            </strong>
-          </div>
-
-          <div>
-            <small>P. PROBABLE</small>
-            <strong>
-              {mlbWorldSeriesNextGame.homeProbablePitcher?.name ??
-                "Por confirmar"}
-            </strong>
-          </div>
-        </div>
-      )}
-    </div>
-  )}
+     
      <details className="mlbWorldSeriesDetails">
   <summary>
     Ver detalle de la Serie Mundial
