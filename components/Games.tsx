@@ -422,7 +422,7 @@ const mlbWorldSeriesCurrentGameIsToday =
   const mlbWorldSeriesIsWarmup = Boolean(
   mlbWorldSeriesCurrentGame &&
   !mlbWorldSeriesCurrentGame.final &&
-  /warm[\s-]?up|pre[\s-]?game/i.test(
+  /warm[\s-]?up/i.test(
     mlbWorldSeriesCurrentGame.detailedState ?? ""
   )
 );
