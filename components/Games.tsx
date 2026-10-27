@@ -930,12 +930,11 @@ const hasAnyGames =
       POR COMENZAR
     </span>
 
-    <div className="mlbWorldSeriesLiveGameScore">
-      <strong>–</strong>
-      <span>–</span>
-      <strong>–</strong>
-    </div>
-
+   <div className="mlbWorldSeriesLiveGameScore">
+  <strong>–</strong>
+  <span>:</span>
+  <strong>–</strong>
+</div>
     <div className="mlbWorldSeriesSeriesMini">
       SERIE {mlbWorldSeries.teamA.wins}
       {"–"}
