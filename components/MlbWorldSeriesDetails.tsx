@@ -241,6 +241,12 @@ export default function MlbWorldSeriesDetails({
   <strong className="mlbWsStatusLive">
     EN VIVO
   </strong>
+) : /warm[\s-]?up|pre[\s-]?game/i.test(
+    seriesGame.detailedState
+  ) ? (
+  <strong className="mlbWsStatusToday">
+    POR COMENZAR
+  </strong>
 ) : mexicoDateKey(new Date(seriesGame.gameDate)) ===
     mexicoDateKey(new Date()) ? (
   <strong className="mlbWsStatusToday">
