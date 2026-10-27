@@ -336,16 +336,25 @@ export default function MlbWorldSeriesDetails({
     .slice(-1)[0]
     .toUpperCase()}
 </span>
-          <strong
-            className={
-              !seriesGame.awayProbablePitcher
-                ? "mlbWsPitcherPending"
-                : ""
-            }
-          >
-            {seriesGame.awayProbablePitcher?.name ??
-              "Por confirmar"}
-          </strong>
+         <div className="mlbWsDecisionPlayer">
+  {seriesGame.awayProbablePitcher && (
+    <PlayerPhoto
+      id={seriesGame.awayProbablePitcher.id}
+      name={seriesGame.awayProbablePitcher.name}
+    />
+  )}
+
+  <strong
+    className={
+      !seriesGame.awayProbablePitcher
+        ? "mlbWsPitcherPending"
+        : ""
+    }
+  >
+    {seriesGame.awayProbablePitcher?.name ??
+      "Por confirmar"}
+  </strong>
+</div>
         </div>
 
         <div>
