@@ -55,6 +55,7 @@ homeStartingPitcher?: {
 };
   final: boolean;
   live: boolean;
+  firstPitchRecorded?: boolean;
 };
 
 export type MlbWorldSeriesTeam = {
@@ -398,6 +399,50 @@ live,
         }
       );
     
+const gameToCheckFirstPitch = games.find(
+  (game) =>
+    !game.final &&
+    (
+      ["live", "in progress"].includes(
+        game.status.toLowerCase()
+      ) ||
+      /warm[\s-]?up/i.test(game.detailedState)
+    )
+);
+
+if (gameToCheckFirstPitch) {
+  try {
+    const response = await fetch(
+      `${MLB_API}/game/${gameToCheckFirstPitch.id}/playByPlay`,
+      {
+        next: { revalidate: 15 },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      const allPlays = Array.isArray(data?.allPlays)
+        ? data.allPlays
+        : [];
+
+      const plays = data?.currentPlay
+        ? [...allPlays, data.currentPlay]
+        : allPlays;
+
+      gameToCheckFirstPitch.firstPitchRecorded =
+        plays.some((play: any) =>
+          Array.isArray(play?.playEvents) &&
+          play.playEvents.some(
+            (event: any) => event?.isPitch === true
+          )
+        );
+    }
+  } catch {
+    // Sin confirmación si falla la consulta.
+  }
+}
+
 const liveGameForStarters = games.find(
   (game) => game.live
 );
