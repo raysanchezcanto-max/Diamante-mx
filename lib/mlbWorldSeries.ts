@@ -442,10 +442,17 @@ if (gameToCheckFirstPitch) {
     // Sin confirmación si falla la consulta.
   }
 }
+
 if (gameToCheckFirstPitch) {
-  gameToCheckFirstPitch.live =
-    gameToCheckFirstPitch.firstPitchRecorded === true;
+  if (gameToCheckFirstPitch.firstPitchRecorded === true) {
+    gameToCheckFirstPitch.live = true;
+  } else if (
+    gameToCheckFirstPitch.firstPitchRecorded === false
+  ) {
+    gameToCheckFirstPitch.live = false;
+  }
 }
+
 const liveGameForStarters = games.find(
   (game) => game.live
 );
