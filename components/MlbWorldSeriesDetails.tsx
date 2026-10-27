@@ -241,9 +241,14 @@ export default function MlbWorldSeriesDetails({
   <strong className="mlbWsStatusLive">
     EN VIVO
   </strong>
-) : /warm[\s-]?up/i.test(
-  seriesGame.detailedState ?? ""
+
+) : (
+  seriesGame.firstPitchRecorded === false ||
+  /warm[\s-]?up/i.test(
+    seriesGame.detailedState ?? ""
+  )
 ) ? (
+
   <strong className="mlbWsStatusToday">
     POR COMENZAR
   </strong>
