@@ -344,14 +344,22 @@ export default function MlbWorldSeriesDetails({
     />
   )}
 
+<div className="mlbWsDecisionPlayer">
+  {seriesGame.homeProbablePitcher && (
+    <PlayerPhoto
+      id={seriesGame.homeProbablePitcher.id}
+      name={seriesGame.homeProbablePitcher.name}
+    />
+  )}
+
   <strong
     className={
-      !seriesGame.awayProbablePitcher
+      !seriesGame.homeProbablePitcher
         ? "mlbWsPitcherPending"
         : ""
     }
   >
-    {seriesGame.awayProbablePitcher?.name ??
+    {seriesGame.homeProbablePitcher?.name ??
       "Por confirmar"}
   </strong>
 </div>
