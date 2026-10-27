@@ -921,8 +921,29 @@ const hasAnyGames =
         {mlbWorldSeries.teamB.wins}
       </div>
     </div>
-  ) : (
-    <div className="mlbWorldSeriesSeriesScore">
+ ) : mlbWorldSeriesIsWarmup ? (
+  <div className="mlbWorldSeriesLiveCenter">
+    <span
+      className="mlbWorldSeriesLiveLabel"
+      style={{ color: "#f59e0b" }}
+    >
+      POR COMENZAR
+    </span>
+
+    <div className="mlbWorldSeriesLiveGameScore">
+      <strong>–</strong>
+      <span>–</span>
+      <strong>–</strong>
+    </div>
+
+    <div className="mlbWorldSeriesSeriesMini">
+      SERIE {mlbWorldSeries.teamA.wins}
+      {"–"}
+      {mlbWorldSeries.teamB.wins}
+    </div>
+  </div>
+) : (
+  <div className="mlbWorldSeriesSeriesScore">
       <small>SERIE</small>
 
       <div className="mlbWorldSeriesSeriesScoreNumbers">
