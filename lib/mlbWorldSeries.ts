@@ -397,6 +397,51 @@ live,
           };
         }
       );
+    
+const liveGameForStarters = games.find(
+  (game) => game.live
+);
+
+if (liveGameForStarters) {
+  try {
+    const boxscoreResponse = await fetch(
+      `${MLB_API}/game/${liveGameForStarters.id}/boxscore`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
+
+    if (boxscoreResponse.ok) {
+      const boxscore = await boxscoreResponse.json();
+
+      for (const side of ["away", "home"] as const) {
+        const team = boxscore?.teams?.[side];
+
+        const pitcherId = Number(
+          team?.pitchers?.[0] ?? 0
+        );
+
+        const pitcher =
+          team?.players?.[`ID${pitcherId}`]?.person;
+
+        if (pitcherId > 0 && pitcher?.fullName) {
+          const key =
+            side === "away"
+              ? "awayStartingPitcher"
+              : "homeStartingPitcher";
+
+          liveGameForStarters[key] = {
+            id: pitcherId,
+            name: String(pitcher.fullName),
+          };
+        }
+      }
+    }
+  } catch {
+    // Conservamos los datos existentes si MLB falla.
+  }
+}
+
 
     const participants =
       Array.from(
