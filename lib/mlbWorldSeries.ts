@@ -95,15 +95,25 @@ function isFinalGame(game: any) {
 }
 
 function isLiveGame(game: any) {
-  const abstract =
-    String(
-      game?.status?.abstractGameState ??
-        ""
-    ).toLowerCase();
+  const abstract = String(
+    game?.status?.abstractGameState ?? ""
+  ).toLowerCase();
+
+  const detailed = String(
+    game?.status?.detailedState ?? ""
+  ).toLowerCase();
+
+  const isWarmup =
+    detailed.includes("warmup") ||
+    detailed.includes("warm-up") ||
+    detailed.includes("warm up") ||
+    detailed.includes("pregame") ||
+    detailed.includes("pre-game");
 
   return (
-    abstract === "live" ||
-    abstract === "in progress"
+    (abstract === "live" ||
+      abstract === "in progress") &&
+    !isWarmup
   );
 }
 
