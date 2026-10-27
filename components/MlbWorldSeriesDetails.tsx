@@ -391,6 +391,58 @@ export default function MlbWorldSeriesDetails({
 )}
 
 
+{seriesGame.live &&
+  (seriesGame.awayStartingPitcher ||
+    seriesGame.homeStartingPitcher) && (
+    <div className="mlbWsScheduledPitchers">
+      <div>
+        <span>
+          ABRIDOR ·{" "}
+          {seriesGame.away
+            .split(" ")
+            .slice(-1)[0]
+            .toUpperCase()}
+        </span>
+
+        <div className="mlbWsDecisionPlayer">
+          {seriesGame.awayStartingPitcher && (
+            <PlayerPhoto
+              id={seriesGame.awayStartingPitcher.id}
+              name={seriesGame.awayStartingPitcher.name}
+            />
+          )}
+          <strong>
+            {seriesGame.awayStartingPitcher?.name ??
+              "Por confirmar"}
+          </strong>
+        </div>
+      </div>
+
+      <div>
+        <span>
+          ABRIDOR ·{" "}
+          {seriesGame.home
+            .split(" ")
+            .slice(-1)[0]
+            .toUpperCase()}
+        </span>
+
+        <div className="mlbWsDecisionPlayer">
+          {seriesGame.homeStartingPitcher && (
+            <PlayerPhoto
+              id={seriesGame.homeStartingPitcher.id}
+              name={seriesGame.homeStartingPitcher.name}
+            />
+          )}
+          <strong>
+            {seriesGame.homeStartingPitcher?.name ??
+              "Por confirmar"}
+          </strong>
+        </div>
+      </div>
+    </div>
+  )}
+
                {seriesGame.final && (
   <div className="mlbWorldSeriesDecisions">
     {seriesGame.winningPitcher && (
