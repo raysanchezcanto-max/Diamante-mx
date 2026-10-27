@@ -44,6 +44,15 @@ homeProbablePitcher?: {
   id: number;
   name: string;
 };
+  awayStartingPitcher?: {
+  id: number;
+  name: string;
+};
+
+homeStartingPitcher?: {
+  id: number;
+  name: string;
+};
   final: boolean;
   live: boolean;
 };
