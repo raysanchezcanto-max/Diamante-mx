@@ -419,6 +419,13 @@ const mlbWorldSeriesCurrentGameIsToday =
         )
       ) === today
     : false;
+  const mlbWorldSeriesIsWarmup = Boolean(
+  mlbWorldSeriesCurrentGame &&
+  !mlbWorldSeriesCurrentGame.final &&
+  /warm[\s-]?up|pre[\s-]?game/i.test(
+    mlbWorldSeriesCurrentGame.detailedState ?? ""
+  )
+);
   const mlbWorldSeriesTeamAProbablePitcher =
   mlbWorldSeries &&
   mlbWorldSeriesCurrentGame
