@@ -442,7 +442,10 @@ if (gameToCheckFirstPitch) {
     // Sin confirmación si falla la consulta.
   }
 }
-
+if (gameToCheckFirstPitch) {
+  gameToCheckFirstPitch.live =
+    gameToCheckFirstPitch.firstPitchRecorded === true;
+}
 const liveGameForStarters = games.find(
   (game) => game.live
 );
