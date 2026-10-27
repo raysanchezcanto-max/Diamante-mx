@@ -306,18 +306,16 @@ export default function MlbWorldSeriesDetails({
 </strong>
                   </div>
                 </div>
-     {!seriesGame.final && !seriesGame.live && (
+    
+{!seriesGame.final && !seriesGame.live && (
   <div className="mlbWsScheduledInfo">
     <div className="mlbWsScheduledMeta">
       <strong>
-        {new Intl.DateTimeFormat(
-          "es-MX",
-          {
-            hour: "numeric",
-            minute: "2-digit",
-            timeZone: "America/Mexico_City",
-          }
-        ).format(new Date(seriesGame.gameDate))}
+        {new Intl.DateTimeFormat("es-MX", {
+          hour: "numeric",
+          minute: "2-digit",
+          timeZone: "America/Mexico_City",
+        }).format(new Date(seriesGame.gameDate))}
       </strong>
 
       {seriesGame.venueName && (
@@ -325,69 +323,73 @@ export default function MlbWorldSeriesDetails({
       )}
     </div>
 
-   {(seriesGame.awayProbablePitcher ||
-  seriesGame.homeProbablePitcher) && (
+    {(seriesGame.awayProbablePitcher ||
+      seriesGame.homeProbablePitcher) && (
       <div className="mlbWsScheduledPitchers">
         <div>
           <span>
-  P. PROBABLE ·{" "}
-  {seriesGame.away
-    .split(" ")
-    .slice(-1)[0]
-    .toUpperCase()}
-</span>
-         <div className="mlbWsDecisionPlayer">
-  {seriesGame.awayProbablePitcher && (
-    <PlayerPhoto
-      id={seriesGame.awayProbablePitcher.id}
-      name={seriesGame.awayProbablePitcher.name}
-    />
-  )}
+            P. PROBABLE ·{" "}
+            {seriesGame.away
+              .split(" ")
+              .slice(-1)[0]
+              .toUpperCase()}
+          </span>
 
-<div className="mlbWsDecisionPlayer">
-  {seriesGame.homeProbablePitcher && (
-    <PlayerPhoto
-      id={seriesGame.homeProbablePitcher.id}
-      name={seriesGame.homeProbablePitcher.name}
-    />
-  )}
+          <div className="mlbWsDecisionPlayer">
+            {seriesGame.awayProbablePitcher && (
+              <PlayerPhoto
+                id={seriesGame.awayProbablePitcher.id}
+                name={seriesGame.awayProbablePitcher.name}
+              />
+            )}
 
-  <strong
-    className={
-      !seriesGame.homeProbablePitcher
-        ? "mlbWsPitcherPending"
-        : ""
-    }
-  >
-    {seriesGame.homeProbablePitcher?.name ??
-      "Por confirmar"}
-  </strong>
-</div>
+            <strong
+              className={
+                !seriesGame.awayProbablePitcher
+                  ? "mlbWsPitcherPending"
+                  : ""
+              }
+            >
+              {seriesGame.awayProbablePitcher?.name ??
+                "Por confirmar"}
+            </strong>
+          </div>
         </div>
 
         <div>
-         <span>
-  P. PROBABLE ·{" "}
-  {seriesGame.home
-    .split(" ")
-    .slice(-1)[0]
-    .toUpperCase()}
-</span>
-          <strong
-            className={
-              !seriesGame.homeProbablePitcher
-                ? "mlbWsPitcherPending"
-                : ""
-            }
-          >
-            {seriesGame.homeProbablePitcher?.name ??
-              "Por confirmar"}
-          </strong>
+          <span>
+            P. PROBABLE ·{" "}
+            {seriesGame.home
+              .split(" ")
+              .slice(-1)[0]
+              .toUpperCase()}
+          </span>
+
+          <div className="mlbWsDecisionPlayer">
+            {seriesGame.homeProbablePitcher && (
+              <PlayerPhoto
+                id={seriesGame.homeProbablePitcher.id}
+                name={seriesGame.homeProbablePitcher.name}
+              />
+            )}
+
+            <strong
+              className={
+                !seriesGame.homeProbablePitcher
+                  ? "mlbWsPitcherPending"
+                  : ""
+              }
+            >
+              {seriesGame.homeProbablePitcher?.name ??
+                "Por confirmar"}
+            </strong>
+          </div>
         </div>
       </div>
     )}
   </div>
 )}
+
 
                {seriesGame.final && (
   <div className="mlbWorldSeriesDecisions">
