@@ -319,7 +319,9 @@ export default function MlbWorldSeriesDetails({
       )}
     </div>
 
-    {!seriesGame.live && !seriesGame.final && (
+    {(seriesGame.awayProbablePitcher ||
+  seriesGame.homeProbablePitcher ||
+  (!seriesGame.live && !seriesGame.final)) && (
       <div className="mlbWsScheduledPitchers">
         <div>
           <span>
