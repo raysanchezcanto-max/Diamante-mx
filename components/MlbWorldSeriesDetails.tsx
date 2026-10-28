@@ -216,21 +216,35 @@ export default function MlbWorldSeriesDetails({
                     </strong>
     
             
-{!(
-  mexicoDateKey(new Date(seriesGame.gameDate)) ===
-    mexicoDateKey(new Date()) &&
-  !seriesGame.final
-) && (
-  <span className="mlbWsGameDate">
-    {new Intl.DateTimeFormat("es-MX", {
-      day: "numeric",
-      month: "short",
-      timeZone: "America/Mexico_City",
-    })
-      .format(new Date(seriesGame.gameDate))
-      .toUpperCase()}
-  </span>
-)}
+
+<span className="mlbWsGameDate">
+  {new Intl.DateTimeFormat("es-MX", {
+    day: "numeric",
+    month: "short",
+    timeZone: "America/Mexico_City",
+  })
+    .format(new Date(seriesGame.gameDate))
+    .toUpperCase()}
+
+  {!seriesGame.final &&
+    !seriesGame.live &&
+    seriesGame.gameNumber >= 5 &&
+    seriesGame.gameNumber <=
+      4 + Math.min(
+        worldSeries.teamA.wins,
+        worldSeries.teamB.wins
+      ) &&
+    Math.max(
+      worldSeries.teamA.wins,
+      worldSeries.teamB.wins
+    ) === 3 &&
+    !(seriesGame.gameNumber === 7 &&
+      worldSeries.teamA.wins === 3 &&
+      worldSeries.teamB.wins === 3)
+      ? " · POSIBLE CIERRE"
+      : ""}
+</span>
+
                   </div>
 
             {seriesGame.final ? (
