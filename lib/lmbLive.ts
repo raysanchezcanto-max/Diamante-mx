@@ -186,33 +186,59 @@ export async function getLmbCalendar(
     return [];
   }
 }
+
 export async function getLmbNextSeasonStart(
   seasonYear: number
 ): Promise<Date | null> {
   try {
-    const date = `01/01/${seasonYear}`;
-
-    const startDate = new Date(
-      `${seasonYear}-01-01T00:00:00-06:00`
-    ).getTime();
-
-    const endDate = new Date(
-      `${seasonYear}-12-31T23:59:59.999-06:00`
-    ).getTime();
-
     const response = await fetch(
-      `https://lmb.com.mx/juegos/api/calendar?date=${date}&daysFromNow=0&startDate=${startDate}&endDate=${endDate}`,
+      `https://statsapi.mlb.com/api/v1/schedule?sportId=11&leagueId=125&season=${seasonYear}&gameTypes=R`,
       {
-        cache: "no-store",
+        next: { revalidate: 3600 },
         headers: {
           Accept: "application/json",
         },
       }
     );
 
-    if (!response.ok) {
-      return null;
+    if (!response.ok) return null;
+
+    const data = await response.json();
+
+    const gameDates: Date[] = [];
+
+    for (const day of data?.dates ?? []) {
+      for (const game of day?.games ?? []) {
+        if (
+          game.gameType &&
+          game.gameType !== "R"
+        ) {
+          continue;
+        }
+
+        const date = new Date(
+          game.gameDate ?? ""
+        );
+
+        if (
+          !Number.isNaN(date.getTime()) &&
+          date.getUTCFullYear() === seasonYear
+        ) {
+          gameDates.push(date);
+        }
+      }
     }
+
+    gameDates.sort(
+      (a, b) => a.getTime() - b.getTime()
+    );
+
+    return gameDates[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 
     const data = await response.json();
 
