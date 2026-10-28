@@ -330,41 +330,57 @@ export default function MlbWorldSeriesDetails({
     />
   </div>
 
-  <div className="mlbWsResultMatchupNumbers">
+ 
+<div className="mlbWsResultMatchupNumbers">
+  {!seriesGame.live && !seriesGame.final ? (
     <strong
-      className={
-        seriesGame.final &&
-        seriesGame.awayRuns !== undefined &&
-        seriesGame.homeRuns !== undefined
-          ? seriesGame.awayRuns > seriesGame.homeRuns
-            ? "mlbWorldSeriesScoreWinner"
-            : "mlbWorldSeriesScoreLoser"
-          : ""
-      }
+      style={{
+        fontSize: "16px",
+        fontWeight: 800,
+        color: "rgba(255,255,255,0.94)",
+      }}
     >
-      {seriesGame.live || seriesGame.final
-        ? seriesGame.awayRuns ?? 0
-        : "–"}
+      {new Intl.DateTimeFormat("es-MX", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: "America/Mexico_City",
+      }).format(new Date(seriesGame.gameDate))}
     </strong>
+  ) : (
+    <>
+      <strong
+        className={
+          seriesGame.final &&
+          seriesGame.awayRuns !== undefined &&
+          seriesGame.homeRuns !== undefined
+            ? seriesGame.awayRuns > seriesGame.homeRuns
+              ? "mlbWorldSeriesScoreWinner"
+              : "mlbWorldSeriesScoreLoser"
+            : ""
+        }
+      >
+        {seriesGame.awayRuns ?? 0}
+      </strong>
 
-    <span>–</span>
+      <span>–</span>
 
-    <strong
-      className={
-        seriesGame.final &&
-        seriesGame.awayRuns !== undefined &&
-        seriesGame.homeRuns !== undefined
-          ? seriesGame.homeRuns > seriesGame.awayRuns
-            ? "mlbWorldSeriesScoreWinner"
-            : "mlbWorldSeriesScoreLoser"
-          : ""
-      }
-    >
-      {seriesGame.live || seriesGame.final
-        ? seriesGame.homeRuns ?? 0
-        : "–"}
-    </strong>
-  </div>
+      <strong
+        className={
+          seriesGame.final &&
+          seriesGame.awayRuns !== undefined &&
+          seriesGame.homeRuns !== undefined
+            ? seriesGame.homeRuns > seriesGame.awayRuns
+              ? "mlbWorldSeriesScoreWinner"
+              : "mlbWorldSeriesScoreLoser"
+            : ""
+        }
+      >
+        {seriesGame.homeRuns ?? 0}
+      </strong>
+    </>
+  )}
+</div>
+
 
   <div className="mlbWsResultMatchupTeam">
     <TeamCell
@@ -377,19 +393,16 @@ export default function MlbWorldSeriesDetails({
     
 {!seriesGame.final && !seriesGame.live && (
   <div className="mlbWsScheduledInfo">
-    <div className="mlbWsScheduledMeta">
-      <strong>
-        {new Intl.DateTimeFormat("es-MX", {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: "America/Mexico_City",
-        }).format(new Date(seriesGame.gameDate))}
-      </strong>
-
-      {seriesGame.venueName && (
-        <span>{seriesGame.venueName}</span>
-      )}
-    </div>
+    {seriesGame.venueName && (
+  <div
+    className="mlbWsScheduledMeta"
+    style={{ justifyContent: "center" }}
+  >
+    <span style={{ textAlign: "center" }}>
+      {seriesGame.venueName}
+    </span>
+  </div>
+)}
 
     {(seriesGame.awayProbablePitcher ||
       seriesGame.homeProbablePitcher) && (
