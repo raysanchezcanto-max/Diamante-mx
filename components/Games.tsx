@@ -1036,15 +1036,7 @@ const hasAnyGames =
   mlbWorldSeriesLiveState && (
     <div className="mlbWorldSeriesLiveStrip">
       <div className="mlbWorldSeriesLiveCount">
-        <div className="mlbWorldSeriesLiveInning">
-          <span>
-            {mlbWorldSeriesInningArrow}
-          </span>
-
-          <strong>
-            {mlbWorldSeriesLiveState.inning ?? "—"}
-          </strong>
-        </div>
+       
 
         <div className="mlbWorldSeriesBSO">
           <span>
