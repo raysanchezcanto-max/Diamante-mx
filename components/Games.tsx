@@ -369,6 +369,39 @@ className={
 
 </strong>
             </div>
+            
+{showMlbRegularPitchers && (
+  <div className="mlbRegularPitcher">
+    {game.homeProbablePitcher?.id ? (
+      <img
+        className="mlbWorldSeriesPitcherPhoto"
+        src={`https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${game.homeProbablePitcher.id}/headshot/67/current`}
+        alt={`Foto de ${game.homeProbablePitcher.name}`}
+        width={34}
+        height={34}
+        loading="lazy"
+      />
+    ) : (
+      <span
+        className="mlbWorldSeriesPitcherPlaceholder"
+        aria-hidden="true"
+      />
+    )}
+
+    <div className="mlbWorldSeriesPitcherText">
+      <small>
+        {isMlbWarmup
+          ? "ABRIDOR"
+          : "P. PROBABLE"}
+      </small>
+      <span>
+        {game.homeProbablePitcher?.name ??
+          "Por confirmar"}
+      </span>
+    </div>
+  </div>
+)}
+
           </Link>
         );
       })}
