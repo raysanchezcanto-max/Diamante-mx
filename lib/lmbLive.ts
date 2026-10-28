@@ -187,12 +187,13 @@ export async function getLmbCalendar(
   }
 }
 
+
 export async function getLmbNextSeasonStart(
   seasonYear: number
 ): Promise<Date | null> {
   try {
     const response = await fetch(
-      `https://statsapi.mlb.com/api/v1/schedule?sportId=11&leagueId=125&season=${seasonYear}&gameTypes=R`,
+      `https://statsapi.mlb.com/api/v1/schedule?leagueId=125&season=${seasonYear}&gameTypes=R`,
       {
         next: { revalidate: 3600 },
         headers: {
@@ -204,21 +205,14 @@ export async function getLmbNextSeasonStart(
     if (!response.ok) return null;
 
     const data = await response.json();
-
     const gameDates: Date[] = [];
 
     for (const day of data?.dates ?? []) {
       for (const game of day?.games ?? []) {
-        if (
-          game.gameType &&
-          game.gameType !== "R"
-        ) {
-          continue;
-        }
+        if (game.gameType !== "R") continue;
+        if (!game.gameDate) continue;
 
-        const date = new Date(
-          game.gameDate ?? ""
-        );
+        const date = new Date(game.gameDate);
 
         if (
           !Number.isNaN(date.getTime()) &&
@@ -239,44 +233,6 @@ export async function getLmbNextSeasonStart(
   }
 }
 
-
-    const data = await response.json();
-
-    const nextGameDate = data?.nextGameDate;
-
-    if (!nextGameDate) {
-      return null;
-    }
-
-    const numericDate = Number(nextGameDate);
-
-    if (
-      Number.isFinite(numericDate) &&
-      numericDate > 0
-    ) {
-      const timestamp =
-        numericDate > 10000000000
-          ? numericDate
-          : numericDate * 1000;
-
-      const parsed = new Date(timestamp);
-
-      return Number.isNaN(parsed.getTime())
-        ? null
-        : parsed;
-    }
-
-    const parsed = new Date(
-      String(nextGameDate)
-    );
-
-    return Number.isNaN(parsed.getTime())
-      ? null
-      : parsed;
-  } catch {
-    return null;
-  }
-}
 export async function getLmbLiveScore(
   permalink: number
 ): Promise<LmbLiveScore | null> {
