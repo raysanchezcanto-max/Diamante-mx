@@ -243,6 +243,21 @@ export default function MlbWorldSeriesDetails({
       worldSeries.teamB.wins === 3)
       ? " · POSIBLE CIERRE"
       : ""}
+  
+{!seriesGame.final &&
+  !seriesGame.live &&
+  !worldSeries.champion &&
+  mexicoDateKey(new Date(seriesGame.gameDate)) ===
+    mexicoDateKey(new Date()) &&
+  seriesGame.gameNumber >= 5 &&
+  seriesGame.gameNumber >
+    4 + Math.min(
+      worldSeries.teamA.wins,
+      worldSeries.teamB.wins
+    )
+    ? " · SI ES NECESARIO"
+    : ""}
+
 </span>
 
                   </div>
