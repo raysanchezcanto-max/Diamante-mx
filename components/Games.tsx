@@ -159,16 +159,21 @@ function GameCards({
           game.home
         );
 
+
 const isMlbWarmup =
   league === "MLB" &&
   game.gameType === "R" &&
-  (game.status === "Live" ||
-    game.status === "Preview") &&
-  (game.firstPitchRecorded === false ||
-    (game.firstPitchRecorded !== true &&
+  game.firstPitchRecorded !== true &&
+  (
+    game.status === "Live" ||
+    (
+      game.status === "Preview" &&
       /warm[\s-]?up/i.test(
         game.detailedState ?? ""
-      )));
+      )
+    )
+  );
+
       
 const showMlbRegularPitchers =
   league === "MLB" &&
