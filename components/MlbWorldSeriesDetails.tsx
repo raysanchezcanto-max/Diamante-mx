@@ -288,11 +288,17 @@ export default function MlbWorldSeriesDetails({
   >
     HOY
   </strong>
-) : (
+
+) : seriesGame.gameNumber <= 5 &&
+  seriesGame.id ===
+    worldSeries.games.find(
+      (game) => !game.final
+    )?.id ? (
   <strong className="mlbWsStatusConditional">
     PRÓXIMO
   </strong>
-)}
+) : null}
+
 
 
 
