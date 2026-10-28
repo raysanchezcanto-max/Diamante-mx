@@ -1119,8 +1119,9 @@ const hasAnyGames =
     </div>
   )}
 
-{(mlbWorldSeriesCurrentGame?.live ||
-  mlbWorldSeriesIsWarmup) && (
+{mlbWorldSeriesCurrentGame &&
+  (mlbWorldSeriesCurrentGame.live ||
+    mlbWorldSeriesIsWarmup) && (
   <Link
     href={`/game/mlb/${mlbWorldSeriesCurrentGame.id}`}
     className="mlbWorldSeriesLiveGameLink"
