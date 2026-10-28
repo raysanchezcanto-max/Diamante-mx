@@ -173,7 +173,7 @@ export async function getGames(): Promise<Game[]> {
       Si hay juegos hoy, usamos esos.
     */
     if (todayGames.length > 0) {
-      return todayGames.map((g: any) => ({
+      const gamesForToday: Game[] = todayGames.map((g: any) => ({
         id: g.gamePk,
 
         status:
@@ -228,6 +228,7 @@ gamesInSeries:
         startTime:
           g.gameDate,
       }));
+      return await attachFirstPitchRecorded(gamesForToday);
     }
 
     /*
