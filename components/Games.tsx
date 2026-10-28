@@ -829,7 +829,7 @@ const hasAnyGames =
         ) : (
           <>
             {mlbWorldSeriesCurrentGameIsToday
-              ? "HOY"
+              ? <span style={{ color: "#38BDF8" }}>HOY</span>
               : new Intl.DateTimeFormat(
                   "es-MX",
                   {
