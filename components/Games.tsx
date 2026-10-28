@@ -817,12 +817,15 @@ const hasAnyGames =
 )}
 
            
+
 {mlbWorldSeriesCurrentGame &&
   !mlbWorldSeriesCurrentGame.live &&
   !mlbWorldSeriesCurrentGame.final &&
+  (mlbWorldSeriesCurrentGameIsToday ||
+    mlbWorldSeriesIsWarmup) &&
   (mlbWorldSeriesTeamAProbablePitcher ||
     mlbWorldSeriesTeamBProbablePitcher) && (
-    
+
 <div className="mlbWorldSeriesProbablePitcher">
   {mlbWorldSeriesTeamAProbablePitcher?.id ? (
     <img
@@ -1063,6 +1066,7 @@ const hasAnyGames =
  
 
 
+
 {mlbWorldSeriesCurrentGame &&
   !mlbWorldSeriesCurrentGame.live &&
   !mlbWorldSeriesCurrentGame.final &&
@@ -1070,6 +1074,7 @@ const hasAnyGames =
     mlbWorldSeriesIsWarmup) &&
   (mlbWorldSeriesTeamAProbablePitcher ||
     mlbWorldSeriesTeamBProbablePitcher) && (
+
 
 
     
