@@ -19,30 +19,7 @@ export async function getLmbChampion(): Promise<
 > {
   try {
    
-const mexicoParts = new Intl.DateTimeFormat("en-US", {
-  timeZone: "America/Mexico_City",
-  year: "numeric",
-  month: "2-digit",
-}).formatToParts(new Date());
 
-const currentYear = Number(
-  mexicoParts.find((part) => part.type === "year")?.value
-);
-
-const currentMonth = Number(
-  mexicoParts.find((part) => part.type === "month")?.value
-);
-
-const seasonYear =
-  currentMonth >= 9 ? currentYear : currentYear - 1;
-
-const referenceDate = new Date(
-  `${seasonYear}-10-01T12:00:00-06:00`
-);
-
-const referenceOffset = Math.round(
-  (referenceDate.getTime() - Date.now()) / 86400000
-);
 
 
 const mexicoParts = new Intl.DateTimeFormat("en-US", {
