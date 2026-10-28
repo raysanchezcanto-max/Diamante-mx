@@ -301,11 +301,13 @@ homeRuns:
     let path = "";
 
     if (league === "MLB") {
-      path =
-        `/schedule?sportId=1` +
-        `&startDate=${startDate}` +
-        `&endDate=${endDate}` +
-        `&hydrate=linescore`;
+      
+path =
+  `/schedule?sportId=1` +
+  `&startDate=${startDate}` +
+  `&endDate=${endDate}` +
+  `&hydrate=linescore,probablePitcher`;
+
     }
 
    
