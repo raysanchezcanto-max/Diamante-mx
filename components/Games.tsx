@@ -169,6 +169,18 @@ const isMlbWarmup =
       /warm[\s-]?up/i.test(
         game.detailedState ?? ""
       )));
+      
+const showMlbRegularPitchers =
+  league === "MLB" &&
+  game.gameType === "R" &&
+  mexicoDateKey(new Date(game.startTime)) ===
+    mexicoDateKey(new Date()) &&
+  (game.status === "Preview" || isMlbWarmup) &&
+  Boolean(
+    game.awayProbablePitcher ||
+    game.homeProbablePitcher
+  );
+
 
         return (
           <Link
