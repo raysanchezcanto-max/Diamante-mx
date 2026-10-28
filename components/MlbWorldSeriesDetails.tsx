@@ -271,7 +271,17 @@ export default function MlbWorldSeriesDetails({
                 </div>
 
            
-<div className="mlbWsResultMatchup">
+<div
+  className="mlbWsResultMatchup"
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      "minmax(0, 1fr) auto minmax(0, 1fr)",
+    alignItems: "center",
+    gap: "12px",
+    marginTop: "16px",
+  }}
+>
   <div className="mlbWsResultMatchupTeam">
     <TeamCell
       teamId={seriesGame.awayId}
