@@ -1013,6 +1013,7 @@ const hasAnyGames =
 
  
 
+
 {mlbWorldSeriesCurrentGame &&
   !mlbWorldSeriesCurrentGame.live &&
   !mlbWorldSeriesCurrentGame.final &&
@@ -1020,6 +1021,7 @@ const hasAnyGames =
     mlbWorldSeriesIsWarmup) &&
   (mlbWorldSeriesTeamAProbablePitcher ||
     mlbWorldSeriesTeamBProbablePitcher) && (
+
 
     <div className="mlbWorldSeriesProbablePitcher">
       <small>P. PROBABLE</small>
