@@ -307,6 +307,7 @@ export default function Games({
   runnerUpWins: number;
   year: number;
 } | null;
+  lmbSeasonScheduled?: boolean;
 lmpChampion?: LmpChampion | null;
 mlbChampion?: {
   year: number;
@@ -1419,13 +1420,18 @@ const hasAnyGames =
         </section>
       )}
 
- {(
-  !hasAnyGames ||
+ 
+{(
+  (
+    !hasAnyGames &&
+    !(league === "LMB" && lmbSeasonScheduled)
+  ) ||
   (
     league === "MLB" &&
     Boolean(mlbWorldSeries?.champion)
   )
 ) && (
+
   <section className="section">
     {championData ? (
       <>
