@@ -293,9 +293,11 @@ className={
               </div>
 
              <strong>
-  {game.status === "Preview"
-    ? "–"
-    : game.awayRuns ?? "–"}
+ 
+{game.status === "Preview" || isMlbWarmup
+  ? "–"
+  : game.awayRuns ?? "–"}
+
 </strong>
             </div>
 
@@ -315,9 +317,11 @@ className={
               </div>
 
              <strong>
-  {game.status === "Preview"
-    ? "–"
-    : game.homeRuns ?? "–"}
+
+{game.status === "Preview" || isMlbWarmup
+  ? "–"
+  : game.homeRuns ?? "–"}
+
 </strong>
             </div>
           </Link>
