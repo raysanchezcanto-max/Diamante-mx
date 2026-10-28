@@ -312,6 +312,39 @@ className={
 
 </strong>
             </div>
+            
+{showMlbRegularPitchers && (
+  <div className="mlbRegularPitcher">
+    {game.awayProbablePitcher?.id ? (
+      <img
+        className="mlbWorldSeriesPitcherPhoto"
+        src={`https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${game.awayProbablePitcher.id}/headshot/67/current`}
+        alt={`Foto de ${game.awayProbablePitcher.name}`}
+        width={34}
+        height={34}
+        loading="lazy"
+      />
+    ) : (
+      <span
+        className="mlbWorldSeriesPitcherPlaceholder"
+        aria-hidden="true"
+      />
+    )}
+
+    <div className="mlbWorldSeriesPitcherText">
+      <small>
+        {isMlbWarmup
+          ? "ABRIDOR"
+          : "P. PROBABLE"}
+      </small>
+      <span>
+        {game.awayProbablePitcher?.name ??
+          "Por confirmar"}
+      </span>
+    </div>
+  </div>
+)}
+
 
             <div className="teamRow">
               <div className="teamIdentity">
