@@ -270,53 +270,59 @@ export default function MlbWorldSeriesDetails({
 ) : null}
                 </div>
 
-                <div className="mlbWorldSeriesResultScore">
-                  <div>
-                    <span>
-                      {seriesGame.away}
-                    </span>
+           
+<div className="mlbWsResultMatchup">
+  <div className="mlbWsResultMatchupTeam">
+    <TeamCell
+      teamId={seriesGame.awayId}
+      team={seriesGame.away}
+    />
+  </div>
 
-                    <strong
-  className={
-    seriesGame.final &&
-    seriesGame.awayRuns !== undefined &&
-    seriesGame.homeRuns !== undefined
-      ? seriesGame.awayRuns >
-        seriesGame.homeRuns
-        ? "mlbWorldSeriesScoreWinner"
-        : "mlbWorldSeriesScoreLoser"
-      : ""
-  }
->
-  {seriesGame.live || seriesGame.final
-  ? seriesGame.awayRuns ?? 0
-  : "-"}
-</strong>
-                  </div>
+  <div className="mlbWsResultMatchupNumbers">
+    <strong
+      className={
+        seriesGame.final &&
+        seriesGame.awayRuns !== undefined &&
+        seriesGame.homeRuns !== undefined
+          ? seriesGame.awayRuns > seriesGame.homeRuns
+            ? "mlbWorldSeriesScoreWinner"
+            : "mlbWorldSeriesScoreLoser"
+          : ""
+      }
+    >
+      {seriesGame.live || seriesGame.final
+        ? seriesGame.awayRuns ?? 0
+        : "–"}
+    </strong>
 
-                  <div>
-                    <span>
-                      {seriesGame.home}
-                    </span>
+    <span>–</span>
 
-                    <strong
-  className={
-    seriesGame.final &&
-    seriesGame.awayRuns !== undefined &&
-    seriesGame.homeRuns !== undefined
-      ? seriesGame.homeRuns >
-        seriesGame.awayRuns
-        ? "mlbWorldSeriesScoreWinner"
-        : "mlbWorldSeriesScoreLoser"
-      : ""
-  }
- >                     
-{seriesGame.live || seriesGame.final
-  ? seriesGame.homeRuns ?? 0
-  : "-"}
-</strong>
-                  </div>
-                </div>
+    <strong
+      className={
+        seriesGame.final &&
+        seriesGame.awayRuns !== undefined &&
+        seriesGame.homeRuns !== undefined
+          ? seriesGame.homeRuns > seriesGame.awayRuns
+            ? "mlbWorldSeriesScoreWinner"
+            : "mlbWorldSeriesScoreLoser"
+          : ""
+      }
+    >
+      {seriesGame.live || seriesGame.final
+        ? seriesGame.homeRuns ?? 0
+        : "–"}
+    </strong>
+  </div>
+
+  <div className="mlbWsResultMatchupTeam">
+    <TeamCell
+      teamId={seriesGame.homeId}
+      team={seriesGame.home}
+    />
+  </div>
+</div>
+
     
 {!seriesGame.final && !seriesGame.live && (
   <div className="mlbWsScheduledInfo">
