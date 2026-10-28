@@ -1053,13 +1053,33 @@ const hasAnyGames =
     mlbWorldSeriesTeamBProbablePitcher) && (
 
 
-    <div className="mlbWorldSeriesProbablePitcher">
-      <small>P. PROBABLE</small>
-      <span>
-        {mlbWorldSeriesTeamBProbablePitcher?.name ??
-          "Por confirmar"}
-      </span>
-    </div>
+    
+<div className="mlbWorldSeriesProbablePitcher">
+  {mlbWorldSeriesTeamBProbablePitcher?.id ? (
+    <img
+      className="mlbWorldSeriesPitcherPhoto"
+      src={`https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${mlbWorldSeriesTeamBProbablePitcher.id}/headshot/67/current`}
+      alt={`Foto de ${mlbWorldSeriesTeamBProbablePitcher.name}`}
+      width={34}
+      height={34}
+      loading="lazy"
+    />
+  ) : (
+    <span
+      className="mlbWorldSeriesPitcherPlaceholder"
+      aria-hidden="true"
+    />
+  )}
+
+  <div className="mlbWorldSeriesPitcherText">
+    <small>P. PROBABLE</small>
+    <span>
+      {mlbWorldSeriesTeamBProbablePitcher?.name ??
+        "Por confirmar"}
+    </span>
+  </div>
+</div>
+
 )}
 
 
