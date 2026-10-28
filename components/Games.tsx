@@ -1211,7 +1211,10 @@ const hasAnyGames =
   JUEGO {mlbWorldSeriesNextGame.gameNumber}
 
   {" · "}
-  <span className="mlbWorldSeriesNextWhen">
+  <span
+  className="mlbWorldSeriesNextWhen"
+  style={{ color: "#FFFFFF", fontWeight: 800 }}
+>
     {mexicoDateKey(
       new Date(mlbWorldSeriesNextGame.gameDate)
     ) === tomorrowMexicoDateKey
