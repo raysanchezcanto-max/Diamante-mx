@@ -934,7 +934,7 @@ const hasAnyGames =
   <div className="mlbWorldSeriesLiveCenter">
     <span
       className="mlbWorldSeriesLiveLabel"
-      style={{ color: "#f59e0b" }}
+    style={{ color: "#FF7A00" }}
     >
       POR COMENZAR
     </span>
