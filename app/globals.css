@@ -2952,3 +2952,57 @@ mlbWorldSeriesNextOnlyCompact strong {
   font-weight: 750;
   overflow-wrap: anywhere;
 }
+
+/* SERIE MUNDIAL: JERARQUÍA VISUAL */
+
+.mlbWorldSeriesDetailsContent .mlbWorldSeriesResultHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+/* Título JUEGO 1, JUEGO 2, etc. */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesResultHeader > div > strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+/* Estado del partido */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesResultHeader > strong {
+  font-size: 12px;
+  line-height: 1.2;
+  align-self: baseline;
+  white-space: nowrap;
+}
+
+/* Marcador central */
+.mlbWorldSeriesDetailsContent
+.mlbWsResultMatchupNumbers > strong {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* Nombres debajo de los escudos */
+.mlbWorldSeriesDetailsContent
+.mlbWsResultMatchupTeam .mlbWsTeamCell span {
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 500px) {
+  .mlbWorldSeriesDetailsContent
+  .mlbWsResultMatchupNumbers > strong {
+    font-size: 24px;
+  }
+
+  .mlbWorldSeriesDetailsContent
+  .mlbWsResultMatchupTeam .mlbWsTeamCell span {
+    font-size: 11px;
+  }
+}
