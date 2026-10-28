@@ -172,7 +172,9 @@ export async function getGames(): Promise<Game[]> {
       Primero buscamos los juegos de hoy.
     */
     const todayData = await mlbFetch(
-      `/schedule?sportId=1&date=${date}&hydrate=linescore`
+     
+`/schedule?sportId=1&date=${date}&hydrate=linescore,probablePitcher`
+
     );
 
     const todayGames =
@@ -269,7 +271,9 @@ gamesInSeries:
       }).format(end);
 
     const upcomingData = await mlbFetch(
-      `/schedule?sportId=1&startDate=${startDate}&endDate=${endDate}&hydrate=linescore`
+      
+`/schedule?sportId=1&startDate=${startDate}&endDate=${endDate}&hydrate=linescore,probablePitcher`
+
     );
 
     /*
