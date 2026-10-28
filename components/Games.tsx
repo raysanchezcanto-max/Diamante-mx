@@ -159,6 +159,17 @@ function GameCards({
           game.home
         );
 
+const isMlbWarmup =
+  league === "MLB" &&
+  game.gameType === "R" &&
+  (game.status === "Live" ||
+    game.status === "Preview") &&
+  (game.firstPitchRecorded === false ||
+    (game.firstPitchRecorded !== true &&
+      /warm[\s-]?up/i.test(
+        game.detailedState ?? ""
+      )));
+
         return (
           <Link
             href={`/game/${league.toLowerCase()}/${game.id}`}
@@ -166,13 +177,26 @@ function GameCards({
             key={game.id}
           >
            <div
-  className={
-    game.status === "Live"
-      ? "gameStatus live"
-      : "gameStatus"
-  }
+  
+className={
+  game.status === "Live" && !isMlbWarmup
+    ? "gameStatus live"
+    : "gameStatus"
+}
+
 >
-  {game.status === "Live" ? (
+  
+{isMlbWarmup ? (
+  <span
+    style={{
+      color: "#FF7A00",
+      fontWeight: 800,
+    }}
+  >
+    POR COMENZAR
+  </span>
+) : game.status === "Live" ? (
+
     <>
       <span
         className="livePulseDot"
