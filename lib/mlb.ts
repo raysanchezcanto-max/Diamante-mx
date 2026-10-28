@@ -26,6 +26,17 @@ export type Game = {
 
   homeId: number;
   home: string;
+  
+awayProbablePitcher?: {
+  id: number;
+  name: string;
+};
+
+homeProbablePitcher?: {
+  id: number;
+  name: string;
+};
+
 
   awayRuns?: number;
   homeRuns?: number;
