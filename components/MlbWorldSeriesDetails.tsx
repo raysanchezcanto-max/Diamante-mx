@@ -249,14 +249,20 @@ export default function MlbWorldSeriesDetails({
   )
 ) ? (
 
-  <strong className="mlbWsStatusToday">
-    POR COMENZAR
-  </strong>
+ <strong
+  className="mlbWsStatusToday"
+  style={{ color: "#FF7A00" }}
+>
+  POR COMENZAR
+</strong>
 ) : mexicoDateKey(new Date(seriesGame.gameDate)) ===
     mexicoDateKey(new Date()) ? (
-  <strong className="mlbWsStatusToday">
-    HOY
-  </strong>
+ <strong
+  className="mlbWsStatusToday"
+  style={{ color: "#38BDF8" }}
+>
+  HOY
+</strong>
 ) : seriesGame.gameNumber >= 5 ? (
   <strong className="mlbWsStatusConditional">
     SI ES NECESARIO
