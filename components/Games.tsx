@@ -391,7 +391,23 @@ className={
                 <span>{game.home}</span>
               </div>
 
-             <strong>
+             
+<strong
+  style={{
+    color:
+      league === "MLB" &&
+      game.gameType === "R" &&
+      game.status === "Final" &&
+      typeof game.awayRuns === "number" &&
+      typeof game.homeRuns === "number" &&
+      game.awayRuns !== game.homeRuns
+        ? game.homeRuns > game.awayRuns
+          ? "var(--accent)"
+          : "var(--muted)"
+        : undefined,
+  }}
+>
+
 
 {game.status === "Preview" || isMlbWarmup
   ? "–"
