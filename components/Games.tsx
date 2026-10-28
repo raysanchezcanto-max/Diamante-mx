@@ -419,13 +419,19 @@ const mlbWorldSeriesCurrentGameIsToday =
         )
       ) === today
     : false;
-  const mlbWorldSeriesIsWarmup = Boolean(
+ 
+const mlbWorldSeriesIsWarmup = Boolean(
   mlbWorldSeriesCurrentGame &&
   !mlbWorldSeriesCurrentGame.final &&
-  /warm[\s-]?up/i.test(
-    mlbWorldSeriesCurrentGame.detailedState ?? ""
+  !mlbWorldSeriesCurrentGame.live &&
+  (
+    mlbWorldSeriesCurrentGame.firstPitchRecorded === false ||
+    /warm[\s-]?up/i.test(
+      mlbWorldSeriesCurrentGame.detailedState ?? ""
+    )
   )
 );
+
   const mlbWorldSeriesTeamAProbablePitcher =
   mlbWorldSeries &&
   mlbWorldSeriesCurrentGame
@@ -809,8 +815,11 @@ const hasAnyGames =
           </div>
 
      <div className="mlbWorldSeriesScore">
-  {mlbWorldSeriesCurrentGame && (
+  
+{mlbWorldSeriesCurrentGame &&
+  !mlbWorldSeriesIsWarmup && (
     <div className="mlbWorldSeriesCurrentGame">
+
       <strong className="mlbWorldSeriesCurrentGameTitle">
         {mlbWorldSeriesCurrentGame.live ? (
           <>
@@ -1109,15 +1118,22 @@ const hasAnyGames =
       </div>
     </div>
   )}
-{mlbWorldSeriesCurrentGame?.live && (
+
+{(mlbWorldSeriesCurrentGame?.live ||
+  mlbWorldSeriesIsWarmup) && (
   <Link
     href={`/game/mlb/${mlbWorldSeriesCurrentGame.id}`}
     className="mlbWorldSeriesLiveGameLink"
   >
-    <span>VER JUEGO EN VIVO</span>
+    <span>
+      {mlbWorldSeriesCurrentGame.live
+        ? "VER JUEGO EN VIVO"
+        : "VER PARTIDO"}
+    </span>
     <span aria-hidden="true">→</span>
   </Link>
 )}
+
       {showMlbWorldSeriesFullSchedule && (
   <div className="mlbWorldSeriesSchedule">
     {mlbWorldSeries.games
