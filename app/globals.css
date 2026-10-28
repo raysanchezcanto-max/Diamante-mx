@@ -2817,3 +2817,83 @@ mlbWorldSeriesNextOnlyCompact strong {
     opacity: 0.45;
   }
 }
+
+.mlbWsResultMatchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mlbWsResultMatchupTeam {
+  min-width: 0;
+  text-align: center;
+}
+
+.mlbWsResultMatchupTeam .mlbWsTeamCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mlbWsResultMatchupTeam .mlbWsTeamLogo {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  object-fit: contain;
+}
+
+.mlbWsResultMatchupTeam .mlbWsTeamCell span {
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+
+.mlbWsResultMatchupNumbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.mlbWsResultMatchupNumbers strong {
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mlbWsResultMatchupNumbers span {
+  font-size: 15px;
+  opacity: 0.45;
+}
+
+@media (max-width: 500px) {
+  .mlbWsResultMatchup {
+    gap: 6px;
+  }
+
+  .mlbWsResultMatchupTeam .mlbWsTeamLogo {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .mlbWsResultMatchupTeam .mlbWsTeamCell span {
+    font-size: 9px;
+  }
+
+  .mlbWsResultMatchupNumbers {
+    gap: 5px;
+  }
+
+  .mlbWsResultMatchupNumbers strong {
+    font-size: 20px;
+  }
+}
