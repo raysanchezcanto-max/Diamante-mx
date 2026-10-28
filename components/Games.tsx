@@ -841,7 +841,13 @@ const hasAnyGames =
   )}
 
   <div className="mlbWorldSeriesPitcherText">
-    <small>P. PROBABLE</small>
+    
+<small>
+  {mlbWorldSeriesIsWarmup
+    ? "ABRIDOR"
+    : "P. PROBABLE"}
+</small>
+
     <span>
       {mlbWorldSeriesTeamAProbablePitcher?.name ??
         "Por confirmar"}
