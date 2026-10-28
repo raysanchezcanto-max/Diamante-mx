@@ -3019,3 +3019,8 @@ mlbWorldSeriesNextOnlyCompact strong {
   font-size: inherit;
   font-weight: inherit;
 }
+
+/* SERIE MUNDIAL: ALINEACIÓN DE EQUIPOS */
+.mlbWorldSeriesTeams > .mlbWorldSeriesTeam {
+  align-self: start;
+}
