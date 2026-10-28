@@ -258,6 +258,14 @@ export default function MlbWorldSeriesDetails({
     ? " · SI ES NECESARIO"
     : ""}
 
+{!seriesGame.final &&
+  !seriesGame.live &&
+  seriesGame.gameNumber === 7 &&
+  worldSeries.teamA.wins === 3 &&
+  worldSeries.teamB.wins === 3
+    ? " · JUEGO DECISIVO"
+    : ""}
+
 </span>
 
                   </div>
@@ -285,12 +293,7 @@ export default function MlbWorldSeriesDetails({
   POR COMENZAR
 </strong>
 
-) : seriesGame.gameNumber === 7 &&
-    worldSeries.teamA.wins === 3 &&
-    worldSeries.teamB.wins === 3 ? (
-  <strong className="mlbWsStatusConditional">
-    JUEGO DECISIVO
-  </strong>
+
 ) : mexicoDateKey(new Date(seriesGame.gameDate)) ===
     mexicoDateKey(new Date()) ? (
   <strong
