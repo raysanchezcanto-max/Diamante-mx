@@ -351,12 +351,15 @@ const daysUntilLmp =
     : null;
   return (
     <main>
-      <AutoRefresh
-  enabled={games.some(
-    (game) =>
-      game.status === "Live" ||
-      game.status === "Preview"
-  )}
+    <AutoRefresh
+  enabled={
+    mlbWorldSeriesActive ||
+    games.some(
+      (game) =>
+        game.status === "Live" ||
+        game.status === "Preview"
+    )
+  }
   intervalMs={30000}
 />
       <header className="topbar">
