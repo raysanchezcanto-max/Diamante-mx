@@ -245,9 +245,23 @@ className={
     {" · "}
     {gameTime(game, league)}
   </>
+
+) : league === "MLB" &&
+  game.gameType === "R" &&
+  game.status === "Preview" &&
+  mexicoDateKey(new Date(game.startTime)) >
+    mexicoDateKey(new Date()) ? (
+  <>
+    <span style={{ color: "var(--muted)" }}>
+      PRÓXIMO
+    </span>
+    {" · "}
+    {gameTime(game, league)}
+  </>
 ) : (
   gameTime(game, league)
 )}
+
 
 </div>
 {league === "MLB" &&
