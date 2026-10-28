@@ -500,9 +500,18 @@ const mlbWorldSeriesWinsToTitle =
       )
     : null;
 
+
 const mlbWorldSeriesGoalText =
   mlbWorldSeries?.champion
     ? `${mlbWorldSeries.champion.name.toUpperCase()} CAMPEÓN`
+    : mlbWorldSeriesLeader &&
+      mlbWorldSeriesWinsToTitle === 1 &&
+      mlbWorldSeriesCurrentGameIsToday &&
+      !mlbWorldSeriesCurrentGame?.final
+    ? `${mlbWorldSeriesLeader.name
+        .split(" ")
+        .slice(-1)[0]
+        .toUpperCase()} PUEDEN SER CAMPEONES HOY`
     : mlbWorldSeriesLeader &&
       mlbWorldSeriesWinsToTitle
     ? `${mlbWorldSeriesLeader.name
@@ -516,6 +525,7 @@ const mlbWorldSeriesGoalText =
           : "VICTORIAS"
       } DEL TÍTULO`
     : "PRIMERO EN LLEGAR A 4 VICTORIAS";
+
  
 const mlbWorldSeriesNextGame =
   mlbWorldSeries?.games
