@@ -2746,7 +2746,7 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
   display: block;
   width: 100%;
   margin: 12px auto 0;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 650;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.58);
@@ -2756,7 +2756,7 @@ footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border
 
 .mlbWorldSeriesNextOnlyCompact strong {
   color: inherit;
-  font-size: 11px;
+ font-size: inherit;
   font-weight: 800;
 }
 
