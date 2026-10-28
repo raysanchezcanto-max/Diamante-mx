@@ -363,11 +363,16 @@ homeProbablePitcher:
       inning:
         g.linescore?.currentInning,
 
-      inningState:
-        g.linescore?.inningState,
+     
+inningState:
+  g.linescore?.inningState,
 
-      startTime:
-        g.gameDate,
+gameType:
+  g.gameType ?? "",
+
+startTime:
+  g.gameDate,
+
     }));
   } catch {
     return [];
