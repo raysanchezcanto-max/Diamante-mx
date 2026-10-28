@@ -19,6 +19,7 @@ export type Game = {
   id: number;
   status: string;
   detailedState: string;
+  firstPitchRecorded?: boolean;
 
   awayId: number;
   away: string;
