@@ -1205,9 +1205,9 @@ const hasAnyGames =
   mlbWorldSeriesNextGame && (
   <span className="mlbWorldSeriesNextOnlyCompact">
   <strong>
-    {mlbWorldSeriesCurrentGameIsToday
-      ? "DESPUÉS"
-      : "PRÓXIMO"}
+   {mlbWorldSeriesLastFinalGameIsToday
+  ? "DESPUÉS"
+  : "PRÓXIMO"}
   </strong>
 
   {" · "}
