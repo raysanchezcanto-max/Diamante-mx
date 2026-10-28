@@ -3009,3 +3009,13 @@ mlbWorldSeriesNextOnlyCompact strong {
     font-size: 11px;
   }
 }
+
+/* HOY: MISMO CIAN QUE EN DETALLES DE SERIE MUNDIAL */
+
+.mlbWorldSeriesCurrentGame
+.mlbWorldSeriesCurrentGameTitle > span {
+  color: var(--estado-hoy, #38BDF8);
+  opacity: 1;
+  font-size: inherit;
+  font-weight: inherit;
+}
