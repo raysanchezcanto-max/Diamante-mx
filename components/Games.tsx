@@ -796,15 +796,21 @@ const hasAnyGames =
             <strong>
               {mlbWorldSeries.teamA.name}
             </strong>
-           {mlbWorldSeriesTeamAProbablePitcher &&
-  !mlbWorldSeriesCurrentGame?.live && (
-  <div className="mlbWorldSeriesProbablePitcher">
-    <small>P. PROBABLE</small>
-    <span>
-      {mlbWorldSeriesTeamAProbablePitcher.name}
-    </span>
-  </div>
+           
+{mlbWorldSeriesCurrentGame &&
+  !mlbWorldSeriesCurrentGame.live &&
+  !mlbWorldSeriesCurrentGame.final &&
+  (mlbWorldSeriesTeamAProbablePitcher ||
+    mlbWorldSeriesTeamBProbablePitcher) && (
+    <div className="mlbWorldSeriesProbablePitcher">
+      <small>P. PROBABLE</small>
+      <span>
+        {mlbWorldSeriesTeamAProbablePitcher?.name ??
+          "Por confirmar"}
+      </span>
+    </div>
 )}
+
 
 {mlbWorldSeriesCurrentGame && (
   <small className="mlbWorldSeriesHomeAway">
