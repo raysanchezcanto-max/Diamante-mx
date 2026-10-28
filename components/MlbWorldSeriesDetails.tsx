@@ -255,19 +255,38 @@ export default function MlbWorldSeriesDetails({
 >
   POR COMENZAR
 </strong>
+
+) : seriesGame.gameNumber === 7 &&
+    worldSeries.teamA.wins === 3 &&
+    worldSeries.teamB.wins === 3 ? (
+  <strong className="mlbWsStatusConditional">
+    JUEGO DECISIVO
+  </strong>
 ) : mexicoDateKey(new Date(seriesGame.gameDate)) ===
     mexicoDateKey(new Date()) ? (
- <strong
-  className="mlbWsStatusToday"
-  style={{ color: "#38BDF8" }}
->
-  HOY
-</strong>
+  <strong
+    className="mlbWsStatusToday"
+    style={{ color: "#38BDF8" }}
+  >
+    HOY
+  </strong>
 ) : seriesGame.gameNumber >= 5 ? (
   <strong className="mlbWsStatusConditional">
-    SI ES NECESARIO
+    {seriesGame.gameNumber >
+    4 + Math.min(
+      worldSeries.teamA.wins,
+      worldSeries.teamB.wins
+    )
+      ? "SI ES NECESARIO"
+      : Math.max(
+          worldSeries.teamA.wins,
+          worldSeries.teamB.wins
+        ) === 3
+      ? "POSIBLE CIERRE"
+      : "CONFIRMADO"}
   </strong>
 ) : null}
+
                 </div>
 
            
