@@ -322,7 +322,7 @@ export default function MlbWorldSeriesDetails({
   {!seriesGame.live && !seriesGame.final ? (
     <strong
       style={{
-        fontSize: "16px",
+       fontSize: "22px",
         fontWeight: 800,
         color: "rgba(255,255,255,0.94)",
       }}
