@@ -217,6 +217,7 @@ export default function MlbWorldSeriesDetails({
     
             
 
+
 <span className="mlbWsGameDate">
   {new Intl.DateTimeFormat("es-MX", {
     day: "numeric",
@@ -227,104 +228,72 @@ export default function MlbWorldSeriesDetails({
     .toUpperCase()}
 
   {!seriesGame.final &&
-    !seriesGame.live &&
-    seriesGame.gameNumber >= 5 &&
-    seriesGame.gameNumber <=
-      4 + Math.min(
-        worldSeries.teamA.wins,
-        worldSeries.teamB.wins
-      ) &&
-    Math.max(
-      worldSeries.teamA.wins,
-      worldSeries.teamB.wins
-    ) === 3 &&
-    !(seriesGame.gameNumber === 7 &&
+  !seriesGame.live
+    ? seriesGame.gameNumber === 7 &&
       worldSeries.teamA.wins === 3 &&
-      worldSeries.teamB.wins === 3)
+      worldSeries.teamB.wins === 3
+      ? " · JUEGO DECISIVO"
+      : seriesGame.gameNumber >= 5 &&
+        seriesGame.gameNumber >
+          4 + Math.min(
+            worldSeries.teamA.wins,
+            worldSeries.teamB.wins
+          )
+      ? " · SI ES NECESARIO"
+      : seriesGame.gameNumber >= 5 &&
+        Math.max(
+          worldSeries.teamA.wins,
+          worldSeries.teamB.wins
+        ) === 3
       ? " · POSIBLE CIERRE"
-      : ""}
-  
-{!seriesGame.final &&
-  !seriesGame.live &&
-  !worldSeries.champion &&
-  mexicoDateKey(new Date(seriesGame.gameDate)) ===
-    mexicoDateKey(new Date()) &&
-  seriesGame.gameNumber >= 5 &&
-  seriesGame.gameNumber >
-    4 + Math.min(
-      worldSeries.teamA.wins,
-      worldSeries.teamB.wins
-    )
-    ? " · SI ES NECESARIO"
+      : ""
     : ""}
-
-{!seriesGame.final &&
-  !seriesGame.live &&
-  seriesGame.gameNumber === 7 &&
-  worldSeries.teamA.wins === 3 &&
-  worldSeries.teamB.wins === 3
-    ? " · JUEGO DECISIVO"
-    : ""}
-
 </span>
+
 
                   </div>
 
-            {seriesGame.final ? (
+ 
+{seriesGame.final ? (
   <strong className="mlbWsStatusFinal">
     FINAL
+  </strong>
+) : seriesGame.firstPitchRecorded === true ? (
+  <strong className="mlbWsStatusLive">
+    EN VIVO
+  </strong>
+) : /warm[\s-]?up/i.test(
+    seriesGame.detailedState ?? ""
+  ) ||
+  (seriesGame.firstPitchRecorded === false &&
+    /^(live|in progress)$/i.test(
+      seriesGame.status ?? ""
+    )) ? (
+  <strong
+    className="mlbWsStatusToday"
+    style={{ color: "#FF7A00" }}
+  >
+    POR COMENZAR
   </strong>
 ) : seriesGame.live ? (
   <strong className="mlbWsStatusLive">
     EN VIVO
   </strong>
-
-) : (
-  seriesGame.firstPitchRecorded === false ||
-  /warm[\s-]?up/i.test(
-    seriesGame.detailedState ?? ""
-  )
-) ? (
-
- <strong
-  className="mlbWsStatusToday"
-  style={{ color: "#FF7A00" }}
->
-  POR COMENZAR
-</strong>
-
-
-) : mexicoDateKey(new Date(seriesGame.gameDate)) ===
-    mexicoDateKey(new Date()) ? (
+) : mexicoDateKey(
+    new Date(seriesGame.gameDate)
+  ) === mexicoDateKey(new Date()) ? (
   <strong
     className="mlbWsStatusToday"
     style={{ color: "#38BDF8" }}
   >
     HOY
   </strong>
-
-) : seriesGame.gameNumber >= 5 &&
-    !(
-      Math.max(
-        worldSeries.teamA.wins,
-        worldSeries.teamB.wins
-      ) === 3 &&
-      seriesGame.gameNumber <=
-        4 + Math.min(
-          worldSeries.teamA.wins,
-          worldSeries.teamB.wins
-        )
-    ) ? (
+) : (
   <strong className="mlbWsStatusConditional">
-    {seriesGame.gameNumber >
-    4 + Math.min(
-      worldSeries.teamA.wins,
-      worldSeries.teamB.wins
-    )
-      ? "SI ES NECESARIO"
-      : "CONFIRMADO"}
+    PRÓXIMO
   </strong>
-) : null}
+)}
+
 
 
                 </div>
