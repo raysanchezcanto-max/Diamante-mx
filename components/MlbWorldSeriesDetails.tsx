@@ -284,7 +284,19 @@ export default function MlbWorldSeriesDetails({
   >
     HOY
   </strong>
-) : seriesGame.gameNumber >= 5 ? (
+
+) : seriesGame.gameNumber >= 5 &&
+    !(
+      Math.max(
+        worldSeries.teamA.wins,
+        worldSeries.teamB.wins
+      ) === 3 &&
+      seriesGame.gameNumber <=
+        4 + Math.min(
+          worldSeries.teamA.wins,
+          worldSeries.teamB.wins
+        )
+    ) ? (
   <strong className="mlbWsStatusConditional">
     {seriesGame.gameNumber >
     4 + Math.min(
@@ -292,14 +304,10 @@ export default function MlbWorldSeriesDetails({
       worldSeries.teamB.wins
     )
       ? "SI ES NECESARIO"
-      : Math.max(
-          worldSeries.teamA.wins,
-          worldSeries.teamB.wins
-        ) === 3
-      ? "POSIBLE CIERRE"
       : "CONFIRMADO"}
   </strong>
 ) : null}
+
 
                 </div>
 
