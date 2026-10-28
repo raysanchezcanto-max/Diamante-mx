@@ -210,6 +210,25 @@ export async function getGames(): Promise<Game[]> {
         home:
           g.teams?.home?.team?.name ??
           "Local",
+        
+awayProbablePitcher:
+  g.teams?.away?.probablePitcher?.id &&
+  g.teams?.away?.probablePitcher?.fullName
+    ? {
+        id: g.teams.away.probablePitcher.id,
+        name: g.teams.away.probablePitcher.fullName,
+      }
+    : undefined,
+
+homeProbablePitcher:
+  g.teams?.home?.probablePitcher?.id &&
+  g.teams?.home?.probablePitcher?.fullName
+    ? {
+        id: g.teams.home.probablePitcher.id,
+        name: g.teams.home.probablePitcher.fullName,
+      }
+    : undefined,
+
 
         awayRuns:
           g.teams?.away?.score,
