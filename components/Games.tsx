@@ -288,6 +288,7 @@ export default function Games({
   nextGames = [],
   recentGames = [],
   lmbChampion = null,
+  lmbSeasonScheduled = false,
   lmpChampion = null,
   mlbChampion = null,
   mlbWorldSeries = null,
