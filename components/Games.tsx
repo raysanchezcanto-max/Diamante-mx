@@ -539,14 +539,18 @@ const showMlbWorldSeriesFullSchedule =
     !mlbWorldSeries.champion
   );
 
-const showMlbWorldSeriesNextGameOnly =
-  Boolean(
-    mlbWorldSeries &&
-    mlbWorldSeriesHasStarted &&
-    !mlbWorldSeriesCurrentGame?.live &&
-    !mlbWorldSeries.champion &&
-    mlbWorldSeriesNextGame
-  );
+
+const showMlbWorldSeriesNextGameOnly = Boolean(
+  mlbWorldSeries &&
+  mlbWorldSeriesHasStarted &&
+  !mlbWorldSeries.champion &&
+  !mlbWorldSeries.games.some((game) => game.live) &&
+  mlbWorldSeriesNextGame &&
+  mexicoDateKey(
+    new Date(mlbWorldSeriesNextGame.gameDate)
+  ) > today
+);
+
   const tomorrowMexicoDateKey =
   mexicoDateKey(
     new Date(Date.now() + 24 * 60 * 60 * 1000)
