@@ -3070,3 +3070,18 @@ mlbWorldSeriesNextOnlyCompact strong {
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
+
+/* SERIE MUNDIAL: CÍRCULO PARA PITCHERS POR CONFIRMAR */
+
+.mlbWorldSeriesDetailsContent
+.mlbWsScheduledPitchers
+.mlbWsDecisionPlayer:not(:has(.mlbWsPlayerPhoto))::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border: 1px dashed rgba(180, 210, 170, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.02);
+}
