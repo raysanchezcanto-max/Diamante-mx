@@ -516,15 +516,13 @@ const mlbWorldSeriesGoalText =
           : "VICTORIAS"
       } DEL TÍTULO`
     : "PRIMERO EN LLEGAR A 4 VICTORIAS";
-  const mlbWorldSeriesNextGame =
-  mlbWorldSeries && mlbWorldSeriesCurrentGame
-    ? mlbWorldSeries.games.find(
-        (game) =>
-          !game.final &&
-          game.gameNumber >
-            mlbWorldSeriesCurrentGame.gameNumber
-      ) ?? null
-    : null;
+ 
+const mlbWorldSeriesNextGame =
+  mlbWorldSeries?.games
+    .filter((game) => !game.final)
+    .sort((a, b) => a.gameNumber - b.gameNumber)[0] ??
+  null;
+
   const mlbWorldSeriesHasStarted =
   Boolean(
     mlbWorldSeries?.games.some(
