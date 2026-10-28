@@ -806,6 +806,16 @@ const hasAnyGames =
             <strong>
               {mlbWorldSeries.teamA.name}
             </strong>
+            
+{mlbWorldSeriesCurrentGame && (
+  <small className="mlbWorldSeriesHomeAway">
+    {mlbWorldSeriesCurrentGame.homeId ===
+    mlbWorldSeries.teamA.id
+      ? "LOCAL"
+      : "VISITANTE"}
+  </small>
+)}
+
            
 {mlbWorldSeriesCurrentGame &&
   !mlbWorldSeriesCurrentGame.live &&
@@ -842,14 +852,7 @@ const hasAnyGames =
 )}
 
 
-{mlbWorldSeriesCurrentGame && (
-  <small className="mlbWorldSeriesHomeAway">
-    {mlbWorldSeriesCurrentGame.homeId ===
-    mlbWorldSeries.teamA.id
-      ? "LOCAL"
-      : "VISITANTE"}
-  </small>
-)}
+
           </div>
 
      <div className="mlbWorldSeriesScore">
