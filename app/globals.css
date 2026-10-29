@@ -3205,3 +3205,17 @@ mlbWorldSeriesNextOnlyCompact strong {
     flex-direction: column;
   }
 }
+
+/* CAMPEON: AJUSTAR CAJA DEL RESULTADO DE LA SERIE */
+
+.championResultPill {
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.championResultText {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
