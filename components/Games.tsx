@@ -253,9 +253,11 @@ className={
     {gameTime(game, league)}
   </>
 
-) : league === "MLB" &&
-  game.gameType === "R" &&
+
+) : (league === "LMP" ||
+  (league === "MLB" && game.gameType === "R")) &&
   game.status === "Preview" &&
+
   mexicoDateKey(new Date(game.startTime)) >
     mexicoDateKey(new Date()) ? (
   <>
