@@ -49,7 +49,7 @@
 
 **Confirmado en código actual y compilado:**
 - `lib/lmp.ts` consulta juegos del día y próxima fecha; `hydrate=linescore,probablePitcher`.
-- **Últimos dos cambios realizados:** `awayProbablePitcher` y `homeProbablePitcher` se mapean tanto en `todayGames` como en `nextGames`.
+- **Últimos cambios en `lib/lmp.ts`:** `awayProbablePitcher` y `homeProbablePitcher` se mapean en `todayGames` y `nextGames`. Además, ya existe `attachLmpFirstPitchRecorded(games)` y se llama desde `getLmpGames()` para los partidos de hoy (cambio compilado sin errores el 29 de octubre de 2026). **Aún no se ha verificado con datos reales si la fuente LMP proporciona eventos `playEvents[].isPitch` suficientes para distinguir calentamiento y juego iniciado.**
 - `components/Games.tsx` ya muestra HOY y PRÓXIMO en tarjetas de LMP, además de EN VIVO y FINAL compartidos.
 - **Último cambio compilado y confirmado por la usuaria:** `showMlbRegularPitchers` ahora permite LMP (además de MLB regular), para partidos de **hoy** en `Preview` cuando hay al menos un pitcher probable.
 - La tarjeta utiliza nombres, fotografías mediante ID/URL de imágenes MLB y placeholders; **todavía falta comprobar visualmente si la fuente tiene IDs/fotos válidos de LMP**.
@@ -57,13 +57,13 @@
 - Existen `getLmpChampion`, temporada LMP y aviso de próxima temporada en la página.
 
 **Pendientes concretos:**
-1. **POR COMENZAR para LMP:** `isMlbWarmup` se restringe a MLB, y `lib/lmp.ts` todavía no adjunta `firstPitchRecorded`. Diseñar detección fiable del calentamiento antes de habilitar el estado en LMP. No considerar todo juego `Live` como calentamiento.
+1. **POR COMENZAR para LMP (prioridad):** ya se adjunta `firstPitchRecorded` en `getLmpGames()` para los juegos de hoy cuando el endpoint permite leer jugadas. La interfaz `Games.tsx` **sigue limitada a MLB** mediante `isMlbWarmup` y `game.gameType === "R"` (este último campo no se mapea en `lib/lmp.ts`). **No activar aún POR COMENZAR para LMP sin validar la señal**: si la API omite `isPitch`, la función puede devolver `false` incluso en un partido iniciado; cuando la consulta falla, devuelve `undefined`. Considerar estados trivaluados `true/false/undefined`, diferenciar `Live` de calentamiento, y coordinar tarjetas y detalle.
 2. Verificar visualmente P. PROBABLE/ABRIDOR y fotografías reales en LMP. Actualmente el bloque de pitchers no se muestra si **ninguno** está anunciado; decidir si presentar “Por confirmar” aun sin datos.
 3. Validar con partidos reales las transiciones HOY → POR COMENZAR → EN VIVO → FINAL, horarios y datos en vivo.
 4. Ajustar presentación de postemporada LMP con estructura acordada **temporada regular → primera ronda → semifinales → Serie Final → campeón**. Tomar como referencia MLB, adaptar el formato y tipos de partido reales de LMP; verificar las series y sus resultados en la fuente.
 5. Revisar aviso/contador de la siguiente temporada: actualmente el aviso LMP puede aparecer sin fecha y mostrar “CALENDARIO PENDIENTE”; contrastar con el criterio acordado de mostrar contador solo con fecha oficial.
 
-**Siguiente paso recomendado:** completar la detección técnica de POR COMENZAR en LMP, empezando por examinar si los datos de su API permiten distinguir primer lanzamiento y warm-up, sin modificar todavía la lógica de MLB. Trabajar en incrementos pequeños.
+**Siguiente paso recomendado:** validar con uno o varios juegos reales de LMP el payload de `/game/{gamePk}/playByPlay` y los códigos de estado del calendario. Comprobar si existe `playEvents[].isPitch === true` después del primer lanzamiento y qué indica calentamiento. Si no se puede verificar, **no interpretar `firstPitchRecorded === false` como prueba suficiente de calentamiento**. Después implementar una fase segura compartida por tarjeta y detalle, con pruebas; un cambio pequeño por vez.
 
 ## 5. LMB — estado y siguientes fases
 
@@ -85,4 +85,6 @@
 3. Elegir **un** ajuste, explicar su alcance (tarjetas normales, detalle, o tarjeta especial), mostrar reemplazo exacto y pedir compilación/verificación.
 4. Tras cada conjunto de funciones cerradas, actualizar `PROJECT_STATUS.md` con **qué se comprobó** y **qué sigue**, sin prometer automatizaciones que aún no se hayan validado.
 
-**Última confirmación de compilación:** ajuste `showMlbRegularPitchers` que habilita en LMP la visualización de pitchers probables de partidos de hoy; confirmado el 29 de octubre de 2026.
+**Última confirmación de compilación:** Paso 15: conexión de `attachLmpFirstPitchRecorded(gamesForToday)` en `getLmpGames()` de LMP, confirmada sin errores el 29 de octubre de 2026. El cambio no prueba aún que la API informe lanzamientos en LMP.
+
+**Revisión técnica independiente recibida:** Claude identificó riesgos adicionales (pospuestos/suspendidos, diferencia entre estado en tarjetas y detalle, broadcasts `channels`/`tvChannels`, llamadas numerosas a LMB, doble jornada, fotos de pitchers). Se deben verificar y priorizar después de cerrar la detección LMP; no se consideran defectos confirmados hasta probarlos.
