@@ -520,7 +520,16 @@ export default function MlbWorldSeriesDetails({
                {seriesGame.final && (
   <div className="mlbWorldSeriesDecisions">
     {seriesGame.winningPitcher && (
-      <div className="mlbWsDecision">
+      
+<div
+  className={
+    (seriesGame.awayRuns ?? 0) >
+    (seriesGame.homeRuns ?? 0)
+      ? "mlbWsDecision mlbWsDecisionAway"
+      : "mlbWsDecision mlbWsDecisionHome"
+  }
+>
+
         <span>GANADOR</span>
 
         <div className="mlbWsDecisionPlayer">
