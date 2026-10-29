@@ -590,7 +590,9 @@ export default function MlbWorldSeriesDetails({
     )}
 
     {seriesGame.savePitcher && (
-      <div className="mlbWsDecision">
+      
+<div className="mlbWsDecision mlbWsDecisionSave">
+
         <span>SALVAMENTO</span>
 
         <div className="mlbWsDecisionPlayer">
