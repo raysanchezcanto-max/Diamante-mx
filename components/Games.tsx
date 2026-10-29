@@ -1582,9 +1582,15 @@ const hasAnyGames =
             </div>
 
             {todayGames.length === 0 && (
-              <span className="liveDot">
-                ● Datos {league}
-              </span>
+              
+<span className="liveDot">
+  <span
+    className="sourceActivityDot"
+    aria-hidden="true"
+  />
+  Datos {league}
+</span>
+
             )}
           </div>
 
