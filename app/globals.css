@@ -135,7 +135,10 @@ tbody tr:last-child td { border-bottom: 0; }
 footer { max-width: 1200px; margin: 70px auto 0; padding: 34px 24px 48px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 12px; }
 .brand.small strong { font-size: 14px; }
 .seasonNotice {
-  max-width: 1200px;
+  
+width: calc(100% - 48px);
+max-width: 1152px;
+
   margin: 22px auto 0;
   padding: 22px 24px;
   border: 1px solid var(--line);
