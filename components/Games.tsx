@@ -1532,14 +1532,7 @@ const hasAnyGames =
       </div>
     </section>
   )}
-      {league === "MLB" &&
-  mlbWorldSeries &&
-  mlbPostseason && (
-    <MlbPostseasonCard
-      postseason={mlbPostseason}
-      mode="history"
-    />
-  )}
+     
      {!hideMlbRegularGameSections &&
   todayGames.length > 0 && (
         <section className="section">
@@ -1725,6 +1718,14 @@ const hasAnyGames =
     )}
   </section>
 )}
+      {league === "MLB" &&
+  mlbWorldSeries &&
+  mlbPostseason && (
+    <MlbPostseasonCard
+      postseason={mlbPostseason}
+      mode="history"
+    />
+  )}
     </>
   );
 }
