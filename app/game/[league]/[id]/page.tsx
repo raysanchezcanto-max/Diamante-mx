@@ -335,7 +335,16 @@ const isTied =
       : "gameDetailStatus"
   }
 >
-  {isLive ? (
+{isLmpWarmup ? (
+  <strong
+    style={{
+      color: "#FF7A00",
+      fontWeight: 800,
+    }}
+  >
+    POR COMENZAR
+  </strong>
+) : isLive ? (
     <>
       <span
         className="livePulseDot"
