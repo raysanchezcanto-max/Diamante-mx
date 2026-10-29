@@ -1545,9 +1545,15 @@ const hasAnyGames =
               <h2>Juegos de hoy</h2>
             </div>
 
-            <span className="liveDot">
-              ● Datos {league}
-            </span>
+           
+<span className="liveDot">
+  <span
+    className="sourceActivityDot"
+    aria-hidden="true"
+  />
+  Datos {league}
+</span>
+
           </div>
 
           <GameCards
