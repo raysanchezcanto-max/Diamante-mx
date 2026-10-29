@@ -3133,3 +3133,75 @@ mlbWorldSeriesNextOnlyCompact strong {
 .mlbWsScheduledPitchers .mlbWsDecisionPlayer {
   justify-content: center;
 }
+
+/* SERIE MUNDIAL: ALINEACION DE DECISIONES */
+
+.mlbWorldSeriesDetailsContent .mlbWorldSeriesDecisions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 100px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+/* Pitcher del equipo visitante: izquierda */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecisionAway {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Salvamento: debajo del marcador */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecisionSave {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Pitcher del equipo local: derecha */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecisionHome {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+/* Centrar etiquetas y jugadores */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecision {
+  align-items: center;
+  text-align: center;
+}
+
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecisionPlayer {
+  justify-content: center;
+  max-width: 100%;
+}
+
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecisionPlayer strong {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+
+/* Salvamento: foto y nombre centrados */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesDecisions .mlbWsDecisionSave
+.mlbWsDecisionPlayer {
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Adaptacion a celulares */
+@media (max-width: 500px) {
+  .mlbWorldSeriesDetailsContent
+  .mlbWorldSeriesDecisions {
+    grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .mlbWorldSeriesDetailsContent
+  .mlbWorldSeriesDecisions .mlbWsDecisionPlayer {
+    flex-direction: column;
+  }
+}
