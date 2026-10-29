@@ -17,6 +17,7 @@ import Leaders from "@/components/Leaders";
 import { getNextGames } from "@/lib/nextGames";
 import RecentResults from "@/components/RecentResults";
 import { getRecentGames } from "@/lib/recentGames";
+import { getSourceActivity } from "@/lib/sourceActivity";
 import {
   getGames,
   getLeaders,
@@ -59,6 +60,9 @@ const selectedLeague:
     : leagueParam === "lmp"
       ? "LMP"
       : "MLB";
+  
+const sourceActivity = await getSourceActivity(selectedLeague);
+
 
   const [games, standings, leaders] =
   selectedLeague === "LMB"
@@ -484,7 +488,9 @@ const daysUntilLmp =
     </div>
   </div>
 )}
-   <div id="juegos">
+   
+<div id="juegos" data-source-active={sourceActivity}>
+
  <Games
    games={games}
   nextGames={nextGames}
