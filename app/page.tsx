@@ -563,7 +563,9 @@ const daysUntilLmp =
     </div>
   </div>
 )}
-   {showMlbSeasonNotice && (
+  
+{showMlbSeasonNotice && mlbNextSeasonStart && (
+
   <div className="seasonNotice">
     <div>
       <span className="eyebrow">
