@@ -3219,3 +3219,9 @@ mlbWorldSeriesNextOnlyCompact strong {
   overflow-wrap: anywhere;
   line-height: 1.35;
 }
+
+/* CAMPEON: RESULTADO EN TODO EL ANCHO DISPONIBLE */
+
+.championResultPill {
+  grid-column: 1 / -1;
+}
