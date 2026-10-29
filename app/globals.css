@@ -3110,3 +3110,26 @@ mlbWorldSeriesNextOnlyCompact strong {
   line-height: 1.3;
   overflow-wrap: anywhere;
 }
+
+/* SERIE MUNDIAL: ALINEAR ABRIDORES Y PITCHERS PROBABLES */
+
+/* Línea divisoria para los partidos EN VIVO */
+.mlbWorldSeriesDetailsContent
+.mlbWorldSeriesResultGame > .mlbWsScheduledPitchers {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Centrar cada pitcher debajo de su equipo */
+.mlbWorldSeriesDetailsContent
+.mlbWsScheduledPitchers > div {
+  align-items: center;
+  text-align: center;
+}
+
+/* Centrar fotografía y nombre del pitcher */
+.mlbWorldSeriesDetailsContent
+.mlbWsScheduledPitchers .mlbWsDecisionPlayer {
+  justify-content: center;
+}
