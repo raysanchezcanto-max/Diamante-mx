@@ -3262,3 +3262,17 @@ mlbWorldSeriesNextOnlyCompact strong {
 .liveDot .sourceActivityDot.isActive {
   background-color: var(--accent);
 }
+
+/* DIAMANTE MX: actividad automática de las fuentes */
+
+/* Actividad verificada: punto lima */
+#juegos[data-source-active="true"]
+.liveDot .sourceActivityDot {
+  background-color: var(--accent);
+}
+
+/* Sin actividad verificada: punto gris */
+#juegos[data-source-active="false"]
+.liveDot .sourceActivityDot {
+  background-color: var(--muted);
+}
