@@ -187,11 +187,23 @@ const broadcasts =
       game.home
     );
 
-  const isFinal =
-    game.status === "Final";
 
-  const isLive =
-    game.status === "Live";
+const isFinal =
+  game.status === "Final";
+
+const isLmpWarmup =
+  league === "LMP" &&
+  (game.status === "Live" ||
+    game.status === "Preview") &&
+  game.firstPitchRecorded !== true &&
+  /warm[\s-]?up|calentamiento/i.test(
+    game.detailedState ?? ""
+  );
+
+const isLive =
+  game.status === "Live" &&
+  !isLmpWarmup;
+
 
 const playState =
   !isLive
