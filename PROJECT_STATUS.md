@@ -49,15 +49,15 @@
 
 **Confirmado en código actual y compilado:**
 - `lib/lmp.ts` consulta juegos del día y próxima fecha; `hydrate=linescore,probablePitcher`.
-- **Últimos cambios en `lib/lmp.ts`:** `awayProbablePitcher` y `homeProbablePitcher` se mapean en `todayGames` y `nextGames`. Además, ya existe `attachLmpFirstPitchRecorded(games)` y se llama desde `getLmpGames()` para los partidos de hoy (cambio compilado sin errores el 29 de octubre de 2026). **Aún no se ha verificado con datos reales si la fuente LMP proporciona eventos `playEvents[].isPitch` suficientes para distinguir calentamiento y juego iniciado.**
-- `components/Games.tsx` muestra HOY y PRÓXIMO para LMP, además de EN VIVO y FINAL compartidos. **Paso 18 confirmado sin errores:** tarjetas de LMP ahora admiten POR COMENZAR (naranja `#FF7A00`) solo si el estado detallado indica Warmup/Calentamiento y no hay primer lanzamiento confirmado. **Falta verificación visual durante un calentamiento real**, y la página de detalle todavía no usa el mismo criterio.
+- **Últimos cambios en `lib/lmp.ts`:** `awayProbablePitcher` y `homeProbablePitcher` se mapean en `todayGames` y `nextGames`. Además, ya existe `attachLmpFirstPitchRecorded(games)` y se llama desde `getLmpGames()` para los partidos de hoy (cambio compilado sin errores el 29 de octubre de 2026). **Se comprobó `isPitch:true` en el partido finalizado LMP `850512`, pero falta comprobar la transición completa con un partido en curso.**
+- `components/Games.tsx` muestra HOY y PRÓXIMO para LMP, además de EN VIVO y FINAL compartidos. **Paso 18 confirmado sin errores:** tarjetas de LMP ahora admiten POR COMENZAR (naranja `#FF7A00`) solo si el estado detallado indica Warmup/Calentamiento y no hay primer lanzamiento confirmado. **Falta verificación visual durante un calentamiento real**. En los pasos 19–20 ya se agregó `firstPitchRecorded` a `lib/gameDetails.ts` y se usa en `app/game/[league]/[id]/page.tsx` para que el detalle muestre POR COMENZAR en naranja y no represente calentamiento como EN VIVO. Estos cambios compilaron correctamente; queda pendiente probarlos en un partido real.
 - **Último cambio compilado y confirmado por la usuaria:** `showMlbRegularPitchers` ahora permite LMP (además de MLB regular), para partidos de **hoy** en `Preview` cuando hay al menos un pitcher probable.
 - La tarjeta utiliza nombres, fotografías mediante ID/URL de imágenes MLB y placeholders; **todavía falta comprobar visualmente si la fuente tiene IDs/fotos válidos de LMP**.
 - El detalle del partido LMP utiliza `getLmpPlayState` + `LiveGamePanel` para bases, B/S/O, bateador, pitcher, jugadas, etc.
 - Existen `getLmpChampion`, temporada LMP y aviso de próxima temporada en la página.
 
 **Pendientes concretos:**
-1. **POR COMENZAR LMP (en progreso):** detector de `firstPitchRecorded` adjunto en `getLmpGames()` y estado visual habilitado en tarjetas en el Paso 18, compilado sin error. Las tarjetas exigen `detailedState` Warmup/Calentamiento + ausencia de lanzamiento confirmado. **Pendiente:** alinear la página del detalle (que aún muestra EN VIVO para Warmup), y validar visualmente con un calentamiento real. El campo `gameType` no se mapea en `lib/lmp.ts`, pero la condición de LMP ya no depende de él.
+1. **POR COMENZAR LMP (implementación compilada):** detector `firstPitchRecorded` en `getLmpGames()`; estado naranja `#FF7A00` en tarjetas (`components/Games.tsx`, Paso 18) y página de detalle (`lib/gameDetails.ts` + `app/game/[league]/[id]/page.tsx`, Pasos 19–20). Se exige estado detallado Warmup/Calentamiento y que no exista lanzamiento confirmado. **Pendiente solamente validar visualmente** la transición completa con juego real y comprobar qué ocurre cuando los datos llegan con retraso.
 2. Verificar visualmente P. PROBABLE/ABRIDOR y fotografías reales en LMP. Actualmente el bloque de pitchers no se muestra si **ninguno** está anunciado; decidir si presentar “Por confirmar” aun sin datos.
 3. Validar con partidos reales las transiciones HOY → POR COMENZAR → EN VIVO → FINAL, horarios y datos en vivo.
 4. Ajustar presentación de postemporada LMP con estructura acordada **temporada regular → primera ronda → semifinales → Serie Final → campeón**. Tomar como referencia MLB, adaptar el formato y tipos de partido reales de LMP; verificar las series y sus resultados en la fuente.
@@ -65,7 +65,7 @@
 
 **Validación de API con evidencia (29/oct/2026):** capturas del partido LMP `gamePk=850512` del calendario del **28/oct/2026** muestran **358 coincidencias de texto** `"isPitch":true` en `/game/850512/playByPlay` (no implica 358 lanzamientos distintos) y eventos de cambio de estado Pre-Game → Warmup. Por tanto, **al menos este partido finalizado sí tiene eventos `isPitch: true`**. Aún NO se ha verificado con capturas de la API durante un calentamiento en curso, ni la cobertura de todos los juegos LMP. También se observó en el calendario que algunos juegos pospuestos tienen `abstractGameState:"Final"` junto a `detailedState:"Postponed"`, por lo que hay que distinguir pospuestos de resultados finales.
 
-**Siguiente paso recomendado:** preparar el dato `firstPitchRecorded` en `lib/gameDetails.ts` a partir del `liveData.plays` del feed de detalle LMP y después adaptar la etiqueta de la página de detalle para que coincida con las tarjetas durante Warmup, sin afectar MLB/LMB. Validar con juego real. Más adelante distinguir pospuestos, incluso cuando `abstractGameState` sea `Final`. Un cambio por vez.
+**Siguiente paso recomendado:** corregir los **partidos pospuestos en LMP** (se observaron casos reales con `abstractGameState:"Final"` y `detailedState:"Postponed"`), empezando por una única condición visual que los identifique como POSPUESTO antes de clasificarlos como FINAL. Después tratar clasificación de listas y página de detalle. Mantener un cambio por vez, sin modificar MLB/LMB.
 
 ## 5. LMB — estado y siguientes fases
 
@@ -87,6 +87,6 @@
 3. Elegir **un** ajuste, explicar su alcance (tarjetas normales, detalle, o tarjeta especial), mostrar reemplazo exacto y pedir compilación/verificación.
 4. Tras cada conjunto de funciones cerradas, actualizar `PROJECT_STATUS.md` con **qué se comprobó** y **qué sigue**, sin prometer automatizaciones que aún no se hayan validado.
 
-**Última confirmación de compilación:** Paso 18: activación de POR COMENZAR en tarjetas de LMP dentro de `components/Games.tsx`, confirmada sin errores el 29 de octubre de 2026. Pendiente validar visualmente y actualizar estado en página de detalle.
+**Última confirmación de compilación:** Paso 20: etiqueta POR COMENZAR añadida a la página de detalle LMP (`app/game/[league]/[id]/page.tsx`), usando el dato incorporado en Paso 19 (`lib/gameDetails.ts`). Confirmado sin errores el 29 de octubre de 2026; pendiente prueba visual en calentamiento real.
 
 **Revisión técnica independiente recibida:** Claude identificó riesgos adicionales (pospuestos/suspendidos, diferencia entre estado en tarjetas y detalle, broadcasts `channels`/`tvChannels`, llamadas numerosas a LMB, doble jornada, fotos de pitchers). Se deben verificar y priorizar después de cerrar la detección LMP; no se consideran defectos confirmados hasta probarlos.
