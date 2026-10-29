@@ -227,6 +227,19 @@ className={
   >
     POR COMENZAR
   </span>
+
+) : league === "LMP" &&
+  /postponed|pospuesto/i.test(
+    game.detailedState ?? ""
+  ) ? (
+  <span
+    style={{
+      color: "var(--muted)",
+      fontWeight: 800,
+    }}
+  >
+    POSPUESTO
+  </span>
 ) : game.status === "Live" ? (
 
     <>
