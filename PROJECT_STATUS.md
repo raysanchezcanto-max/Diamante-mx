@@ -65,7 +65,7 @@
 
 **Validación de API con evidencia (29/oct/2026):** capturas del partido LMP `gamePk=850512` del calendario del **28/oct/2026** muestran **358 coincidencias de texto** `"isPitch":true` en `/game/850512/playByPlay` (no implica 358 lanzamientos distintos) y eventos de cambio de estado Pre-Game → Warmup. Por tanto, **al menos este partido finalizado sí tiene eventos `isPitch: true`**. Aún NO se ha verificado con capturas de la API durante un calentamiento en curso, ni la cobertura de todos los juegos LMP. También se observó en el calendario que algunos juegos pospuestos tienen `abstractGameState:"Final"` junto a `detailedState:"Postponed"`, por lo que hay que distinguir pospuestos de resultados finales.
 
-**Siguiente paso recomendado:** corregir los **partidos pospuestos en LMP** (se observaron casos reales con `abstractGameState:"Final"` y `detailedState:"Postponed"`), empezando por una única condición visual que los identifique como POSPUESTO antes de clasificarlos como FINAL. Después tratar clasificación de listas y página de detalle. Mantener un cambio por vez, sin modificar MLB/LMB.
+**Siguiente paso recomendado:** ampliar a **las tres ligas MLB, LMB y LMP** el manejo de **POSPUESTO, SUSPENDIDO y RETRASADO**, con prioridad sobre EN VIVO y FINAL. **Paso 21:** ya se incorporó POSPUESTO a las tarjetas de LMP en `components/Games.tsx`, compilado sin errores el 29/oct/2026; falta contemplar los otros estados, las otras ligas, la clasificación de listas, el detalle y el tratamiento de resultados. Diseñar una función de normalización compartida y verificar por separado los códigos de la API oficial LMB antes de inferir estados a partir de letras. Trabajar un cambio por vez.
 
 ## 5. LMB — estado y siguientes fases
 
@@ -87,6 +87,6 @@
 3. Elegir **un** ajuste, explicar su alcance (tarjetas normales, detalle, o tarjeta especial), mostrar reemplazo exacto y pedir compilación/verificación.
 4. Tras cada conjunto de funciones cerradas, actualizar `PROJECT_STATUS.md` con **qué se comprobó** y **qué sigue**, sin prometer automatizaciones que aún no se hayan validado.
 
-**Última confirmación de compilación:** Paso 20: etiqueta POR COMENZAR añadida a la página de detalle LMP (`app/game/[league]/[id]/page.tsx`), usando el dato incorporado en Paso 19 (`lib/gameDetails.ts`). Confirmado sin errores el 29 de octubre de 2026; pendiente prueba visual en calentamiento real.
+**Última confirmación de compilación:** Paso 21: POSPUESTO se muestra en las tarjetas principales de LMP cuando `detailedState` indica Postponed/Pospuesto (`components/Games.tsx`), confirmado sin errores el 29 de octubre de 2026. Pendientes: coherencia con la página de detalle, conteo de resultados y los estados SUSPENDIDO/RETRASADO de MLB/LMB/LMP.
 
 **Revisión técnica independiente recibida:** Claude identificó riesgos adicionales (pospuestos/suspendidos, diferencia entre estado en tarjetas y detalle, broadcasts `channels`/`tvChannels`, llamadas numerosas a LMB, doble jornada, fotos de pitchers). Se deben verificar y priorizar después de cerrar la detección LMP; no se consideran defectos confirmados hasta probarlos.
