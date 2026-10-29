@@ -175,9 +175,11 @@ const isMlbWarmup =
   );
 
       
+
 const showMlbRegularPitchers =
-  league === "MLB" &&
-  game.gameType === "R" &&
+  (league === "LMP" ||
+    (league === "MLB" && game.gameType === "R")) &&
+
   mexicoDateKey(new Date(game.startTime)) ===
     mexicoDateKey(new Date()) &&
   (game.status === "Preview" || isMlbWarmup) &&
