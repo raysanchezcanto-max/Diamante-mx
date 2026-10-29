@@ -15,6 +15,7 @@ export type GameDetails = {
 
   status: string;
   detailedState: string;
+  firstPitchRecorded?: boolean;
 
   startTime: string;
 
@@ -326,6 +327,32 @@ homeRuns:
 
     const linescore =
       liveData?.linescore;
+    
+const lmpPlays = [
+  ...(Array.isArray(liveData?.plays?.allPlays)
+    ? liveData.plays.allPlays
+    : []),
+  ...(liveData?.plays?.currentPlay
+    ? [liveData.plays.currentPlay]
+    : []),
+];
+
+const firstPitchRecorded =
+  league === "LMP" &&
+  (
+    Array.isArray(liveData?.plays?.allPlays) ||
+    Boolean(liveData?.plays?.currentPlay)
+  )
+    ? lmpPlays.some(
+        (play: any) =>
+          Array.isArray(play?.playEvents) &&
+          play.playEvents.some(
+            (event: any) =>
+              event?.isPitch === true
+          )
+      )
+    : undefined;
+
 
     return {
       id: gameId,
@@ -340,6 +367,7 @@ homeRuns:
         gameData?.status
           ?.detailedState ??
         "Programado",
+      firstPitchRecorded,
 
       startTime:
         gameData?.datetime
