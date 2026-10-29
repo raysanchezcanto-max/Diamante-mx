@@ -120,9 +120,24 @@ export default function RecentResults({
                   <span>{game.home}</span>
                 </div>
 
-                <strong>
-                  {game.homeRuns ?? "–"}
-                </strong>
+               
+<strong
+  style={{
+    color:
+      league === "MLB" &&
+      game.status === "Final" &&
+      typeof game.awayRuns === "number" &&
+      typeof game.homeRuns === "number" &&
+      game.awayRuns !== game.homeRuns
+        ? game.homeRuns > game.awayRuns
+          ? "var(--accent)"
+          : "var(--muted)"
+        : undefined,
+  }}
+>
+  {game.homeRuns ?? "–"}
+</strong>
+
               </div>
             </Link>
           );
