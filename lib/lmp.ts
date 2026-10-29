@@ -141,7 +141,9 @@ export async function getLmpGames(): Promise<Game[]> {
       Primero buscamos juegos de hoy.
     */
     const todayData = await lmpFetch(
-      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&date=${date}&hydrate=linescore`
+      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&date=${date}
+&hydrate=linescore,probablePitcher
+`
     );
 
     const todayGames =
@@ -222,7 +224,9 @@ export async function getLmpGames(): Promise<Game[]> {
       }).format(end);
 
     const upcomingData = await lmpFetch(
-      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${startDate}&endDate=${endDate}&hydrate=linescore`
+      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${startDate}&endDate=${endDate}
+&hydrate=linescore,probablePitcher
+`
     );
 
     /*
