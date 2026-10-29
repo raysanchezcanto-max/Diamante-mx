@@ -160,19 +160,32 @@ function GameCards({
         );
 
 
+
 const isMlbWarmup =
-  league === "MLB" &&
-  game.gameType === "R" &&
-  game.firstPitchRecorded !== true &&
   (
-    game.status === "Live" ||
+    league === "MLB" &&
+    game.gameType === "R" &&
+    game.firstPitchRecorded !== true &&
     (
-      game.status === "Preview" &&
-      /warm[\s-]?up/i.test(
-        game.detailedState ?? ""
+      game.status === "Live" ||
+      (
+        game.status === "Preview" &&
+        /warm[\s-]?up/i.test(
+          game.detailedState ?? ""
+        )
       )
     )
+  ) ||
+  (
+    league === "LMP" &&
+    (game.status === "Live" ||
+      game.status === "Preview") &&
+    game.firstPitchRecorded !== true &&
+    /warm[\s-]?up|calentamiento/i.test(
+      game.detailedState ?? ""
+    )
   );
+
 
       
 
