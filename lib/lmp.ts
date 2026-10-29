@@ -130,6 +130,70 @@ async function lmpFetch(path: string) {
   return res.json();
 }
 
+async function attachLmpFirstPitchRecorded(
+  games: Game[]
+): Promise<Game[]> {
+  return Promise.all(
+    games.map(async (game) => {
+      const isWarmup =
+        /warm[\s-]?up|calentamiento/i.test(
+          game.detailedState ?? ""
+        );
+
+      if (
+        game.status !== "Live" &&
+        !isWarmup
+      ) {
+        return game;
+      }
+
+      try {
+        const response = await fetch(
+          `${MLB_API}/game/${game.id}/playByPlay`,
+          {
+            next: { revalidate: 15 },
+          }
+        );
+
+        if (!response.ok) return game;
+
+        const data = await response.json();
+
+        if (
+          !Array.isArray(data?.allPlays) &&
+          !data?.currentPlay
+        ) {
+          return game;
+        }
+
+        const plays = Array.isArray(data?.allPlays)
+          ? [...data.allPlays]
+          : [];
+
+        if (data?.currentPlay) {
+          plays.push(data.currentPlay);
+        }
+
+        const firstPitchRecorded = plays.some(
+          (play: any) =>
+            Array.isArray(play?.playEvents) &&
+            play.playEvents.some(
+              (event: any) =>
+                event?.isPitch === true
+            )
+        );
+
+        return {
+          ...game,
+          firstPitchRecorded,
+        };
+      } catch {
+        return game;
+      }
+    })
+  );
+}
+
 /*
   JUEGOS DE HOY
 */
