@@ -43,7 +43,6 @@ nav a:hover { color: var(--text); }
   text-transform: capitalize;
 }
 .liveDot { color: var(--muted); font-size: 13px; }
-.liveDot::first-letter { color: var(--accent); }
 .gamesGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
 .gameCard, .tableCard, .leaderCard { background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line); border-radius: 16px; }
 .gameCard { padding: 18px; }
