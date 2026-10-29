@@ -1717,9 +1717,15 @@ const hasAnyGames =
             <h2>Próximos juegos</h2>
           </div>
 
-          <span className="liveDot">
-            ● Datos {league}
-          </span>
+          
+<span className="liveDot">
+  <span
+    className="sourceActivityDot"
+    aria-hidden="true"
+  />
+  Datos {league}
+</span>
+
         </div>
 
         <div className="empty">
