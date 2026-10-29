@@ -3244,3 +3244,21 @@ mlbWorldSeriesNextOnlyCompact strong {
 #juegos:has(.mlbPostseasonHistorySection) + .seasonNotice .seasonCountdown strong {
   color: #ffffff;
 }
+
+/* DIAMANTE MX: indicador de actividad de las fuentes */
+
+/* Punto gris por defecto */
+.liveDot .sourceActivityDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background-color: var(--muted);
+  vertical-align: middle;
+}
+
+/* Punto lima únicamente con actividad verificada */
+.liveDot .sourceActivityDot.isActive {
+  background-color: var(--accent);
+}
