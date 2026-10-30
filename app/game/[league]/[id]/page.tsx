@@ -2,6 +2,9 @@ import LmpBroadcasts from "@/components/LmpBroadcasts";
 import { getMlbPlayState } from "@/lib/mlbLive";
 import { getLmpPlayState } from "@/lib/lmpLive";
 import LiveGamePanel from "@/components/LiveGamePanel";
+
+import GamePitcher from "@/components/GamePitcher";
+
 import AutoRefresh from "@/components/AutoRefresh";
 import { getLmbPlayState } from "@/lib/lmbLive";
 import BaseDiamond from "@/components/BaseDiamond";
@@ -214,6 +217,16 @@ const isLive =
   !isLmpWarmup &&
   !specialStatus;
 
+const showProbablePitchers =
+  !isLive &&
+  !isFinal &&
+  !specialStatus &&
+  (game.status === "Preview" || isLmpWarmup) &&
+  Boolean(
+    game.awayProbablePitcher ||
+    game.homeProbablePitcher
+  );
+
 
 
 const playState =
@@ -402,6 +415,14 @@ const time =
   {game.awayRuns}
 </strong>
             ) : null}
+  
+{showProbablePitchers && (
+  <GamePitcher
+    pitcher={game.awayProbablePitcher}
+    league={league}
+  />
+)}
+
           </div>
 
          
@@ -528,6 +549,14 @@ const time =
   {game.homeRuns}
 </strong>
             ) : null}
+  
+{showProbablePitchers && (
+  <GamePitcher
+    pitcher={game.homeProbablePitcher}
+    league={league}
+  />
+)}
+
           </div>
         </div>
         
