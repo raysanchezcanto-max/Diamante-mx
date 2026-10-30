@@ -253,6 +253,7 @@ doubleHeader:
     : undefined,
 
 
+        
         status:
           g.status?.abstractGameState ??
           "Preview",
@@ -260,6 +261,12 @@ doubleHeader:
         detailedState:
           g.status?.detailedState ??
           "Programado",
+
+        statusReason:
+          typeof g.status?.reason === "string"
+            ? g.status.reason
+            : undefined,
+
 
         awayId:
           g.teams?.away?.team?.id ?? 0,
