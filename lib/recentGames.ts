@@ -250,23 +250,9 @@ const sortedRecentGames =
       ).getTime()
   );
 
-const latestDate =
-  sortedRecentGames.length > 0
-    ? mexicoDate(
-        new Date(
-          sortedRecentGames[0].startTime
-        )
-      )
-    : null;
 
-return latestDate
-  ? sortedRecentGames.filter(
-      (game) =>
-        mexicoDate(
-          new Date(game.startTime)
-        ) === latestDate
-    )
-  : [];
+return sortedRecentGames.slice(0, 10);
+
     }
   try {
     /*
