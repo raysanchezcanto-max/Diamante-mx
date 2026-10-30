@@ -102,6 +102,16 @@ const inning =
   if (game.status === "Final") {
     return "FINAL";
   }
+  
+if (
+  league === "LMP" &&
+  game.doubleHeader === "Y" &&
+  game.gameNumber === 2 &&
+  game.status === "Preview"
+) {
+  return "DESPUÉS DEL PRIMERO";
+}
+
 
   /*
     La fuente actualmente devuelve una
