@@ -196,11 +196,14 @@ async function attachLmpFirstPitchRecorded(
   );
 }
 
+
 /*
   JUEGOS DE HOY
 */
+export async function getLmpGames(): Promise<Game[]> {
+  try {
+    const date = mexicoDate();
 
-const date = mexicoDate();
 
 const yesterday = mexicoDate(
   new Date(Date.now() - 24 * 60 * 60 * 1000)
