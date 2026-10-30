@@ -487,7 +487,14 @@ const time =
     </span>
 )}
 
-{date !== "Hoy" && !isLive && !isFinal && (
+
+{(
+  (league === "LMP" &&
+    game.status === "Preview" &&
+    !hasLmpConfirmedTime) ||
+  (league !== "LMP" && date !== "Hoy")
+) && !isLive && !isFinal && (
+
   <strong
     style={{
       color: "var(--text)",
