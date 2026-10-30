@@ -278,8 +278,11 @@ const hasLmpConfirmedTime =
   league === "LMP" &&
   game.status === "Preview" &&
   !specialStatus &&
-  !isSecondConsecutiveGame &&
+  
   game.startTimeTBD === false &&
+  (!isSecondConsecutiveGame ||
+    game.secondGameTimeVerified === true) &&
+
   Boolean(game.startTime) &&
   Number.isFinite(Date.parse(game.startTime));
 
