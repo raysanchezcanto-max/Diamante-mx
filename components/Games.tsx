@@ -220,6 +220,25 @@ className={
 }
 
 >
+             
+{league === "LMP" &&
+  (game.doubleHeader === "Y" ||
+    game.doubleHeader === "S") &&
+  (game.gameNumber === 1 ||
+    game.gameNumber === 2) && (
+    <span
+      style={{
+        float: "right",
+        color: "var(--muted)",
+        fontSize: "10px",
+        fontWeight: 800,
+        letterSpacing: "0.08em",
+      }}
+    >
+      JUEGO {game.gameNumber}
+    </span>
+  )}
+
   
 {isMlbWarmup ? (
   <span
