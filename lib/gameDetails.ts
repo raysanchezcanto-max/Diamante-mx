@@ -32,6 +32,9 @@ export type GameDetails = {
   };
 
   startTime: string;
+  
+  startTimeTBD?: boolean;
+
 
 
 
@@ -430,9 +433,15 @@ const firstPitchRecorded =
         "Programado",
       firstPitchRecorded,
 
+      
       startTime:
-        gameData?.datetime
-          ?.dateTime ?? "",
+        gameData?.datetime?.dateTime ?? "",
+
+      startTimeTBD:
+        typeof gameData?.status?.startTimeTBD === "boolean"
+          ? gameData.status.startTimeTBD
+          : undefined,
+
 
       awayId:
   away?.id ?? 0,
