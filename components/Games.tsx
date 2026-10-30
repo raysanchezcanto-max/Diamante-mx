@@ -187,15 +187,15 @@ const specialStatus = getGameSpecialStatus(
   game.detailedState
 );
 
+
 const isMlbWarmup =
   (
     league === "MLB" &&
     game.gameType === "R" &&
-    
-game.firstPitchRecorded !== true &&
-(
-  game.status === "Live" ||
-
+    game.firstPitchRecorded !== true &&
+    (
+      game.status === "Live" ||
+      (
         game.status === "Preview" &&
         /warm[\s-]?up/i.test(
           game.detailedState ?? ""
@@ -212,6 +212,7 @@ game.firstPitchRecorded !== true &&
       game.detailedState ?? ""
     )
   );
+
 
 
       
