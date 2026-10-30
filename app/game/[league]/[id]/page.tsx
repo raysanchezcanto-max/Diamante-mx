@@ -253,11 +253,19 @@ const isTied =
       game.startTime
     );
 
-  const time =
-    formatGameTime(
-      game.startTime,
-      league
-    );
+ 
+const time =
+  (league === "LMP" || league === "MLB") &&
+  game.doubleHeader === "Y" &&
+  game.gameNumber === 2 &&
+  game.status === "Preview" &&
+  !specialStatus
+    ? "DESPUÉS DEL PRIMERO"
+    : formatGameTime(
+        game.startTime,
+        league
+      );
+
   const liveInningLabel =
   isLive && game.inning
     ? `${formatInningHalf(game.inningState)} ${game.inning}`
