@@ -194,11 +194,25 @@ export async function getGameDetails(
               : lmbGame.stadium?.name) ??
             "Estadio por confirmar";
 
+     
       return {
         id: gameId,
         league: "LMB",
 
+        gameNumber:
+          lmbGame.gameNumber === 1 ||
+          lmbGame.gameNumber === 2
+            ? lmbGame.gameNumber
+            : undefined,
+
+        doubleHeader:
+          lmbGame.doubleHeader === "Y" ||
+          lmbGame.doubleHeader === "S"
+            ? lmbGame.doubleHeader
+            : undefined,
+
         status,
+
 
         detailedState:
           lmbGame.detailedStatus ??
