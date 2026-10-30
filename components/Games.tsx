@@ -517,8 +517,11 @@ specialStatus === "POSPUESTO"
 <strong
   style={{
     color:
-      league === "MLB" &&
-      game.gameType === "R" &&
+     
+(league === "LMB" ||
+  league === "LMP" ||
+  (league === "MLB" && game.gameType === "R")) &&
+
      
 game.status === "Final" &&
 !specialStatus &&
