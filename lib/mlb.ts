@@ -52,6 +52,9 @@ seriesDescription?: string;
 seriesGameNumber?: number;
 gamesInSeries?: number;
   startTime: string;
+  
+  rescheduleDate?: string;
+
 };
 
 export type Standing = {
