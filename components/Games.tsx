@@ -235,9 +235,11 @@ className={
 
 >
              
-{league === "LMP" &&
+
+{(league === "LMP" || league === "MLB") &&
   (game.doubleHeader === "Y" ||
     game.doubleHeader === "S") &&
+
   (game.gameNumber === 1 ||
     game.gameNumber === 2) && (
     <span
