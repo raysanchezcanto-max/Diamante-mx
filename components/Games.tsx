@@ -188,8 +188,11 @@ const specialStatus = getGameSpecialStatus(
 );
 const isMlbWarmup =
   (
-    league === "MLB" &&
-    game.gameType === "R" &&
+    
+(league === "LMB" ||
+  league === "LMP" ||
+  (league === "MLB" && game.gameType === "R")) &&
+
     game.firstPitchRecorded !== true &&
     (
       game.status === "Live" ||
@@ -431,8 +434,11 @@ className={
 <strong
   style={{
     color:
-      league === "MLB" &&
-      game.gameType === "R" &&
+      
+(league === "LMB" ||
+  league === "LMP" ||
+  (league === "MLB" && game.gameType === "R")) &&
+
      
 game.status === "Final" &&
 !specialStatus &&
