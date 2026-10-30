@@ -108,9 +108,27 @@ export function getOfficialLmbTeamName(
 export async function getLmbGames():
   Promise<Game[]> {
   try {
-    const date = mexicoDate();
-    const officialGames =
-  await getLmbCalendar();
+  
+const date = mexicoDate();
+
+const [gamesToday, gamesYesterday] =
+  await Promise.all([
+    getLmbCalendar(),
+    getLmbCalendar(-1),
+  ]);
+
+const officialGames = [
+  ...(Array.isArray(gamesToday)
+    ? gamesToday
+    : []),
+
+  ...(Array.isArray(gamesYesterday)
+    ? gamesYesterday.filter(
+        (g: any) =>
+          String(g.status ?? "").toUpperCase() === "L"
+      )
+    : []),
+];
 
 if (
   Array.isArray(officialGames) &&
