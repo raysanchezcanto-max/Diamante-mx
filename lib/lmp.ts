@@ -307,9 +307,18 @@ homeProbablePitcher:
           g.linescore?.inningState,
 
         
+
 startTime:
   g.gameDate,
+
+rescheduleDate:
+  typeof g.rescheduleGameDate === "string"
+    ? g.rescheduleGameDate
+    : typeof g.rescheduleDate === "string"
+      ? g.rescheduleDate
+      : undefined,
 }));
+
 
 return await attachLmpFirstPitchRecorded(gamesForToday);
 }
