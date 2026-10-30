@@ -339,8 +339,16 @@ games: (date.games ?? []).filter(
         ).getTime()
     );
 
-const finishedGames =
-  finishedDates[0]?.games ?? [];
+
+const finishedGames = finishedDates
+  .flatMap((date: any) => date.games)
+  .sort(
+    (a: any, b: any) =>
+      new Date(b.gameDate).getTime() -
+      new Date(a.gameDate).getTime()
+  )
+  .slice(0, 10);
+
 
     const mappedGames =
   finishedGames.map(mapGame);
