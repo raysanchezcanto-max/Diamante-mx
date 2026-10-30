@@ -449,13 +449,54 @@ const time =
             ) : null}
           </div>
 
-          <div className="matchupCenter">
-  {isFinal ? (
-    <span>FINAL</span>
-  ) : !isLive ? (
-    <strong>VS</strong>
-  ) : null}
+         
+<div className="matchupCenter">
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center",
+      gap: "8px",
+      maxWidth: "210px",
+    }}
+  >
+    {isLive && liveInningLabel ? (
+      <strong
+        style={{
+          color: "var(--text)",
+          fontSize: "24px",
+        }}
+      >
+        {liveInningLabel}
+      </strong>
+    ) : !isFinal && !isLive ? (
+      <strong
+        style={{
+          color: "var(--text)",
+          fontSize: "24px",
+          letterSpacing: "normal",
+          overflowWrap: "anywhere",
+        }}
+      >
+        {time}
+      </strong>
+    ) : null}
+
+    <span
+      style={{
+        color: "var(--muted)",
+        fontSize: "12px",
+        fontWeight: 500,
+        letterSpacing: "normal",
+        lineHeight: 1.4,
+      }}
+    >
+      {game.venue}
+    </span>
+  </div>
 </div>
+
 
           <div className="matchupTeam">
             {homeLogo && (
