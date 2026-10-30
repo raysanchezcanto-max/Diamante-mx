@@ -227,9 +227,11 @@ const playState =
     ? await getMlbPlayState(gameId)
     : null;
 
-  const hasScore =
-    game.awayRuns !== undefined &&
-    game.homeRuns !== undefined;
+const hasScore =
+  specialStatus !== "POSPUESTO" &&
+  game.awayRuns !== undefined &&
+  game.homeRuns !== undefined;
+
   const awayIsWinning =
   hasScore &&
   game.awayRuns! > game.homeRuns!;
