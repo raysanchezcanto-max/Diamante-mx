@@ -8,6 +8,10 @@
   --accent: #d7ff4f;
   --accent2: #b7df32;
   --danger: #ff5a5f;
+  --estado-pospuesto: #F472B6;
+  --estado-suspendido: #A78BFA;
+  --estado-retrasado: #FACC15;
+
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
