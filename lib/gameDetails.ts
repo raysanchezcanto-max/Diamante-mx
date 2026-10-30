@@ -415,7 +415,7 @@ const firstPitchRecorded =
             }
           : undefined,
 
-      status:
+      
 
 
       status:
