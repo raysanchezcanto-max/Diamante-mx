@@ -242,8 +242,12 @@ className={
 {(league === "LMP" ||
   league === "MLB" ||
   league === "LMB") &&
-  (game.doubleHeader === "Y" ||
-    game.doubleHeader === "S") &&
+ 
+(game.doubleHeader === "Y" ||
+  game.doubleHeader === "S" ||
+  (league === "LMB" &&
+    game.doubleHeader === "INFERRED")) &&
+
 
 
   (game.gameNumber === 1 ||
