@@ -254,8 +254,12 @@ const isTied =
     );
 
  
+
 const time =
-  (league === "LMP" || league === "MLB") &&
+  (league === "LMP" ||
+    league === "MLB" ||
+    league === "LMB") &&
+
   game.doubleHeader === "Y" &&
   game.gameNumber === 2 &&
   game.status === "Preview" &&
