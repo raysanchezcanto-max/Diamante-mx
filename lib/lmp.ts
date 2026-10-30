@@ -104,14 +104,16 @@ export async function getLmpSeasonYear():
 }
 
 
-function mexicoDate() {
+
+function mexicoDate(date = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Mexico_City",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(new Date());
+  }).format(date);
 }
+
 
 async function lmpFetch(path: string) {
   const res = await fetch(`${MLB_API}${path}`, {
@@ -197,23 +199,36 @@ async function attachLmpFirstPitchRecorded(
 /*
   JUEGOS DE HOY
 */
-export async function getLmpGames(): Promise<Game[]> {
-  try {
-    const date = mexicoDate();
 
-    /*
-      Primero buscamos juegos de hoy.
-    */
-    const todayData = await lmpFetch(
-      `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&date=${date}
-&hydrate=linescore,probablePitcher
-`
-    );
+const date = mexicoDate();
 
-    const todayGames =
-      todayData?.dates?.flatMap(
-        (d: any) => d.games ?? []
-      ) ?? [];
+const yesterday = mexicoDate(
+  new Date(Date.now() - 24 * 60 * 60 * 1000)
+);
+
+const todayData = await lmpFetch(
+  `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`
+);
+
+const todayGames =
+  todayData?.dates?.flatMap((d: any) =>
+    (d.games ?? []).filter((g: any) => {
+      const scheduledDay =
+        typeof g.gameDate === "string" &&
+        Number.isFinite(Date.parse(g.gameDate))
+          ? mexicoDate(new Date(g.gameDate))
+          : "";
+
+      return (
+        scheduledDay === date ||
+        (
+          scheduledDay === yesterday &&
+          g.status?.abstractGameState === "Live"
+        )
+      );
+    })
+  ) ?? [];
+
 
     /*
       Si hay juegos hoy, mostramos esos.
