@@ -250,7 +250,9 @@ className={
   )}
 
   
-{isMlbWarmup ? (
+
+{isMlbWarmup && !specialStatus ? (
+
   <span
     style={{
       color: "#FF7A00",
