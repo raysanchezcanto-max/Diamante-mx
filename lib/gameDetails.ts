@@ -150,6 +150,75 @@ const LMB_FALLBACK_GAMES:
   },
 };
 
+async function verifyLmpSecondGameTime(
+  gameId: number,
+  gameData: any
+): Promise<boolean> {
+  const startTime = gameData?.datetime?.dateTime;
+  const officialDate = gameData?.datetime?.officialDate;
+
+  if (
+    gameData?.game?.doubleHeader !== "Y" ||
+    gameData?.game?.gameNumber !== 2 ||
+    gameData?.status?.startTimeTBD !== false ||
+    typeof startTime !== "string" ||
+    !Number.isFinite(Date.parse(startTime)) ||
+    typeof officialDate !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(officialDate)
+  ) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(
+      "https://statsapi.mlb.com/api/v1/schedule" +
+        `?sportId=17&leagueId=132` +
+        `&startDate=${officialDate}` +
+        `&endDate=${officialDate}`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
+
+    if (!response.ok) return false;
+
+    const data = await response.json();
+
+    const games: any[] = (
+      Array.isArray(data?.dates) ? data.dates : []
+    ).flatMap((day: any) =>
+      Array.isArray(day.games) ? day.games : []
+    );
+
+    const secondGame = games.find(
+      (g: any) =>
+        g.gamePk === gameId &&
+        g.gameNumber === 2 &&
+        g.doubleHeader === "Y" &&
+        g.status?.startTimeTBD === false &&
+        typeof g.gameDate === "string" &&
+        Date.parse(g.gameDate) === Date.parse(startTime)
+    );
+
+    const firstGame = games.find(
+      (g: any) =>
+        g.gamePk !== gameId &&
+        g.gameNumber === 1 &&
+        g.teams?.away?.team?.id ===
+          gameData?.teams?.away?.id &&
+        g.teams?.home?.team?.id ===
+          gameData?.teams?.home?.id &&
+        typeof g.gameDate === "string" &&
+        Date.parse(g.gameDate) <
+          Date.parse(startTime)
+    );
+
+    return Boolean(secondGame && firstGame);
+  } catch {
+    return false;
+  }
+}
+
 export async function getGameDetails(
   league: LeagueCode,
   gameId: number
