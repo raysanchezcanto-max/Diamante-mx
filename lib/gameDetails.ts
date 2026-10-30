@@ -15,9 +15,13 @@ export type GameDetails = {
 
   status: string;
   detailedState: string;
+ 
   firstPitchRecorded?: boolean;
+  gameNumber?: number;
+  doubleHeader?: string;
 
   startTime: string;
+
 
   awayId: number;
   away: string;
