@@ -1,3 +1,6 @@
+
+import { inferLmbDoubleHeaders } from "./lmbDoubleHeaders";
+
 import {
   getLmbCalendar,
   getLmbLiveScore,
@@ -113,8 +116,10 @@ if (
   Array.isArray(officialGames) &&
   officialGames.length > 0
 ) {
-  return officialGames.map(
-    (g: any): Game => {
+ 
+return inferLmbDoubleHeaders(officialGames.map(
+  (g: any): Game => {
+
       const rawStatus =
         String(
           g.status ?? ""
@@ -196,8 +201,9 @@ detailedState:
         startTime,
       };
     }
-  );
+  ));
 }
+
 
     /*
       Primero buscamos juegos de hoy.
