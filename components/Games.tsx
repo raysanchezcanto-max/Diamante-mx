@@ -191,10 +191,11 @@ const isMlbWarmup =
   (
     league === "MLB" &&
     game.gameType === "R" &&
-    game.firstPitchRecorded !== true &&
+    
+game.firstPitchRecorded !== true &&
+(
+  game.status === "Live" ||
 
-      game.status === "Live" ||
-      (
         game.status === "Preview" &&
         /warm[\s-]?up/i.test(
           game.detailedState ?? ""
