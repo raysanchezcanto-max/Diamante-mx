@@ -45,6 +45,17 @@ function mapGame(g: any): Game {
   return {
     id:
       g.gamePk,
+    
+gameNumber:
+  typeof g.gameNumber === "number"
+    ? g.gameNumber
+    : undefined,
+
+doubleHeader:
+  typeof g.doubleHeader === "string"
+    ? g.doubleHeader
+    : undefined,
+
 
     status:
       g.status?.abstractGameState ??
