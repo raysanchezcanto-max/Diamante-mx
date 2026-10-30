@@ -358,11 +358,19 @@ const firstPitchRecorded =
     : undefined;
 
 
+   
     return {
       id: gameId,
       league,
 
+      gameNumber:
+        gameData?.game?.gameNumber,
+
+      doubleHeader:
+        gameData?.game?.doubleHeader,
+
       status:
+
         gameData?.status
           ?.abstractGameState ??
         "Preview",
