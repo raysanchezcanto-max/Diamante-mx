@@ -134,7 +134,11 @@ if (
   );
 
   if (
-    league === "LMP" &&
+  
+(league === "LMP" ||
+  league === "MLB" ||
+  league === "LMB") &&
+
     gameDate === "2026-10-13"
   ) {
     return "HORA POR CONFIRMAR";
