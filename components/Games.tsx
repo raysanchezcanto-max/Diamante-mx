@@ -312,6 +312,34 @@ className={
     >
       {specialStatus}
     </span>
+    
+    {league === "LMP" &&
+      specialStatus === "POSPUESTO" &&
+      game.statusReason?.trim() && (
+        <span
+          style={{
+            color: "var(--muted)",
+            fontSize: "11px",
+            fontWeight: 400,
+            letterSpacing: "0.02em",
+          }}
+        >
+          {" · "}
+          {(
+            {
+              rain: "LLUVIA",
+              weather: "CONDICIONES CLIMÁTICAS",
+              "inclement weather": "MAL TIEMPO",
+              "wet grounds": "CAMPO MOJADO",
+              lightning: "TORMENTA ELÉCTRICA",
+              fog: "NIEBLA",
+              snow: "NIEVE",
+            } as Record<string, string>
+          )[game.statusReason.trim().toLowerCase()] ??
+            game.statusReason.trim().toUpperCase()}
+        </span>
+      )}
+
 
     {league === "LMP" &&
       specialStatus === "POSPUESTO" &&
