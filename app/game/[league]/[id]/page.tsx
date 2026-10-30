@@ -888,9 +888,11 @@ inningLines={playState.inningLines}
 lineScoreTotals={playState.lineScoreTotals}
     plays={playState.plays}
   
+
   />
 )}
-  
 
+    </main>
   );
 }
+
