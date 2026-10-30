@@ -392,7 +392,7 @@ const firstPitchRecorded =
       gameNumber:
         gameData?.game?.gameNumber,
 
-      doubleHeader:
+      
        
       doubleHeader:
         gameData?.game?.doubleHeader,
