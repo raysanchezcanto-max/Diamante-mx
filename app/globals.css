@@ -2813,12 +2813,27 @@ mlbWorldSeriesNextOnlyCompact strong {
   font-weight: 750;
 }
 
+
 .mlbWsStatusLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: #ff5a5f;
   font-size: 11px;
   font-weight: 900;
   animation: mlbWsLiveBlink 1s ease-in-out infinite;
 }
+
+.mlbWsStatusLive::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 
 @keyframes mlbWsLiveBlink {
   0%,
