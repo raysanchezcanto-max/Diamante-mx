@@ -946,12 +946,27 @@ const key =
   hoy, debe mostrarse como "Juego de hoy"
   y no como "Próxima fecha".
 */
-const todayGames = allGames.filter(
-  (game) =>
-    mexicoDateKey(
-      new Date(game.startTime)
-    ) === today
+
+const yesterday = mexicoDateKey(
+  new Date(Date.now() - 24 * 60 * 60 * 1000)
 );
+
+const todayGames = allGames.filter((game) => {
+  const gameDay = mexicoDateKey(
+    new Date(game.startTime)
+  );
+
+  return (
+    gameDay === today ||
+    (
+      league === "LMP" &&
+      gameDay === yesterday &&
+      game.status === "Live" &&
+      !getGameSpecialStatus(game.detailedState)
+    )
+  );
+});
+
   const sortedTodayGames = [
   ...todayGames,
 ].sort((a, b) => {
