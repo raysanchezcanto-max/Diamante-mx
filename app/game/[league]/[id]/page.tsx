@@ -434,7 +434,7 @@ const time =
     VISITANTE
   </span>
 
-  {awayLogo && (
+  
 
             {awayLogo && (
               <img
