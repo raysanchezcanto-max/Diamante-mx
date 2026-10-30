@@ -140,13 +140,17 @@ if (
 
         status,
 
-        detailedState:
-          status === "Live"
-            ? "Serie del Rey"
-            : g.detailedStatus ??
-              (status === "Final"
-                ? "Final"
-                : "Programado"),
+       
+detailedState:
+  typeof g.detailedStatus === "string" &&
+  g.detailedStatus.trim()
+    ? g.detailedStatus
+    : status === "Live"
+      ? "Serie del Rey"
+      : status === "Final"
+        ? "Final"
+        : "Programado",
+
 
         awayId: 0,
 
