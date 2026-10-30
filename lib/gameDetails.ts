@@ -462,9 +462,22 @@ home:
 
 homeRuns:
   linescore?.teams?.home?.runs,
+      
       venue:
-        gameData?.venue?.name ??
-        "Estadio por confirmar",
+        league === "LMP" &&
+        away?.id === 673 &&
+        home?.id === 676 &&
+        [
+          "2026-10-30",
+          "2026-10-31",
+          "2026-11-01",
+        ].includes(
+          String(gameData?.datetime?.officialDate ?? "")
+        )
+          ? "Estadio Yaquis"
+          : gameData?.venue?.name ??
+            "Estadio por confirmar",
+
 
       inning:
         linescore?.currentInning,
