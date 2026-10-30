@@ -20,6 +20,9 @@ export type GameDetails = {
  
   gameNumber?: number;
   doubleHeader?: string;
+  
+  secondGameTimeVerified?: boolean;
+
 
   awayProbablePitcher?: {
     id: number;
