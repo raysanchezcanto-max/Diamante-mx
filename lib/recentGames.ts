@@ -1,5 +1,6 @@
 import { getLmbCalendar } from "./lmbLive";
 import type { Game } from "./mlb";
+import { getGameSpecialStatus } from "./gameSpecialStatus";
 import type { LeagueCode } from "./teamLogos";
 
 const MLB_API =
@@ -307,12 +308,15 @@ return latestDate
   (data?.dates ?? [])
     .map((date: any) => ({
       date: date.date,
-      games: (date.games ?? []).filter(
-        (game: any) =>
-          game.status
-            ?.abstractGameState ===
-          "Final"
-      ),
+     
+games: (date.games ?? []).filter(
+  (game: any) =>
+    game.status?.abstractGameState === "Final" &&
+    !getGameSpecialStatus(
+      game.status?.detailedState
+    )
+),
+
     }))
     .filter(
       (date: any) =>
