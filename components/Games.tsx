@@ -323,9 +323,11 @@ className={
           style={{
             display: "block",
             color: "var(--muted)",
-            fontSize: "10px",
-            fontWeight: 700,
-            marginTop: "5px",
+           
+fontSize: "11px",
+fontWeight: 400,
+marginTop: "5px",
+
             letterSpacing: "0.04em",
           }}
         >
