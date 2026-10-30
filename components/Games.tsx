@@ -1004,12 +1004,20 @@ if (specialStatus) {
   );
 });
 
-const futureGames = allGames.filter(
-  (game) =>
-    mexicoDateKey(
-      new Date(game.startTime)
-    ) > today
-);
+
+const futureGames = allGames
+  .filter(
+    (game) =>
+      mexicoDateKey(
+        new Date(game.startTime)
+      ) > today
+  )
+  .sort(
+    (a, b) =>
+      new Date(a.startTime).getTime() -
+      new Date(b.startTime).getTime()
+  );
+
 
 /*
   Mostramos únicamente la primera
