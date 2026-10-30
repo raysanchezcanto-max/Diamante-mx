@@ -1289,7 +1289,9 @@ const hasAnyGames =
           aria-hidden="true"
         />
 
-        EN VIVO
+        
+<span className="livePulseText">EN VIVO</span>
+
         {mlbWorldSeriesLiveState?.inning && (
           <>
             {" · "}
