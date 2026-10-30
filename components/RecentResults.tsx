@@ -88,9 +88,13 @@ export default function RecentResults({
                
 <strong
   style={{
-    color:
-      league === "MLB" &&
-      game.status === "Final" &&
+    
+color:
+  (league === "MLB" ||
+    league === "LMB" ||
+    league === "LMP") &&
+  game.status === "Final" &&
+
       typeof game.awayRuns === "number" &&
       typeof game.homeRuns === "number" &&
       game.awayRuns !== game.homeRuns
@@ -123,9 +127,13 @@ export default function RecentResults({
                
 <strong
   style={{
-    color:
-      league === "MLB" &&
-      game.status === "Final" &&
+   
+color:
+  (league === "MLB" ||
+    league === "LMB" ||
+    league === "LMP") &&
+  game.status === "Final" &&
+
       typeof game.awayRuns === "number" &&
       typeof game.homeRuns === "number" &&
       game.awayRuns !== game.homeRuns
