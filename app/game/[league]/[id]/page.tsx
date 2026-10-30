@@ -467,23 +467,47 @@ const time =
       lineHeight: 1.4,
     }}
   >
-    {date !== "Hoy" && !isLive && !isFinal
-      ? date
-      : null}
-
-    {(game.doubleHeader === "Y" ||
-      game.doubleHeader === "S") &&
-      (game.gameNumber === 1 ||
-        game.gameNumber === 2) && (
-        <>
-          {date !== "Hoy" && !isLive && !isFinal
-            ? " · "
-            : ""}
-          JUEGO {game.gameNumber}
-        </>
-      )}
-  </span>
+    
+{(game.doubleHeader === "Y" ||
+  game.doubleHeader === "S") &&
+  (game.gameNumber === 1 ||
+    game.gameNumber === 2) && (
+    <span
+      style={{
+        color: "var(--muted)",
+        fontSize: "11px",
+        fontWeight: 800,
+        letterSpacing: "0.06em",
+      }}
+    >
+      JUEGO {game.gameNumber}
+    </span>
 )}
+
+{date !== "Hoy" && !isLive && !isFinal && (
+  <strong
+    style={{
+      color: "var(--text)",
+      fontSize: "24px",
+      fontWeight: 800,
+      textTransform: "uppercase",
+    }}
+  >
+    {game.startTime &&
+    Number.isFinite(Date.parse(game.startTime))
+      ? new Intl.DateTimeFormat("es-MX", {
+          timeZone: "America/Mexico_City",
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+        })
+          .format(new Date(game.startTime))
+          .replace(/[.,]/g, "")
+          .toUpperCase()
+      : "FECHA POR CONFIRMAR"}
+  </strong>
+)}
+
 
     {isLive && liveInningLabel ? (
       <strong
