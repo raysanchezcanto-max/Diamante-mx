@@ -19,7 +19,12 @@ import {
   type LeagueCode,
 } from "@/lib/teamLogos";
 
+
 function mexicoDateKey(date: Date) {
+  if (!Number.isFinite(date.getTime())) {
+    return "";
+  }
+
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Mexico_City",
     year: "numeric",
@@ -27,6 +32,7 @@ function mexicoDateKey(date: Date) {
     day: "2-digit",
   }).format(date);
 }
+
 function formatInningHalf(
   inningState?: string,
   inning?: number
