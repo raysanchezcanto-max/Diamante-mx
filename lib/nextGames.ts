@@ -254,17 +254,20 @@ return inferLmbDoubleHeaders(officialGames.map(
                   ? "Final"
                   : "Preview";
 
-            const startTime =
-              typeof g.date_time === "number"
-                ? new Date(
-                    g.date_time * 1000
-                  ).toISOString()
-                : typeof g.date_time ===
-                    "string"
-                  ? new Date(
-                      g.date_time
-                    ).toISOString()
-                  : "";
+           
+const timestamp =
+  typeof g.date_time === "number"
+    ? g.date_time * 1000
+    : typeof g.date_time === "string"
+      ? Date.parse(g.date_time)
+      : NaN;
+
+const startTime =
+  Number.isFinite(timestamp) &&
+  Math.abs(timestamp) <= 8.64e15
+    ? new Date(timestamp).toISOString()
+    : "";
+
 
             return {
               id:
