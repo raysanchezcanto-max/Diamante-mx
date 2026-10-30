@@ -403,8 +403,11 @@ className={
     color:
       league === "MLB" &&
       game.gameType === "R" &&
-      game.status === "Final" &&
-      typeof game.awayRuns === "number" &&
+     
+game.status === "Final" &&
+!specialStatus &&
+typeof game.awayRuns === "number" &&
+
       typeof game.homeRuns === "number" &&
       game.awayRuns !== game.homeRuns
         ? game.awayRuns > game.homeRuns
@@ -480,8 +483,11 @@ specialStatus === "POSPUESTO"
     color:
       league === "MLB" &&
       game.gameType === "R" &&
-      game.status === "Final" &&
-      typeof game.awayRuns === "number" &&
+     
+game.status === "Final" &&
+!specialStatus &&
+typeof game.awayRuns === "number" &&
+
       typeof game.homeRuns === "number" &&
       game.awayRuns !== game.homeRuns
         ? game.homeRuns > game.awayRuns
