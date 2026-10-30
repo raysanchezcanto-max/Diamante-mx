@@ -232,13 +232,17 @@ const hasScore =
   game.awayRuns !== undefined &&
   game.homeRuns !== undefined;
 
-  const awayIsWinning =
+
+const awayIsWinning =
   hasScore &&
+  !specialStatus &&
   game.awayRuns! > game.homeRuns!;
 
 const homeIsWinning =
   hasScore &&
+  !specialStatus &&
   game.homeRuns! > game.awayRuns!;
+
 
 const isTied =
   hasScore &&
