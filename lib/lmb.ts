@@ -315,8 +315,12 @@ const todayGames =
   La API de LMB no está devolviendo
   correctamente este juego de postemporada.
 */
-   const liveScore =
-  await getLmbLiveScore(867488);
+  
+const liveScore =
+  date === "2026-09-11"
+    ? await getLmbLiveScore(867488)
+    : null;
+
 
 if (liveScore) {
   return [
