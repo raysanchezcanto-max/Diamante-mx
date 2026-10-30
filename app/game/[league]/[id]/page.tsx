@@ -288,29 +288,10 @@ const time =
       </a>
 
       <section className="gameHero">
-        <div className="gameHeroTop">
-          <div>
-            <span className="eyebrow">
-              {game.stage ??
-                league}
-            </span>
+       
+<div className="gameHeroTop">
+  <div />
 
-            
-<p className="gameMeta">
-  {date} · {time}
-  {(game.doubleHeader === "Y" ||
-    game.doubleHeader === "S") &&
-    (game.gameNumber === 1 ||
-      game.gameNumber === 2) && (
-      <> · JUEGO {game.gameNumber}</>
-    )}
-</p>
-
-
-            <p className="gameVenue">
-              {game.venue}
-            </p>
-          </div>
   
 
           <span
@@ -435,6 +416,39 @@ const time =
       maxWidth: "210px",
     }}
   >
+    
+{((date !== "Hoy" && !isLive && !isFinal) ||
+  ((game.doubleHeader === "Y" ||
+    game.doubleHeader === "S") &&
+    (game.gameNumber === 1 ||
+      game.gameNumber === 2))) && (
+  <span
+    style={{
+      color: "var(--muted)",
+      fontSize: "11px",
+      fontWeight: 700,
+      letterSpacing: "0.04em",
+      lineHeight: 1.4,
+    }}
+  >
+    {date !== "Hoy" && !isLive && !isFinal
+      ? date
+      : null}
+
+    {(game.doubleHeader === "Y" ||
+      game.doubleHeader === "S") &&
+      (game.gameNumber === 1 ||
+        game.gameNumber === 2) && (
+        <>
+          {date !== "Hoy" && !isLive && !isFinal
+            ? " · "
+            : ""}
+          JUEGO {game.gameNumber}
+        </>
+      )}
+  </span>
+)}
+
     {isLive && liveInningLabel ? (
       <strong
         style={{
