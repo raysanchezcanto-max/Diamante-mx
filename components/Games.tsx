@@ -11,6 +11,7 @@ import type {
 } from "@/lib/mlbWorldSeriesStats";
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
+import { getGameSpecialStatus } from "@/lib/gameSpecialStatus";
 import type { LmpChampion } from "@/lib/lmpChampion";
 
 import {
@@ -160,7 +161,9 @@ function GameCards({
         );
 
 
-
+const specialStatus = getGameSpecialStatus(
+  game.detailedState
+);
 const isMlbWarmup =
   (
     league === "MLB" &&
@@ -228,19 +231,23 @@ className={
     POR COMENZAR
   </span>
 
-) : league === "LMP" &&
-  /postponed|pospuesto/i.test(
-    game.detailedState ?? ""
-  ) ? (
+
+) : specialStatus ? (
   <span
     style={{
-      color: "var(--muted)",
+      color:
+        specialStatus === "POSPUESTO"
+          ? "var(--estado-pospuesto)"
+          : specialStatus === "SUSPENDIDO"
+          ? "var(--estado-suspendido)"
+          : "var(--estado-retrasado)",
       fontWeight: 800,
     }}
   >
-    POSPUESTO
+    {specialStatus}
   </span>
 ) : game.status === "Live" ? (
+
 
     <>
       <span
