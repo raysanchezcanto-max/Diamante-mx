@@ -346,7 +346,23 @@ const isTied =
       : "gameDetailStatus"
   }
 >
-{isLmpWarmup ? (
+            
+{specialStatus ? (
+  <strong
+    style={{
+      color:
+        specialStatus === "POSPUESTO"
+          ? "var(--estado-pospuesto)"
+          : specialStatus === "SUSPENDIDO"
+          ? "var(--estado-suspendido)"
+          : "var(--estado-retrasado)",
+      fontWeight: 800,
+    }}
+  >
+    {specialStatus}
+  </strong>
+) : isLmpWarmup ? (
+
   <strong
     style={{
       color: "#FF7A00",
