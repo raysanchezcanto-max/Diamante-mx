@@ -103,14 +103,16 @@ const inning =
     return "FINAL";
   }
   
+
 if (
-  league === "LMP" &&
+  (league === "LMP" || league === "MLB") &&
   game.doubleHeader === "Y" &&
   game.gameNumber === 2 &&
   game.status === "Preview"
 ) {
   return "DESPUÉS DEL PRIMERO";
 }
+
 
 
   /*
