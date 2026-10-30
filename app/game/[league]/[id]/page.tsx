@@ -892,42 +892,5 @@ lineScoreTotals={playState.lineScoreTotals}
 )}
   
 
-      <section className="gameInfo">
-        <span className="eyebrow">
-          INFORMACIÓN DEL PARTIDO
-        </span>
-
-        <div className="gameInfoGrid">
-          <div>
-            <small>Competencia</small>
-            <strong>
-              {game.stage ??
-                league}
-            </strong>
-          </div>
-
-          <div>
-            <small>Fecha</small>
-            <strong>
-              {date}
-            </strong>
-          </div>
-
-          <div>
-            <small>Hora</small>
-            <strong>
-              {time}
-            </strong>
-          </div>
-
-          <div>
-            <small>Estadio</small>
-            <strong>
-              {game.venue}
-            </strong>
-          </div>
-        </div>
-      </section>
-    </main>
   );
 }
