@@ -296,21 +296,58 @@ className={
   </span>
 
 
+
 ) : specialStatus ? (
-  <span
-    style={{
-      color:
-        specialStatus === "POSPUESTO"
-          ? "var(--estado-pospuesto)"
-          : specialStatus === "SUSPENDIDO"
-          ? "var(--estado-suspendido)"
-          : "var(--estado-retrasado)",
-      fontWeight: 800,
-    }}
-  >
-    {specialStatus}
-  </span>
+  <>
+    <span
+      style={{
+        color:
+          specialStatus === "POSPUESTO"
+            ? "var(--estado-pospuesto)"
+            : specialStatus === "SUSPENDIDO"
+              ? "var(--estado-suspendido)"
+              : "var(--estado-retrasado)",
+        fontWeight: 800,
+      }}
+    >
+      {specialStatus}
+    </span>
+
+    {league === "LMP" &&
+      specialStatus === "POSPUESTO" &&
+      game.rescheduleDate &&
+      /^\d{4}-\d{2}-\d{2}$/.test(
+        game.rescheduleDate
+      ) && (
+        <span
+          style={{
+            display: "block",
+            color: "var(--muted)",
+            fontSize: "10px",
+            fontWeight: 700,
+            marginTop: "5px",
+            letterSpacing: "0.04em",
+          }}
+        >
+          REPROGRAMADO ·{" "}
+          {new Intl.DateTimeFormat("es-MX", {
+            timeZone: "America/Mexico_City",
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+          })
+            .format(
+              new Date(
+                `${game.rescheduleDate}T12:00:00-06:00`
+              )
+            )
+            .replace(/[.,]/g, "")
+            .toUpperCase()}
+        </span>
+      )}
+  </>
 ) : game.status === "Live" ? (
+
 
 
     <>
