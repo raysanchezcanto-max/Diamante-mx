@@ -295,9 +295,17 @@ const time =
                 league}
             </span>
 
-            <p className="gameMeta">
-              {date} · {time}
-            </p>
+            
+<p className="gameMeta">
+  {date} · {time}
+  {(game.doubleHeader === "Y" ||
+    game.doubleHeader === "S") &&
+    (game.gameNumber === 1 ||
+      game.gameNumber === 2) && (
+      <> · JUEGO {game.gameNumber}</>
+    )}
+</p>
+
 
             <p className="gameVenue">
               {game.venue}
