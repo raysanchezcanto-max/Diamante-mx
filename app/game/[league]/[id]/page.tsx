@@ -311,59 +311,7 @@ const time =
               {game.venue}
             </p>
           </div>
-          {!isFinal && (
-          <section className="broadcastSection">
-  <div className="broadcastHeader">
-    <span className="eyebrow">
-      TRANSMISIÓN
-    </span>
-
-    <h2>Dónde ver</h2>
-  </div>
-
-  {broadcasts.length > 0 ? (
-  <div className="broadcastLinks">
-    {league === "LMP" && (
-  <LmpBroadcasts
-    awayTeamId={game.awayId}
-    homeTeamId={game.homeId}
-    awayTeamName={game.away}
-    homeTeamName={game.home}
-  />
-)}
-    {broadcasts.map((broadcast, index) =>
-      broadcast.url ? (
-        <a
-          key={`${broadcast.name}-${index}`}
-          href={broadcast.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="watchButton"
-        >
-         {broadcast.fallback
-  ? `Ver opciones para ${broadcast.name}`
-  : league === "LMP" &&
-    broadcast.name === "MLB.TV"
-  ? "MLB.TV · Suscripción"
-  : `Ver en ${broadcast.name}`}
-        </a>
-      ) : (
-        <span
-          key={`${broadcast.name}-${index}`}
-          className="watchButtonDisabled"
-        >
-          {broadcast.name}
-        </span>
-      )
-    )}
-  </div>
-) : (
-  <div className="broadcastEmpty">
-    Transmisión por confirmar
-  </div>
-)}
-</section>
-      )}
+  
 
           <span
   className={
@@ -568,6 +516,61 @@ const time =
             ) : null}
           </div>
         </div>
+        
+{!isFinal && (
+  <section className="broadcastSection">
+    <div className="broadcastHeader">
+      <span className="eyebrow">
+        TRANSMISIÓN
+      </span>
+      <h2>Dónde ver</h2>
+    </div>
+
+    {broadcasts.length > 0 ? (
+      <div className="broadcastLinks">
+        {league === "LMP" && (
+          <LmpBroadcasts
+            awayTeamId={game.awayId}
+            homeTeamId={game.homeId}
+            awayTeamName={game.away}
+            homeTeamName={game.home}
+          />
+        )}
+
+        {broadcasts.map((broadcast, index) =>
+          broadcast.url ? (
+            <a
+              key={`${broadcast.name}-${index}`}
+              href={broadcast.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="watchButton"
+            >
+              {broadcast.fallback
+                ? `Ver opciones para ${broadcast.name}`
+                : league === "LMP" &&
+                    broadcast.name === "MLB.TV"
+                  ? "MLB.TV · Suscripción"
+                  : `Ver en ${broadcast.name}`}
+            </a>
+          ) : (
+            <span
+              key={`${broadcast.name}-${index}`}
+              className="watchButtonDisabled"
+            >
+              {broadcast.name}
+            </span>
+          )
+        )}
+      </div>
+    ) : (
+      <div className="broadcastEmpty">
+        Transmisión por confirmar
+      </div>
+    )}
+  </section>
+)}
+
       </section>
       {isLive &&
   playState &&
