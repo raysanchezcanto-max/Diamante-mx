@@ -47,7 +47,24 @@ export default function RecentResults({
       </div>
 
       <div className="gamesGrid">
-        {games.map((game) => {
+      
+{games.map((rawGame) => {
+  const toScore = (value: number | undefined) => {
+    if (value == null) return undefined;
+
+    const score = Number(value);
+    return Number.isFinite(score)
+      ? score
+      : undefined;
+  };
+
+  const game = {
+    ...rawGame,
+    status: "Final",
+    awayRuns: toScore(rawGame.awayRuns),
+    homeRuns: toScore(rawGame.homeRuns),
+  };
+
           const awayLogo = getTeamLogo(
             league,
             game.awayId,
