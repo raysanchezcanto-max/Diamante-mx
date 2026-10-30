@@ -268,20 +268,18 @@ const isTied =
 
  
 
-const time =
-  (league === "LMP" ||
-    league === "MLB" ||
-    league === "LMB") &&
 
+const isSecondConsecutiveGame =
   game.doubleHeader === "Y" &&
-  game.gameNumber === 2 &&
+  game.gameNumber === 2;
+
+const time =
+  isSecondConsecutiveGame &&
   game.status === "Preview" &&
   !specialStatus
-    ? "DESPUÉS DEL PRIMERO"
-    : formatGameTime(
-        game.startTime,
-        league
-      );
+    ? "HORA POR CONFIRMAR"
+    : formatGameTime(game.startTime, league);
+
 
   const liveInningLabel =
   isLive && game.inning
@@ -303,7 +301,24 @@ const time =
       <section className="gameHero">
        
 <div className="gameHeroTop">
+  
+{isSecondConsecutiveGame &&
+ game.status === "Preview" &&
+ !specialStatus ? (
+  <span
+    style={{
+      color: "var(--muted)",
+      fontSize: "11px",
+      fontWeight: 800,
+      letterSpacing: "0.06em",
+    }}
+  >
+    DESPUÉS DEL PRIMERO
+  </span>
+) : (
   <div />
+)}
+
 
   
 
