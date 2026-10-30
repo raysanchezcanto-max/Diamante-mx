@@ -192,6 +192,17 @@ export async function getGames(): Promise<Game[]> {
     if (todayGames.length > 0) {
       const gamesForToday: Game[] = todayGames.map((g: any) => ({
         id: g.gamePk,
+        
+gameNumber:
+  typeof g.gameNumber === "number"
+    ? g.gameNumber
+    : undefined,
+
+doubleHeader:
+  typeof g.doubleHeader === "string"
+    ? g.doubleHeader
+    : undefined,
+
 
         status:
           g.status?.abstractGameState ??
