@@ -17,10 +17,22 @@ export type GameDetails = {
   detailedState: string;
  
   firstPitchRecorded?: boolean;
+ 
   gameNumber?: number;
   doubleHeader?: string;
 
+  awayProbablePitcher?: {
+    id: number;
+    name: string;
+  };
+
+  homeProbablePitcher?: {
+    id: number;
+    name: string;
+  };
+
   startTime: string;
+
 
 
   awayId: number;
@@ -381,7 +393,30 @@ const firstPitchRecorded =
         gameData?.game?.gameNumber,
 
       doubleHeader:
+       
+      doubleHeader:
         gameData?.game?.doubleHeader,
+
+      awayProbablePitcher:
+        typeof gameData?.probablePitchers?.away?.id === "number" &&
+        typeof gameData?.probablePitchers?.away?.fullName === "string"
+          ? {
+              id: gameData.probablePitchers.away.id,
+              name: gameData.probablePitchers.away.fullName,
+            }
+          : undefined,
+
+      homeProbablePitcher:
+        typeof gameData?.probablePitchers?.home?.id === "number" &&
+        typeof gameData?.probablePitchers?.home?.fullName === "string"
+          ? {
+              id: gameData.probablePitchers.home.id,
+              name: gameData.probablePitchers.home.fullName,
+            }
+          : undefined,
+
+      status:
+
 
       status:
 
