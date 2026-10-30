@@ -502,9 +502,15 @@ marginTop: "5px",
               </div>
 
              
+
 <strong
   style={{
+    display:
+      specialStatus === "POSPUESTO"
+        ? "none"
+        : undefined,
     color:
+
       
 (league === "LMB" ||
   league === "LMP" ||
@@ -585,9 +591,15 @@ specialStatus === "POSPUESTO"
               </div>
 
              
+
 <strong
   style={{
+    display:
+      specialStatus === "POSPUESTO"
+        ? "none"
+        : undefined,
     color:
+
      
 (league === "LMB" ||
   league === "LMP" ||
