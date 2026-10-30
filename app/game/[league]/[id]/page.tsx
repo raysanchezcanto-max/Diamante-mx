@@ -528,11 +528,19 @@ const time =
       >
         {liveInningLabel}
       </strong>
+  
     ) : !isFinal && !isLive ? (
       <strong
         style={{
-          color: "var(--text)",
-          fontSize: "24px",
+          color:
+            time === "HORA POR CONFIRMAR"
+              ? "var(--muted)"
+              : "var(--text)",
+          fontSize:
+            time === "HORA POR CONFIRMAR"
+              ? "14px"
+              : "24px",
+          fontWeight: 800,
           letterSpacing: "normal",
           overflowWrap: "anywhere",
         }}
@@ -540,6 +548,7 @@ const time =
         {time}
       </strong>
     ) : null}
+
 
     <span
       style={{
