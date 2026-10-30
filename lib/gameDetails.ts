@@ -471,6 +471,17 @@ const firstPitchRecorded =
        
       doubleHeader:
         gameData?.game?.doubleHeader,
+      
+      secondGameTimeVerified:
+        league === "LMP" &&
+        gameData?.game?.doubleHeader === "Y" &&
+        gameData?.game?.gameNumber === 2
+          ? await verifyLmpSecondGameTime(
+              gameId,
+              gameData
+            )
+          : undefined,
+
 
       awayProbablePitcher:
         typeof gameData?.probablePitchers?.away?.id === "number" &&
