@@ -408,14 +408,25 @@ const time =
         EN VIVO
       </span>
     </>
+ 
   ) : isFinal ? (
     "FINAL"
-  ) : game.detailedState
-      ?.toLowerCase() === "scheduled" ? (
-    "PROGRAMADO"
+  ) : game.status === "Preview" ? (
+    <strong
+      style={{
+        color:
+          date === "Hoy"
+            ? "var(--estado-hoy, #38BDF8)"
+            : "var(--muted)",
+        fontWeight: 800,
+      }}
+    >
+      {date === "Hoy" ? "HOY" : "PRÓXIMO"}
+    </strong>
   ) : (
     game.detailedState
   )}
+
 </span>
         </div>
 
