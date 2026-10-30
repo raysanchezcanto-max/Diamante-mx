@@ -1,4 +1,6 @@
 
+import { inferLmbDoubleHeaders } from "./lmbDoubleHeaders";
+
 import {
   getOfficialLmbTeamName,
 } from "./lmb";import {
@@ -236,8 +238,10 @@ export async function getNextGames(
           continue;
         }
 
-        return officialGames.map(
-          (g: any): Game => {
+        
+return inferLmbDoubleHeaders(officialGames.map(
+  (g: any): Game => {
+
             const rawStatus =
               String(
                 g.status ?? ""
@@ -320,10 +324,12 @@ homeRuns:
               inningState:
                 g.inning?.part,
 
+             
               startTime,
             };
           }
-        );
+        ));
+
       }
 
       return [];
