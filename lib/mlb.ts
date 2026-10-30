@@ -19,6 +19,9 @@ export type Game = {
   id: number;
   status: string;
   detailedState: string;
+  
+  statusReason?: string;
+
   firstPitchRecorded?: boolean;
   
 gameNumber?: number;
