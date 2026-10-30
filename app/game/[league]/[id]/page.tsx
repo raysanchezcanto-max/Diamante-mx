@@ -513,7 +513,22 @@ const time =
 </div>
 
 
-          <div className="matchupTeam">
+          
+<div className="matchupTeam">
+  <span
+    style={{
+      color: "var(--muted)",
+      fontSize: "11px",
+      fontWeight: 800,
+      letterSpacing: "0.08em",
+      marginBottom: "12px",
+    }}
+  >
+    LOCAL
+  </span>
+
+  {homeLogo && (
+
             {homeLogo && (
               <img
                 src={homeLogo}
