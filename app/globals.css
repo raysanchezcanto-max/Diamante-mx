@@ -3324,3 +3324,11 @@ mlbWorldSeriesNextOnlyCompact strong {
   margin-top: 8px;
   font-size: 12px;
 }
+
+/* DIAMANTE MX - FRANJA INFERIOR DE TRANSMISIÓN */
+
+.gameHero > .broadcastSection {
+  border-top: 1px solid var(--line);
+  margin-top: 12px;
+  padding-top: 18px;
+}
