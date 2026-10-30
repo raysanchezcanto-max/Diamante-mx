@@ -265,6 +265,18 @@ export async function getNextGames(
             return {
               id:
                 Number(g.gameId) || 0,
+              
+gameNumber:
+  g.gameNumber === 1 || g.gameNumber === 2
+    ? g.gameNumber
+    : undefined,
+
+doubleHeader:
+  g.doubleHeader === "Y" ||
+  g.doubleHeader === "S"
+    ? g.doubleHeader
+    : undefined,
+
 
               status,
 
