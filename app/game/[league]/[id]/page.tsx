@@ -420,7 +420,22 @@ const time =
         </div>
 
         <div className="matchup">
-          <div className="matchupTeam">
+          
+<div className="matchupTeam">
+  <span
+    style={{
+      color: "var(--muted)",
+      fontSize: "11px",
+      fontWeight: 800,
+      letterSpacing: "0.08em",
+      marginBottom: "12px",
+    }}
+  >
+    VISITANTE
+  </span>
+
+  {awayLogo && (
+
             {awayLogo && (
               <img
                 src={awayLogo}
