@@ -238,9 +238,13 @@ className={
 >
              
 
-{(league === "LMP" || league === "MLB") &&
+
+{(league === "LMP" ||
+  league === "MLB" ||
+  league === "LMB") &&
   (game.doubleHeader === "Y" ||
     game.doubleHeader === "S") &&
+
 
   (game.gameNumber === 1 ||
     game.gameNumber === 2) && (
