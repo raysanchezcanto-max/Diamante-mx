@@ -7,6 +7,7 @@ import { getLmbPlayState } from "@/lib/lmbLive";
 import BaseDiamond from "@/components/BaseDiamond";
 import { getGameBroadcasts } from "@/lib/broadcasts";
 import { notFound } from "next/navigation";
+import { getGameSpecialStatus } from "@/lib/gameSpecialStatus";
 
 import {
   getGameDetails,
@@ -188,8 +189,15 @@ const broadcasts =
     );
 
 
+
+const specialStatus = getGameSpecialStatus(
+  game.detailedState
+);
+
 const isFinal =
-  game.status === "Final";
+  game.status === "Final" &&
+  !specialStatus;
+
 
 const isLmpWarmup =
   league === "LMP" &&
@@ -200,9 +208,12 @@ const isLmpWarmup =
     game.detailedState ?? ""
   );
 
+
 const isLive =
   game.status === "Live" &&
-  !isLmpWarmup;
+  !isLmpWarmup &&
+  !specialStatus;
+
 
 
 const playState =
