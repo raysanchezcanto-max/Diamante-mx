@@ -223,11 +223,15 @@ const showMlbRegularPitchers =
           >
            <div
   
+
 className={
-  game.status === "Live" && !isMlbWarmup
+  game.status === "Live" &&
+  !isMlbWarmup &&
+  !specialStatus
     ? "gameStatus live"
     : "gameStatus"
 }
+
 
 >
              
