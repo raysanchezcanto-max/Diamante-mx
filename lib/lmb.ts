@@ -17,14 +17,16 @@ const MLB_API =
 const LMB_SPORT_ID = 11;
 const LMB_LEAGUE_ID = 125;
 
-function mexicoDate() {
+
+function mexicoDate(date = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Mexico_City",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(new Date());
+  }).format(date);
 }
+
 
 function seasonYear() {
   return Number(
