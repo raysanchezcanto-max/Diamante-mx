@@ -861,8 +861,12 @@ const allGames = Array.from(
             .toLowerCase()
             .trim();
 
-        const key =
-          `${date}-${away}-${home}`;
+      
+const key =
+  game.id !== 0
+    ? `game-${game.id}`
+    : `${date}-${away}-${home}`;
+
 
         return [key, game];
       }
