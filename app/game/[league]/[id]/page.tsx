@@ -527,7 +527,7 @@ const time =
     LOCAL
   </span>
 
-  {homeLogo && (
+ 
 
             {homeLogo && (
               <img
