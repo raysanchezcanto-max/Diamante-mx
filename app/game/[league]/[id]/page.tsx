@@ -273,12 +273,28 @@ const isSecondConsecutiveGame =
   game.doubleHeader === "Y" &&
   game.gameNumber === 2;
 
-const time =
-  isSecondConsecutiveGame &&
+
+const hasLmpConfirmedTime =
+  league === "LMP" &&
   game.status === "Preview" &&
-  !specialStatus
-    ? "HORA POR CONFIRMAR"
-    : formatGameTime(game.startTime, league);
+  !specialStatus &&
+  !isSecondConsecutiveGame &&
+  game.startTimeTBD === false &&
+  Boolean(game.startTime) &&
+  Number.isFinite(Date.parse(game.startTime));
+
+const time =
+  league === "LMP" &&
+  game.status === "Preview"
+    ? hasLmpConfirmedTime
+      ? formatGameTime(game.startTime, league)
+      : "HORA POR CONFIRMAR"
+    : isSecondConsecutiveGame &&
+        game.status === "Preview" &&
+        !specialStatus
+      ? "HORA POR CONFIRMAR"
+      : formatGameTime(game.startTime, league);
+
 
 
   const liveInningLabel =
