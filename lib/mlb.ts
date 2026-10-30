@@ -177,16 +177,34 @@ export async function getGames(): Promise<Game[]> {
     /*
       Primero buscamos los juegos de hoy.
     */
-    const todayData = await mlbFetch(
-     
-`/schedule?sportId=1&date=${date}&hydrate=linescore,probablePitcher`
+    
+const yesterday = mexicoDate(
+  new Date(Date.now() - 24 * 60 * 60 * 1000)
+);
 
-    );
+const todayData = await mlbFetch(
+  `/schedule?sportId=1&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`
+);
 
-    const todayGames =
-      todayData?.dates?.flatMap(
-        (d: any) => d.games ?? []
-      ) ?? [];
+const todayGames =
+  todayData?.dates?.flatMap((d: any) =>
+    (d.games ?? []).filter((g: any) => {
+      const scheduledDay =
+        typeof g.gameDate === "string" &&
+        Number.isFinite(Date.parse(g.gameDate))
+          ? mexicoDate(new Date(g.gameDate))
+          : "";
+
+      return (
+        scheduledDay === date ||
+        (
+          scheduledDay === yesterday &&
+          g.status?.abstractGameState === "Live"
+        )
+      );
+    })
+  ) ?? [];
+
 
     /*
       Si hay juegos hoy, usamos esos.
