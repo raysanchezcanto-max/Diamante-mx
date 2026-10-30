@@ -180,10 +180,17 @@ export async function getRecentGames(
             g.detailedStatus ?? ""
           ).toLowerCase();
 
-        return (
-          status === "F" ||
-          detailed.includes("final")
-        );
+       
+return (
+  (
+    status === "F" ||
+    detailed.includes("final")
+  ) &&
+  !getGameSpecialStatus(
+    g.detailedStatus
+  )
+);
+
       })
       .map(
         (g: any): Game => ({
