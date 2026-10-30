@@ -3295,3 +3295,32 @@ mlbWorldSeriesNextOnlyCompact strong {
 .liveDot .sourceActivityDot {
   background-color: var(--muted);
 }
+
+/* DIAMANTE MX - TRANSMISIÓN COMPACTA EN DETALLE */
+
+.gameHero .broadcastSection .eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+}
+
+.gameHero .broadcastSection h2 {
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+.gameHero .broadcastLinks {
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.gameHero .broadcastLinks .watchButton,
+.gameHero .broadcastLinks .watchButtonDisabled {
+  font-size: 12px;
+  padding: 6px 11px;
+  min-height: 30px;
+}
+
+.gameHero .broadcastEmpty {
+  margin-top: 8px;
+  font-size: 12px;
+}
