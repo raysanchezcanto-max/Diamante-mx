@@ -361,10 +361,22 @@ return await attachLmpFirstPitchRecorded(gamesForToday);
     const nextGames =
       nextDate?.games ?? [];
 
-    return nextGames.map((g: any) => ({
-      id: g.gamePk,
+    
+return nextGames.map((g: any) => ({
+  id: g.gamePk,
 
-      status:
+  gameNumber:
+    typeof g.gameNumber === "number"
+      ? g.gameNumber
+      : undefined,
+
+  doubleHeader:
+    typeof g.doubleHeader === "string"
+      ? g.doubleHeader
+      : undefined,
+
+  status:
+
         g.status?.abstractGameState ??
         "Preview",
 
