@@ -186,15 +186,13 @@ function GameCards({
 const specialStatus = getGameSpecialStatus(
   game.detailedState
 );
+
 const isMlbWarmup =
   (
-    
-(league === "LMB" ||
-  league === "LMP" ||
-  (league === "MLB" && game.gameType === "R")) &&
-
+    league === "MLB" &&
+    game.gameType === "R" &&
     game.firstPitchRecorded !== true &&
-    (
+
       game.status === "Live" ||
       (
         game.status === "Preview" &&
