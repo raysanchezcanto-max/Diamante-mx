@@ -453,20 +453,7 @@ const time =
     }}
   >
     
-{((date !== "Hoy" && !isLive && !isFinal) ||
-  ((game.doubleHeader === "Y" ||
-    game.doubleHeader === "S") &&
-    (game.gameNumber === 1 ||
-      game.gameNumber === 2))) && (
-  <span
-    style={{
-      color: "var(--muted)",
-      fontSize: "11px",
-      fontWeight: 700,
-      letterSpacing: "0.04em",
-      lineHeight: 1.4,
-    }}
-  >
+
     
 {(game.doubleHeader === "Y" ||
   game.doubleHeader === "S") &&
