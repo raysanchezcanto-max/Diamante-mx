@@ -938,6 +938,19 @@ const todayGames = allGames.filter(
   ...todayGames,
 ].sort((a, b) => {
   const getPriority = (game: Game) => {
+    
+const specialStatus = getGameSpecialStatus(
+  game.detailedState
+);
+
+if (specialStatus === "POSPUESTO") {
+  return 3;
+}
+
+if (specialStatus) {
+  return 1;
+}
+
     const status = `${game.status ?? ""} ${
       game.detailedState ?? ""
     }`
