@@ -963,7 +963,11 @@ const todayGames = allGames.filter((game) => {
   return (
     gameDay === today ||
     (
-      league === "LMP" &&
+      
+(league === "LMP" ||
+  league === "MLB" ||
+  league === "LMB") &&
+
       gameDay === yesterday &&
       game.status === "Live" &&
       !getGameSpecialStatus(game.detailedState)
