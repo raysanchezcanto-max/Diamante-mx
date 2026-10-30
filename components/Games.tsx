@@ -415,9 +415,13 @@ className={
 >
 
  
-{game.status === "Preview" || isMlbWarmup
+
+{game.status === "Preview" ||
+isMlbWarmup ||
+specialStatus === "POSPUESTO"
   ? "–"
   : game.awayRuns ?? "–"}
+
 
 </strong>
             </div>
@@ -488,9 +492,13 @@ className={
 >
 
 
-{game.status === "Preview" || isMlbWarmup
+
+{game.status === "Preview" ||
+isMlbWarmup ||
+specialStatus === "POSPUESTO"
   ? "–"
   : game.homeRuns ?? "–"}
+
 
 </strong>
             </div>
