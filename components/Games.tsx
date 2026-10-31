@@ -283,6 +283,29 @@ className={
       JUEGO {game.gameNumber}
     </span>
   )}
+             
+{(game.doubleHeader === "Y" ||
+  game.doubleHeader === "S" ||
+  (league === "LMB" &&
+    game.doubleHeader === "INFERRED")) &&
+  (game.gameNumber === 1 ||
+    game.gameNumber === 2) &&
+  game.status === "Preview" &&
+  !specialStatus && (
+    <span
+      style={{
+        display: "block",
+        color: "var(--muted)",
+        fontSize: "10px",
+        fontWeight: 800,
+        letterSpacing: "0.06em",
+        marginBottom: "4px",
+      }}
+    >
+      DOBLE CARTELERA
+    </span>
+  )}
+
 
   
 
