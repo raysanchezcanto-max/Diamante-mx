@@ -120,7 +120,9 @@ if (
   game.gameNumber === 2 &&
   game.status === "Preview"
 ) {
-  return "DESPUÉS DEL PRIMERO";
+  
+return "HORA POR CONFIRMAR";
+
 }
 
 
