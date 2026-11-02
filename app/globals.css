@@ -3450,7 +3450,7 @@ mlbWorldSeriesNextOnlyCompact strong {
   }
 
   .mlbWsSwipeHint span {
-    color: var(--accent);
-    font-size: 17px;
+    color: var(--muted);
+    font-size: 14px;
   }
 }
