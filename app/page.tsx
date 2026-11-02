@@ -10,6 +10,9 @@ import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
 import { getLmbChampion } from "@/lib/lmbChampion";
 import AutoRefresh from "@/components/AutoRefresh";
+
+import SmartHeader from "@/components/SmartHeader";
+
 import LeagueTabs from "@/components/LeagueTabs";
 import Games from "@/components/Games";
 import Standings from "@/components/Standings";
@@ -384,10 +387,14 @@ const daysUntilLmp =
           <a href="#juegos">Juegos</a>
           <a href="#posiciones">Posiciones</a>
           <a href="#lideres">Líderes</a>
+    
         </nav>
       </header>
 
+      <SmartHeader />
+
       <div id="top" className="hero">
+
         <div className="heroCopy">
           <span className="eyebrow">
             TODO EL BÉISBOL · UN SOLO DIAMANTE
