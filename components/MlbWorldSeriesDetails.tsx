@@ -13,7 +13,7 @@ import type {
   MlbWorldSeriesPitcher,
 } from "@/lib/mlbWorldSeriesStats";
 
-import { getTeamLogo } from "@/lib/teamLogos";
+import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 const mexicoDateKey = (date: Date) =>
   new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
@@ -70,7 +70,7 @@ function TeamCell({
         />
       )}
 
-      <span>{team}</span>
+      <span>{getTeamDisplayName("MLB", team)}</span>
     </div>
   );
 }
