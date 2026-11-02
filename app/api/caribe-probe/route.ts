@@ -51,7 +51,20 @@ async function probe(label: string, url: string): Promise<ProbeResult> {
         apiStatus: typeof data.liveData?.plays?.allPlays?.length === "number" ? "has_play_by_play" : "no_play_by_play",
       };
     }
-    return { label, httpStatus: res.status, error: "unrecognized_payload" };
+    if (data.teams || data.innings || data.allPlays) {
+      return {
+        label,
+        httpStatus: res.status,
+        games: 1,
+        apiStatus: [
+          "keys:" + Object.keys(data).slice(0, 8).join(","),
+          "innings:" + (data.innings?.length ?? "none"),
+          "plays:" + (data.allPlays?.length ?? "none"),
+          "boxTeams:" + (data.teams ? Object.keys(data.teams).join(",") : "none")
+        ].join(";"),
+      };
+    }
+    return { label, httpStatus: res.status, apiStatus: "keys:" + Object.keys(data).slice(0,10).join(","), error: "unrecognized_payload" };
   } catch (e) {
     return { label, error: e instanceof Error ? e.name : "fetch_error" };
   }
@@ -61,9 +74,12 @@ export async function GET() {
   const base = "https://statsapi.mlb.com/api/v1/";
   const tasks = [
     probe("Caribbean 2026 / sport 17", base + "schedule?sportId=17&leagueId=162&startDate=2026-02-01&endDate=2026-02-07"),
-    probe("Caribbean 2026 / sport 51", base + "schedule?sportId=51&leagueId=162&startDate=2026-02-01&endDate=2026-02-07"),
     probe("Caribbean 2027 / sport 17", base + "schedule?sportId=17&leagueId=162&startDate=2027-02-01&endDate=2027-02-07"),
-    probe("Official MLB Gameday 2026 / game 837060", base + "game/837060/feed/live"),
+    probe("Game 837060 / linescore", base + "game/837060/linescore"),
+    probe("Game 837060 / boxscore", base + "game/837060/boxscore"),
+    probe("Game 837060 / playByPlay", base + "game/837060/playByPlay"),
+    probe("Game 837060 / API v1.1 feed/live", "https://statsapi.mlb.com/api/v1.1/game/837060/feed/live"),
+    probe("Caribbean 2026 / hydrate linescore", base + "schedule?sportId=17&leagueId=162&startDate=2026-02-01&endDate=2026-02-07&hydrate=linescore"),
   ];
   const checks = await Promise.all(tasks);
   return NextResponse.json({
