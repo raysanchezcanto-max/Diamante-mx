@@ -1,3 +1,4 @@
+import { getTeamDisplayName } from "@/lib/teamLogos";
 import Link from "next/link";
 import type { CaribeMatch } from "@/lib/caribeTournament";
 import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
@@ -52,7 +53,7 @@ export default function CaribeFinalGameCard({ game }: { game: CaribeMatch }) {
                 ) : team.flagSrc ? (
                   <img src={team.flagSrc} alt="" />
                 ) : <span aria-hidden="true">⚾</span>}
-                <strong>{team.name}</strong>
+                <strong>{getTeamDisplayName("CARIBE", team.name)}</strong>
                 <b>{showScores && typeof score === "number" ? score : "–"}</b>
               </div>
             );
