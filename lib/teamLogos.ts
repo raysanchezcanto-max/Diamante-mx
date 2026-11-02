@@ -131,13 +131,88 @@ const LMP_DISPLAY_NAMES: Record<string, string> = {
   "jaguares de nayarit": "Jaguares de Nayarit",
 };
 
+// Nombres de equipos utilizados exclusivamente para mostrar texto.
+// Se preserva la respuesta original de las API para identificadores y lógica.
+const LMB_DISPLAY_NAMES: Record<string, string> = {
+  "toros": "Toros de Tijuana",
+  "toros de tijuana": "Toros de Tijuana",
+  "caliente": "Caliente de Durango",
+  "caliente de durango": "Caliente de Durango",
+  "sultanes": "Sultanes de Monterrey",
+  "sultanes de monterrey": "Sultanes de Monterrey",
+  "charros": "Charros de Jalisco",
+  "charros de jalisco": "Charros de Jalisco",
+  "acereros": "Acereros del Norte",
+  "acereros del norte": "Acereros del Norte",
+  "acereros de monclova": "Acereros de Monclova",
+  "algodoneros": "Algodoneros de Unión Laguna",
+  "algodoneros union laguna": "Algodoneros de Unión Laguna",
+  "algodoneros de union laguna": "Algodoneros de Unión Laguna",
+  "rieleros": "Rieleros de Aguascalientes",
+  "rieleros de aguascalientes": "Rieleros de Aguascalientes",
+  "saraperos": "Saraperos de Saltillo",
+  "saraperos de saltillo": "Saraperos de Saltillo",
+  "tecos": "Tecos de los Dos Laredos",
+  "tecos de los dos laredos": "Tecos de los Dos Laredos",
+  "dorados": "Dorados de Chihuahua",
+  "dorados de chihuahua": "Dorados de Chihuahua",
+  "diablos": "Diablos Rojos del México",
+  "diablos rojos": "Diablos Rojos del México",
+  "diablos rojos del mexico": "Diablos Rojos del México",
+  "olmecas": "Olmecas de Tabasco",
+  "olmecas de tabasco": "Olmecas de Tabasco",
+  "piratas": "Piratas de Campeche",
+  "piratas de campeche": "Piratas de Campeche",
+  "pericos": "Pericos de Puebla",
+  "pericos de puebla": "Pericos de Puebla",
+  "bravos": "Bravos de León",
+  "bravos de leon": "Bravos de León",
+  "guerreros": "Guerreros de Oaxaca",
+  "guerreros de oaxaca": "Guerreros de Oaxaca",
+  "el aguila": "El Águila de Veracruz",
+  "aguila": "El Águila de Veracruz",
+  "el aguila de veracruz": "El Águila de Veracruz",
+  "aguila de veracruz": "El Águila de Veracruz",
+  "tigres": "Tigres de Quintana Roo",
+  "tigres de quintana roo": "Tigres de Quintana Roo",
+  "conspiradores": "Conspiradores de Querétaro",
+  "conspiradores de queretaro": "Conspiradores de Querétaro",
+  "leones": "Leones de Yucatán",
+  "leones de yucatan": "Leones de Yucatán"
+};
+
+const CARIBE_DISPLAY_NAMES: Record<string, string> = {
+  "mexico": "México",
+  "mexico rojo": "México Rojo",
+  "mexico verde": "México Verde",
+  "mexico red": "México Rojo",
+  "mexico green": "México Verde",
+  "republica dominicana": "República Dominicana",
+  "dominican republic": "República Dominicana",
+  "dominicana": "República Dominicana",
+  "puerto rico": "Puerto Rico",
+  "venezuela": "Venezuela"
+};
+
+// MLB conserva los nombres oficiales en inglés; no traducimos marcas.
 export function getTeamDisplayName(
-  league: LeagueCode,
+  league: LeagueCode | "CARIBE",
   teamName: string
 ): string {
-  return league === "LMP"
-    ? LMP_DISPLAY_NAMES[normalizeTeamName(teamName)] ?? teamName
-    : teamName;
+  const normalized = normalizeTeamName(teamName);
+  if (league === "LMP") {
+    return LMP_DISPLAY_NAMES[normalized] ?? teamName;
+  }
+  if (league === "LMB") {
+    return LMB_DISPLAY_NAMES[normalized] ?? teamName;
+  }
+  if (league === "CARIBE") {
+    return CARIBE_DISPLAY_NAMES[normalized] ??
+      LMP_DISPLAY_NAMES[normalized] ??
+      LMB_DISPLAY_NAMES[normalized] ??
+      teamName;
+  }
+  return teamName;
 }
 
 export function getTeamLogo(
