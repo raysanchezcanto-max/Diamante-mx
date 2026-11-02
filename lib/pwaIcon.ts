@@ -20,19 +20,19 @@ export function createPwaIcon(size: 192 | 512): ImageResponse {
           borderRadius: size * 0.13,
         },
       },
-      createElement(
-        "div",
-        {
-          style: {
-            display: "flex",
-            color: "#d7ff4f",
-            fontSize: size * 0.52,
-            lineHeight: 1,
-            marginTop: size * -0.015,
-          },
+      createElement("div", {
+        // Rombo geométrico: no requiere descargar una fuente Unicode.
+        style: {
+          display: "flex",
+          width: size * 0.27,
+          height: size * 0.27,
+          transform: "rotate(45deg)",
+          border: `${Math.max(4, size * 0.025)}px solid #d7ff4f`,
+          borderRadius: size * 0.025,
+          backgroundColor: "#0d1914",
+          marginBottom: size * 0.10,
         },
-        "◆"
-      ),
+      }),
       createElement(
         "div",
         {
