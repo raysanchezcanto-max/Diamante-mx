@@ -16,6 +16,7 @@ import type { LmpChampion } from "@/lib/lmpChampion";
 
 import {
   getTeamLogo,
+  getTeamDisplayName,
   type LeagueCode,
 } from "@/lib/teamLogos";
 
@@ -176,6 +177,9 @@ function GameCards({
   return (
     <div className="gamesGrid">
       {games.map((game) => {
+        const awayDisplayName = getTeamDisplayName(league, game.away);
+        const homeDisplayName = getTeamDisplayName(league, game.home);
+
         const awayLogo = getTeamLogo(
           league,
           game.awayId,
@@ -498,14 +502,14 @@ marginTop: "5px",
                 {awayLogo && (
                   <img
                     src={awayLogo}
-                    alt={`Logo de ${game.away}`}
+                    alt={`Logo de ${awayDisplayName}`}
                     width={34}
                     height={34}
                     loading="lazy"
                   />
                 )}
 
-                <span>{game.away}</span>
+                <span>{awayDisplayName}</span>
               </div>
 
              
@@ -587,14 +591,14 @@ specialStatus === "POSPUESTO"
                 {homeLogo && (
                   <img
                     src={homeLogo}
-                    alt={`Logo de ${game.home}`}
+                    alt={`Logo de ${homeDisplayName}`}
                     width={34}
                     height={34}
                     loading="lazy"
                   />
                 )}
 
-                <span>{game.home}</span>
+                <span>{homeDisplayName}</span>
               </div>
 
              
