@@ -1,3 +1,4 @@
+import { getTeamDisplayName } from "@/lib/teamLogos";
 import { notFound } from "next/navigation";
 import { BaseballLineScoreCard, BaseballPitchingDecisions, BaseballPlayerStats } from "@/components/BaseballGameExtras";
 import AutoRefresh from "@/components/AutoRefresh";
@@ -78,7 +79,7 @@ export default async function CaribeGamePage({ params }: Props) {
         <div className="matchup caribeDetailMatchup">
           <div className="matchupTeam">
             {match.away?.flagSrc && <img src={match.away.flagSrc} alt="" />}
-            <h1>{match.away?.name ?? "Por confirmar"}</h1>
+            <h1>{match.away?.name ? getTeamDisplayName("CARIBE", match.away.name) : "Por confirmar"}</h1>
             <strong className={`matchupScore ${match.awayScore == null || match.homeScore == null || match.awayScore === match.homeScore ? "scoreTied" : match.awayScore > match.homeScore ? "scoreWinning" : "scoreLosing"}`}>{number(match.awayScore)}</strong>
             {(live || final) && <Pitcher starter={feed.awayStats.starter}
               pitchersUsed={feed.awayStats.pitchers.length} status={status} />}
@@ -93,7 +94,7 @@ export default async function CaribeGamePage({ params }: Props) {
           </div>
           <div className="matchupTeam">
             {match.home?.flagSrc && <img src={match.home.flagSrc} alt="" />}
-            <h1>{match.home?.name ?? "Por confirmar"}</h1>
+            <h1>{match.home?.name ? getTeamDisplayName("CARIBE", match.home.name) : "Por confirmar"}</h1>
             <strong className={`matchupScore ${match.awayScore == null || match.homeScore == null || match.awayScore === match.homeScore ? "scoreTied" : match.homeScore > match.awayScore ? "scoreWinning" : "scoreLosing"}`}>{number(match.homeScore)}</strong>
             {(live || final) && <Pitcher starter={feed.homeStats.starter}
               pitchersUsed={feed.homeStats.pitchers.length} status={status} />}
@@ -103,14 +104,14 @@ export default async function CaribeGamePage({ params }: Props) {
 
       <BaseballLineScoreCard
         data={feed}
-        away={match.away?.name ?? "Visitante"}
-        home={match.home?.name ?? "Local"}
+        away={getTeamDisplayName("CARIBE", match.away?.name ?? "Visitante")}
+        home={getTeamDisplayName("CARIBE", match.home?.name ?? "Local")}
         activeInning={live ? match.inning : undefined}
       />
       {live && playState && (
         <LiveGamePanel
-          away={match.away?.name ?? "Visitante"}
-          home={match.home?.name ?? "Local"}
+          away={getTeamDisplayName("CARIBE", match.away?.name ?? "Visitante")}
+          home={getTeamDisplayName("CARIBE", match.home?.name ?? "Local")}
           inning={playState.inning ?? match.inning}
           inningState={playState.inningState ?? match.inningState}
           first={playState.first} second={playState.second} third={playState.third}
@@ -125,8 +126,8 @@ export default async function CaribeGamePage({ params }: Props) {
       <BaseballPlayerStats
         awayStats={feed.awayStats}
         homeStats={feed.homeStats}
-        away={match.away?.name ?? "Visitante"}
-        home={match.home?.name ?? "Local"}
+        away={getTeamDisplayName("CARIBE", match.away?.name ?? "Visitante")}
+        home={getTeamDisplayName("CARIBE", match.home?.name ?? "Local")}
       />
     </main>
   );
