@@ -3455,86 +3455,24 @@ mlbWorldSeriesNextOnlyCompact strong {
   }
 }
 
-/* SERIE DEL CARIBE: cuarta pestaña, mismo lenguaje visual Diamante MX */
-.caribeIntro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(190px, 280px);
-  align-items: center;
-  gap: 20px;
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: linear-gradient(130deg, #172b1a 0%, var(--panel) 76%);
+/* SERIE DEL CARIBE: reutiliza tarjetas de campeón y aviso de temporada */
+.caribeChampionCard .championTeamLogo {
+  width: 92px;
+  height: 92px;
 }
 
-.caribeIntro h3 {
-  font-size: clamp(27px, 4.2vw, 46px);
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-  margin: 14px 0;
+.caribeSeasonNotice {
+  margin-top: 0;
 }
 
-.caribeIntro p,
-.caribeStatusMessage,
-.caribeFootnote {
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted);
-}
-
-.caribeCountdown {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 150px;
-  border-left: 1px solid var(--line);
-  padding: 12px;
-}
-
-.caribeCountdown strong {
-  font-size: clamp(54px, 8vw, 88px);
-  font-weight: 900;
-  line-height: 1;
+.caribeSeasonNotice .seasonCountdown strong {
   color: var(--text);
 }
 
-.caribeCountdown span {
-  margin-top: 12px;
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
-
-.caribeChampion {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  padding: 20px 24px;
-  border-radius: 16px;
-  background: linear-gradient(120deg, #183522, #102019);
-  border: 1px solid rgba(215,255,79,.22);
-}
-
-.caribeChampion img {
-  width: 72px;
-  height: 72px;
-  object-fit: contain;
-  flex: 0 0 72px;
-}
-
-.caribeChampion strong {
-  display: block;
-  margin: 8px 0 4px;
-  font-size: clamp(21px, 3vw, 28px);
-}
-
-.caribeChampion p {
+.caribeSeasonNotice .caribePendingSchedule {
+  margin-top: 7px;
+  font-size: 13px;
   color: var(--muted);
-  font-size: 12px;
-  margin: 4px 0 0;
 }
 
 .caribeCountryGrid {
@@ -3558,8 +3496,27 @@ mlbWorldSeriesNextOnlyCompact strong {
   gap: 10px;
 }
 
-.caribeCountryTop span {
-  font-size: 28px;
+.caribeCountryTop img {
+  display: block;
+  width: 36px;
+  height: 27px;
+  flex: 0 0 36px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.caribeCountryTop .caribeInvitedIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 27px;
+  flex: 0 0 36px;
+  border: 1px dashed var(--line);
+  border-radius: 3px;
+  font-size: 23px;
+  color: var(--muted);
 }
 
 .caribeCountryTop strong {
@@ -3636,30 +3593,13 @@ mlbWorldSeriesNextOnlyCompact strong {
     text-align: center;
   }
 
-  .caribeIntro {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 20px;
-  }
-
-  .caribeCountdown {
-    min-height: 115px;
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-
   .caribeCountryGrid,
   .caribePhases {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .caribeChampion {
-    padding: 16px;
-    gap: 12px;
-  }
-
-  .caribeChampion img {
-    width: 56px;
-    height: 56px;
-    flex-basis: 56px;
+  .caribeChampionCard .championTeamLogo {
+    width: 85px;
+    height: 85px;
   }
 }

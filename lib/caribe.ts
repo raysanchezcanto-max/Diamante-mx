@@ -16,10 +16,10 @@ export const CARIBE_2027 = {
 } as const;
 
 export const CARIBE_2027_PARTICIPANTS = [
-  { country: "México", flag: "🇲🇽", league: "Liga Mexicana del Pacífico" },
-  { country: "República Dominicana", flag: "🇩🇴", league: "LIDOM" },
-  { country: "Puerto Rico", flag: "🇵🇷", league: "LBPRC" },
-  { country: "Venezuela", flag: "🇻🇪", league: "LVBP" },
+  { country: "México", flagSrc: "/flags/mx.svg", league: "Liga Mexicana del Pacífico" },
+  { country: "República Dominicana", flagSrc: "/flags/do.svg", league: "LIDOM" },
+  { country: "Puerto Rico", flagSrc: "/flags/pr.svg", league: "LBPRC" },
+  { country: "Venezuela", flagSrc: "/flags/ve.svg", league: "LVBP" },
 ] as const;
 
 export const CARIBE_2027_STAGES = [

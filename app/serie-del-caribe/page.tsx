@@ -70,54 +70,72 @@ export default function SerieDelCaribePage() {
           </div>
         </div>
 
-        <div className="caribeChampion">
-          <img
-            src="/logos/lmp/charros-jalisco.png"
-            alt="Escudo de Charros de Jalisco"
-          />
-          <div>
-            <span className="eyebrow">🏆 CAMPEÓN SERIE DEL CARIBE 2026</span>
-            <strong>Charros de Jalisco</strong>
-            <p>12–11 ante Tomateros de Culiacán · Zapopan, Jalisco</p>
+        <div className="championCardPro caribeChampionCard">
+          <div className="championGlow championGlowLeft" aria-hidden="true" />
+          <div className="championGlow championGlowRight" aria-hidden="true" />
+          <div className="championPattern" aria-hidden="true" />
+
+          <div className="championCardTop">
+            <span className="championBadge">
+              🏆 CAMPEÓN SERIE DEL CARIBE 2026
+            </span>
+            <span className="championChip">ZAPOPAN 2026</span>
+          </div>
+
+          <div className="championCardBody">
+            <div className="championTrophy">
+              <img
+                src="/logos/lmp/charros-jalisco.png"
+                alt="Escudo de Charros de Jalisco"
+                className="championTeamLogo"
+              />
+            </div>
+            <h3 className="championTeamName">Charros de Jalisco</h3>
+            <div className="championResultPill">
+              <span className="championResultLabel">
+                RESULTADO DE LA FINAL
+              </span>
+              <strong className="championResultText">
+                Charros de Jalisco 12 – 11 Tomateros de Culiacán
+              </strong>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section caribeNextSection">
         <div className="sectionHeader">
           <div>
             <span className="eyebrow">EDICIÓN {CARIBE_2027.edition} · {status}</span>
             <h2>Hermosillo 2027</h2>
           </div>
         </div>
-
-        <div className="caribeIntro">
-          <div>
-            <span className="eyebrow">PRÓXIMA SERIE DEL CARIBE</span>
-            <h3>{CARIBE_2027.dateLabel}</h3>
-            <p>
-              {CARIBE_2027.ballpark} · {CARIBE_2027.host}
-            </p>
-            <p className="caribeStatusMessage">
-              Fechas generales confirmadas. El rol de juegos y los horarios
-              de cada encuentro están pendientes de publicación oficial.
-            </p>
-          </div>
-          <div className="caribeCountdown">
-            {now < tournamentStart ? (
-              <>
-                <strong>{daysUntil}</strong>
-                <span>DÍAS PARA LA SERIE DEL CARIBE</span>
-              </>
-            ) : (
-              <>
-                <strong>2027</strong>
-                <span>{status}</span>
-              </>
-            )}
-          </div>
-        </div>
       </section>
+
+      <div className="seasonNotice caribeSeasonNotice">
+        <div>
+          <span className="eyebrow">PRÓXIMA SERIE DEL CARIBE</span>
+          <h3>Del 1 al 7 de febrero de 2027</h3>
+          <p>{CARIBE_2027.ballpark} · {CARIBE_2027.host}</p>
+          <p className="caribePendingSchedule">
+            Rol de juegos y horarios por confirmar.
+          </p>
+        </div>
+
+        <div className="seasonCountdown">
+          {now < tournamentStart ? (
+            <>
+              <strong>{daysUntil}</strong>
+              <span>DÍAS PARA EL PLAYBALL</span>
+            </>
+          ) : (
+            <>
+              <strong>2027</strong>
+              <span>{status}</span>
+            </>
+          )}
+        </div>
+      </div>
 
       <section className="section" id="participantes">
         <div className="sectionHeader">
@@ -136,7 +154,13 @@ export default function SerieDelCaribePage() {
           {CARIBE_2027_PARTICIPANTS.map((participant) => (
             <div className="caribeCountry" key={participant.country}>
               <div className="caribeCountryTop">
-                <span aria-hidden="true">{participant.flag}</span>
+                <img
+                  src={participant.flagSrc}
+                  alt={`Bandera de ${participant.country}`}
+                  width={36}
+                  height={27}
+                  loading="lazy"
+                />
                 <strong>{participant.country}</strong>
               </div>
               <p>{participant.league}</p>
@@ -145,7 +169,7 @@ export default function SerieDelCaribePage() {
           ))}
           <div className="caribeCountry">
             <div className="caribeCountryTop">
-              <span aria-hidden="true">🌎</span>
+              <span className="caribeInvitedIcon" aria-hidden="true">◇</span>
               <strong>País invitado</strong>
             </div>
             <p>Anuncio pendiente de la Confederación</p>
