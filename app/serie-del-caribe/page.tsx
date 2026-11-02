@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
 import LeagueTabs from "@/components/LeagueTabs";
-import CaribeRoadToFinal from "@/components/CaribeRoadToFinal";
+import CaribeFixtures from "@/components/CaribeFixtures";
+import CaribeSemifinals from "@/components/CaribeSemifinals";
 import CaribeFinalGameCard from "@/components/CaribeFinalGameCard";
 import { getCaribeTournament2027, resolveCaribeFinalWinner } from "@/lib/caribeTournament";
 import SmartHeader from "@/components/SmartHeader";
+import AutoRefresh from "@/components/AutoRefresh";
 import {
   CARIBE_2027,
   CARIBE_2027_PARTICIPANTS,
@@ -29,8 +31,11 @@ export default async function SerieDelCaribePage() {
   const now = Date.now();
   const tournamentStart = new Date(CARIBE_2027.start).getTime();
   const tournamentEnd = new Date(CARIBE_2027.endExclusive).getTime();
-  // En la edición en curso, el recorrido desplaza a la cuenta regresiva.
   const tournamentStarted = now >= tournamentStart;
+  const showChampion = !tournamentStarted || Boolean(finalChampion);
+  const hasLiveGame = tournament?.matches.some((game) =>
+    game.state === "Live" || game.state === "Warmup"
+  ) ?? false;
   const daysUntil = Math.max(
     0,
     Math.ceil((tournamentStart - now) / (24 * 60 * 60 * 1000))
@@ -45,15 +50,16 @@ export default async function SerieDelCaribePage() {
 
   return (
     <main>
+      <AutoRefresh enabled={hasLiveGame} intervalMs={15000} />
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Diamante MX inicio">
           <span className="diamond">◆</span>
           <span><strong>DIAMANTE</strong><em>MX</em></span>
         </a>
         <nav>
-          <a href="#juegos">Serie</a>
+          <a href="#juegos">Juegos</a>
           <a href="#participantes">Participantes</a>
-          <a href="#formato">Formato</a>
+          <a href="#semifinales">Semifinales</a>
         </nav>
       </header>
 
@@ -78,10 +84,15 @@ export default async function SerieDelCaribePage() {
       )}
 
       {tournamentStarted && !finalChampion && (
-        <CaribeRoadToFinal tournament={tournament} />
+        <CaribeFixtures tournament={tournament} started />
       )}
 
-      <section className="section" id="juegos">
+      {tournamentStarted && !finalChampion && (
+        <CaribeSemifinals tournament={tournament} />
+      )}
+
+      {showChampion && (
+      <section className="section caribeChampionSection" id="campeon">
         <div className="sectionHeader">
           <div>
             <span className="eyebrow">SERIE DEL CARIBE · CAMPEÓN {finalChampion ? "2027" : "2026"}</span>
@@ -127,9 +138,13 @@ export default async function SerieDelCaribePage() {
           </div>
         </div>
       </section>
+      )}
 
       {tournamentStarted && finalChampion && (
-        <CaribeRoadToFinal tournament={tournament} />
+        <>
+          <CaribeFixtures tournament={tournament} started />
+          <CaribeSemifinals tournament={tournament} />
+        </>
       )}
 
       {!tournamentStarted && (
@@ -212,7 +227,10 @@ export default async function SerieDelCaribePage() {
       </section>
 
       {!tournamentStarted && (
-        <CaribeRoadToFinal tournament={tournament} />
+        <>
+          <CaribeFixtures tournament={tournament} started={false} />
+          <CaribeSemifinals tournament={tournament} />
+        </>
       )}
 
       <footer>
