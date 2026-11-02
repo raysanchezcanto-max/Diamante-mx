@@ -3,6 +3,7 @@ import type { Game } from "@/lib/mlb";
 
 import {
   getTeamLogo,
+  getTeamDisplayName,
   type LeagueCode,
 } from "@/lib/teamLogos";
 
@@ -123,6 +124,9 @@ export default function RecentResults({
     homeRuns: toScore(rawGame.homeRuns),
   };
 
+          const awayDisplayName = getTeamDisplayName(league, game.away);
+          const homeDisplayName = getTeamDisplayName(league, game.home);
+
           const awayLogo = getTeamLogo(
             league,
             game.awayId,
@@ -217,14 +221,14 @@ export default function RecentResults({
                   {awayLogo && (
                     <img
                       src={awayLogo}
-                      alt={`Logo de ${game.away}`}
+                      alt={`Logo de ${awayDisplayName}`}
                       width={34}
                       height={34}
                       loading="lazy"
                     />
                   )}
 
-                  <span>{game.away}</span>
+                  <span>{awayDisplayName}</span>
                 </div>
 
                
@@ -256,14 +260,14 @@ color:
                   {homeLogo && (
                     <img
                       src={homeLogo}
-                      alt={`Logo de ${game.home}`}
+                      alt={`Logo de ${homeDisplayName}`}
                       width={34}
                       height={34}
                       loading="lazy"
                     />
                   )}
 
-                  <span>{game.home}</span>
+                  <span>{homeDisplayName}</span>
                 </div>
 
                
