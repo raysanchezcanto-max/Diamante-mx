@@ -1,6 +1,7 @@
 import type {
   BaseballDecision, BaseballLineScore, BaseballTeamStats,
 } from "@/lib/baseballGameExtras";
+import BaseballDecisionPhoto from "@/components/BaseballDecisionPhoto";
 
 const show = (x?: number) => typeof x === "number" ? x : "–";
 
@@ -53,8 +54,12 @@ export function BaseballLineScoreCard({
 }
 
 export function BaseballPitchingDecisions({
-  decisions, finished,
-}: { decisions: BaseballDecision[]; finished: boolean }) {
+  decisions, finished, league,
+}: {
+  decisions: BaseballDecision[];
+  finished: boolean;
+  league: "MLB" | "LMB" | "LMP" | "CARIBE";
+}) {
   if (!finished || decisions.length === 0) return null;
 
   // Un salvamento coloca al cerrador entre ganador y perdedor.
@@ -75,8 +80,14 @@ export function BaseballPitchingDecisions({
         className="baseballExtrasDecisions"
         data-count={arranged.length}
       >
-        {arranged.map(({ label, name }) => (
-          <div key={label}><small>{label}</small><strong>{name}</strong></div>
+        {arranged.map(({ label, name, playerId }) => (
+          <div key={label}>
+            <small>{label}</small>
+            <div className="baseballExtrasDecisionPlayer">
+              <BaseballDecisionPhoto playerId={playerId} league={league} />
+              <strong>{name}</strong>
+            </div>
+          </div>
         ))}
       </div>
     </section>

@@ -28,7 +28,7 @@ export type BaseballLineScore = {
     home: { runs?: number; hits?: number; errors?: number };
   };
 };
-export type BaseballDecision = { label: string; name: string };
+export type BaseballDecision = { label: string; name: string; playerId?: number };
 export type BaseballGameExtras = BaseballLineScore & {
   awayStats: BaseballTeamStats;
   homeStats: BaseballTeamStats;
@@ -93,7 +93,14 @@ export function baseballDecisions(raw: any): BaseballDecision[] {
     ["SALVAMENTO", raw?.save],
   ] as const).flatMap(([label, value]) =>
     typeof value?.fullName === "string" && value.fullName.trim()
-      ? [{ label, name: value.fullName.trim() }]
+      ? [{
+          label,
+          name: value.fullName.trim(),
+          playerId: typeof value.id === "number" &&
+            Number.isSafeInteger(value.id) && value.id > 0
+              ? value.id
+              : undefined,
+        }]
       : []
   );
 }

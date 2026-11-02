@@ -695,6 +695,7 @@ const time =
           <BaseballPitchingDecisions
             decisions={gameExtras.decisions}
             finished={isFinal}
+            league={league}
           />
           <BaseballPlayerStats
             awayStats={gameExtras.awayStats}

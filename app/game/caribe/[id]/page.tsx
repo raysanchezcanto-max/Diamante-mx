@@ -121,7 +121,7 @@ export default async function CaribeGamePage({ params }: Props) {
         />
       )}
 
-      <BaseballPitchingDecisions decisions={feed.decisions} finished={final} />
+      <BaseballPitchingDecisions decisions={feed.decisions} finished={final} league="CARIBE" />
       <BaseballPlayerStats
         awayStats={feed.awayStats}
         homeStats={feed.homeStats}

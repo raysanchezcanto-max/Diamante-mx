@@ -3976,3 +3976,25 @@ mlbWorldSeriesNextOnlyCompact strong {
     min-height: 0;
   }
 }
+
+/* Retratos discretos de pitchers en decisiones: sin tarjeta adicional */
+.baseballExtrasDecisionPlayer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  min-height: 34px;
+}
+.baseballExtrasDecisionPortrait {
+  display: block;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: var(--panel2);
+}
+.baseballExtrasDecisionPlayer strong {
+  min-width: 0;
+  line-height: 1.3;
+}
