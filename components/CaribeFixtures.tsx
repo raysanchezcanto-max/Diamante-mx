@@ -1,3 +1,4 @@
+import { getTeamDisplayName } from "@/lib/teamLogos";
 import Link from "next/link";
 import type { CaribeMatch, CaribeTeam, CaribeTournament } from "@/lib/caribeTournament";
 import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
@@ -29,7 +30,7 @@ function TeamRow({
       <div className="teamIdentity">
         {team?.logoSrc ? <img src={team.logoSrc} alt="" /> :
           team?.flagSrc ? <img src={team.flagSrc} alt="" /> : null}
-        <span>{team?.name ?? "Por confirmar"}</span>
+        <span>{team?.name ? getTeamDisplayName("CARIBE", team.name) : "Por confirmar"}</span>
       </div>
       <strong>{showScore && typeof score === "number" ? score : "–"}</strong>
     </div>
