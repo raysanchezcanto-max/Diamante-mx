@@ -1056,13 +1056,27 @@ max-width: 1152px;
     align-items: center;
   }
 
+ 
   .championTeamName {
-    font-size: 40px;
+    font-size: clamp(28px, 8vw, 40px);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    line-height: 1.08;
   }
 
   .championResultPill {
     align-items: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
   }
+
+  .championResultText {
+    white-space: normal;
+    overflow-wrap: break-word;
+    text-align: center;
+  }
+
 
   .championCardBottom {
     grid-template-columns: 1fr;
