@@ -56,11 +56,26 @@ export function BaseballPitchingDecisions({
   decisions, finished,
 }: { decisions: BaseballDecision[]; finished: boolean }) {
   if (!finished || decisions.length === 0) return null;
+
+  // Un salvamento coloca al cerrador entre ganador y perdedor.
+  // Sin salvamento conservamos el orden habitual: ganador, perdedor.
+  const hasSave = decisions.some(({ label }) => label === "SALVAMENTO");
+  const priority = hasSave
+    ? ["PITCHER GANADOR", "SALVAMENTO", "PITCHER PERDEDOR"]
+    : ["PITCHER GANADOR", "PITCHER PERDEDOR"];
+  const arranged = [
+    ...priority.flatMap((label) => decisions.filter((item) => item.label === label)),
+    ...decisions.filter((item) => !priority.includes(item.label)),
+  ];
+
   return (
     <section className="baseballExtrasPanel">
       <span className="eyebrow">DECISIONES DE PITCHEO</span>
-      <div className="baseballExtrasDecisions">
-        {decisions.map(({ label, name }) => (
+      <div
+        className="baseballExtrasDecisions"
+        data-count={arranged.length}
+      >
+        {arranged.map(({ label, name }) => (
           <div key={label}><small>{label}</small><strong>{name}</strong></div>
         ))}
       </div>
@@ -84,6 +99,9 @@ function TeamStatsTable({
   const number = (value?: number) => typeof value === "number" ? value : "–";
   return (
     <div className="baseballExtrasTeam">
+      <h4 className="baseballExtrasKind">
+        {kind === "batting" ? "BATEO" : "PITCHEO"}
+      </h4>
       <h3>{name}</h3>
       <div
         className="baseballExtrasScroll"
@@ -137,15 +155,13 @@ export function BaseballPlayerStats({
   away: string;
   home: string;
 }) {
-  const sections: { kind: StatKind; title: string; available: boolean }[] = [
+  const sections: { kind: StatKind; available: boolean }[] = [
     {
       kind: "batting",
-      title: "BATEO",
       available: awayStats.batters.length > 0 || homeStats.batters.length > 0,
     },
     {
       kind: "pitching",
-      title: "PITCHEO",
       available: awayStats.pitchers.length > 0 || homeStats.pitchers.length > 0,
     },
   ];
@@ -157,7 +173,6 @@ export function BaseballPlayerStats({
         <summary>ESTADÍSTICAS DEL PARTIDO · BATEO Y PITCHEO</summary>
         {sections.filter((section) => section.available).map((section) => (
           <div className="baseballExtrasStatSection" key={section.kind}>
-            <h4>{section.title}</h4>
             <div className="baseballExtrasTeamGrid">
               <TeamStatsTable team={awayStats} name={away} kind={section.kind} />
               <TeamStatsTable team={homeStats} name={home} kind={section.kind} />

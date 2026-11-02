@@ -3921,3 +3921,58 @@ mlbWorldSeriesNextOnlyCompact strong {
   .baseballExtrasSwipe { display: block; }
   .baseballExtrasTeamEmpty { display: none; }
 }
+
+/* Comparación simétrica: cada equipo lleva su propio título BATEO/PITCHEO. */
+.baseballExtrasStatSection .baseballExtrasTeam {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.baseballExtrasStatSection .baseballExtrasTeam h4.baseballExtrasKind {
+  margin: 0 0 12px;
+  padding: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  line-height: 1.4;
+  color: var(--accent);
+}
+.baseballExtrasStatSection .baseballExtrasTeam h3 {
+  display: flex;
+  align-items: flex-start;
+  min-height: 42px;
+  margin: 0 0 10px;
+  padding: 0;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.baseballExtrasStatSection .baseballExtrasScroll { min-width: 0; }
+.baseballExtrasStatSection .baseballExtrasStats {
+  width: 100%;
+  table-layout: fixed;
+}
+.baseballExtrasStatSection .baseballExtrasStats th,
+.baseballExtrasStatSection .baseballExtrasStats td {
+  text-align: center;
+}
+.baseballExtrasStatSection .baseballExtrasStats th:first-child,
+.baseballExtrasStatSection .baseballExtrasStats td:first-child {
+  width: 45%;
+  text-align: left;
+}
+.baseballExtrasStatSection .baseballExtrasStats th:not(:first-child),
+.baseballExtrasStatSection .baseballExtrasStats td:not(:first-child) {
+  width: 11%;
+}
+.baseballExtrasDecisions[data-count="2"] {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+}
+@media(max-width:760px) {
+  .baseballExtrasDecisions[data-count="2"] {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .baseballExtrasStatSection .baseballExtrasTeam h3 {
+    min-height: 0;
+  }
+}
