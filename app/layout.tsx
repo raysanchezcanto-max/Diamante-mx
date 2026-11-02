@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   applicationName: "Diamante MX",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/pwa-icon-192.png",
+    icon: "/diamante-mx-192.png",
+    apple: "/diamante-mx-192.png",
   },
 };
 
