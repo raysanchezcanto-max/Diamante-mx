@@ -3820,3 +3820,40 @@ mlbWorldSeriesNextOnlyCompact strong {
   align-items: center;
   gap: 5px;
 }
+
+/* Detalle Serie del Caribe: misma identidad visual que MLB/LMP */
+.caribeGameDetail .gameHero { border-color: var(--line); }
+.caribeGameDetail .gameHeroTop { border-color: var(--line); }
+.caribeGameDetail .gameDetailStatus.caribeStatusToday { color: var(--estado-hoy, #38BDF8); }
+.caribeGameDetail .gameDetailStatus.caribeStatusWarmup { color: #FF7A00; }
+.caribeGameDetail .gameDetailStatus.caribeStatusLive { color: var(--danger); }
+.caribeGameDetail .gameDetailStatus.caribeStatusUpcoming,
+.caribeGameDetail .gameDetailStatus.caribeStatusFinal { color: var(--muted); }
+.caribeDetailCenter { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.caribeDetailCenter > span { color: var(--text); font-size: 12px; }
+.caribeDetailSection { margin: 24px 0 0; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.caribeDetailSwipe { color: var(--muted); font-size: 10px; text-align: right; letter-spacing: .06em; margin: 10px 0; }
+.caribeDetailTableScroll { overflow-x: auto; width: 100%; max-width: 100%; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+.caribeDetailLineTable { width: 100%; min-width: 680px; font-variant-numeric: tabular-nums; }
+.caribeDetailLineTable th, .caribeDetailLineTable td { padding: 11px 9px; text-align: center; white-space: nowrap; }
+.caribeDetailLineTable th:first-child, .caribeDetailLineTable td:first-child { text-align: left; min-width: 160px; }
+.caribeActiveInning { background: rgba(255,255,255,.06); color: var(--text); font-weight: 900; }
+.caribeDetailStatsDetails > summary { cursor: pointer; color: var(--text); font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+.caribeDetailStatsGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; margin-top: 24px; }
+.caribeDetailTeamTables { min-width: 0; }
+.caribeDetailTeamTables h3 { font-size: 17px; overflow-wrap: anywhere; }
+.caribeDetailTeamTables h4 { color: var(--accent); margin: 20px 0 12px; font-size: 11px; letter-spacing: .09em; }
+.caribeDetailStatsTable { min-width: 470px; font-variant-numeric: tabular-nums; }
+.caribeDetailStatsTable td, .caribeDetailStatsTable th { white-space: nowrap; padding: 11px 10px; }
+.caribeDetailStatsTable th:first-child, .caribeDetailStatsTable td:first-child { min-width: 158px; }
+.caribeDetailDecisions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin-top: 18px; }
+.caribeDetailDecisions > div { display: flex; flex-direction: column; gap: 7px; border: 1px solid var(--line); padding: 13px; border-radius: 12px; }
+.caribeDetailDecisions small { color: var(--muted); font-size: 10px; letter-spacing: .07em; }
+.caribeDetailDecisions strong { font-size: 13px; overflow-wrap: anywhere; }
+.caribeDetailScoring { margin: 16px 0 0; padding-left: 22px; }
+.caribeDetailScoring li { padding: 7px 0; color: var(--text); font-size: 13px; line-height: 1.55; }
+@media(max-width:760px) {
+  .caribeDetailStatsGrid, .caribeDetailDecisions { grid-template-columns: minmax(0,1fr); }
+  .caribeDetailSection { padding: 17px 12px; }
+  .caribeDetailMatchup .matchupTeam h1 { font-size: 22px; }
+}
