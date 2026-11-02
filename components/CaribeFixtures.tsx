@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CaribeMatch, CaribeTeam, CaribeTournament } from "@/lib/caribeTournament";
 import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
 
@@ -39,7 +40,7 @@ function FixtureCard({ game }: { game: CaribeMatch }) {
   const status = caribeDisplayStatus(game);
   const showScore = game.state === "Live" || game.state === "Final";
   return (
-    <div className="gameCard caribeFixtureCard">
+    <Link href={`/game/caribe/${game.id}`} className="gameCard gameCardLink caribeFixtureCard">
       <div className={`gameStatus caribeFixtureStatus ${status === "EN VIVO" ? "live" : ""}`}>
         <span className={`caribeStatusLabel ${caribeDisplayStatusClass(status)}`}>
           {status === "EN VIVO" && <span className="livePulseDot" aria-hidden="true" />}
@@ -52,7 +53,7 @@ function FixtureCard({ game }: { game: CaribeMatch }) {
       </div>
       <TeamRow team={game.away} score={game.awayScore} showScore={showScore} />
       <TeamRow team={game.home} score={game.homeScore} showScore={showScore} />
-    </div>
+    </Link>
   );
 }
 

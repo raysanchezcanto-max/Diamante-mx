@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CaribeMatch, CaribeTeam, CaribeTournament } from "@/lib/caribeTournament";
 import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
 
@@ -44,8 +45,8 @@ export default function CaribeSemifinals({
           {[0, 1].map((index) => {
             const game = games[index];
             const label = game ? caribeDisplayStatus(game) : "POR DEFINIR";
-            return (
-              <div className="mlbPostseasonSeriesCard caribeSemifinalGame" key={game?.id ?? index}>
+            const detail = (
+              <>
                 <div className="mlbPostseasonSeriesTop">
                   <strong>SEMIFINAL {index + 1}</strong>
                   <span className={game ? caribeDisplayStatusClass(label as ReturnType<typeof caribeDisplayStatus>) : ""}>
@@ -57,6 +58,19 @@ export default function CaribeSemifinals({
                   {teamLine(game, "away")}
                   {teamLine(game, "home")}
                 </div>
+              </>
+            );
+            return game?.home && game?.away ? (
+              <Link
+                href={`/game/caribe/${game.id}`}
+                className="mlbPostseasonSeriesCard caribeSemifinalGame caribeClickableCard"
+                key={game.id}
+              >
+                {detail}
+              </Link>
+            ) : (
+              <div className="mlbPostseasonSeriesCard caribeSemifinalGame" key={game?.id ?? index}>
+                {detail}
               </div>
             );
           })}

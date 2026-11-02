@@ -3857,3 +3857,10 @@ mlbWorldSeriesNextOnlyCompact strong {
   .caribeDetailSection { padding: 17px 12px; }
   .caribeDetailMatchup .matchupTeam h1 { font-size: 22px; }
 }
+
+/* CARIBE: las tarjetas oficiales abren el detalle del juego */
+.caribeClickableCard { display: block; transition: border-color 180ms ease; }
+.caribeClickableCard:hover, .caribeClickableCard:focus-visible {
+  border-color: var(--accent);
+  outline-offset: 3px;
+}

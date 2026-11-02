@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CaribeMatch } from "@/lib/caribeTournament";
 import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
 
@@ -31,7 +32,7 @@ export default function CaribeFinalGameCard({ game }: { game: CaribeMatch }) {
         </span>
       </div>
 
-      <div className="championCardPro mlbWorldSeriesCard caribeFinalCard">
+      <Link href={`/game/caribe/${game.id}`} className="championCardPro mlbWorldSeriesCard caribeFinalCard caribeClickableCard">
         <div className="championGlow championGlowLeft" aria-hidden="true" />
         <div className="championGlow championGlowRight" aria-hidden="true" />
         <div className="championPattern" aria-hidden="true" />
@@ -58,7 +59,7 @@ export default function CaribeFinalGameCard({ game }: { game: CaribeMatch }) {
           })}
         </div>
         <p className="caribeFinalVenue">7 DE FEBRERO · {time} · ESTADIO FERNANDO VALENZUELA</p>
-      </div>
+      </Link>
     </section>
   );
 }
