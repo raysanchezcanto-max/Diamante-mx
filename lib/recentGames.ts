@@ -41,6 +41,18 @@ function mapGame(g: any): Game {
   return {
     id:
       g.gamePk,
+    
+    gameNumber:
+      [1, 2].includes(Number(g.gameNumber))
+        ? Number(g.gameNumber)
+        : undefined,
+
+    doubleHeader:
+      g.doubleHeader === "Y" ||
+      g.doubleHeader === "S"
+        ? g.doubleHeader
+        : undefined,
+
 
     status:
       g.status?.abstractGameState ??
@@ -196,6 +208,18 @@ return (
         (g: any): Game => ({
           id:
             Number(g.gameId) || 0,
+          
+    gameNumber:
+      [1, 2].includes(Number(g.gameNumber))
+        ? Number(g.gameNumber)
+        : undefined,
+
+    doubleHeader:
+      g.doubleHeader === "Y" ||
+      g.doubleHeader === "S"
+        ? g.doubleHeader
+        : undefined,
+
 
           status: "Final",
 
