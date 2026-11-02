@@ -29,6 +29,8 @@ export default async function SerieDelCaribePage() {
   const now = Date.now();
   const tournamentStart = new Date(CARIBE_2027.start).getTime();
   const tournamentEnd = new Date(CARIBE_2027.endExclusive).getTime();
+  // En la edición en curso, el recorrido desplaza a la cuenta regresiva.
+  const tournamentStarted = now >= tournamentStart;
   const daysUntil = Math.max(
     0,
     Math.ceil((tournamentStart - now) / (24 * 60 * 60 * 1000))
@@ -70,6 +72,14 @@ export default async function SerieDelCaribePage() {
       </div>
 
       <LeagueTabs activeLeague="CARIBE" />
+
+      {tournamentStarted && showFinalCard && finalMatch && (
+        <CaribeFinalGameCard game={finalMatch} />
+      )}
+
+      {tournamentStarted && !finalChampion && (
+        <CaribeRoadToFinal tournament={tournament} />
+      )}
 
       <section className="section" id="juegos">
         <div className="sectionHeader">
@@ -118,6 +128,12 @@ export default async function SerieDelCaribePage() {
         </div>
       </section>
 
+      {tournamentStarted && finalChampion && (
+        <CaribeRoadToFinal tournament={tournament} />
+      )}
+
+      {!tournamentStarted && (
+      <>
       <section className="section caribeNextSection">
         <div className="sectionHeader">
           <div>
@@ -151,6 +167,8 @@ export default async function SerieDelCaribePage() {
           )}
         </div>
       </div>
+      </>
+      )}
 
       <section className="section" id="participantes">
         <div className="sectionHeader">
@@ -193,10 +211,8 @@ export default async function SerieDelCaribePage() {
         </div>
       </section>
 
-      <CaribeRoadToFinal tournament={tournament} />
-
-      {showFinalCard && finalMatch && (
-        <CaribeFinalGameCard game={finalMatch} />
+      {!tournamentStarted && (
+        <CaribeRoadToFinal tournament={tournament} />
       )}
 
       <footer>

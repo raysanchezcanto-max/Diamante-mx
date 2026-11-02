@@ -3,7 +3,7 @@ import type {
   CaribePhase,
   CaribeTournament,
 } from "@/lib/caribeTournament";
-import { resolveCaribeFinalWinner } from "@/lib/caribeTournament";
+
 
 const phases: {
   id: CaribePhase;
@@ -14,7 +14,6 @@ const phases: {
   { id: "roundRobin", name: "Fase clasificatoria", games: 10, date: "1–5 FEB" },
   { id: "semifinal", name: "Semifinales", games: 2, date: "6 FEB" },
   { id: "thirdPlace", name: "Tercer lugar", games: 1, date: "7 FEB" },
-  { id: "final", name: "Gran final", games: 1, date: "7 FEB" },
 ];
 
 function stateLabel(match?: CaribeMatch) {
@@ -80,8 +79,9 @@ export default function CaribeRoadToFinal({
         <summary>Camino a la Serie del Caribe 2027</summary>
         <div className="mlbPostseasonHistoryContent">
           <p className="caribeRoadNote">
-            14 encuentros previstos · la final se decide en un solo juego.
-            Los cruces y horarios se mostrarán cuando los confirme la fuente oficial.
+            13 encuentros en este recorrido: clasificatoria, semifinales y
+            tercer lugar. La gran final (partido 14) tendrá su propia tarjeta
+            especial cuando se confirmen los finalistas.
           </p>
           {phases.map((phase) => {
             const matches = (tournament?.matches ?? [])
@@ -97,10 +97,6 @@ export default function CaribeRoadToFinal({
                 <div className="mlbPostseasonHistoryGrid caribeRoadGrid">
                   {Array.from({ length: count }, (_, index) => {
                     const match = matches[index];
-                    const winner = resolveCaribeFinalWinner(
-                      phase.id === "final" ? match ?? null : null
-                    );
-
                     return (
                       <div className="mlbPostseasonSeriesCardCompact caribeRoadMatch" key={match?.id ?? `${phase.id}-${index}`}>
                         <div className="mlbPostseasonSeriesTop">
@@ -113,12 +109,6 @@ export default function CaribeRoadToFinal({
                           <TeamLine match={match} side="away" />
                           <TeamLine match={match} side="home" />
                         </div>
-                        {winner && (
-                          <div className="mlbPostseasonHistoryWinner">
-                            <span>CAMPEÓN</span>
-                            <strong>{winner.winner.name}</strong>
-                          </div>
-                        )}
                       </div>
                     );
                   })}
