@@ -223,18 +223,24 @@ export async function getNextGames(
 ): Promise<Game[]> {
   try {
         if (league === "LMB") {
-      for (
-        let offset = 1;
-        offset <= 60;
-        offset++
-      ) {
-        const officialGames =
-          await getLmbCalendar(offset);
+      // Consultar días futuros por lotes para evitar 60
+      // peticiones consecutivas durante la temporada baja.
+      // Mantener el primer día con partidos en los próximos 60 días.
+      for (let startOffset = 1; startOffset <= 60; startOffset += 10) {
+        const offsets = Array.from(
+          { length: Math.min(10, 61 - startOffset) },
+          (_, index) => startOffset + index
+        );
 
-        if (
-          !Array.isArray(officialGames) ||
-          officialGames.length === 0
-        ) {
+        const batch = await Promise.all(
+          offsets.map((offset) => getLmbCalendar(offset))
+        );
+
+        const officialGames = batch.find(
+          (games) => Array.isArray(games) && games.length > 0
+        );
+
+        if (!officialGames) {
           continue;
         }
 
