@@ -1,4 +1,6 @@
 import LmpBroadcasts from "@/components/LmpBroadcasts";
+import { getBaseballGameExtras } from "@/lib/baseballGameExtras";
+import { BaseballLineScoreCard, BaseballPitchingDecisions, BaseballPlayerStats } from "@/components/BaseballGameExtras";
 import { getMlbPlayState } from "@/lib/mlbLive";
 import { getLmpPlayState } from "@/lib/lmpLive";
 import LiveGamePanel from "@/components/LiveGamePanel";
@@ -259,16 +261,13 @@ const homePitcherLabel =
 
 
 
-const playState =
-  !isLive
-    ? null
-    : league === "LMB"
-    ? await getLmbPlayState(gameId)
-    : league === "LMP"
-    ? await getLmpPlayState(gameId)
-    : league === "MLB"
-    ? await getMlbPlayState(gameId)
-    : null;
+const [playState, gameExtras] = await Promise.all([
+  !isLive ? Promise.resolve(null)
+    : league === "LMB" ? getLmbPlayState(gameId)
+    : league === "LMP" ? getLmpPlayState(gameId)
+    : getMlbPlayState(gameId),
+  getBaseballGameExtras(league, gameId),
+]);
 
 const hasScore =
   specialStatus !== "POSPUESTO" &&
@@ -710,299 +709,26 @@ const time =
 )}
 
       </section>
-      {isLive &&
-  playState &&
-  Array.isArray(playState.inningLines) &&
-  playState.inningLines.length > 0 &&
-  playState.lineScoreTotals && (
-    <section
-      style={{
-        marginBottom: "24px",
-        padding: "14px 18px",
-        border: "1px solid #24452f",
-        borderRadius: "16px",
-        background: "#0b1c16",
-      }}
-    >
-      <div
-        style={{
-          marginBottom: "10px",
-          fontSize: "11px",
-          fontWeight: 800,
-          letterSpacing: "0.08em",
-          color: "#caff33",
-        }}
-      >
-        LÍNEA DEL JUEGO
-      </div>
-
-   <div
-  style={{
-    overflowX: "auto",
-  }}
->
-  <div
-    style={{
-      minWidth: "760px",
-      display: "grid",
-      gridTemplateColumns:
-        "220px repeat(9, 42px) 1px repeat(3, 48px)",
-      alignItems: "center",
-      columnGap: "6px",
-      fontSize: "13px",
-      fontVariantNumeric: "tabular-nums",
-    }}
-  >
-    {/* ENCABEZADOS */}
-    <div
-      style={{
-        padding: "8px 10px",
-        color: "#9fb1ab",
-        fontSize: "10px",
-        fontWeight: 800,
-        letterSpacing: "0.06em",
-      }}
-    >
-      EQUIPO
-    </div>
-
-   {Array.from({ length: 9 }, (_, index) => (
-  <div
-    key={`header-${index + 1}`}
-    style={{
-  textAlign: "center",
-  color:
-    Number(
-      playState?.inning ??
-      game.inning ??
-      0
-    ) === index + 1
-     ? "#e8f0f2"
-: "#9fb1ab",
-
-  fontWeight:
-    Number(
-      playState?.inning ??
-      game.inning ??
-      0
-    ) === index + 1
-      ? 900
-      : 700,
-
-  background:
-    Number(
-      playState?.inning ??
-      game.inning ??
-      0
-    ) === index + 1
-      ? "rgba(255,255,255,0.06)"
-: "transparent",
-      border:
-  Number(
-    playState?.inning ??
-    game.inning ??
-    0
-  ) === index + 1
-    ? "1px solid rgba(255,255,255,0.22)"
-    : "1px solid transparent",
-  borderRadius: "8px",
-  padding: "5px 0",
-}}
-  >
-    {index + 1}
-  </div>
-))}
-
-    <div
-      style={{
-        width: "1px",
-        height: "24px",
-        background: "#29463b",
-      }}
-    />
-
-    <div
-      style={{
-        textAlign: "center",
-        color: "#9fb1ab",
-        fontWeight: 900,
-      }}
-    >
-      R
-    </div>
-
-    <div
-      style={{
-        textAlign: "center",
-        color: "#6dd5ff",
-        fontWeight: 900,
-      }}
-    >
-      H
-    </div>
-
-    <div
-      style={{
-        textAlign: "center",
-        color: "#ffb45c",
-        fontWeight: 900,
-      }}
-    >
-      E
-    </div>
-
-    {/* VISITANTE */}
-    <div
-      style={{
-        padding: "10px",
-        fontWeight: 700,
-        whiteSpace: "nowrap",
-      }}
-    >
-      {game.away}
-    </div>
-
-    {Array.from({ length: 9 }, (_, index) => {
-      const inning =
-        playState.inningLines?.find(
-          (line) => line.inning === index + 1
-        );
-
-      return (
-        <div
-          key={`away-${index + 1}`}
-          style={{
-            textAlign: "center",
-            fontWeight: 600,
-          }}
-        >
-          {inning?.away ?? "–"}
-        </div>
-      );
-    })}
-
-    <div
-      style={{
-        width: "1px",
-        height: "28px",
-        background: "#29463b",
-      }}
-    />
-
-    <div
-      style={{
-        textAlign: "center",
-        color: awayIsWinning
-      ? "#c7ff32"
-      : homeIsWinning
-        ? "#8fa3a8"
-        : "#f4f4f0",
-        fontWeight: 900,
-      }}
-    >
-      {playState.lineScoreTotals.away.runs}
-    </div>
-
-    <div
-      style={{
-        textAlign: "center",
-        color: "#6dd5ff",
-        fontWeight: 800,
-      }}
-    >
-      {playState.lineScoreTotals.away.hits}
-    </div>
-
-    <div
-      style={{
-        textAlign: "center",
-        color: "#ffb45c",
-        fontWeight: 800,
-      }}
-    >
-      {playState.lineScoreTotals.away.errors}
-    </div>
-
-    {/* LOCAL */}
-    <div
-      style={{
-        padding: "10px",
-        fontWeight: 700,
-        whiteSpace: "nowrap",
-      }}
-    >
-      {game.home}
-    </div>
-
-    {Array.from({ length: 9 }, (_, index) => {
-      const inning =
-        playState.inningLines?.find(
-          (line) => line.inning === index + 1
-        );
-
-      return (
-        <div
-          key={`home-${index + 1}`}
-          style={{
-            textAlign: "center",
-            fontWeight: 600,
-          }}
-        >
-          {inning?.home ?? "–"}
-        </div>
-      );
-    })}
-
-    <div
-      style={{
-        width: "1px",
-        height: "28px",
-        background: "#29463b",
-      }}
-    />
-
-    <div
-      style={{
-        textAlign: "center",
-        color:  homeIsWinning
-      ? "#c7ff32"
-      : awayIsWinning
-        ? "#8fa3a8"
-        : "#f4f4f0",
-        fontWeight: 900,
-      }}
-    >
-      {playState.lineScoreTotals.home.runs}
-    </div>
-
-    <div
-      style={{
-        textAlign: "center",
-        color:  homeIsWinning
-      ? "#c7ff32"
-      : awayIsWinning
-        ? "#8fa3a8"
-        : "#f4f4f0",
-        fontWeight: 800,
-      }}
-    >
-      {playState.lineScoreTotals.home.hits}
-    </div>
-
-    <div
-      style={{
-        textAlign: "center",
-        color: "#ffb45c",
-        fontWeight: 800,
-      }}
-    >
-      {playState.lineScoreTotals.home.errors}
-    </div>
-  </div>
-</div>
-         
-    </section>
-)}
+      {gameExtras && (
+        <>
+          <BaseballLineScoreCard
+            data={gameExtras}
+            away={game.away}
+            home={game.home}
+            activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
+          />
+          <BaseballPitchingDecisions
+            decisions={gameExtras.decisions}
+            finished={isFinal}
+          />
+          <BaseballPlayerStats
+            awayStats={gameExtras.awayStats}
+            homeStats={gameExtras.homeStats}
+            away={game.away}
+            home={game.home}
+          />
+        </>
+      )}
     {isLive && playState && (
   <LiveGamePanel
   inning={

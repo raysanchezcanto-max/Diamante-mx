@@ -3864,3 +3864,36 @@ mlbWorldSeriesNextOnlyCompact strong {
   border-color: var(--accent);
   outline-offset: 3px;
 }
+
+/* Secciones de detalle compartidas por MLB, LMB, LMP y CARIBE */
+.baseballExtrasPanel {
+  margin:24px 0 0; padding:22px; border:1px solid var(--line);
+  border-radius:16px; background:var(--panel);
+}
+.baseballExtrasSwipe { color:var(--muted); font-size:10px; letter-spacing:.06em; text-align:right; margin:10px 0; }
+.baseballExtrasScroll { width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; }
+.baseballExtrasLine { min-width:680px; width:100%; font-variant-numeric:tabular-nums; }
+.baseballExtrasLine th,.baseballExtrasLine td { padding:11px 9px; text-align:center; white-space:nowrap; }
+.baseballExtrasLine th:first-child,.baseballExtrasLine td:first-child { text-align:left; min-width:160px; }
+.baseballExtrasLine .baseballActiveInning { color:var(--text); background:rgba(255,255,255,.06); font-weight:900; }
+.baseballExtrasLine .baseballRunsWinning { color:#c7ff32; font-weight:900; }
+.baseballExtrasLine .baseballRunsLosing { color:#8fa3a8; font-weight:900; }
+.baseballExtrasLine .baseballRunsTie { color:#f4f4f0; font-weight:900; }
+.baseballExtrasLine .baseballHits { color:#6dd5ff; font-weight:800; }
+.baseballExtrasLine .baseballErrors { color:#ffb45c; font-weight:800; }
+.baseballExtrasDecisions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:18px; }
+.baseballExtrasDecisions>div { display:flex; flex-direction:column; gap:7px; border:1px solid var(--line); padding:13px; border-radius:12px; }
+.baseballExtrasDecisions small { color:var(--muted); font-size:10px; letter-spacing:.07em; }
+.baseballExtrasDecisions strong { font-size:13px; overflow-wrap:anywhere; }
+.baseballExtrasDetails>summary { cursor:pointer; color:var(--text); font-size:12px; font-weight:900; letter-spacing:.08em; }
+.baseballExtrasTeamGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; margin-top:24px; }
+.baseballExtrasTeam { min-width:0; }
+.baseballExtrasTeam h3 { font-size:17px; overflow-wrap:anywhere; }
+.baseballExtrasTeam h4 { color:var(--accent); margin:20px 0 12px; font-size:11px; letter-spacing:.09em; }
+.baseballExtrasStats { min-width:470px; font-variant-numeric:tabular-nums; }
+.baseballExtrasStats td,.baseballExtrasStats th { padding:11px 10px; white-space:nowrap; }
+.baseballExtrasStats td:first-child,.baseballExtrasStats th:first-child { min-width:158px; }
+@media(max-width:760px){
+ .baseballExtrasTeamGrid,.baseballExtrasDecisions { grid-template-columns:minmax(0,1fr); }
+ .baseballExtrasPanel { padding:17px 12px; }
+}
