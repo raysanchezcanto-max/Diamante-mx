@@ -4,7 +4,7 @@ import type {
   MlbPostseasonGameType,
 } from "@/lib/mlbPostseason";
 
-import { getTeamLogo } from "@/lib/teamLogos";
+import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 
 type MlbPostseasonCardMode =
   | "current"
@@ -78,7 +78,7 @@ function SeriesCard({
       )}
 
       <span>
-        {series.teamA.name}
+        {getTeamDisplayName("MLB", series.teamA.name)}
       </span>
     </div>
 
@@ -106,7 +106,7 @@ function SeriesCard({
       )}
 
       <span>
-        {series.teamB.name}
+        {getTeamDisplayName("MLB", series.teamB.name)}
       </span>
     </div>
 
@@ -120,7 +120,7 @@ function SeriesCard({
         <div className="mlbPostseasonSeriesStatus">
           {series.winner ? (
             <strong>
-              {series.winner.name} AVANZA
+              {getTeamDisplayName("MLB", series.winner.name)} AVANZA
             </strong>
           ) : liveGame ? (
             <strong className="mlbPostseasonLive">
