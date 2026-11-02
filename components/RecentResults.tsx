@@ -145,7 +145,7 @@ export default function RecentResults({
                       whiteSpace: "nowrap",
                       fontSize: "10px",
                       fontWeight: 800,
-                      color: "var(--accent)",
+                     color: "var(--muted)",
                     }}
                   >
                     JUEGO {doubleHeaderNumber}
