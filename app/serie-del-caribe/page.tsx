@@ -169,7 +169,7 @@ export default function SerieDelCaribePage() {
           ))}
           <div className="caribeCountry">
             <div className="caribeCountryTop">
-              <span className="caribeInvitedIcon" aria-hidden="true">◇</span>
+              <span className="caribeInvitedIcon" aria-label="País invitado por confirmar" role="img">🌎</span>
               <strong>País invitado</strong>
             </div>
             <p>Anuncio pendiente de la Confederación</p>
