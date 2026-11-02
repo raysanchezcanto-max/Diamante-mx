@@ -76,6 +76,48 @@ export default function RecentResults({
             game.homeId,
             game.home
           );
+  
+          // Identificar dobles carteleras.
+          const sameDayGames = games
+            .filter(
+              (other) =>
+                other.away === game.away &&
+                other.home === game.home &&
+                resultDate(other) === resultDate(game)
+            )
+            .sort(
+              (a, b) =>
+                new Date(a.startTime).getTime() -
+                new Date(b.startTime).getTime()
+            );
+
+          const officialDoubleHeader =
+            (game.doubleHeader === "Y" ||
+              game.doubleHeader === "S" ||
+              game.doubleHeader === "INFERRED") &&
+            (game.gameNumber === 1 ||
+              game.gameNumber === 2);
+
+          const inferredDoubleHeader =
+            sameDayGames.length === 2 &&
+            sameDayGames[0].id !== sameDayGames[1].id &&
+            Number.isFinite(
+              new Date(sameDayGames[0].startTime).getTime()
+            ) &&
+            Number.isFinite(
+              new Date(sameDayGames[1].startTime).getTime()
+            ) &&
+            new Date(sameDayGames[0].startTime).getTime() !==
+              new Date(sameDayGames[1].startTime).getTime();
+
+          const doubleHeaderNumber = officialDoubleHeader
+            ? game.gameNumber
+            : inferredDoubleHeader
+              ? sameDayGames.findIndex(
+                  (other) => other.id === game.id
+                ) + 1
+              : null;
+
 
           return (
             <Link
@@ -83,9 +125,34 @@ export default function RecentResults({
   className="gameCard gameCardLink"
   key={game.id}
 >
-              <div className="gameStatus">
-                FINAL · {resultDate(game)}
+            
+              <div
+                className="gameStatus"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                <span>
+                  FINAL · {resultDate(game)}
+                </span>
+
+                {doubleHeaderNumber !== null && (
+                  <span
+                    style={{
+                      whiteSpace: "nowrap",
+                      fontSize: "10px",
+                      fontWeight: 800,
+                      color: "var(--accent)",
+                    }}
+                  >
+                    JUEGO {doubleHeaderNumber}
+                  </span>
+                )}
               </div>
+
 
               <div className="teamRow">
                 <div className="teamIdentity">
