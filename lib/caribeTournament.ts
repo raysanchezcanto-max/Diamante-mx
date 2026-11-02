@@ -33,6 +33,7 @@ export type CaribeMatch = {
   startTime?: string;
   inning?: number;
   inningState?: string;
+  firstPitchRecorded?: boolean;
   winnerId?: string; // Resultado oficial final y marcador consistente.
 };
 
@@ -124,6 +125,7 @@ function gameState(game: SourceGame): CaribeGameState {
     return "Postponed";
   }
   if (status === "Final") return "Final";
+  // Un juego con etiqueta de calentamiento todavía no está EN VIVO.
   if (/warm[\s-]?up|calentamiento/i.test(detail)) return "Warmup";
   if (status === "Live") return "Live";
   return "Preview";
@@ -168,6 +170,44 @@ function mapOfficialGame(game: SourceGame, year: 2026 | 2027): CaribeMatch | nul
   };
 }
 
+// Misma señal de primer lanzamiento que usamos en MLB/LMP.
+// Se consulta solo para partidos marcados Live, nunca para toda la jornada.
+async function verifyFirstPitch(game: CaribeMatch): Promise<CaribeMatch> {
+  if (game.state !== "Live") return game;
+  try {
+    const res = await fetch(
+      `${API_URL}/game/${game.id}/playByPlay`,
+      {
+        next: { revalidate: 15 },
+        signal: AbortSignal.timeout(5000),
+      },
+    );
+    if (!res.ok) return game;
+    const payload: {
+      allPlays?: { playEvents?: { isPitch?: boolean }[] }[];
+      currentPlay?: { playEvents?: { isPitch?: boolean }[] };
+    } = await res.json();
+    if (!Array.isArray(payload.allPlays) && !payload.currentPlay) {
+      return game;
+    }
+    const plays = [
+      ...(Array.isArray(payload.allPlays) ? payload.allPlays : []),
+      ...(payload.currentPlay ? [payload.currentPlay] : []),
+    ];
+    const firstPitchRecorded = plays.some((play) =>
+      play.playEvents?.some((event) => event.isPitch === true),
+    );
+    return {
+      ...game,
+      firstPitchRecorded,
+      state: firstPitchRecorded ? "Live" : "Warmup",
+    };
+  } catch {
+    // No inferir que no hubo lanzamientos si falló la consulta.
+    return game;
+  }
+}
+
 export async function getCaribeTournamentForYear(
   year: 2026 | 2027,
 ): Promise<CaribeTournament | null> {
@@ -193,11 +233,12 @@ export async function getCaribeTournamentForYear(
       .filter((game): game is CaribeMatch => game !== null);
     if (mapped.length === 0) return null;
     const seen = new Set<string>();
-    const matches = mapped.filter((game) => {
+    const unique = mapped.filter((game) => {
       if (seen.has(game.id)) return false;
       seen.add(game.id);
       return true;
     }).sort((a, b) => (a.startTime ?? "").localeCompare(b.startTime ?? ""));
+    const matches = await Promise.all(unique.map(verifyFirstPitch));
     return { season: year, matches };
   } catch {
     // Fallo de red: página queda en modo espera; nada inventado.

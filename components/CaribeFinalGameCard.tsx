@@ -1,10 +1,12 @@
 import type { CaribeMatch } from "@/lib/caribeTournament";
+import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
 
 export default function CaribeFinalGameCard({ game }: { game: CaribeMatch }) {
   if (!game.away || !game.home || game.phase !== "final") {
     return null;
   }
-  const isLive = game.state === "Live";
+  const displayStatus = caribeDisplayStatus(game);
+  const isLive = displayStatus === "EN VIVO";
   const showScores = isLive || game.state === "Final";
   const time = game.startTime
     ? new Intl.DateTimeFormat("es-MX", {
@@ -23,8 +25,9 @@ export default function CaribeFinalGameCard({ game }: { game: CaribeMatch }) {
           <span className="eyebrow">SERIE DEL CARIBE 2027 · JUEGO ÚNICO</span>
           <h2>Gran final</h2>
         </div>
-        <span className={`caribeFinalStatus ${isLive ? "caribeFinalLive" : ""}`}>
-          {isLive ? "EN VIVO" : game.state === "Final" ? "FINAL" : game.state === "Warmup" ? "POR COMENZAR" : "PRÓXIMO"}
+        <span className={`caribeFinalStatus ${caribeDisplayStatusClass(displayStatus)}`}>
+          {isLive && <span className="livePulseDot" aria-hidden="true" />}
+          {displayStatus}
         </span>
       </div>
 

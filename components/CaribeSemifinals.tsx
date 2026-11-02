@@ -1,4 +1,5 @@
 import type { CaribeMatch, CaribeTeam, CaribeTournament } from "@/lib/caribeTournament";
+import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
 
 function teamLine(game: CaribeMatch | undefined, side: "home" | "away") {
   const team: CaribeTeam | undefined = game?.[side];
@@ -15,15 +16,6 @@ function teamLine(game: CaribeMatch | undefined, side: "home" | "away") {
       <strong>{showScore && typeof score === "number" ? score : "–"}</strong>
     </div>
   );
-}
-
-function status(game?: CaribeMatch) {
-  if (!game) return "POR DEFINIR";
-  if (game.state === "Final") return "FINAL";
-  if (game.state === "Live") return "EN VIVO";
-  if (game.state === "Warmup") return "POR COMENZAR";
-  if (game.state === "Postponed") return "POSPUESTO";
-  return "PRÓXIMO";
 }
 
 export default function CaribeSemifinals({
@@ -51,12 +43,14 @@ export default function CaribeSemifinals({
         <div className="mlbPostseasonGrid caribeSemifinalsGrid">
           {[0, 1].map((index) => {
             const game = games[index];
+            const label = game ? caribeDisplayStatus(game) : "POR DEFINIR";
             return (
               <div className="mlbPostseasonSeriesCard caribeSemifinalGame" key={game?.id ?? index}>
                 <div className="mlbPostseasonSeriesTop">
                   <strong>SEMIFINAL {index + 1}</strong>
-                  <span className={game?.state === "Live" ? "caribeSemifinalLive" : ""}>
-                    {status(game)}
+                  <span className={game ? caribeDisplayStatusClass(label as ReturnType<typeof caribeDisplayStatus>) : ""}>
+                    {label === "EN VIVO" && <span className="livePulseDot" aria-hidden="true" />}
+                    {label}
                   </span>
                 </div>
                 <div className="mlbPostseasonSeriesTeams">

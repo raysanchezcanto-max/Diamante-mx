@@ -1,16 +1,7 @@
 import type { CaribeMatch, CaribeTeam, CaribeTournament } from "@/lib/caribeTournament";
+import { caribeDisplayStatus, caribeDisplayStatusClass } from "@/lib/caribeGameStatus";
 
 const tz = "America/Mexico_City";
-
-function statusLabel(match: CaribeMatch): string {
-  switch (match.state) {
-    case "Final": return "FINAL";
-    case "Live": return "EN VIVO";
-    case "Warmup": return "POR COMENZAR";
-    case "Postponed": return "POSPUESTO";
-    default: return "PRÓXIMO";
-  }
-}
 
 function startLabel(startTime?: string): string {
   if (!startTime) return "HORA POR CONFIRMAR";
@@ -45,11 +36,15 @@ function TeamRow({
 }
 
 function FixtureCard({ game }: { game: CaribeMatch }) {
+  const status = caribeDisplayStatus(game);
   const showScore = game.state === "Live" || game.state === "Final";
   return (
     <div className="gameCard caribeFixtureCard">
-      <div className={`gameStatus caribeFixtureStatus ${game.state === "Live" ? "live" : ""}`}>
-        <span>{statusLabel(game)}</span>
+      <div className={`gameStatus caribeFixtureStatus ${status === "EN VIVO" ? "live" : ""}`}>
+        <span className={`caribeStatusLabel ${caribeDisplayStatusClass(status)}`}>
+          {status === "EN VIVO" && <span className="livePulseDot" aria-hidden="true" />}
+          {status}
+        </span>
         <span className="caribeFixtureTime">
           {game.phase === "thirdPlace" ? "TERCER LUGAR · " : ""}
           {startLabel(game.startTime)}

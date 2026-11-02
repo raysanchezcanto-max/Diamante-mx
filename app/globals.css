@@ -3778,3 +3778,45 @@ mlbWorldSeriesNextOnlyCompact strong {
     grid-template-columns: 1fr;
   }
 }
+
+/* CARIBE: estados compartidos con MLB / LMB / LMP */
+.caribeStatusLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+}
+.caribeFixtureStatus .caribeStatusUpcoming,
+.caribeFixtureStatus .caribeStatusFinal,
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusUpcoming,
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusFinal,
+.caribeFinalStatus.caribeStatusUpcoming,
+.caribeFinalStatus.caribeStatusFinal {
+  color: var(--muted);
+}
+.caribeFixtureStatus .caribeStatusToday,
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusToday,
+.caribeFinalStatus.caribeStatusToday {
+  color: var(--estado-hoy, #38BDF8);
+}
+.caribeFixtureStatus .caribeStatusWarmup,
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusWarmup,
+.caribeFinalStatus.caribeStatusWarmup {
+  color: #FF7A00;
+}
+.caribeFixtureStatus .caribeStatusLive,
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusLive,
+.caribeFinalStatus.caribeStatusLive {
+  color: var(--danger);
+}
+.caribeFixtureStatus .caribeStatusPostponed,
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusPostponed,
+.caribeFinalStatus.caribeStatusPostponed {
+  color: var(--estado-pospuesto);
+}
+.caribeSemifinalGame .mlbPostseasonSeriesTop > span.caribeStatusLive,
+.caribeFinalStatus.caribeStatusLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
