@@ -1,3 +1,4 @@
+import { getTeamDisplayName } from "@/lib/teamLogos";
 import type {
   CaribeMatch,
   CaribePhase,
@@ -50,7 +51,7 @@ function TeamLine({
         ) : team?.flagSrc ? (
           <img src={team.flagSrc} alt="" />
         ) : null}
-        <span>{team?.name ?? "Por confirmar"}</span>
+        <span>{team?.name ? getTeamDisplayName("CARIBE", team.name) : "Por confirmar"}</span>
       </div>
       <strong>
         {typeof score === "number" && match?.state !== "Preview"
