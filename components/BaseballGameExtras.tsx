@@ -80,9 +80,14 @@ export function BaseballPitchingDecisions({
         className="baseballExtrasDecisions"
         data-count={arranged.length}
       >
-        {arranged.map(({ label, name, playerId }) => (
+        {arranged.map(({ label, name, playerId, teamName }) => (
           <div key={label}>
-            <small>{label}</small>
+            <div className="baseballExtrasDecisionHeader">
+              <small>{label}</small>
+              {teamName && (
+                <small className="baseballExtrasDecisionTeam">{teamName}</small>
+              )}
+            </div>
             <div className="baseballExtrasDecisionPlayer">
               <BaseballDecisionPhoto playerId={playerId} league={league} />
               <strong>{name}</strong>

@@ -78,12 +78,8 @@ export default function GamePitcher({
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "var(--muted)",
-            fontSize: "20px",
           }}
-        >
-          ?
-        </div>
+        />
       )}
 
       <span

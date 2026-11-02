@@ -3998,3 +3998,27 @@ mlbWorldSeriesNextOnlyCompact strong {
   min-width: 0;
   line-height: 1.3;
 }
+
+/* Etiqueta y equipo del pitcher en la misma línea, misma escala discreta. */
+.baseballExtrasDecisionHeader {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 7px;
+  row-gap: 2px;
+  min-width: 0;
+}
+.baseballExtrasDecisionHeader small {
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.baseballExtrasDecisionTeam {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.baseballExtrasDecisionTeam::before {
+  content: "·";
+  margin-right: 7px;
+  color: var(--muted);
+}

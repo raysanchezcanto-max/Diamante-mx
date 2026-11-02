@@ -28,7 +28,7 @@ export type BaseballLineScore = {
     home: { runs?: number; hits?: number; errors?: number };
   };
 };
-export type BaseballDecision = { label: string; name: string; playerId?: number };
+export type BaseballDecision = { label: string; name: string; playerId?: number; teamName?: string };
 export type BaseballGameExtras = BaseballLineScore & {
   awayStats: BaseballTeamStats;
   homeStats: BaseballTeamStats;
@@ -86,23 +86,41 @@ export function baseballTeamStats(raw: any): BaseballTeamStats {
   return { batters: select(raw?.batters, "batting"), pitchers, starter: pitchers[0] };
 }
 
-export function baseballDecisions(raw: any): BaseballDecision[] {
+export function baseballDecisions(
+  raw: any,
+  boxscoreTeams?: any,
+  gameTeams?: any,
+): BaseballDecision[] {
+  const sideOf = (playerId: number): "away" | "home" | null => {
+    // Relacionar por ID con el boxscore oficial; nunca deducir el club
+    // a partir del nombre, el marcador o el rol ganador/perdedor.
+    const key = `ID${playerId}`;
+    const away = Boolean(boxscoreTeams?.away?.players?.[key]);
+    const home = Boolean(boxscoreTeams?.home?.players?.[key]);
+    if (away === home) return null;
+    return away ? "away" : "home";
+  };
+
   return ([
     ["PITCHER GANADOR", raw?.winner],
     ["PITCHER PERDEDOR", raw?.loser],
     ["SALVAMENTO", raw?.save],
-  ] as const).flatMap(([label, value]) =>
-    typeof value?.fullName === "string" && value.fullName.trim()
-      ? [{
-          label,
-          name: value.fullName.trim(),
-          playerId: typeof value.id === "number" &&
-            Number.isSafeInteger(value.id) && value.id > 0
-              ? value.id
-              : undefined,
-        }]
-      : []
-  );
+  ] as const).flatMap(([label, value]) => {
+    const name = typeof value?.fullName === "string"
+      ? value.fullName.trim()
+      : "";
+    if (!name) return [];
+    const playerId =
+      typeof value.id === "number" && Number.isSafeInteger(value.id) && value.id > 0
+        ? value.id
+        : undefined;
+    const side = playerId ? sideOf(playerId) : null;
+    const officialTeam = side ? gameTeams?.[side]?.name : null;
+    const teamName = typeof officialTeam === "string" && officialTeam.trim()
+      ? officialTeam.trim()
+      : undefined;
+    return [{ label, name, playerId, teamName }];
+  });
 }
 
 export function baseballExtrasFromFeed(data: any): BaseballGameExtras {
@@ -125,7 +143,11 @@ export function baseballExtrasFromFeed(data: any): BaseballGameExtras {
     } : undefined,
     awayStats: baseballTeamStats(data?.liveData?.boxscore?.teams?.away),
     homeStats: baseballTeamStats(data?.liveData?.boxscore?.teams?.home),
-    decisions: baseballDecisions(data?.liveData?.decisions),
+    decisions: baseballDecisions(
+      data?.liveData?.decisions,
+      data?.liveData?.boxscore?.teams,
+      data?.gameData?.teams,
+    ),
   };
 }
 
