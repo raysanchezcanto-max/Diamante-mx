@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 
 import LeagueTabs from "@/components/LeagueTabs";
+import CaribeRoadToFinal from "@/components/CaribeRoadToFinal";
+import CaribeFinalGameCard from "@/components/CaribeFinalGameCard";
+import { getCaribeTournament2027, resolveCaribeFinalWinner } from "@/lib/caribeTournament";
 import SmartHeader from "@/components/SmartHeader";
 import {
   CARIBE_2027,
   CARIBE_2027_PARTICIPANTS,
-  CARIBE_2027_STAGES,
 } from "@/lib/caribe";
 
 export const metadata: Metadata = {
@@ -16,7 +18,11 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default function SerieDelCaribePage() {
+export default async function SerieDelCaribePage() {
+  const tournament = await getCaribeTournament2027();
+  const finalMatch = tournament?.matches.find((match) => match.phase === "final") ?? null;
+  const finalChampion = resolveCaribeFinalWinner(finalMatch);
+  const showFinalCard = !!finalMatch?.home && !!finalMatch?.away && !finalChampion;
   const now = Date.now();
   const tournamentStart = new Date(CARIBE_2027.start).getTime();
   const tournamentEnd = new Date(CARIBE_2027.endExclusive).getTime();
@@ -65,8 +71,8 @@ export default function SerieDelCaribePage() {
       <section className="section" id="juegos">
         <div className="sectionHeader">
           <div>
-            <span className="eyebrow">SERIE DEL CARIBE · CAMPEÓN 2026</span>
-            <h2>El último campeón</h2>
+            <span className="eyebrow">SERIE DEL CARIBE · CAMPEÓN {finalChampion ? "2027" : "2026"}</span>
+            <h2>{finalChampion ? "Campeón Serie del Caribe 2027" : "El último campeón"}</h2>
           </div>
         </div>
 
@@ -77,26 +83,28 @@ export default function SerieDelCaribePage() {
 
           <div className="championCardTop">
             <span className="championBadge">
-              🏆 CAMPEÓN SERIE DEL CARIBE 2026
+              🏆 CAMPEÓN SERIE DEL CARIBE {finalChampion ? "2027" : "2026"}
             </span>
-            <span className="championChip">ZAPOPAN 2026</span>
+            <span className="championChip">{finalChampion ? "HERMOSILLO 2027" : "ZAPOPAN 2026"}</span>
           </div>
 
           <div className="championCardBody">
             <div className="championTrophy">
               <img
-                src="/logos/lmp/charros-jalisco.png"
-                alt="Escudo de Charros de Jalisco"
+                src={finalChampion?.winner.logoSrc ?? finalChampion?.winner.flagSrc ?? "/logos/lmp/charros-jalisco.png"}
+                alt={finalChampion ? `Escudo de ${finalChampion.winner.name}` : "Escudo de Charros de Jalisco"}
                 className="championTeamLogo"
               />
             </div>
-            <h3 className="championTeamName">Charros de Jalisco</h3>
+            <h3 className="championTeamName">{finalChampion?.winner.name ?? "Charros de Jalisco"}</h3>
             <div className="championResultPill">
               <span className="championResultLabel">
                 RESULTADO DE LA FINAL
               </span>
               <strong className="championResultText">
-                Charros de Jalisco 12 – 11 Tomateros de Culiacán
+                {finalChampion
+                  ? `${finalChampion.winner.name} ${finalChampion.winnerScore} – ${finalChampion.runnerUpScore} ${finalChampion.runnerUp.name}`
+                  : "Charros de Jalisco 12 – 11 Tomateros de Culiacán"}
               </strong>
             </div>
           </div>
@@ -178,38 +186,11 @@ export default function SerieDelCaribePage() {
         </div>
       </section>
 
-      <section className="section" id="formato">
-        <div className="sectionHeader">
-          <div>
-            <span className="eyebrow">CAMINO A LA GRAN FINAL</span>
-            <h2>Fases previstas</h2>
-          </div>
-        </div>
+      <CaribeRoadToFinal tournament={tournament} />
 
-        <div className="caribePhases">
-          {CARIBE_2027_STAGES.map((stage, index) => (
-            <div className="caribePhase" key={stage.name}>
-              <span>FASE {index + 1}</span>
-              <strong>{stage.name}</strong>
-              <p>{stage.dates}</p>
-            </div>
-          ))}
-        </div>
-
-        <p className="caribeFootnote">
-          Las fases proceden del anuncio de la CBPC. No se asignan partidos
-          ni horas hasta disponer del calendario oficial 2027.
-        </p>
-
-        <a
-          className="caribeOfficialLink"
-          href={CARIBE_2027.officialSource}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Consultar anuncio oficial ↗
-        </a>
-      </section>
+      {showFinalCard && finalMatch && (
+        <CaribeFinalGameCard game={finalMatch} />
+      )}
 
       <footer>
         <div className="brand small">

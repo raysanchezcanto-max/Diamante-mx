@@ -3603,3 +3603,117 @@ mlbWorldSeriesNextOnlyCompact strong {
     height: 85px;
   }
 }
+
+/* SERIE DEL CARIBE — Camino a la final, reutilizando tarjetas MLB */
+.caribeRoadSection .mlbPostseasonHistory {
+  margin-top: 16px;
+}
+
+.caribeRoadNote {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+
+.caribeRoadGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.caribeRoadMatch .mlbPostseasonSeriesTeam span {
+  color: var(--text);
+}
+
+.caribeRoadMatch .mlbPostseasonSeriesTeam > strong {
+  color: var(--muted);
+}
+
+.caribeRoadMatch .mlbPostseasonSeriesTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.caribeRoadMatch .mlbPostseasonSeriesTop > span {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.caribeRoadMatch .mlbPostseasonSeriesTop > .caribeRoadLive {
+  color: #ff6464;
+}
+
+.caribeFinalStatus {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.caribeFinalStatus.caribeFinalLive {
+  color: #ff6464;
+}
+
+.caribeFinalMatchup {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.caribeFinalTeam {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  min-width: 0;
+}
+
+.caribeFinalTeam img {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+}
+
+.caribeFinalTeam span {
+  font-size: 64px;
+}
+
+.caribeFinalTeam strong {
+  font-size: clamp(19px, 3vw, 29px);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.caribeFinalTeam b {
+  font-size: clamp(45px, 7vw, 76px);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.caribeFinalVenue {
+  position: relative;
+  z-index: 1;
+  margin-top: 25px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .caribeRoadGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .caribeFinalMatchup {
+    gap: 9px;
+  }
+  .caribeFinalTeam img {
+    width: 60px;
+    height: 60px;
+  }
+}
