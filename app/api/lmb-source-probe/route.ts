@@ -23,6 +23,12 @@ async function inspect(label: string, url: string) {
         inningCount: game.lineScore?.length,
         featureKeys: Object.keys(game).filter((k: string) =>
           /player|pitch|bat|stat|score|box|win|lose|save|detail|offense|defense/i.test(k)),
+        pitchers: {
+          winningPitcher: game.winningPitcher,
+          losingPitcher: game.losingPitcher,
+          savedBy: game.savedBy,
+        },
+        date: game.date_time,
         samples: Object.fromEntries(
           Object.entries(game).filter(([k]) =>
             /box|pitch|bat|stat|winner|loser|save/i.test(k)).slice(0, 8)
