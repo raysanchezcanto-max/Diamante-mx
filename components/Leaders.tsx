@@ -1,5 +1,5 @@
 import type { Leader } from "@/lib/mlb";
-import type { LeagueCode } from "@/lib/teamLogos";
+import { getTeamDisplayName, type LeagueCode } from "@/lib/teamLogos";
 
 function playerPhoto(
   league: LeagueCode,
@@ -67,7 +67,7 @@ function LeaderCard({
 
               <div className="player">
                 <strong>{p.name}</strong>
-                <small>{p.team}</small>
+                <small>{getTeamDisplayName(league, p.team)}</small>
               </div>
             </div>
 
