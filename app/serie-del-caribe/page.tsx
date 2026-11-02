@@ -72,7 +72,10 @@ export default async function SerieDelCaribePage() {
 
   return (
     <main>
-      <AutoRefresh enabled={hasLiveGame} intervalMs={15000} />
+      <AutoRefresh
+        enabled={hasLiveGame || (tournamentStarted && hasOfficialFixtures && !finalChampion)}
+        intervalMs={hasLiveGame ? 15000 : 60000}
+      />
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Diamante MX inicio">
           <span className="diamond">◆</span>

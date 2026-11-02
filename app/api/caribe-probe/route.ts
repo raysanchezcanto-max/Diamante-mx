@@ -99,9 +99,34 @@ export async function GET() {
     probe("Caribbean 2026 / hydrate linescore", base + "schedule?sportId=17&leagueId=162&startDate=2026-02-01&endDate=2026-02-07&hydrate=linescore"),
   ];
   const checks = await Promise.all(tasks);
+  const { getCaribeTournamentForYear, resolveCaribeFinalWinner } = await import(
+    "@/lib/caribeTournament"
+  );
+  const [historical, upcoming] = await Promise.all([
+    getCaribeTournamentForYear(2026),
+    getCaribeTournamentForYear(2027),
+  ]);
+  const phaseCounts = (tournament: typeof historical) =>
+    Object.fromEntries(
+      ["roundRobin", "semifinal", "thirdPlace", "final"].map((phase) => [
+        phase, tournament?.matches.filter((game) => game.phase === phase).length ?? 0
+      ])
+    );
+  const final2026 = historical?.matches.find((game) => game.phase === "final") ?? null;
+  const historicalWinner = resolveCaribeFinalWinner(final2026);
   return NextResponse.json({
     kind: "temporary_caribe_source_probe",
     checkedAt: new Date().toISOString(),
     checks,
+    adapter: {
+      historicalCount: historical?.matches.length ?? 0,
+      historicalPhases: phaseCounts(historical),
+      historicalChampion: historicalWinner?.winner.name ?? null,
+      historicalFinalScore: historicalWinner
+        ? [historicalWinner.winnerScore, historicalWinner.runnerUpScore]
+        : null,
+      futureCount: upcoming?.matches.length ?? 0,
+      futurePhases: phaseCounts(upcoming),
+    }
   }, { headers: { "Cache-Control": "no-store, max-age=0" } });
 }
