@@ -3349,3 +3349,37 @@ mlbWorldSeriesNextOnlyCompact strong {
   margin-top: 12px;
   padding-top: 18px;
 }
+
+/* DIAMANTE MX - CAMPEON RESPONSIVE MOVIL */
+@media (max-width: 720px) {
+  .championCardPro .championCardBody {
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+  }
+
+  .championCardPro .championTeamName {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-size: clamp(26px, 7vw, 34px);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+
+  .championCardPro .championResultPill {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 12px 10px;
+  }
+
+  .championCardPro .championResultText {
+    display: block;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+    font-size: clamp(12px, 3.6vw, 16px);
+  }
+}
