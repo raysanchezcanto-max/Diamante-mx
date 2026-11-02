@@ -157,17 +157,22 @@ export async function getBaseballGameExtras(
 ): Promise<BaseballGameExtras | null> {
   if (!Number.isSafeInteger(gameId) || gameId <= 0) return null;
   if (league === "LMB") {
-    try {
-      const game = await getLmbGameInfo(gameId);
-      if (!game) return null;
-      const lines = Array.isArray(game.lineScore)
+    // LMB y MLB Stats API comparten gamePk. Verificación 846674:
+    // Conspiradores–Leones 11–5, mismos nombres, pitchers y decisiones.
+    // La API LMB permanece de respaldo para marcador por entradas.
+    const game = await getLmbGameInfo(gameId);
+    if (!game) return null;
+
+    const fallback: BaseballGameExtras = {
+      lines: Array.isArray(game.lineScore)
         ? game.lineScore.map((entry: any) => ({
             number: Number(entry?.inningNumber ?? 0),
             away: finiteBaseballNumber(entry?.awayTeamRuns),
             home: finiteBaseballNumber(entry?.homeTeamRuns),
-          })).filter((line: { number: number }) => Number.isSafeInteger(line.number) && line.number > 0)
-        : [];
-      const totals = {
+          })).filter((line: { number: number }) =>
+            Number.isSafeInteger(line.number) && line.number > 0)
+        : [],
+      totals: {
         away: {
           runs: finiteBaseballNumber(game?.awayTeam?.runsScored),
           hits: finiteBaseballNumber(game?.awayTeam?.totalHits),
@@ -178,9 +183,45 @@ export async function getBaseballGameExtras(
           hits: finiteBaseballNumber(game?.localTeam?.totalHits),
           errors: finiteBaseballNumber(game?.localTeam?.totalErrors),
         },
+      },
+      awayStats: emptyTeam(),
+      homeStats: emptyTeam(),
+      decisions: [],
+    };
+
+    try {
+      const response = await fetch(
+        `https://statsapi.mlb.com/api/v1.1/game/${gameId}/feed/live`,
+        { next: { revalidate: 15 }, signal: AbortSignal.timeout(7500) },
+      );
+      if (!response.ok) return fallback;
+      const data = await response.json();
+      if (Number(data?.gamePk) !== gameId ||
+          !data?.liveData?.boxscore?.teams) return fallback;
+
+      // Comprobar pertenencia con los nombres de ambos clubes y evitar
+      // aplicar estadísticas de otra competición por error.
+      const normalized = (v: unknown) => typeof v === "string"
+        ? v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim()
+        : "";
+      const matchName = (official: unknown, feed: unknown) => {
+        const a = normalized(official), b = normalized(feed);
+        return Boolean(a && b && (a.includes(b) || b.includes(a)));
       };
-      return { lines, totals, awayStats: emptyTeam(), homeStats: emptyTeam(), decisions: [] };
-    } catch { return null; }
+      if (!matchName(game.awayTeam?.name, data?.gameData?.teams?.away?.name) ||
+          !matchName(game.localTeam?.name, data?.gameData?.teams?.home?.name)) {
+        return fallback;
+      }
+
+      const parsed = baseballExtrasFromFeed(data);
+      return {
+        ...parsed,
+        lines: parsed.lines.length ? parsed.lines : fallback.lines,
+        totals: parsed.totals ?? fallback.totals,
+      };
+    } catch {
+      return fallback;
+    }
   }
   try {
     const response = await fetch(

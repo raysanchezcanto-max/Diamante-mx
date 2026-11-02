@@ -27,7 +27,9 @@ export default function GamePitcher({
       ? `https://images.cloudgfx.com/player/mugshot/${pitcher.id}?app=lamp&h=350&w=250`
       : league === "MLB"
         ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${pitcher.id}/headshot/67/current`
-        : null
+        : league === "LMB"
+          ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_70,g_auto,c_fill/v1/people/${pitcher.id}/headshot/milb/current`
+          : null
     : null;
 
   return (

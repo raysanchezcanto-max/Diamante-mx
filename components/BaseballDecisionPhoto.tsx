@@ -19,11 +19,13 @@ export default function BaseballDecisionPhoto({
 
   const url = league === "LMP"
     ? `https://images.cloudgfx.com/player/mugshot/${playerId}?app=lamp&h=100&w=100`
-    : league === "MLB" || league === "CARIBE"
+    : league === "LMB"
+      ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_70,g_auto,c_fill/v1/people/${playerId}/headshot/milb/current`
+      : league === "MLB" || league === "CARIBE"
       ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${playerId}/headshot/67/current`
       : null;
 
-  // Aún no está confirmada la fuente de fotos por ID para LMB.
+  // Para LMB usamos la URL milb/current comprobada en la fuente oficial.
   if (!url) return null;
 
   return (
