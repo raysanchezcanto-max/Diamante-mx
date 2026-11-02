@@ -3408,4 +3408,49 @@ mlbWorldSeriesNextOnlyCompact strong {
   }
 }
 
+/* SERIE MUNDIAL - TABLAS BATEO Y PITCHEO DESLIZABLES EN MOVIL */
+.mlbWsSwipeHint {
+  display: none;
+}
 
+@media (max-width: 760px) {
+  .mlbWorldSeriesDetailsContent {
+    min-width: 0;
+  }
+
+  .mlbWorldSeriesDetailsContent .mlbWsStatsTable {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+
+  .mlbWorldSeriesDetailsContent .mlbWsHittingRow {
+    min-width: 680px;
+  }
+
+  .mlbWorldSeriesDetailsContent .mlbWsPitchingRow {
+    min-width: 740px;
+  }
+
+  .mlbWsSwipeHint {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 0 2px 8px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .mlbWsSwipeHint span {
+    color: var(--accent);
+    font-size: 17px;
+  }
+}

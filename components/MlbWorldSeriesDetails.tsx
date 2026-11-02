@@ -632,7 +632,11 @@ export default function MlbWorldSeriesDetails({
         <>
           {stats &&
           stats.hitting.length > 0 ? (
-            <div className="mlbWsStatsTable">
+            <>
+              <div className="mlbWsSwipeHint" aria-hidden="true">
+                DESLIZA PARA VER MÁS <span>→</span>
+              </div>
+              <div className="mlbWsStatsTable" role="region" tabIndex={0} aria-label="Estadísticas de bateo de la Serie Mundial, desliza horizontalmente para ver todas las columnas">
               <div className="mlbWsStatsHeader mlbWsHittingRow">
                 <span>JUGADOR</span>
                 <span>EQUIPO</span>
@@ -650,7 +654,8 @@ export default function MlbWorldSeriesDetails({
                   />
                 )
               )}
-            </div>
+              </div>
+            </>
           ) : (
             <div className="mlbWsStatsEmpty">
               Las estadísticas de bateo
@@ -666,7 +671,11 @@ export default function MlbWorldSeriesDetails({
         <>
           {stats &&
           stats.pitching.length > 0 ? (
-            <div className="mlbWsStatsTable">
+            <>
+              <div className="mlbWsSwipeHint" aria-hidden="true">
+                DESLIZA PARA VER MÁS <span>→</span>
+              </div>
+              <div className="mlbWsStatsTable" role="region" tabIndex={0} aria-label="Estadísticas de pitcheo de la Serie Mundial, desliza horizontalmente para ver todas las columnas">
               <div className="mlbWsStatsHeader mlbWsPitchingRow">
                 <span>PITCHER</span>
                 <span>EQUIPO</span>
@@ -685,7 +694,8 @@ export default function MlbWorldSeriesDetails({
                   />
                 )
               )}
-            </div>
+              </div>
+            </>
           ) : (
             <div className="mlbWsStatsEmpty">
               Las estadísticas de pitcheo
