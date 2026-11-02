@@ -217,15 +217,20 @@ const isLive =
   !isLmpWarmup &&
   !specialStatus;
 
+
 const showProbablePitchers =
   !isLive &&
   !isFinal &&
   !specialStatus &&
   (game.status === "Preview" || isLmpWarmup) &&
-  Boolean(
-    game.awayProbablePitcher ||
-    game.homeProbablePitcher
+  (
+    league === "LMP" ||
+    Boolean(
+      game.awayProbablePitcher ||
+      game.homeProbablePitcher
+    )
   );
+
 
 
 
