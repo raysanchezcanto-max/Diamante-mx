@@ -34,6 +34,12 @@ export type GameDetails = {
     name: string;
   };
 
+  // Lanzadores que realmente iniciaron el encuentro LMP.
+  awayStartingPitcher?: { id: number; name: string };
+  homeStartingPitcher?: { id: number; name: string };
+  awayStarterReplaced?: boolean;
+  homeStarterReplaced?: boolean;
+
   startTime: string;
   
   startTimeTBD?: boolean;
@@ -458,6 +464,59 @@ const firstPitchRecorded =
       )
     : undefined;
 
+    // Abridores reales: primer lanzador con pitcheos registrados
+    // por equipo. Los cambios se detectan por un ID diferente.
+    const getLmpPitchersUsed = (
+      side: "away" | "home"
+    ): Array<{ id: number; name: string }> => {
+      if (league !== "LMP") return [];
+
+      const defendingHalf =
+        side === "home" ? "top" : "bottom";
+      const recordedIds = new Set<number>();
+      const used: Array<{ id: number; name: string }> = [];
+
+      for (const play of lmpPlays) {
+        if (play?.about?.halfInning !== defendingHalf) {
+          continue;
+        }
+
+        if (
+          !Array.isArray(play?.playEvents) ||
+          !play.playEvents.some(
+            (event: any) => event?.isPitch === true
+          )
+        ) {
+          continue;
+        }
+
+        const pitcher = play?.matchup?.pitcher;
+        const id = pitcher?.id;
+        if (typeof id !== "number" || recordedIds.has(id)) {
+          continue;
+        }
+
+        const name =
+          pitcher?.fullName ??
+          liveData?.boxscore?.teams?.[side]
+            ?.players?.[`ID${id}`]?.person?.fullName ??
+          gameData?.players?.[`ID${id}`]?.fullName;
+
+        if (typeof name !== "string" || !name.trim()) {
+          continue;
+        }
+
+        used.push({ id, name });
+        recordedIds.add(id);
+      }
+
+      return used;
+    };
+
+    const awayPitchersUsed = getLmpPitchersUsed("away");
+    const homePitchersUsed = getLmpPitchersUsed("home");
+
+
 
    
     return {
@@ -482,6 +541,11 @@ const firstPitchRecorded =
             )
           : undefined,
 
+
+      awayStartingPitcher: awayPitchersUsed[0],
+      homeStartingPitcher: homePitchersUsed[0],
+      awayStarterReplaced: awayPitchersUsed.length > 1,
+      homeStarterReplaced: homePitchersUsed.length > 1,
 
       awayProbablePitcher:
         typeof gameData?.probablePitchers?.away?.id === "number" &&
