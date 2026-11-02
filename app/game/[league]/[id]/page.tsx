@@ -218,18 +218,43 @@ const isLive =
   !specialStatus;
 
 
-const showProbablePitchers =
-  !isLive &&
+const showPitchers =
   !isFinal &&
   !specialStatus &&
-  (game.status === "Preview" || isLmpWarmup) &&
-  (
-    league === "LMP" ||
-    Boolean(
-      game.awayProbablePitcher ||
-      game.homeProbablePitcher
-    )
-  );
+  (isLive
+    ? league === "LMP" &&
+      Boolean(
+        game.awayStartingPitcher ||
+        game.homeStartingPitcher
+      )
+    : (game.status === "Preview" || isLmpWarmup) &&
+      (
+        league === "LMP" ||
+        Boolean(
+          game.awayProbablePitcher ||
+          game.homeProbablePitcher
+        )
+      ));
+
+const awayDisplayedPitcher =
+  league === "LMP" && isLive
+    ? game.awayStartingPitcher
+    : game.awayProbablePitcher;
+
+const homeDisplayedPitcher =
+  league === "LMP" && isLive
+    ? game.homeStartingPitcher
+    : game.homeProbablePitcher;
+
+const awayPitcherLabel =
+  league === "LMP" && isLive
+    ? game.awayStarterReplaced ? "ABRIÓ" : "ABRIDOR"
+    : "P. PROBABLE";
+
+const homePitcherLabel =
+  league === "LMP" && isLive
+    ? game.homeStarterReplaced ? "ABRIÓ" : "ABRIDOR"
+    : "P. PROBABLE";
 
 
 
@@ -455,12 +480,14 @@ const time =
 </strong>
             ) : null}
   
-{showProbablePitchers && (
-  <GamePitcher
-    pitcher={game.awayProbablePitcher}
-    league={league}
-  />
-)}
+{showPitchers &&
+  (!isLive || league !== "LMP" || awayDisplayedPitcher) && (
+    <GamePitcher
+      pitcher={awayDisplayedPitcher}
+      league={league}
+      label={awayPitcherLabel}
+    />
+  )}
 
           </div>
 
@@ -616,12 +643,14 @@ const time =
 </strong>
             ) : null}
   
-{showProbablePitchers && (
-  <GamePitcher
-    pitcher={game.homeProbablePitcher}
-    league={league}
-  />
-)}
+{showPitchers &&
+  (!isLive || league !== "LMP" || homeDisplayedPitcher) && (
+    <GamePitcher
+      pitcher={homeDisplayedPitcher}
+      league={league}
+      label={homePitcherLabel}
+    />
+  )}
 
           </div>
         </div>
