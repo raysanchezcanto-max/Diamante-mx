@@ -1,5 +1,5 @@
 type LeagueTabsProps = {
-  activeLeague: "MLB" | "LMB" | "LMP";
+  activeLeague: "MLB" | "LMB" | "LMP" | "CARIBE";
 };
 
 export default function LeagueTabs({
@@ -43,6 +43,13 @@ export default function LeagueTabs({
           }
         >
           LMP
+        </a>
+
+        <a
+          href="/serie-del-caribe"
+          className={activeLeague === "CARIBE" ? "tab active" : "tab"}
+        >
+          CARIBE
         </a>
       </div>
     </div>

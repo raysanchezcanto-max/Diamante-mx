@@ -3454,3 +3454,212 @@ mlbWorldSeriesNextOnlyCompact strong {
     font-size: 14px;
   }
 }
+
+/* SERIE DEL CARIBE: cuarta pestaña, mismo lenguaje visual Diamante MX */
+.caribeIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 280px);
+  align-items: center;
+  gap: 20px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(130deg, #172b1a 0%, var(--panel) 76%);
+}
+
+.caribeIntro h3 {
+  font-size: clamp(27px, 4.2vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin: 14px 0;
+}
+
+.caribeIntro p,
+.caribeStatusMessage,
+.caribeFootnote {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.caribeCountdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 150px;
+  border-left: 1px solid var(--line);
+  padding: 12px;
+}
+
+.caribeCountdown strong {
+  font-size: clamp(54px, 8vw, 88px);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text);
+}
+
+.caribeCountdown span {
+  margin-top: 12px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.caribeChampion {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #183522, #102019);
+  border: 1px solid rgba(215,255,79,.22);
+}
+
+.caribeChampion img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  flex: 0 0 72px;
+}
+
+.caribeChampion strong {
+  display: block;
+  margin: 8px 0 4px;
+  font-size: clamp(21px, 3vw, 28px);
+}
+
+.caribeChampion p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 4px 0 0;
+}
+
+.caribeCountryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.caribeCountry {
+  padding: 18px;
+  min-width: 0;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.caribeCountryTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.caribeCountryTop span {
+  font-size: 28px;
+}
+
+.caribeCountryTop strong {
+  font-size: 16px;
+}
+
+.caribeCountry p {
+  margin: 12px 0 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.caribeCountry small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.caribePhases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.caribePhase {
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.caribePhase span {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+
+.caribePhase strong {
+  display: block;
+  margin: 10px 0 7px;
+  font-size: 17px;
+}
+
+.caribePhase p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.caribeOfficialLink {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--text);
+  border-bottom: 1px solid var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 15px;
+  padding-bottom: 3px;
+}
+
+@media (max-width: 600px) {
+  .leagueWrap .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3px;
+  }
+
+  .leagueWrap .tab {
+    min-width: 0;
+    padding: 13px 4px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .caribeIntro {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 20px;
+  }
+
+  .caribeCountdown {
+    min-height: 115px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .caribeCountryGrid,
+  .caribePhases {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .caribeChampion {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .caribeChampion img {
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+  }
+}
