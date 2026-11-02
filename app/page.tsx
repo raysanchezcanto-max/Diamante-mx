@@ -64,39 +64,55 @@ const selectedLeague:
       ? "LMP"
       : "MLB";
   
-const sourceActivity = await getSourceActivity(selectedLeague);
+// LMB consultaba los bloques en serie, acumulando esperas.
+// Ejecutarlos a la vez conserva cada respuesta y su fuente oficial.
+const lmbStartedAt = Date.now();
+const trackLmb = async <T,>(label: string, request: Promise<T>): Promise<T> => {
+  const result = await request;
+  console.info(`[LMB LOAD] ${label}: ${Date.now() - lmbStartedAt} ms`);
+  return result;
+};
 
-
-  const [games, standings, leaders] =
+const lmbData =
   selectedLeague === "LMB"
     ? await Promise.all([
-        getLmbGames(),
-        getLmbStandings(),
-        getLmbLeaders(),
-      ])
-    : selectedLeague === "LMP"
-      ? await Promise.all([
-          getLmpGames(),
-          getLmpStandings(),
-          getLmpLeaders(),
-        ])
-      : await Promise.all([
-          getGames(),
-          getStandings(),
-          getLeaders(),
-        ]);
-
-const nextGames =
-  await getNextGames(selectedLeague);
-   
-     
- const recentGames =
-  await getRecentGames(selectedLeague);
-
-const lmbChampion =
-  selectedLeague === "LMB"
-    ? await getLmbChampion()
+        trackLmb("actividad", getSourceActivity("LMB")),
+        trackLmb("juegos", getLmbGames()),
+        trackLmb("posiciones", getLmbStandings()),
+        trackLmb("líderes", getLmbLeaders()),
+        trackLmb("próximos", getNextGames("LMB")),
+        trackLmb("recientes", getRecentGames("LMB")),
+        trackLmb("campeón", getLmbChampion()),
+      ] as const)
     : null;
+
+const sourceActivity = lmbData
+  ? lmbData[0]
+  : await getSourceActivity(selectedLeague);
+
+const [games, standings, leaders] = lmbData
+  ? [lmbData[1], lmbData[2], lmbData[3]]
+  : selectedLeague === "LMP"
+    ? await Promise.all([
+        getLmpGames(),
+        getLmpStandings(),
+        getLmpLeaders(),
+      ])
+    : await Promise.all([
+        getGames(),
+        getStandings(),
+        getLeaders(),
+      ]);
+
+const nextGames = lmbData
+  ? lmbData[4]
+  : await getNextGames(selectedLeague);
+
+const recentGames = lmbData
+  ? lmbData[5]
+  : await getRecentGames(selectedLeague);
+
+const lmbChampion = lmbData ? lmbData[6] : null;
   const lmpChampion =
   selectedLeague === "LMP"
     ? await getLmpChampion()
