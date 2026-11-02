@@ -55,8 +55,8 @@ export async function GET(request: Request){
   if(!(id in teams))return NextResponse.json({error:"unknown_team"},{status:404});
   const source=photoSrc(html,teams[id]);
   if(!source)return NextResponse.json({error:"no_official_logo",id},{status:404});
-  // Imagen nítida de 384 px, misma fuente visual LMB, sin redibujar escudos.
-  const optimized="https://lmb.com.mx/_next/image?url="+encodeURIComponent(source)+"&w=384&q=85";
+  // Imagen nítida de 256 px, misma fuente visual LMB, sin redibujar escudos.
+  const optimized="https://lmb.com.mx/_next/image?url="+encodeURIComponent(source)+"&w=256&q=85";
   const image=await fetch(optimized,{cache:"no-store",signal:AbortSignal.timeout(10000),headers:{"Accept":"image/webp,image/avif,image/*"}});
   if(!image.ok)return NextResponse.json({error:"cdn_error",status:image.status,id},{status:502});
   const type=image.headers.get("content-type")??"";
