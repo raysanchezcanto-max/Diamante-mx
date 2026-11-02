@@ -8,6 +8,7 @@ type ProbeResult = {
   games?: number;
   sample?: { id: number; away: string; home: string; awayScore?: number; homeScore?: number; state?: string }[];
   apiStatus?: string;
+  classification?: unknown[];
   error?: string;
 };
 
@@ -27,6 +28,22 @@ async function probe(label: string, url: string): Promise<ProbeResult> {
         label,
         httpStatus: res.status,
         games: games.length,
+        classification: games
+          .filter((g: any) => String(g.officialDate ?? g.gameDate ?? "").includes("-06") || String(g.officialDate ?? g.gameDate ?? "").includes("-07"))
+          .map((g: any) => ({
+            gamePk: g.gamePk,
+            officialDate: g.officialDate,
+            gameDate: g.gameDate,
+            gameType: g.gameType,
+            description: g.description,
+            seriesDescription: g.seriesDescription,
+            gamesInSeries: g.gamesInSeries,
+            seriesGameNumber: g.seriesGameNumber,
+            status: g.status?.detailedState,
+            awayId: g.teams?.away?.team?.id,
+            homeId: g.teams?.home?.team?.id,
+            keys: Object.keys(g).slice(0, 40),
+          })),
         sample: games.slice(0, 4).map((g: any) => ({
           id: g.gamePk,
           away: g.teams?.away?.team?.name ?? "?",
