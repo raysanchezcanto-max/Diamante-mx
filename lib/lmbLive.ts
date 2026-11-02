@@ -167,7 +167,15 @@ export async function getLmbCalendar(
     const response = await fetch(
       `https://lmb.com.mx/juegos/api/calendar?date=${date}&daysFromNow=0&startDate=${startDate}&endDate=${endDate}`,
       {
-        cache: "no-store",
+        // Hoy y ayer no usan caché: los juegos pueden seguir en vivo
+        // después de medianoche. El resto del calendario sí se guarda.
+        ...(offsetDays === 0 || offsetDays === -1
+          ? { cache: "no-store" as const }
+          : {
+              next: {
+                revalidate: offsetDays <= -7 ? 21600 : 900,
+              },
+            }),
         headers: {
           Accept: "application/json",
         },
