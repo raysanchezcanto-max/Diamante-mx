@@ -1,6 +1,7 @@
 import type { Standing } from "@/lib/mlb";
 import {
   getTeamLogo,
+  getTeamDisplayName,
   type LeagueCode,
 } from "@/lib/teamLogos";
 
@@ -59,6 +60,10 @@ export default function Standings({
                           s.division === division
                       )
                       .map((row) => {
+                        const displayName = getTeamDisplayName(
+                          league,
+                          row.team
+                        );
                         const logo =
                           getTeamLogo(
                             league,
@@ -73,7 +78,7 @@ export default function Standings({
                                 {logo && (
                                   <img
                                     src={logo}
-                                    alt={`Logo de ${row.team}`}
+                                    alt={`Logo de ${displayName}`}
                                     width={26}
                                     height={26}
                                     loading="lazy"
@@ -81,7 +86,7 @@ export default function Standings({
                                 )}
 
                                 <span>
-                                  {row.team}
+                                  {displayName}
                                 </span>
                               </div>
                             </td>

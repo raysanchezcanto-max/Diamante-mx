@@ -115,6 +115,31 @@ function normalizeTeamName(name: string) {
     .trim();
 }
 
+
+// Nombres visibles de LMP. Se conservan intactos los nombres de la API
+// para búsquedas, identificadores y resolución de logos.
+const LMP_DISPLAY_NAMES: Record<string, string> = {
+  "algodoneros de guasave": "Algodoneros de Guasave",
+  "aguilas de mexicali": "Águilas de Mexicali",
+  "naranjeros de hermosillo": "Naranjeros de Hermosillo",
+  "tomateros de culiacan": "Tomateros de Culiacán",
+  "charros de jalisco": "Charros de Jalisco",
+  "yaquis de obregon": "Yaquis de Obregón",
+  "venados de mazatlan": "Venados de Mazatlán",
+  "caneros de los mochis": "Cañeros de Los Mochis",
+  "mayos de navojoa": "Mayos de Navojoa",
+  "jaguares de nayarit": "Jaguares de Nayarit",
+};
+
+export function getTeamDisplayName(
+  league: LeagueCode,
+  teamName: string
+): string {
+  return league === "LMP"
+    ? LMP_DISPLAY_NAMES[normalizeTeamName(teamName)] ?? teamName
+    : teamName;
+}
+
 export function getTeamLogo(
   league: LeagueCode,
   teamId: number,
