@@ -32,7 +32,29 @@ export default async function SerieDelCaribePage() {
   const tournamentStart = new Date(CARIBE_2027.start).getTime();
   const tournamentEnd = new Date(CARIBE_2027.endExclusive).getTime();
   const tournamentStarted = now >= tournamentStart;
-  const showChampion = !tournamentStarted || Boolean(finalChampion);
+  // Ocultar tarjetas vacías hasta que un proveedor oficial entregue
+  // al menos un enfrentamiento real y confirmado de cada fase.
+  const hasOfficialFixtures = Boolean(tournament?.matches.some(
+    (game) =>
+      (game.phase === "roundRobin" || game.phase === "thirdPlace") &&
+      game.home &&
+      game.away
+  ));
+  const hasOfficialSemifinals = Boolean(tournament?.matches.some(
+    (game) =>
+      game.phase === "semifinal" &&
+      game.home &&
+      game.away
+  ));
+  // Sin un calendario enlazado no retiramos al último campeón,
+  // incluso si ya pasó la fecha de inicio.
+  const showActiveTournament = tournamentStarted && (
+    hasOfficialFixtures ||
+    hasOfficialSemifinals ||
+    showFinalCard ||
+    Boolean(finalChampion)
+  );
+  const showChampion = !showActiveTournament || Boolean(finalChampion);
   const hasLiveGame = tournament?.matches.some((game) =>
     game.state === "Live" || game.state === "Warmup"
   ) ?? false;
@@ -57,9 +79,9 @@ export default async function SerieDelCaribePage() {
           <span><strong>DIAMANTE</strong><em>MX</em></span>
         </a>
         <nav>
-          <a href="#juegos">Juegos</a>
+          {hasOfficialFixtures && <a href="#juegos">Juegos</a>}
           <a href="#participantes">Participantes</a>
-          <a href="#semifinales">Semifinales</a>
+          {hasOfficialSemifinals && <a href="#semifinales">Semifinales</a>}
         </nav>
       </header>
 
@@ -83,11 +105,11 @@ export default async function SerieDelCaribePage() {
         <CaribeFinalGameCard game={finalMatch} />
       )}
 
-      {tournamentStarted && !finalChampion && (
+      {tournamentStarted && hasOfficialFixtures && !finalChampion && (
         <CaribeFixtures tournament={tournament} started />
       )}
 
-      {tournamentStarted && !finalChampion && (
+      {tournamentStarted && hasOfficialSemifinals && !finalChampion && (
         <CaribeSemifinals tournament={tournament} />
       )}
 
@@ -142,8 +164,12 @@ export default async function SerieDelCaribePage() {
 
       {tournamentStarted && finalChampion && (
         <>
-          <CaribeFixtures tournament={tournament} started />
-          <CaribeSemifinals tournament={tournament} />
+          {hasOfficialFixtures && (
+            <CaribeFixtures tournament={tournament} started />
+          )}
+          {hasOfficialSemifinals && (
+            <CaribeSemifinals tournament={tournament} />
+          )}
         </>
       )}
 
@@ -226,10 +252,14 @@ export default async function SerieDelCaribePage() {
         </div>
       </section>
 
-      {!tournamentStarted && (
+      {!tournamentStarted && (hasOfficialFixtures || hasOfficialSemifinals) && (
         <>
-          <CaribeFixtures tournament={tournament} started={false} />
-          <CaribeSemifinals tournament={tournament} />
+          {hasOfficialFixtures && (
+            <CaribeFixtures tournament={tournament} started={false} />
+          )}
+          {hasOfficialSemifinals && (
+            <CaribeSemifinals tournament={tournament} />
+          )}
         </>
       )}
 
