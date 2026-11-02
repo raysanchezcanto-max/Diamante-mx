@@ -66,15 +66,17 @@ function PlayerStats({ team, name }: { team: CaribeGameTeamStats; name: string }
 
 function Pitcher({
   starter,
-  currentId,
+  pitchersUsed,
   status,
 }: {
   starter?: CaribeStatPlayer;
-  currentId?: number;
+  pitchersUsed: number;
   status: string;
 }) {
   if (!starter) return null;
-  const replaced = status === "EN VIVO" && currentId != null && currentId !== starter.id;
+  // La aparición de un relevista de este mismo equipo convierte
+  // ABRIDOR en ABRIÓ. No comparar contra el lanzador del rival.
+  const replaced = status === "EN VIVO" && pitchersUsed > 1;
   return (
     <GamePitcher
       league="MLB"
@@ -127,7 +129,7 @@ export default async function CaribeGamePage({ params }: Props) {
             <h1>{match.away?.name ?? "Por confirmar"}</h1>
             <strong className="matchupScore">{number(match.awayScore)}</strong>
             {(live || final) && <Pitcher starter={feed.awayStats.starter}
-              currentId={feed.currentPitcher?.id} status={status} />}
+              pitchersUsed={feed.awayStats.pitchers.length} status={status} />}
           </div>
           <div className="matchupCenter">
             <div className="caribeDetailCenter">
@@ -142,7 +144,7 @@ export default async function CaribeGamePage({ params }: Props) {
             <h1>{match.home?.name ?? "Por confirmar"}</h1>
             <strong className="matchupScore">{number(match.homeScore)}</strong>
             {(live || final) && <Pitcher starter={feed.homeStats.starter}
-              currentId={feed.currentPitcher?.id} status={status} />}
+              pitchersUsed={feed.homeStats.pitchers.length} status={status} />}
           </div>
         </div>
       </section>
