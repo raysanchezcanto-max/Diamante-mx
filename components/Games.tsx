@@ -902,7 +902,7 @@ const mlbWorldSeriesWinsToTitle =
 
 const mlbWorldSeriesGoalText =
   mlbWorldSeries?.champion
-    ? `${mlbWorldSeries.champion.name.toUpperCase()} CAMPEÓN`
+    ? `${getTeamDisplayName("MLB", mlbWorldSeries.champion.name).toUpperCase()} CAMPEÓN`
     : mlbWorldSeriesLeader &&
       mlbWorldSeriesWinsToTitle === 1 &&
       mlbWorldSeriesCurrentGameIsToday &&
@@ -1241,13 +1241,13 @@ const hasAnyGames =
             {mlbWorldSeriesTeamALogo && (
               <img
                 src={mlbWorldSeriesTeamALogo}
-                alt={mlbWorldSeries.teamA.name}
+                alt={getTeamDisplayName("MLB", mlbWorldSeries.teamA.name)}
                 className="championTeamLogo"
               />
             )}
 
             <strong>
-              {mlbWorldSeries.teamA.name}
+              {getTeamDisplayName("MLB", mlbWorldSeries.teamA.name)}
             </strong>
             
 {mlbWorldSeriesCurrentGame && (
@@ -1489,13 +1489,13 @@ const hasAnyGames =
   {mlbWorldSeriesTeamBLogo && (
     <img
       src={mlbWorldSeriesTeamBLogo}
-      alt={mlbWorldSeries.teamB.name}
+      alt={getTeamDisplayName("MLB", mlbWorldSeries.teamB.name)}
       className="championTeamLogo"
     />
   )}
 
   <strong>
-    {mlbWorldSeries.teamB.name}
+    {getTeamDisplayName("MLB", mlbWorldSeries.teamB.name)}
   </strong>
             
 {mlbWorldSeriesCurrentGame && (
@@ -1934,7 +1934,7 @@ const hasAnyGames =
   {championLogo ? (
     <img
       src={championLogo}
-    alt={championData.champion}
+    alt={getTeamDisplayName(league, championData.champion)}
       className="championTeamLogo"
     />
   ) : (
@@ -1945,7 +1945,7 @@ const hasAnyGames =
    
 
       <h3 className="championTeamName">
-       {championData.champion}
+       {getTeamDisplayName(league, championData.champion)}
       </h3>
 
      
@@ -1956,11 +1956,11 @@ const hasAnyGames =
         </span>
 
         <strong className="championResultText">
-         {championData.champion}{" "}
+         {getTeamDisplayName(league, championData.champion)}{" "}
 {championData.championWins}
 {" – "}
 {championData.runnerUpWins}{" "}
-{championData.runnerUp}
+{getTeamDisplayName(league, championData.runnerUp)}
         </strong>
       </div>
     </div>
