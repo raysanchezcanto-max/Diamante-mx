@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "mx.diamantemx.app",
+      "sha256_cert_fingerprints": [
+        "C1:23:09:F5:05:10:92:A2:CD:7C:65:5D:B6:51:DC:C0:7B:ED:29:9B:5A:10:25:96:8E:83:5E:71:AA:0C:0D:D4"
+      ]
+    }
+  }
+]
