@@ -1,8 +1,8 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 29 de octubre de 2026  
+**Última revisión:** 2 de noviembre de 2026  
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual:** LMP, después LMB.  
+**Prioridad actual:** registrar cambios verificados, comprobar experiencias móviles y preparar PWA/Android; continuar validaciones pendientes LMP/LMB.  
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
@@ -100,3 +100,37 @@
 **Hallazgo y corrección en vivo de LMP (29/oct/2026):** en pantalla de inicio, `components/Games.tsx` eliminaba juegos de doble cartelera al deduplicar con `fecha-equipos`; se reemplazó por `game.id` cuando es distinto de cero. Captura de la usuaria confirma **siete tarjetas** y **dos EN VIVO** (Mayos–Algodoneros y Águilas–Jaguares), frente a cinco tarjetas HOY antes del cambio. **No eran duplicados**: esos dos cruces disputan dos encuentros distintos en el mismo día por la reprogramación de la lluvia del 28/oct. Aún existe un problema de UX/dato horario: los **segundos juegos** aparecen HOY **6:05 p.m.**, misma hora que el primero; fuentes de calendario externo los listan con horario posterior/tentativo. **Progreso:** `gameNumber` y `doubleHeader` ya se mapean para juegos de hoy y las tarjetas tienen etiquetas JUEGO 1 / JUEGO 2 (Pasos 26–28), aunque falta prueba visual de ambas etiquetas. **Próximo paso:** no anunciar una hora engañosa para el segundo juego consecutivo (`doubleHeader=Y`, `gameNumber=2`), sin cambiar las horas específicas que la fuente publique para jornadas de boleto separado (`doubleHeader=S`). Hacer un cambio pequeño por vez. No alterar husos horarios por este hallazgo; EN VIVO ya funcionó al conservar IDs.
 
 **Revisión técnica independiente recibida:** Claude identificó riesgos adicionales (pospuestos/suspendidos, diferencia entre estado en tarjetas y detalle, broadcasts `channels`/`tvChannels`, llamadas numerosas a LMB, doble jornada, fotos de pitchers). Se deben verificar y priorizar después de cerrar la detección LMP; no se consideran defectos confirmados hasta probarlos.
+
+
+## 8. Actualización consolidada — 2 de noviembre de 2026 (vigente)
+
+**Nota de vigencia:** los registros anteriores de este documento son históricos y pueden contener pasos indicados como pendientes que se completaron posteriormente. Para continuar, usar esta sección junto con una inspección del código actual de GitHub (`main`), y no asumir que un despliegue exitoso equivale a funcionamiento comprobado.
+
+### 8.1. MLB — pantalla móvil y Serie Mundial
+
+- **Código implementado y comprobado visualmente en móvil:** en `app/globals.css`, la tarjeta del campeón es adaptable a pantallas pequeñas (`.championCardBody`, `.championTeamName`, `.championResultPill` y `.championResultText`). La usuaria compartió captura en Brave donde el nombre de Milwaukee Brewers y el texto de resultado permanecen dentro de los bordes de la tarjeta. Se conserva el diseño de escritorio.
+- **Código implementado y comprobado visualmente:** dentro de los detalles/historial de la Serie Mundial MLB, `.mlbWorldSeriesResults` y `.mlbWorldSeriesDecisions` pasan a una sola columna en móviles (regla `@media (max-width: 760px)`). La usuaria confirmó que el detalle de la serie ya se veía correctamente.
+- **Encabezado móvil inteligente, implementado y probado en teléfono:** `components/SmartHeader.tsx` escucha el desplazamiento y alterna `smart-header` e `is-hidden`; `app/page.tsx` importa y monta `<SmartHeader />`. `app/globals.css` usa el encabezado sticky en móvil con animación al ocultar/mostrar. **La usuaria confirmó que se oculta al bajar y reaparece al subir, sin volver al inicio.** La experiencia de escritorio no se cambió intencionalmente.
+- Siguen pendientes pruebas en otros tamaños y navegadores, así como auditoría completa de accesibilidad y transiciones con partidos MLB en vivo.
+
+### 8.2. Dobles carteleras y Resultados recientes (MLB/LMB/LMP)
+
+- **Tarjetas de partidos principales:** `components/Games.tsx` muestra `DOBLE · JUEGO 1/2` para dobles carteleras identificadas; se retiró la antigua etiqueta adicional `DOBLE CARTELERA`. `gameTime()` devuelve `HORA POR CONFIRMAR` para el segundo juego consecutivo `doubleHeader="Y"`, `gameNumber=2` y `status="Preview"` de las ligas consideradas en la condición actual (MLB, LMB, LMP). **No asumir que la hora mostrada en la tarjeta principal está sincronizada con la verificación más estricta del detalle.**
+- **Detalle de LMP:** `lib/gameDetails.ts` incorpora `verifyLmpSecondGameTime()` y `secondGameTimeVerified`; `app/game/[league]/[id]/page.tsx` evita anunciar una hora no verificada para la segunda jornada consecutiva. Seguir comprobando casos reales de reprogramación y horarios.
+- **Resultados recientes:** `lib/recentGames.ts` conserva `gameNumber` y `doubleHeader` en MLB/LMP (StatsAPI) y LMB (calendario oficial cuando sus campos están presentes). Mantiene el esquema de hasta **10 partidos Final** recientes, excluyendo estados especiales; en temporada baja algunas ligas pueden no mostrar resultados.
+- **Interfaz común para las tres ligas:** `components/RecentResults.tsx` muestra `JUEGO 1` o `JUEGO 2` arriba a la derecha **únicamente cuando existe una identificación oficial o una pareja inferible de dos juegos** de los mismos equipos y fecha. La etiqueta usa el gris `var(--muted)`, no el verde lima que señala al equipo ganador.
+- **Orden de resultados:** `RecentResults.tsx` construye `orderedGames` y agrupa las parejas disponibles en **JUEGO 1 → JUEGO 2**, conservando los demás resultados sin duplicación. **Verificación visual de la usuaria en LMP (2/nov/2026):** Yaquis de Obregón–Algodoneros de Guasave del 1/nov aparecen juntos como Juego 1 (4–6) y Juego 2 (3–4); Águilas de Mexicali–Mayos de Navojoa del 1/nov aparecen juntos como Juego 1 (6–1) y Juego 2 (1–3). Etiquetas grises y ganadores lima confirmados por captura. También se observaron partidos sin etiqueta y un Juego 2 aislado de fecha anterior, esperado cuando Juego 1 queda fuera del límite de 10 resultados.
+- **Límite de verificación:** el componente se comparte entre MLB, LMB y LMP, pero el agrupamiento y numeración se comprobaron visualmente **solo con la captura LMP**. La inferencia mediante hora únicamente es válida si están disponibles ambos juegos con identificadores/horas diferentes; la API puede omitir metadatos o modificar horas en reprogramaciones. No presentarlo como detección infalible ni deducir números inexistentes.
+
+### 8.3. Estados especiales y validaciones por completar
+
+- LMP muestra etiqueta y motivo de **POSPUESTO** y segunda línea **REPROGRAMADO · fecha** cuando hay datos; en capturas se verificaron casos por lluvia. Colores compartidos para POSPUESTO (rosa), RETRASADO (amarillo) y SUSPENDIDO (violeta); algunos estados aún deben comprobarse con ejemplos reales en cada liga.
+- En tarjetas POSPUESTO se evita mostrar carreras como si el juego hubiera finalizado normalmente. Se preservan los resultados FINAL válidos y se excluyen pospuestos de Resultados recientes.
+- **Pendientes técnicos:** comprobar LMP HOY → POR COMENZAR → EN VIVO → FINAL durante juegos reales, pitchers/identidades/fotografías; contrastar los estados especiales y doble cartelera contra datos reales de LMB/MLB; revisar clasificación/orden y horarios de dobles jornadas cuando no se anuncia el segundo inicio; revisar presentación de postemporada LMP y condiciones de contador con fecha oficial. No repetir cambios ya comprobados sin una regresión nueva.
+
+### 8.4. Próxima fase — PWA / APK Android
+
+- **Estado al 2/nov/2026:** sitio web en Vercel y acceso directo desde Brave en Android; **todavía no se ha creado una PWA instalable completa ni generado APK**. No afirmar que la app Android esté publicada.
+- Próximo trabajo propuesto, en cambios pequeños con commit y validación: definir nombre, íconos e identidad para PWA; crear/validar manifest web e instalación; decidir la estrategia de caché/actualizaciones; verificar funcionamiento en pantalla completa, navegación y recarga de datos; después evaluar empaquetado APK/AAB mediante Trusted Web Activity u otra estrategia adecuada.
+- **Actualizaciones futuras:** mejoras del sitio web pueden reflejarse en el contenedor Android sin reinstalación, sujetas a caché y conexión. Cambios nativos, paquetes/firmas o configuración Android pueden requerir una nueva compilación y actualización instalada. Conservar identificador de paquete y clave de firma para futuras versiones.
+- **Flujo de trabajo preferido:** un paso de código por vez, confirmación «listo sin error», verificación de GitHub/Vercel y prueba visual en el dispositivo cuando corresponda. Actualizar este documento después de cada bloque de funcionalidades verificado.
