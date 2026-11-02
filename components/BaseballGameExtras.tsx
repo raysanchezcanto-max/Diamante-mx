@@ -1,5 +1,5 @@
 import type {
-  BaseballDecision, BaseballLineScore, BaseballStatPlayer, BaseballTeamStats,
+  BaseballDecision, BaseballLineScore, BaseballTeamStats,
 } from "@/lib/baseballGameExtras";
 
 const show = (x?: number) => typeof x === "number" ? x : "–";
@@ -68,47 +68,63 @@ export function BaseballPitchingDecisions({
   );
 }
 
-function TeamStats({
-  team, name,
-}: { team: BaseballTeamStats; name: string }) {
-  if (!team.batters.length && !team.pitchers.length) return null;
-  const number = (v?: number) => typeof v === "number" ? v : "–";
+type StatKind = "batting" | "pitching";
+
+function TeamStatsTable({
+  team, name, kind,
+}: {
+  team: BaseballTeamStats;
+  name: string;
+  kind: StatKind;
+}) {
+  const players = kind === "batting" ? team.batters : team.pitchers;
+  if (players.length === 0) {
+    return <div className="baseballExtrasTeam baseballExtrasTeamEmpty" />;
+  }
+  const number = (value?: number) => typeof value === "number" ? value : "–";
   return (
     <div className="baseballExtrasTeam">
       <h3>{name}</h3>
-      {team.batters.length > 0 && (
-        <>
-          <h4>BATEO</h4>
-          <div className="baseballExtrasScroll" role="region" tabIndex={0} aria-label={`Bateo de ${name}`}>
-            <table className="baseballExtrasStats">
-              <thead><tr><th>JUGADOR</th><th>AB</th><th>H</th><th>R</th><th>RBI</th><th>HR</th></tr></thead>
-              <tbody>{team.batters.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.name}</td><td>{number(p.atBats)}</td><td>{number(p.hits)}</td>
-                  <td>{number(p.runs)}</td><td>{number(p.rbi)}</td><td>{number(p.homeRuns)}</td>
-                </tr>
-              ))}</tbody>
-            </table>
-          </div>
-        </>
-      )}
-      {team.pitchers.length > 0 && (
-        <>
-          <h4>PITCHEO</h4>
-          <div className="baseballExtrasScroll" role="region" tabIndex={0} aria-label={`Pitcheo de ${name}`}>
-            <table className="baseballExtrasStats">
-              <thead><tr><th>JUGADOR</th><th>IP</th><th>ER</th><th>SO</th><th>BB</th><th>P</th></tr></thead>
-              <tbody>{team.pitchers.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.name}</td><td>{p.inningsPitched ?? "–"}</td>
-                  <td>{number(p.earnedRuns)}</td><td>{number(p.strikeOuts)}</td>
-                  <td>{number(p.walks)}</td><td>{number(p.pitches)}</td>
-                </tr>
-              ))}</tbody>
-            </table>
-          </div>
-        </>
-      )}
+      <div
+        className="baseballExtrasScroll"
+        role="region"
+        tabIndex={0}
+        aria-label={`${kind === "batting" ? "Bateo" : "Pitcheo"} de ${name}`}
+      >
+        <table className="baseballExtrasStats">
+          <thead>
+            {kind === "batting" ? (
+              <tr><th>JUGADOR</th><th>AB</th><th>H</th><th>R</th><th>RBI</th><th>HR</th></tr>
+            ) : (
+              <tr><th>JUGADOR</th><th>IP</th><th>ER</th><th>SO</th><th>BB</th><th>P</th></tr>
+            )}
+          </thead>
+          <tbody>
+            {players.map((player) => (
+              <tr key={player.id}>
+                <td>{player.name}</td>
+                {kind === "batting" ? (
+                  <>
+                    <td>{number(player.atBats)}</td>
+                    <td>{number(player.hits)}</td>
+                    <td>{number(player.runs)}</td>
+                    <td>{number(player.rbi)}</td>
+                    <td>{number(player.homeRuns)}</td>
+                  </>
+                ) : (
+                  <>
+                    <td>{player.inningsPitched ?? "–"}</td>
+                    <td>{number(player.earnedRuns)}</td>
+                    <td>{number(player.strikeOuts)}</td>
+                    <td>{number(player.walks)}</td>
+                    <td>{number(player.pitches)}</td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -118,18 +134,36 @@ export function BaseballPlayerStats({
 }: {
   awayStats: BaseballTeamStats;
   homeStats: BaseballTeamStats;
-  away: string; home: string;
+  away: string;
+  home: string;
 }) {
-  if (!awayStats.batters.length && !awayStats.pitchers.length &&
-      !homeStats.batters.length && !homeStats.pitchers.length) return null;
+  const sections: { kind: StatKind; title: string; available: boolean }[] = [
+    {
+      kind: "batting",
+      title: "BATEO",
+      available: awayStats.batters.length > 0 || homeStats.batters.length > 0,
+    },
+    {
+      kind: "pitching",
+      title: "PITCHEO",
+      available: awayStats.pitchers.length > 0 || homeStats.pitchers.length > 0,
+    },
+  ];
+  if (!sections.some((section) => section.available)) return null;
+
   return (
     <section className="baseballExtrasPanel">
       <details className="baseballExtrasDetails">
         <summary>ESTADÍSTICAS DEL PARTIDO · BATEO Y PITCHEO</summary>
-        <div className="baseballExtrasTeamGrid">
-          <TeamStats team={awayStats} name={away} />
-          <TeamStats team={homeStats} name={home} />
-        </div>
+        {sections.filter((section) => section.available).map((section) => (
+          <div className="baseballExtrasStatSection" key={section.kind}>
+            <h4>{section.title}</h4>
+            <div className="baseballExtrasTeamGrid">
+              <TeamStatsTable team={awayStats} name={away} kind={section.kind} />
+              <TeamStatsTable team={homeStats} name={home} kind={section.kind} />
+            </div>
+          </div>
+        ))}
       </details>
     </section>
   );

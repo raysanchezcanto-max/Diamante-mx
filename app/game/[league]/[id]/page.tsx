@@ -220,47 +220,6 @@ const isLive =
   !specialStatus;
 
 
-const showPitchers =
-  !isFinal &&
-  !specialStatus &&
-  (isLive
-    ? league === "LMP" &&
-      Boolean(
-        game.awayStartingPitcher ||
-        game.homeStartingPitcher
-      )
-    : (game.status === "Preview" || isLmpWarmup) &&
-      (
-        league === "LMP" ||
-        Boolean(
-          game.awayProbablePitcher ||
-          game.homeProbablePitcher
-        )
-      ));
-
-const awayDisplayedPitcher =
-  league === "LMP" && isLive
-    ? game.awayStartingPitcher
-    : game.awayProbablePitcher;
-
-const homeDisplayedPitcher =
-  league === "LMP" && isLive
-    ? game.homeStartingPitcher
-    : game.homeProbablePitcher;
-
-const awayPitcherLabel =
-  league === "LMP" && isLive
-    ? game.awayStarterReplaced ? "ABRIÓ" : "ABRIDOR"
-    : "P. PROBABLE";
-
-const homePitcherLabel =
-  league === "LMP" && isLive
-    ? game.homeStarterReplaced ? "ABRIÓ" : "ABRIDOR"
-    : "P. PROBABLE";
-
-
-
-
 const [playState, gameExtras] = await Promise.all([
   !isLive ? Promise.resolve(null)
     : league === "LMB" ? getLmbPlayState(gameId)
@@ -268,6 +227,32 @@ const [playState, gameExtras] = await Promise.all([
     : getMlbPlayState(gameId),
   getBaseballGameExtras(league, gameId),
 ]);
+
+// Abridores reales: usar el primer pitcher del boxscore o la secuencia
+// de lanzamientos verificada por LMP. Nunca confundir con P. PROBABLE.
+const isPlayed = (isLive || isFinal) && !specialStatus;
+const awayStarter = game.awayStartingPitcher ??
+  (gameExtras?.awayStats.starter
+    ? { id: gameExtras.awayStats.starter.id, name: gameExtras.awayStats.starter.name }
+    : undefined);
+const homeStarter = game.homeStartingPitcher ??
+  (gameExtras?.homeStats.starter
+    ? { id: gameExtras.homeStats.starter.id, name: gameExtras.homeStats.starter.name }
+    : undefined);
+const awayHasReliever = Boolean(game.awayStarterReplaced) ||
+  (gameExtras?.awayStats.pitchers.length ?? 0) > 1;
+const homeHasReliever = Boolean(game.homeStarterReplaced) ||
+  (gameExtras?.homeStats.pitchers.length ?? 0) > 1;
+
+const awayDisplayedPitcher = isPlayed ? awayStarter : game.awayProbablePitcher;
+const homeDisplayedPitcher = isPlayed ? homeStarter : game.homeProbablePitcher;
+const showPitchers = !specialStatus && (isPlayed ||
+  game.status === "Preview" || isLmpWarmup);
+const awayPitcherLabel = !isPlayed ? "P. PROBABLE" :
+  isFinal || awayHasReliever ? "ABRIÓ" : "ABRIDOR";
+const homePitcherLabel = !isPlayed ? "P. PROBABLE" :
+  isFinal || homeHasReliever ? "ABRIÓ" : "ABRIDOR";
+
 
 const hasScore =
   specialStatus !== "POSPUESTO" &&
@@ -479,13 +464,8 @@ const time =
 </strong>
             ) : null}
   
-{showPitchers &&
-  (!isLive || league !== "LMP" || awayDisplayedPitcher) && (
-    <GamePitcher
-      pitcher={awayDisplayedPitcher}
-      league={league}
-      label={awayPitcherLabel}
-    />
+{showPitchers && awayDisplayedPitcher && (
+    <GamePitcher pitcher={awayDisplayedPitcher} league={league} label={awayPitcherLabel} />
   )}
 
           </div>
@@ -642,13 +622,8 @@ const time =
 </strong>
             ) : null}
   
-{showPitchers &&
-  (!isLive || league !== "LMP" || homeDisplayedPitcher) && (
-    <GamePitcher
-      pitcher={homeDisplayedPitcher}
-      league={league}
-      label={homePitcherLabel}
-    />
+{showPitchers && homeDisplayedPitcher && (
+    <GamePitcher pitcher={homeDisplayedPitcher} league={league} label={homePitcherLabel} />
   )}
 
           </div>

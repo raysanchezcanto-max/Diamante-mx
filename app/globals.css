@@ -3897,3 +3897,27 @@ mlbWorldSeriesNextOnlyCompact strong {
  .baseballExtrasTeamGrid,.baseballExtrasDecisions { grid-template-columns:minmax(0,1fr); }
  .baseballExtrasPanel { padding:17px 12px; }
 }
+
+/* Estadísticas alineadas por disciplina: BATEO con BATEO / PITCHEO con PITCHEO */
+.baseballExtrasSwipe { display: none; }
+.baseballExtrasStatSection { margin-top: 24px; }
+.baseballExtrasStatSection + .baseballExtrasStatSection {
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.baseballExtrasStatSection > h4 {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: .09em;
+  margin: 0 0 18px;
+}
+.baseballExtrasStatSection .baseballExtrasTeamGrid { margin-top: 0; }
+.baseballExtrasStatSection .baseballExtrasTeam h3 {
+  margin: 0 0 12px;
+  line-height: 1.35;
+}
+@media (max-width: 760px) {
+  .baseballExtrasSwipe { display: block; }
+  .baseballExtrasTeamEmpty { display: none; }
+}
