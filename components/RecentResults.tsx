@@ -26,11 +26,67 @@ export default function RecentResults({
     simplemente no mostramos la sección.
     Esto será útil para LMP fuera de temporada.
   */
+
   if (games.length === 0) {
     return null;
   }
 
+  // Agrupar dobles carteleras: Juego 1 y luego Juego 2.
+  const orderedGames: Game[] = [];
+
+  for (const game of games) {
+    if (orderedGames.includes(game)) continue;
+
+    const sameMatch = games.filter(
+      (other) =>
+        other.away === game.away &&
+        other.home === game.home &&
+        resultDate(other) === resultDate(game)
+    );
+
+    const game1 = sameMatch.find(
+      (item) => item.gameNumber === 1
+    );
+
+    const game2 = sameMatch.find(
+      (item) => item.gameNumber === 2
+    );
+
+    const times = sameMatch.map(
+      (item) => new Date(item.startTime).getTime()
+    );
+
+    const validTimeOrder =
+      sameMatch.length === 2 &&
+      times.every(Number.isFinite) &&
+      times[0] !== times[1];
+
+    const isDoubleHeader =
+      sameMatch.length === 2 &&
+      sameMatch[0].id !== sameMatch[1].id &&
+      (Boolean(game1 && game2) || validTimeOrder);
+
+    if (!isDoubleHeader) {
+      orderedGames.push(game);
+      continue;
+    }
+
+    const pair = [...sameMatch].sort((a, b) => {
+      if (game1 && game2) {
+        return a === game1 ? -1 : 1;
+      }
+
+      return (
+        new Date(a.startTime).getTime() -
+        new Date(b.startTime).getTime()
+      );
+    });
+
+    orderedGames.push(...pair);
+  }
+
   return (
+
     <section className="section">
       <div className="sectionHeader">
         <div>
@@ -48,7 +104,9 @@ export default function RecentResults({
 
       <div className="gamesGrid">
       
-{games.map((rawGame) => {
+
+{orderedGames.map((rawGame) => {
+
   const toScore = (value: number | undefined) => {
     if (value == null) return undefined;
 
