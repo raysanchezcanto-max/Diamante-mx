@@ -253,3 +253,10 @@
 - **Corrección publicada:** commit `8339d424f507d402eb2c93bbd8775fc773b77b86` modifica `app/globals.css` y `components/MlbWorldSeriesDetails.tsx` en un solo commit. En pantallas <=760px, los paneles de estadísticas permiten deslizar horizontalmente de forma independiente, conservan min-width de filas (680 px bateo / 740 px pitcheo), scroll táctil y barra fina; ambas pestañas muestran la leyenda `DESLIZA PARA VER MÁS →` solo en móvil. Se añadió región accesible para teclado. Escritorio, PARTIDOS, el resto de ligas y los datos originales no se alteraron.
 - **Vercel confirmó READY** en despliegue `dpl_7XWghuYUY2EgGG4TKNL7acVT9aJf`, alias de producción `diamante-mx.vercel.app`.
 - **Pendiente:** prueba real en APK Android y captura deslizando hacia la izquierda sobre tabla en ambas pestañas para ver estadísticas de la derecha. Si la experiencia visual no convence, evaluar mejoras como mantener la columna de jugador fija; no dar por verificada la experiencia móvil hasta prueba usuaria. Por ser actualización web de la TWA, **no requiere reinstalar APK**.
+
+## 20. Indicador de desplazamiento Serie Mundial en gris (2/nov/2026)
+
+- La usuaria probó satisfactoriamente el deslizamiento horizontal en la APK Android y compartió capturas de **PITCHEO**, en posiciones inicial e intermedia/final, donde ya se ven todas las estadísticas (W-L, ERA, SO, IP, SV).
+- Solicitó que la flecha de **DESLIZA PARA VER MÁS →** deje de ser verde lima y combine en **gris discreto** con otras flechas/indicaciones del sitio, sin perder la función.
+- **Commit `c5f8296b44dbe7fa304ee771b0fe9f4f9f047b98`**: en `app/globals.css`, selector `.mlbWsSwipeHint span`, color de `var(--accent)` a `var(--muted)` y tamaño 17px a 14px. No se modificaron tablas, funcionalidad de deslizamiento ni otras ligas.
+- Despliegue de Vercel **READY**, id `dpl_8NFM8swaSAWt11D6r1A7SiX89jbj`; la actualización web se refleja en la APK TWA sin reinstalación. Pendiente de visto bueno de la usuaria para el aspecto gris.
