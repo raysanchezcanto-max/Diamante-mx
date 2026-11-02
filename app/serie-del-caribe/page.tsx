@@ -1,3 +1,4 @@
+import { getTeamDisplayName } from "@/lib/teamLogos";
 import type { Metadata } from "next";
 
 import LeagueTabs from "@/components/LeagueTabs";
@@ -142,21 +143,21 @@ export default async function SerieDelCaribePage() {
               {championLogo ? (
                 <img
                   src={championLogo}
-                  alt={finalChampion ? `Emblema de ${finalChampion.winner.name}` : "Escudo de Charros de Jalisco"}
+                  alt={finalChampion ? `Emblema de ${getTeamDisplayName("CARIBE", finalChampion.winner.name)}` : "Escudo de Charros de Jalisco"}
                   className="championTeamLogo"
                 />
               ) : (
                 <span aria-label="Campeón" role="img">🏆</span>
               )}
             </div>
-            <h3 className="championTeamName">{finalChampion?.winner.name ?? "Charros de Jalisco"}</h3>
+            <h3 className="championTeamName">{finalChampion?.winner.name ? getTeamDisplayName("CARIBE", finalChampion.winner.name) : "Charros de Jalisco"}</h3>
             <div className="championResultPill">
               <span className="championResultLabel">
                 RESULTADO DE LA FINAL
               </span>
               <strong className="championResultText">
                 {finalChampion
-                  ? `${finalChampion.winner.name} ${finalChampion.winnerScore} – ${finalChampion.runnerUpScore} ${finalChampion.runnerUp.name}`
+                  ? `${getTeamDisplayName("CARIBE", finalChampion.winner.name)} ${finalChampion.winnerScore} – ${finalChampion.runnerUpScore} ${getTeamDisplayName("CARIBE", finalChampion.runnerUp.name)}`
                   : "Charros de Jalisco 12 – 11 Tomateros de Culiacán"}
               </strong>
             </div>
