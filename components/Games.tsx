@@ -280,12 +280,13 @@ className={
         letterSpacing: "0.08em",
       }}
     >
-      JUEGO {game.gameNumber}
+      
+DOBLE · JUEGO {game.gameNumber}
+
     </span>
   )}
              
-{(game.doubleHeader === "Y" ||
-  game.doubleHeader === "S" ||
+
   (league === "LMB" &&
     game.doubleHeader === "INFERRED")) &&
   (game.gameNumber === 1 ||
