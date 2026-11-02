@@ -98,13 +98,15 @@ function phaseFromOfficialData(game: SourceGame, year: 2026 | 2027): CaribePhase
 
   // MLB asigna "Semifinal 1/2" y "Championship Game" a los
   // encuentros de 2026; priorizar la etiqueta oficial.
-  if (/third\s*place|3rd\s*place|tercer\s*lugar/.test(description)) {
-    return "thirdPlace";
-  }
+  // La etiqueta "Semifinal 1: 3rd place at 2nd place" señala
+  // posiciones de la tabla, NO un juego por el tercer lugar.
+  if (/semifinal/.test(description)) return "semifinal";
   if (/championship|grand\s*final|final\s*game|gran\s*final|campeonato/.test(description)) {
     return "final";
   }
-  if (/semifinal/.test(description)) return "semifinal";
+  if (/third\s*place\s*game|3rd\s*place\s*game|game\s*for\s*third\s*place|juego\s*por\s*el\s*tercer\s*lugar|tercer\s*lugar/.test(description)) {
+    return "thirdPlace";
+  }
 
   const day = Number(date.slice(8, 10));
   if (day >= 1 && day <= 5) return "roundRobin";
