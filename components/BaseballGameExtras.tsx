@@ -1,3 +1,4 @@
+import { getTeamDisplayName } from "@/lib/teamLogos";
 import type {
   BaseballDecision, BaseballLineScore, BaseballTeamStats,
 } from "@/lib/baseballGameExtras";
@@ -85,7 +86,7 @@ export function BaseballPitchingDecisions({
             <div className="baseballExtrasDecisionHeader">
               <small>{label}</small>
               {teamName && (
-                <small className="baseballExtrasDecisionTeam">{teamName}</small>
+                <small className="baseballExtrasDecisionTeam">{getTeamDisplayName(league, teamName)}</small>
               )}
             </div>
             <div className="baseballExtrasDecisionPlayer">
