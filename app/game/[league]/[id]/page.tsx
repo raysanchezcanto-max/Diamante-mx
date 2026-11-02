@@ -20,6 +20,7 @@ import {
 
 import {
   getTeamLogo,
+  getTeamDisplayName,
   type LeagueCode,
 } from "@/lib/teamLogos";
 
@@ -178,6 +179,9 @@ const broadcasts =
     league,
     gameId
   );
+
+  const awayDisplayName = getTeamDisplayName(league, game.away);
+  const homeDisplayName = getTeamDisplayName(league, game.home);
 
   const awayLogo =
     getTeamLogo(
@@ -440,15 +444,13 @@ const time =
             {awayLogo && (
               <img
                 src={awayLogo}
-                alt={`Logo de ${game.away}`}
+                alt={`Logo de ${awayDisplayName}`}
                 width={96}
                 height={96}
               />
             )}
 
-            <h1>
-              {game.away}
-            </h1>
+            <h1>{awayDisplayName}</h1>
 
             {hasScore ? (
               <strong
@@ -598,15 +600,13 @@ const time =
             {homeLogo && (
               <img
                 src={homeLogo}
-                alt={`Logo de ${game.home}`}
+                alt={`Logo de ${homeDisplayName}`}
                 width={96}
                 height={96}
               />
             )}
 
-            <h1>
-              {game.home}
-            </h1>
+            <h1>{homeDisplayName}</h1>
 
             {hasScore ? (
               <strong
@@ -688,8 +688,8 @@ const time =
         <>
           <BaseballLineScoreCard
             data={gameExtras}
-            away={game.away}
-            home={game.home}
+            away={awayDisplayName}
+            home={homeDisplayName}
             activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
           />
           <BaseballPitchingDecisions
@@ -700,8 +700,8 @@ const time =
           <BaseballPlayerStats
             awayStats={gameExtras.awayStats}
             homeStats={gameExtras.homeStats}
-            away={game.away}
-            home={game.home}
+            away={awayDisplayName}
+            home={homeDisplayName}
           />
         </>
       )}
@@ -715,8 +715,8 @@ inningState={
   playState.inningState ??
   game.inningState
 }
-    away={game.away}
-home={game.home}
+    away={awayDisplayName}
+home={homeDisplayName}
     first={playState.first}
     second={playState.second}
     third={playState.third}
