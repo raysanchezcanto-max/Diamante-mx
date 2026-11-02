@@ -23,6 +23,9 @@ export default async function SerieDelCaribePage() {
   const finalMatch = tournament?.matches.find((match) => match.phase === "final") ?? null;
   const finalChampion = resolveCaribeFinalWinner(finalMatch);
   const showFinalCard = !!finalMatch?.home && !!finalMatch?.away && !finalChampion;
+  const championLogo = finalChampion
+    ? finalChampion.winner.logoSrc ?? finalChampion.winner.flagSrc ?? null
+    : "/logos/lmp/charros-jalisco.png";
   const now = Date.now();
   const tournamentStart = new Date(CARIBE_2027.start).getTime();
   const tournamentEnd = new Date(CARIBE_2027.endExclusive).getTime();
@@ -90,11 +93,15 @@ export default async function SerieDelCaribePage() {
 
           <div className="championCardBody">
             <div className="championTrophy">
-              <img
-                src={finalChampion?.winner.logoSrc ?? finalChampion?.winner.flagSrc ?? "/logos/lmp/charros-jalisco.png"}
-                alt={finalChampion ? `Escudo de ${finalChampion.winner.name}` : "Escudo de Charros de Jalisco"}
-                className="championTeamLogo"
-              />
+              {championLogo ? (
+                <img
+                  src={championLogo}
+                  alt={finalChampion ? `Emblema de ${finalChampion.winner.name}` : "Escudo de Charros de Jalisco"}
+                  className="championTeamLogo"
+                />
+              ) : (
+                <span aria-label="Campeón" role="img">🏆</span>
+              )}
             </div>
             <h3 className="championTeamName">{finalChampion?.winner.name ?? "Charros de Jalisco"}</h3>
             <div className="championResultPill">

@@ -71,12 +71,12 @@ export default function CaribeRoadToFinal({
     <section className="section mlbPostseasonHistorySection caribeRoadSection" id="formato">
       <div className="sectionHeader">
         <div>
-          <span className="eyebrow">HERMOSILLO 2027 · POSTEMPORADA</span>
+          <span className="eyebrow">HERMOSILLO 2027 · RUTA AL TÍTULO</span>
           <h2>Camino a la final</h2>
         </div>
       </div>
 
-      <details className="mlbPostseasonHistory" open>
+      <details className="mlbPostseasonHistory">
         <summary>Camino a la Serie del Caribe 2027</summary>
         <div className="mlbPostseasonHistoryContent">
           <p className="caribeRoadNote">
