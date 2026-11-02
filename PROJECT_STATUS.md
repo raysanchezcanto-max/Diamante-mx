@@ -143,3 +143,26 @@
 - **Sin cambios en `LiveGamePanel`:** `LANZANDO` sigue indicando al pitcher actual y `AL BAT` al bateador. Tampoco se modificaron los detalles MLB/LMB ni las tarjetas especiales de finales.
 - **Pendiente principal:** prueba visual con partidos LMP realmente **EN VIVO el 3/nov/2026**, incluyendo visita/local, relevo real, nombres, fotos y distribución móvil. La implementación se confirmó en código y Vercel, **no se ha comprobado aún que todos los partidos de LMP expongan los eventos necesarios**, ni que la fuente de fotos funcione en todos los casos. Si la UI no convence, valorar ocultar las fotos en vivo o usar presentación compacta, sin alterar SITUACIÓN DEL JUEGO.
 - **Otro pendiente independiente:** el respaldo de pitchers probables mediante un endpoint de calendario `gamePk` descrito en la conversación no está presente en `lib/gameDetails.ts` al realizar esta revisión; por tanto, **no darlo por implementado** hasta confirmar un commit posterior. Hay que revisar ese fallback y fotos en un paso separado.
+
+
+## 10. Punto exacto de reanudación — 2 de noviembre de 2026
+
+**IMPORTANTE — LEER AL INICIAR UNA CONVERSACIÓN NUEVA.** El objetivo inmediato es validar visualmente el **piloto de pitchers abridores LMP en el detalle de partidos EN VIVO**. El código ya está integrado y los despliegues de esos commits finalizaron correctamente; **no hay que volver a implementar el cambio ABRIDOR → ABRIÓ** salvo que las pruebas reales detecten un error.
+
+**Commits confirmados en `main`:**
+- `b76b78b5`: `lib/gameDetails.ts` incorpora `getLmpPitchersUsed`, `awayStartingPitcher`, `homeStartingPitcher`, `awayStarterReplaced` y `homeStarterReplaced`.
+- `b2559844`: `app/game/[league]/[id]/page.tsx` deja visibles las fotos y nombres de abridores reales de LMP cuando `isLive`, con etiqueta **ABRIDOR** mientras no haya relevo registrado y **ABRIÓ** tras confirmar otro pitcher; mantiene `P. PROBABLE` antes del partido. No cambia los detalles MLB/LMB ni las tarjetas especiales de finales.
+- `b4843cea`: documentación de la prueba en esta bitácora. **Los tres commits tenían estado Vercel `success` al verificarlos el 2/nov/2026.**
+
+**Regla UX acordada y todavía a validar:** durante un partido LMP EN VIVO, debajo de cada equipo se conserva foto + nombre del pitcher que **realmente abrió**. Etiqueta **ABRIDOR** hasta detectar pitcheos de otro pitcher de ese equipo, luego **ABRIÓ**, dejando el nombre/foto original. **SITUACIÓN DEL JUEGO** muestra siempre el pitcher **LANZANDO** actualmente y el bateador **AL BAT**, sin tocar esa funcionalidad. En las tarjetas *especiales* de Serie Mundial MLB, Serie del Rey LMB y futura Serie Final LMP, se mantiene la regla separada de ocultar pitchers durante EN VIVO.
+
+**Qué hacer en la próxima sesión (martes 3/nov/2026, con partidos LMP EN VIVO):**
+1. Abrir `https://diamante-mx.vercel.app/`, elegir LMP y abrir el detalle de un partido en vivo. Revisar si aparecen **ABRIDOR**, foto y nombre de ambos equipos, sin atribuir un abridor a partir de un probable.
+2. Si hay un relevo registrado, verificar que solo el equipo que hizo el cambio pase a **ABRIÓ** y conserve el nombre/foto del abridor; el panel `LANZANDO` debe actualizarse al relevista.
+3. Inspeccionar en **celular y escritorio** alineación de logos, nombres, marcador, fotos y espacio de la cabecera. La usuaria quiere comparar el diseño con una opción más compacta que **oculte fotos en vivo** si el resultado no convence. No asumir éxito sin captura.
+4. Investigar cualquier ausencia de nombres/fotos con datos de la API y comprobar si `isPitch` está disponible desde el inicio. El algoritmo usa el **primer pitcher observado con eventos `isPitch:true` en el feed**, que puede no coincidir con el abridor real si faltan jugadas o el feed empieza tarde; verificar con boxscore/lineup si hay discrepancia.
+5. Completar más adelante el bloque de **GANADOR / PERDEDOR / SALVAMENTO** para partido FINAL y revisar etiquetas de calentamiento. Mantenerlo separado de la prueba actual.
+
+**Atención a otro pendiente aún NO implementado:** en `lib/gameDetails.ts` el bloque de `awayProbablePitcher` / `homeProbablePitcher` todavía depende de `gameData.probablePitchers`. No está integrado el respaldo desde `schedule?gamePk=...&hydrate=probablePitcher` propuesto anteriormente, aunque la usuaria había confirmado «listo sin error». Comprobar el código real antes de decir que el fallback existe. Revisar también las URL de fotografías de LMP.
+
+**Mensaje listo para retomar sin pérdida de contexto:** «Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md`, especialmente las secciones 9 y 10, y verifica GitHub antes de cambiar código. Tenemos implementado el piloto LMP ABRIDOR→ABRIÓ; quiero revisar un juego EN VIVO y mandarte capturas para valorar la presentación en celular. Vamos paso a paso.»
