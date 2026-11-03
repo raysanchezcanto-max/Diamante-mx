@@ -2,6 +2,17 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const sources: Record<string,string> = {
+  guasaveClub: "https://losalgodoneros.com/assets/images/equipos/gsv.png",
+  guasaveCircle: "https://losalgodoneros.com/wp-content/uploads/2022/08/ag_logo_circulo-1-e1660268992448.png",
+  guasaveFavicon: "https://losalgodoneros.com/wp-content/uploads/2022/10/favi-ag-300x300.png",
+  mayosLogo: "https://mayosdenavojoa.com/assets/brand/logo.png",
+  mayosIcon: "https://mayosdenavojoa.com/assets/brand/isotipo-m.png",
+  mayosTeam: "https://mayosdenavojoa.com/assets/logos/NAV.png",
+  ligaGuasave: "https://mayosdenavojoa.com/assets/logos/GSV.png",
+  ligaVenados: "https://mayosdenavojoa.com/assets/logos/MAZ.png",
+  ligaJaguares: "https://mayosdenavojoa.com/assets/logos/NAY.png",
+  ligaCharros: "https://mayosdenavojoa.com/assets/logos/JAL.png",
+  ligaMayos: "https://mayosdenavojoa.com/assets/logos/NAV.png",
   guasaveCap: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Algodoneros_de_Guasave_cap_insignia.svg",
   guasaveHome: "https://losalgodoneros.com/",
   guasaveSocial: "https://pbs.twimg.com/profile_images/2015953851849826304/aGukozlt_400x400.jpg",
