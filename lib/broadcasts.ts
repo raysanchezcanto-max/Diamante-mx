@@ -22,7 +22,7 @@ export type BroadcastGameContext = {
 };
 
 const MLB_API = "https://statsapi.mlb.com/api/v1";
-const LMP_YOUTUBE = "https://www.youtube.com/@LigaArcoMX";
+const LMP_YOUTUBE = "https://www.youtube.com/@lmp_beisbol";
 const LMB_TV = "https://www.lmb.tv/";
 
 function canonicalProviderUrl(name: string, league: LeagueCode): string | undefined {
