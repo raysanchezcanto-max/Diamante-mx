@@ -4306,3 +4306,53 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     height: 35px;
   }
 }
+
+/* Ajustes finos LMB — franja de escudos estilo MLB (iteración 53). */
+/* Conservar exactamente los assets y colores de las fichas de partido.
+   La caja clicable se mantiene compacta; solo se modifica el dibujo en la barra. */
+.teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="conspiradores-queretaro.png"] {
+  width: 46px;
+  height: 46px;
+  max-width: none;
+  max-height: none;
+  transform: scale(1.12);
+  filter: brightness(2.05) contrast(1.1) saturate(1.18)
+    drop-shadow(0 0 1.2px rgba(227, 211, 255, 0.75));
+}
+.teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="bravos-leon.png"] {
+  width: 42px;
+  height: 42px;
+  max-width: none;
+  max-height: none;
+  filter: brightness(3.05) saturate(.95)
+    drop-shadow(0 0 1.1px rgba(192, 246, 200, .43));
+}
+.teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="tecos-dos-laredos.png"] {
+  width: 46px;
+  height: 46px;
+  max-width: none;
+  max-height: none;
+  filter: brightness(1.65) contrast(1.12) saturate(1.05)
+    drop-shadow(0 0 1px rgba(198, 215, 255, .3));
+}
+.teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="caliente-durango.png"] {
+  width: 46px;
+  height: 46px;
+  max-width: none;
+  max-height: none;
+  transform: scale(1.09);
+  filter: brightness(1.12) contrast(1.09)
+    drop-shadow(0 0 .8px rgba(242, 200, 200, .25));
+}
+@media (max-width: 600px) {
+  .teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="conspiradores-queretaro.png"],
+  .teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="tecos-dos-laredos.png"],
+  .teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="caliente-durango.png"] {
+    width: 42px;
+    height: 42px;
+  }
+  .teamExplorer--lmb .teamLogoRail .teamLogoChoice img[src*="bravos-leon.png"] {
+    width: 39px;
+    height: 39px;
+  }
+}
