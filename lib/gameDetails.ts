@@ -225,6 +225,68 @@ async function verifyLmpSecondGameTime(
   }
 }
 
+// Respaldo exclusivo de LMP: el calendario puede anunciar probables
+// antes de que aparezcan en el feed individual del partido.
+// Comparar gamePk exacto para no mezclar juegos de doble cartelera.
+async function getLmpScheduleProbables(
+  gameId: number,
+  officialDate: unknown
+): Promise<{
+  away?: GameDetails["awayProbablePitcher"];
+  home?: GameDetails["homeProbablePitcher"];
+} | null> {
+  if (
+    typeof officialDate !== "string" ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(officialDate)
+  ) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      "https://statsapi.mlb.com/api/v1/schedule" +
+        "?sportId=17&leagueId=132" +
+        "&startDate=" + officialDate +
+        "&endDate=" + officialDate +
+        "&hydrate=probablePitcher",
+      { next: { revalidate: 60 } }
+    );
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const games: any[] = (
+      Array.isArray(data?.dates) ? data.dates : []
+    ).flatMap((day: any) =>
+      Array.isArray(day?.games) ? day.games : []
+    );
+    const game = games.find((item: any) => item?.gamePk === gameId);
+    if (!game) return null;
+
+    const parsePitcher = (
+      person: any
+    ): GameDetails["awayProbablePitcher"] => {
+      if (
+        typeof person?.id !== "number" ||
+        !Number.isInteger(person.id) ||
+        person.id <= 0 ||
+        typeof person?.fullName !== "string" ||
+        !person.fullName.trim()
+      ) {
+        return undefined;
+      }
+      return { id: person.id, name: person.fullName.trim() };
+    };
+
+    return {
+      away: parsePitcher(game?.teams?.away?.probablePitcher),
+      home: parsePitcher(game?.teams?.home?.probablePitcher),
+    };
+  } catch {
+    // Si la API no responde, la ficha queda sin probable inventado.
+    return null;
+  }
+}
+
 export async function getGameDetails(
   league: LeagueCode,
   gameId: number
@@ -516,6 +578,39 @@ const firstPitchRecorded =
     const awayPitchersUsed = getLmpPitchersUsed("away");
     const homePitchersUsed = getLmpPitchersUsed("home");
 
+    // Mantener la lógica P. PROBABLE → ABRIDOR → ABRIÓ.
+    // El fallback únicamente alimenta los datos PREVIOS del partido.
+    const feedAwayProbable =
+      typeof gameData?.probablePitchers?.away?.id === "number" &&
+      typeof gameData?.probablePitchers?.away?.fullName === "string"
+        ? {
+            id: gameData.probablePitchers.away.id,
+            name: gameData.probablePitchers.away.fullName,
+          }
+        : undefined;
+    const feedHomeProbable =
+      typeof gameData?.probablePitchers?.home?.id === "number" &&
+      typeof gameData?.probablePitchers?.home?.fullName === "string"
+        ? {
+            id: gameData.probablePitchers.home.id,
+            name: gameData.probablePitchers.home.fullName,
+          }
+        : undefined;
+
+    const gameState = gameData?.status?.abstractGameState;
+    const isBeforeFirstPitch =
+      gameState === "Preview" ||
+      (gameState === "Live" && firstPitchRecorded !== true);
+    const scheduleProbables =
+      league === "LMP" &&
+      isBeforeFirstPitch &&
+      (!feedAwayProbable || !feedHomeProbable)
+        ? await getLmpScheduleProbables(
+            gameId,
+            gameData?.datetime?.officialDate
+          )
+        : null;
+
 
 
    
@@ -548,22 +643,10 @@ const firstPitchRecorded =
       homeStarterReplaced: homePitchersUsed.length > 1,
 
       awayProbablePitcher:
-        typeof gameData?.probablePitchers?.away?.id === "number" &&
-        typeof gameData?.probablePitchers?.away?.fullName === "string"
-          ? {
-              id: gameData.probablePitchers.away.id,
-              name: gameData.probablePitchers.away.fullName,
-            }
-          : undefined,
+        feedAwayProbable ?? scheduleProbables?.away,
 
       homeProbablePitcher:
-        typeof gameData?.probablePitchers?.home?.id === "number" &&
-        typeof gameData?.probablePitchers?.home?.fullName === "string"
-          ? {
-              id: gameData.probablePitchers.home.id,
-              name: gameData.probablePitchers.home.fullName,
-            }
-          : undefined,
+        feedHomeProbable ?? scheduleProbables?.home,
 
       
 
