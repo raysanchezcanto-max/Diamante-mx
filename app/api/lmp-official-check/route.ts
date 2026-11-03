@@ -8,12 +8,27 @@ export async function GET(req: Request) {
   try {
     target = new URL(asset || path, "https://www.lmp.mx/");
   } catch { return NextResponse.json({ error: "bad url" }, { status: 400 }); }
-  if (!["lmp.mx","www.lmp.mx","static.lmp.mx"].includes(target.hostname))
+  if (!["lmp.mx","www.lmp.mx","static.lmp.mx","api.lmp.mx"].includes(target.hostname))
     return NextResponse.json({ error: "host not permitted" }, { status: 400 });
   try {
     const r = await fetch(target.toString(), {cache:"no-store",redirect:"follow",signal:AbortSignal.timeout(18000),
       headers:{"Accept":"text/html,image/*,*/*","User-Agent":"Mozilla/5.0"}});
     const b=Buffer.from(await r.arrayBuffer()), typ=r.headers.get("content-type")||"";
+    if (q.get("inspect") === "1") {
+      const full=b.toString("utf8");
+      const needles=[".png",".svg","GSV","JAL","NAV","NAY","MAZ","equipos","standings","teams","logo","escudo","assets/img"];
+      const entries:Record<string,string[]>={};
+      for (const needle of needles){
+        const out:string[]=[];
+        let from=0;while(out.length<22){
+          const index=full.toLowerCase().indexOf(needle.toLowerCase(),from);
+          if(index<0) break;
+          out.push(full.slice(Math.max(0,index-130),Math.min(full.length,index+210)));
+          from=index+needle.length;
+        }entries[needle]=out;
+      }
+      return NextResponse.json({status:r.status,url:r.url,type:typ,bytes:b.length,entries});
+    }
     if (asset) return NextResponse.json({status:r.status,url:r.url,type:typ,bytes:b.length,
       base64:b.length<1200000?b.toString("base64"):null});
     const html=b.toString("utf8");
