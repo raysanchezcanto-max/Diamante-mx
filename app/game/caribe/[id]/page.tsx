@@ -102,6 +102,26 @@ export default async function CaribeGamePage({ params }: Props) {
         </div>
       </section>
 
+      {!final && (
+        <section className="broadcastSection">
+          <div className="broadcastHeader">
+            <span className="eyebrow">TRANSMISIÓN</span>
+            <h2>Dónde ver</h2>
+          </div>
+          <p className="broadcastDisclaimer">
+            Los derechos de televisión y streaming de la Serie del Caribe Hermosillo 2027
+            todavía no están confirmados para estos partidos. No utilizamos los
+            canales anunciados para la edición 2026 como si fueran de 2027.
+          </p>
+          <div className="broadcastLinks">
+            <a className="watchButton" href="https://www.seriedelcaribe.net/"
+              target="_blank" rel="noopener noreferrer">
+              Consultar anuncios oficiales del torneo
+            </a>
+          </div>
+        </section>
+      )}
+
       <BaseballLineScoreCard
         data={feed}
         away={getTeamDisplayName("CARIBE", match.away?.name ?? "Visitante")}
