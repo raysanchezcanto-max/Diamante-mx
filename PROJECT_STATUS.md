@@ -438,3 +438,11 @@
 - **Nota de contraste:** los monogramas AG y N oficiales azul marino son oscuros para nuestra interfaz, por lo que se requiere comprobación visual en PC/APK. Ajustar contraste si la usuaria lo aprueba, sin cambiar la forma ni la identidad de los escudos.
 - Se retiraron las rutas auxiliares temporales `app/api/lmp-official-check/route.ts` y `app/api/lmp-crest-crop/route.ts` tras obtener las imágenes. No dejar herramientas de diagnóstico abiertas.
 - Pendiente validar visualmente tabla de posiciones, próximos juegos, resultados recientes y página de detalle a 26/34/96 px. Los emblemas pertenecen a sus clubes y requieren atención a licencia/derechos antes de monetizar.
+
+## 41. Pulido de escudos LMP: Cañeros y contraste nocturno — 2/nov/2026
+
+- **Problema reportado con capturas:** la «L» del monograma LM de Cañeros se veía recortada en detalle de partido; Algodoneros de Guasave, Jaguares de Nayarit y otros monogramas azul marino tenían bajo contraste sobre el fondo oscuro de Diamante MX.
+- **Cañeros:** extraer nuevamente desde el sprite oficial de la LMP `https://www.lmp.mx/assets/img/icons/LaMP_Iconos_wbc_10.webp` usando un recorte **ampliado** equivalente a x=180, y=75, w=27, h=23 (en coordenadas CSS del sprite a 392 px), en lugar de x=183, y=77, w=20, h=20. El nuevo recorte recupera completamente la L; contiene margen transparente de 20 px a cada lado y omite un fragmento blanco del sprite bajo el escudo. Archivo sustituido con la misma ruta: `public/logos/lmp/official/caneros-mochis.png` (PNG RGBA 254×222 px).
+- **Contraste:** estilos específicos por ruta en `app/globals.css`: AG/Nayarit brightness(2.6) con sombra azul muy tenue, Charros/Yaquis brightness(1.65), Mayos brightness(1.24); Cañeros object-fit contain. Los colores y trazos del sprite original no se editan: el contraste se ajusta al renderizar la interfaz nocturna. No modificar marcadores, datos de LMP ni logos de otras ligas.
+- **Validación:** verificar compilación Vercel y recursos HTTP 200; revisar visualmente tabla de posiciones, próximos juegos y detalle de Cañeros/Jaguares. Si AG o N se ven demasiado brillantes, ajustar intensidad del filtro, no reemplazar el monograma.
+- **Limpieza:** ruta temporal de comparación `app/api/lmp-caneros-fix/route.ts` eliminada después de su uso.

@@ -4025,3 +4025,22 @@ mlbWorldSeriesNextOnlyCompact strong {
   margin-right: 7px;
   color: var(--muted);
 }
+
+
+/* LMP — contraste para monogramas oscuros sobre la interfaz nocturna */
+/* Rutas únicas de LMP: sin alterar MLB, LMB, CARIBE ni fotos de pitchers. */
+img[src*="/logos/lmp/official/algodoneros-guasave.png"],
+img[src*="/logos/lmp/official/jaguares-nayarit.png"] {
+  filter: brightness(2.6) saturate(1.14) drop-shadow(0 0 1.5px rgba(189, 213, 255, 0.26));
+}
+img[src*="/logos/lmp/official/charros-jalisco.png"],
+img[src*="/logos/lmp/official/yaquis-obregon.png"] {
+  filter: brightness(1.65) saturate(1.08) drop-shadow(0 0 1px rgba(189, 213, 255, 0.18));
+}
+img[src*="/logos/lmp/official/mayos-navojoa.png"] {
+  filter: brightness(1.24) saturate(1.06);
+}
+/* El nuevo recorte de Cañeros preserva el borde izquierdo de la L. */
+img[src*="/logos/lmp/official/caneros-mochis.png"] {
+  object-fit: contain;
+}
