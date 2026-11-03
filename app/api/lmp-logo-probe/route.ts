@@ -23,11 +23,11 @@ export async function GET(req:Request){
     const base={name,status:result.status,url:result.url,contentType,bytes:raw.length};
     if(contentType.includes("html")){
       const html=raw.toString("utf8");
-      const matches=[...html.matchAll(/<img\\b[^>]*>/gi)].slice(0,90).map(x=>({
-        alt:clean(x[0].match(/\\balt=["']([^"']*)["']/i)?.[1]??""),
-        src:clean(x[0].match(/\\b(?:src|data-src)=["']([^"']*)["']/i)?.[1]??""),
+      const matches=[...html.matchAll(/<img\b[^>]*>/gi)].slice(0,90).map(x=>({
+        alt:clean(x[0].match(/\balt=["']([^"']*)["']/i)?.[1]??""),
+        src:clean(x[0].match(/\b(?:src|data-src)=["']([^"']*)["']/i)?.[1]??""),
       }));
-      const srcs=[...html.matchAll(/["']([^"']*(?:logo|escudo|algod|mayos|venados|jaguares)[^"']*\\.(?:png|svg|webp)[^"']*)["']/gi)].slice(0,70).map(x=>x[1]);
+      const srcs=[...html.matchAll(/["']([^"']*(?:logo|escudo|algod|mayos|venados|jaguares)[^"']*\.(?:png|svg|webp)[^"']*)["']/gi)].slice(0,70).map(x=>x[1]);
       return NextResponse.json({...base,images:matches,assets:srcs},{headers:{"Cache-Control":"no-store"}});
     }
     if(raw.length>1_800_000)return NextResponse.json({...base,error:"too_large"});
