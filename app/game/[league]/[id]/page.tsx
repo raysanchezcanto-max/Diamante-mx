@@ -1,4 +1,3 @@
-import LmpBroadcasts from "@/components/LmpBroadcasts";
 import { getBaseballGameExtras } from "@/lib/baseballGameExtras";
 import { BaseballLineScoreCard, BaseballPitchingDecisions, BaseballPlayerStats } from "@/components/BaseballGameExtras";
 import { getMlbPlayState } from "@/lib/mlbLive";
@@ -174,11 +173,13 @@ export default async function GamePage({
   if (!game) {
     notFound();
   }
-const broadcasts =
-  await getGameBroadcasts(
-    league,
-    gameId
-  );
+const broadcasts = await getGameBroadcasts(league, gameId, {
+  startTime: game.startTime,
+  awayId: game.awayId,
+  homeId: game.homeId,
+  away: game.away,
+  home: game.home,
+});
 
   const awayDisplayName = getTeamDisplayName(league, game.away);
   const homeDisplayName = getTeamDisplayName(league, game.home);
@@ -632,53 +633,43 @@ const time =
 {!isFinal && (
   <section className="broadcastSection">
     <div className="broadcastHeader">
-      <span className="eyebrow">
-        TRANSMISIÓN
-      </span>
+      <span className="eyebrow">TRANSMISIÓN</span>
       <h2>Dónde ver</h2>
     </div>
 
-    {broadcasts.length > 0 ? (
-      <div className="broadcastLinks">
-        {league === "LMP" && (
-          <LmpBroadcasts
-            awayTeamId={game.awayId}
-            homeTeamId={game.homeId}
-            awayTeamName={game.away}
-            homeTeamName={game.home}
-          />
-        )}
-
-        {broadcasts.map((broadcast, index) =>
-          broadcast.url ? (
-            <a
-              key={`${broadcast.name}-${index}`}
-              href={broadcast.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="watchButton"
-            >
-              {broadcast.fallback
-                ? `Ver opciones para ${broadcast.name}`
-                : league === "LMP" &&
-                    broadcast.name === "MLB.TV"
-                  ? "MLB.TV · Suscripción"
-                  : `Ver en ${broadcast.name}`}
-            </a>
-          ) : (
-            <span
-              key={`${broadcast.name}-${index}`}
-              className="watchButtonDisabled"
-            >
-              {broadcast.name}
-            </span>
-          )
-        )}
-      </div>
+    {broadcasts.length ? (
+      <>
+        <div className="broadcastLinks">
+          {broadcasts.map((broadcast, index) => (
+            broadcast.url ? (
+              <a
+                key={`${broadcast.name}-${index}`}
+                href={broadcast.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={broadcast.note}
+                className="watchButton"
+              >
+                Abrir {broadcast.name}
+              </a>
+            ) : (
+              <span
+                key={`${broadcast.name}-${index}`}
+                title={broadcast.note}
+                className="watchButtonDisabled"
+              >
+                {broadcast.name} · Sin enlace verificado
+              </span>
+            )
+          ))}
+        </div>
+        <p className="broadcastDisclaimer">
+          Los botones abren el canal o calendario oficial indicado, no siempre el
+          reproductor del partido. Disponibilidad según programación, región y suscripción.
+        </p>
+      </>
     ) : (
-      <div className="broadcastEmpty">
-        Transmisión por confirmar
-      </div>
+      <div className="broadcastEmpty">Transmisión del partido por confirmar</div>
     )}
   </section>
 )}
