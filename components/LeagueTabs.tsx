@@ -3,10 +3,10 @@ type LeagueTabsProps = {
 };
 
 const LEAGUES = [
-  { code: "MLB", href: "/?league=mlb", image: "/logos/leagues/mlb.svg", label: "Major League Baseball" },
-  { code: "LMB", href: "/?league=lmb", image: "/logos/leagues/lmb.png", label: "Liga Mexicana de Beisbol" },
-  { code: "LMP", href: "/?league=lmp", image: "/logos/leagues/lmp.png", label: "Liga Mexicana del Pacífico" },
-  { code: "CARIBE", href: "/serie-del-caribe", image: "/logos/leagues/caribe.svg", label: "Serie del Caribe" },
+  { code: "MLB", href: "/?league=mlb", image: "/logos/leagues/mlb.svg", label: "Major League Baseball", visibleName: "MLB" },
+  { code: "LMB", href: "/?league=lmb", image: "/logos/leagues/lmb.png", label: "Liga Mexicana de Beisbol", visibleName: "LMB" },
+  { code: "LMP", href: "/?league=lmp", image: "/logos/leagues/lmp.png", label: "Liga Mexicana del Pacífico", visibleName: "LMP" },
+  { code: "CARIBE", href: "/serie-del-caribe", image: "/logos/leagues/caribe.svg", label: "Serie del Caribe", visibleName: "SERIE DEL CARIBE" },
 ] as const;
 
 export default function LeagueTabs({ activeLeague }: LeagueTabsProps) {
@@ -26,11 +26,13 @@ export default function LeagueTabs({ activeLeague }: LeagueTabsProps) {
             >
               <img
                 src={league.image}
-                alt={league.code}
+                alt=""
+                aria-hidden="true"
                 className={`leagueLogo leagueLogo--${league.code.toLowerCase()}`}
                 width={80}
                 height={46}
               />
+              <span className="leagueName">{league.visibleName}</span>
             </a>
           );
         })}

@@ -4207,3 +4207,54 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   .leagueLogo--lmp { width: 43px; height: 42px; }
   .leagueLogo--caribe { width: 66px; height: 27px; }
 }
+
+/* Logos flotantes de ligas + etiquetas accesibles. Nunca añadir fondos a las imágenes. */
+.leagueWrap .tab {
+  flex-direction: column;
+  gap: 6px;
+  min-height: 83px;
+  padding: 7px 13px 10px;
+  background: transparent;
+}
+.leagueName {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: .075em;
+  white-space: nowrap;
+  text-align: center;
+}
+.leagueWrap .tab.active .leagueName {
+  color: var(--accent);
+}
+.leagueWrap .tab:hover .leagueName,
+.leagueWrap .tab:focus-visible .leagueName {
+  color: var(--text);
+}
+.leagueWrap .tab.active:hover .leagueName,
+.leagueWrap .tab.active:focus-visible .leagueName {
+  color: var(--accent);
+}
+/* Mejor contraste solo en marcas azules sobre fondo oscuro. */
+.leagueLogo--lmp {
+  filter: brightness(1.65) saturate(1.13) drop-shadow(0 0 2px rgba(192, 218, 255, .23));
+}
+.leagueLogo--caribe {
+  filter: brightness(1.8) saturate(1.12) drop-shadow(0 0 1.5px rgba(192, 218, 255, .24));
+}
+@media (max-width: 600px) {
+  .leagueWrap .tab {
+    width: 100%;
+    min-height: 78px;
+    padding: 6px 2px 9px;
+    gap: 5px;
+  }
+  .leagueName {
+    font-size: 9px;
+    letter-spacing: .025em;
+    white-space: normal;
+    max-width: 100%;
+    text-wrap: balance;
+  }
+}
