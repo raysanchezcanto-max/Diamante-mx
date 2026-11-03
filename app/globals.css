@@ -4033,7 +4033,11 @@ img[src*="/logos/lmp/official/algodoneros-guasave.png"],
 img[src*="/logos/lmp/official/jaguares-nayarit.png"] {
   filter: brightness(2.6) saturate(1.14) drop-shadow(0 0 1.5px rgba(189, 213, 255, 0.26));
 }
-img[src*="/logos/lmp/official/charros-jalisco.png"],
+/* Charros: azul más claro y nítido en fondo oscuro, como en la referencia de LMP. */
+img[src*="/logos/lmp/official/charros-jalisco.png"] {
+  filter: brightness(1.9) saturate(1.06) drop-shadow(0 0 1.5px rgba(202, 222, 255, 0.27));
+}
+/* Mantener el ajuste anterior de Yaquis sin modificarlo. */
 img[src*="/logos/lmp/official/yaquis-obregon.png"] {
   filter: brightness(1.65) saturate(1.08) drop-shadow(0 0 1px rgba(189, 213, 255, 0.18));
 }

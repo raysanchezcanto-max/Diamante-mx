@@ -446,3 +446,9 @@
 - **Contraste:** estilos específicos por ruta en `app/globals.css`: AG/Nayarit brightness(2.6) con sombra azul muy tenue, Charros/Yaquis brightness(1.65), Mayos brightness(1.24); Cañeros object-fit contain. Los colores y trazos del sprite original no se editan: el contraste se ajusta al renderizar la interfaz nocturna. No modificar marcadores, datos de LMP ni logos de otras ligas.
 - **Validación:** verificar compilación Vercel y recursos HTTP 200; revisar visualmente tabla de posiciones, próximos juegos y detalle de Cañeros/Jaguares. Si AG o N se ven demasiado brillantes, ajustar intensidad del filtro, no reemplazar el monograma.
 - **Limpieza:** ruta temporal de comparación `app/api/lmp-caneros-fix/route.ts` eliminada después de su uso.
+
+## 42. Ajuste fino del azul de Charros de Jalisco — 2/nov/2026
+
+- La usuaria comparó una captura del logo oficial en la tabla de la LMP (fondo blanco) con el detalle de Diamante MX (fondo oscuro) y notó que el azul de Charros se percibe más claro en la referencia.
+- Se separó la regla CSS específica de Charros de la de Yaquis en `app/globals.css`. Charros usa `brightness(1.9) saturate(1.06)` y una sombra azul blanca tenue para mejorar la legibilidad sobre nuestro fondo oscuro; Yaquis conserva su tratamiento previo. Se mantiene exactamente el PNG extraído de la liga en `public/logos/lmp/official/charros-jalisco.png` (sin alterarlo ni cambiar logos de otros equipos).
+- Pendiente comprobación visual en la tarjeta grande de detalle y en tabla/resultados para confirmar que el contraste no resulte excesivo.
