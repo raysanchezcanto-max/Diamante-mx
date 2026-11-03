@@ -430,3 +430,11 @@
 - **Sin cambios:** otros SVG vectoriales LMP, componentes, datos en vivo, imágenes de jugadores y denominaciones API. Se elimina la ruta temporal `app/api/lmp-logo-probe/route.ts` tras verificar las fuentes.
 - **Verificación pendiente:** inspección visual de tabla/resultados/próximos juegos y detalles en PC/APK tras `Ctrl+F5`. Mantener marca oficial y revisar licencia/permiso de uso para eventual monetización; mejorar el encuadre solo si las capturas lo exigen.
 
+## 40. LMP: identidad visual de los diez equipos según sprite de la liga (2/nov/2026)
+
+- La usuaria contrastó Diamante MX con la tabla oficial LMP y detectó variantes de los escudos. Se verificó directamente el sitio **https://www.lmp.mx/**, su CSS `assets/css/vendor.bundle.css?cache=2` y el sprite oficial `assets/img/icons/LaMP_Iconos_wbc_10.webp` (3100×2300 px).
+- Se extrajeron los monogramas exactos mediante las posiciones CSS oficiales de `logo_small.logo_gsv,mxc,her,cul,jal,obr,maz,moc,nav,nay`. Los diez PNG son RGBA con transparencia real: nueve recortes de 158×158 px y Charros de 198×158. Coinciden con los cinco mostrados por la usuaria (AG azul, M roja, H naranja, TC guinda, Ch azul); los restantes se identificaron mediante las claves oficiales de LMP.
+- Se guardaron los diez bajo `public/logos/lmp/official/` y se actualizó solo el mapa LMP de `lib/teamLogos.ts`. Se mantuvieron los archivos antiguos para poder revertir cualquier variante y el mapping histórico de Tucson sin cambios. MLB, LMB, CARIBE, API, jugadores, resultados, estados, y CSS no se alteraron.
+- **Nota de contraste:** los monogramas AG y N oficiales azul marino son oscuros para nuestra interfaz, por lo que se requiere comprobación visual en PC/APK. Ajustar contraste si la usuaria lo aprueba, sin cambiar la forma ni la identidad de los escudos.
+- Se retiraron las rutas auxiliares temporales `app/api/lmp-official-check/route.ts` y `app/api/lmp-crest-crop/route.ts` tras obtener las imágenes. No dejar herramientas de diagnóstico abiertas.
+- Pendiente validar visualmente tabla de posiciones, próximos juegos, resultados recientes y página de detalle a 26/34/96 px. Los emblemas pertenecen a sus clubes y requieren atención a licencia/derechos antes de monetizar.

@@ -2,35 +2,35 @@ export type LeagueCode = "MLB" | "LMB" | "LMP";
 
 const LMP_LOGOS: Record<string, string> = {
   "jaguares de nayarit":
-    "/logos/lmp/jaguares-nayarit.png",
+    "/logos/lmp/official/jaguares-nayarit.png",
 
   "tomateros de culiacan":
-    "/logos/lmp/tomateros-culiacan.svg",
+    "/logos/lmp/official/tomateros-culiacan.png",
 
   "naranjeros de hermosillo":
-    "/logos/lmp/naranjeros-hermosillo.svg",
+    "/logos/lmp/official/naranjeros-hermosillo.png",
 
   "yaquis de obregon":
-    "/logos/lmp/yaquis-obregon.svg",
+    "/logos/lmp/official/yaquis-obregon.png",
 
   "charros de jalisco":
-    "/logos/lmp/charros-jalisco.png",
+    "/logos/lmp/official/charros-jalisco.png",
 
   "caneros de los mochis":
-    "/logos/lmp/caneros-mochis.svg",
+    "/logos/lmp/official/caneros-mochis.png",
 
   "aguilas de mexicali":
-    "/logos/lmp/aguilas-mexicali.svg",
+    "/logos/lmp/official/aguilas-mexicali.png",
 
   "algodoneros de guasave":
-    "/logos/lmp/algodoneros-guasave.png",
+    "/logos/lmp/official/algodoneros-guasave.png",
 
   "tucson baseball team":
     "/logos/lmp/tucson.png",
   "mayos de navojoa":
-    "/logos/lmp/mayos-navojoa.png",
+    "/logos/lmp/official/mayos-navojoa.png",
   "venados de mazatlan":
-    "/logos/lmp/venados-mazatlan.png",
+    "/logos/lmp/official/venados-mazatlan.png",
   };
 
   const LMB_LOGOS: Record<string, string> = {
