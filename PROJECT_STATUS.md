@@ -1,6 +1,6 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 2 de noviembre de 2026  
+**Última revisión:** 3 de noviembre de 2026  
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
 **Prioridad actual (cierre 2/nov/2026):** cuando se restablezca la cuota de Vercel, desplegar únicamente el último HEAD de `main` y comprobar transmisiones MLB/LMB/LMP/CARIBE; después validar datos LMP reales y pendientes de CARIBE. La APK Android TWA ya está instalada y navegable, NO se debe rehacer.  
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
@@ -512,3 +512,11 @@
 - **Producto futuro, después de estabilidad:** noticias LMP, rosters, fichas y movimientos de jugadores; evolución de Android (pruebas de enlaces externos y comportamiento de TWA, eventual Play Store/AAB), revisión de accesibilidad; condiciones/licencias de datos MLB, imágenes y logos antes de cualquier monetización. No mezclar estas expansiones con la reparación urgente de transmisiones.
 
 **Reanudación recomendada:** «Amistad, lee el cierre de `PROJECT_STATUS.md` (sección 46) y verifica si Vercel ya puede desplegar el último HEAD; luego probamos los botones de transmisión de las cuatro ligas». Hacer un bloque por vez, sin gastar despliegues innecesarios.
+
+## 47. LMP: respaldo de pitchers probables desde el calendario — 3/nov/2026
+
+- **Acuerdo ratificado por la usuaria:** antes de jugar, `P. PROBABLE` solo si el nombre e ID están publicados en la fuente; una vez que datos reales verifiquen al pitcher que lanzó primero, `ABRIDOR`; cuando entra un relevista, la etiqueta histórica del pitcher original cambia a `ABRIÓ`, pero se conserva su nombre/fotografía. El relevista aparece en el panel independiente `LANZANDO`. Nunca asumir que el probable fue quien efectivamente abrió. Si no hay dato probable, no inventarlo.
+- **Implementación:** commit `8399021f50f751c7e1a2af982ced1a459c364f4c` modifica **solo** `lib/gameDetails.ts`. Función `getLmpScheduleProbables(gameId, officialDate)` consulta calendario StatsAPI `/api/v1/schedule?sportId=17&leagueId=132&startDate=...&endDate=...&hydrate=probablePitcher`; empareja por `gamePk` exacto para no mezclar dobles carteleras y exige `id` numérico válido y `fullName` no vacío. Solo se usa si `league === "LMP"`, falta algún probable en `feed/live` y aún no hay primer lanzamiento confirmado. El valor del feed tiene prioridad; la API inaccesible devuelve `null` sin inventar datos.
+- **Sin modificaciones:** MLB, LMB, CARIBE, `GamePitcher.tsx`, página de detalle, estilos, fotos y transiciones `P. PROBABLE → ABRIDOR → ABRIÓ` permanecen como antes. Esto es un respaldo de **datos previos**, no un cambio de estado.
+- **Vercel:** deploy `dpl_21qns6dr4WW8k4YvYDmK2hZ7nr5K` del commit `8399021` terminó `READY`. La portada de LMP y detalle `/game/lmp/850486` respondieron HTTP 200. **No se verificó que el probable se muestre**, pues ese partido de prueba no exhibe `P. PROBABLE`; podría no haber dato oficial anunciado, o requerir mayor investigación de la respuesta. Verificar con un partido `Preview` donde el calendario de LMP efectivamente devuelva al menos un probable. Evitar confundir compilación con disponibilidad de datos.
+- **Siguiente paso:** probar el detalle de un juego LMP con pitcher probable presente en el calendario oficial; si no coincide, inspeccionar la estructura real de la API y ajustar solo LMP. Después verificar en vivo `ABRIDOR → ABRIÓ` al registrar un relevista.
