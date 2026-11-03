@@ -11,11 +11,10 @@ export async function GET(req: Request) {
   if (!samples[v]) return NextResponse.json({error:"invalid variant"},{status:400});
   try {
     const sharp=(await import("sharp")).default;
-    const source=Buffer.from(await fetch("https://www.lmp.mx/assets/img/icons/LaMP_Iconos_wbc_10.webp",
-      {cache:"no-store",signal:AbortSignal.timeout(13000)}).then(r=>{
-        if(!r.ok)throw new Error("sprite response "+r.status);
-        return r.arrayBuffer();
-      }));
+    const resp = await fetch("https://www.lmp.mx/assets/img/icons/LaMP_Iconos_wbc_10.webp",
+      {cache:"no-store",signal:AbortSignal.timeout(13000)});
+    if (!resp.ok) throw new Error("sprite response "+resp.status);
+    const source = Buffer.from(await resp.arrayBuffer());
     const metadata=await sharp(source).metadata();
     const scale=(metadata.width??0)/392;
     if(!scale)throw new Error("no sprite size");
