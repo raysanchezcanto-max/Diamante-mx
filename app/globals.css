@@ -4048,3 +4048,13 @@ img[src*="/logos/lmp/official/mayos-navojoa.png"] {
 img[src*="/logos/lmp/official/caneros-mochis.png"] {
   object-fit: contain;
 }
+
+/* Mostrar siempre que el enlace abre plataforma o calendario, no video garantizado. */
+.broadcastDisclaimer {
+  margin-top: 12px;
+  margin-bottom: 0;
+  max-width: 740px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}

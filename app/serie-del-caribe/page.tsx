@@ -105,6 +105,23 @@ export default async function SerieDelCaribePage() {
 
       <LeagueTabs activeLeague="CARIBE" />
 
+      <section className="section caribeBroadcastSection" aria-label="Transmisiones Serie del Caribe 2027">
+        <div className="sectionHeader">
+          <div>
+            <span className="eyebrow">TRANSMISIÓN · HERMOSILLO 2027</span>
+            <h2>Dónde ver</h2>
+          </div>
+        </div>
+        <p className="broadcastDisclaimer">
+          La televisión y el streaming para la Serie del Caribe 2027 todavía no están confirmados.
+          Los canales que transmitieron en 2026 no se atribuyen automáticamente a Hermosillo 2027.
+        </p>
+        <div className="broadcastLinks">
+          <a className="watchButton" href="https://www.seriedelcaribe.net/"
+             target="_blank" rel="noopener noreferrer">Consultar anuncios oficiales</a>
+        </div>
+      </section>
+
       {tournamentStarted && showFinalCard && finalMatch && (
         <CaribeFinalGameCard game={finalMatch} />
       )}
