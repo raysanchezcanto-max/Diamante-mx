@@ -27,11 +27,13 @@ export type GameDetails = {
   awayProbablePitcher?: {
     id: number;
     name: string;
+    imageUrl?: string;
   };
 
   homeProbablePitcher?: {
     id: number;
     name: string;
+    imageUrl?: string;
   };
 
   // Lanzadores que realmente iniciaron el encuentro LMP.
@@ -228,61 +230,84 @@ async function verifyLmpSecondGameTime(
 // Respaldo exclusivo de LMP: el calendario puede anunciar probables
 // antes de que aparezcan en el feed individual del partido.
 // Comparar gamePk exacto para no mezclar juegos de doble cartelera.
+// Solo LMP: usar el mismo scoreboard oficial que alimenta ROL DE JUEGOS.
+// StatsAPI /schedule no publica estos probables para la jornada 3/nov/2026.
+// Verificar ID del juego y ambos equipos para evitar dobles carteleras cruzadas.
 async function getLmpScheduleProbables(
   gameId: number,
-  officialDate: unknown
+  officialDate: unknown,
+  awayTeamId: unknown,
+  homeTeamId: unknown
 ): Promise<{
   away?: GameDetails["awayProbablePitcher"];
   home?: GameDetails["homeProbablePitcher"];
 } | null> {
   if (
     typeof officialDate !== "string" ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(officialDate)
+    !/^\d{4}-\d{2}-\d{2}$/.test(officialDate) ||
+    typeof awayTeamId !== "number" ||
+    typeof homeTeamId !== "number" ||
+    awayTeamId <= 0 ||
+    homeTeamId <= 0
   ) {
     return null;
   }
 
   try {
+    const datePath = officialDate.replace(/-/g, "/");
     const response = await fetch(
-      "https://statsapi.mlb.com/api/v1/schedule" +
-        "?sportId=17&leagueId=132" +
-        "&startDate=" + officialDate +
-        "&endDate=" + officialDate +
-        "&hydrate=probablePitcher",
-      { next: { revalidate: 60 } }
+      `https://api.lmp.mx/3.0.0/scoreboard/${datePath}`,
+      { next: { revalidate: 60 }, signal: AbortSignal.timeout(8000) }
     );
     if (!response.ok) return null;
 
     const data = await response.json();
-    const games: any[] = (
-      Array.isArray(data?.dates) ? data.dates : []
-    ).flatMap((day: any) =>
-      Array.isArray(day?.games) ? day.games : []
+    const games: any[] = Array.isArray(data?.response) ? data.response : [];
+    const game = games.find((item: any) =>
+      Number(item?.boxScore) === gameId &&
+      Number(item?.awayTeamId) === awayTeamId &&
+      Number(item?.homeTeamId) === homeTeamId
     );
-    const game = games.find((item: any) => item?.gamePk === gameId);
     if (!game) return null;
 
     const parsePitcher = (
-      person: any
+      name: unknown,
+      playerId: unknown,
+      rawImage: unknown
     ): GameDetails["awayProbablePitcher"] => {
+      const id = Number(playerId);
       if (
-        typeof person?.id !== "number" ||
-        !Number.isInteger(person.id) ||
-        person.id <= 0 ||
-        typeof person?.fullName !== "string" ||
-        !person.fullName.trim()
+        !Number.isSafeInteger(id) ||
+        id <= 0 ||
+        typeof name !== "string" ||
+        !name.trim()
       ) {
         return undefined;
       }
-      return { id: person.id, name: person.fullName.trim() };
+      const imageUrl =
+        typeof rawImage === "string" &&
+        rawImage.startsWith(
+          `https://images.cloudgfx.com/player/mugshot2/${id}?`
+        )
+          ? rawImage
+          : undefined;
+      return { id, name: name.trim(), imageUrl };
     };
 
     return {
-      away: parsePitcher(game?.teams?.away?.probablePitcher),
-      home: parsePitcher(game?.teams?.home?.probablePitcher),
+      away: parsePitcher(
+        game.awayProbablePitcher,
+        game.awayProbablePitcherMlbid,
+        game.awayProbablePitcherImg
+      ),
+      home: parsePitcher(
+        game.homeProbablePitcher,
+        game.homeProbablePitcherMlbid,
+        game.homeProbablePitcherImg
+      ),
     };
   } catch {
-    // Si la API no responde, la ficha queda sin probable inventado.
+    // Un dato no publicado o un fallo de red no crea pitchers ficticios.
     return null;
   }
 }
@@ -607,7 +632,9 @@ const firstPitchRecorded =
       (!feedAwayProbable || !feedHomeProbable)
         ? await getLmpScheduleProbables(
             gameId,
-            gameData?.datetime?.officialDate
+            gameData?.datetime?.officialDate,
+            away?.id,
+            home?.id
           )
         : null;
 

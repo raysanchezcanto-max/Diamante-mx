@@ -7,6 +7,7 @@ import type { LeagueCode } from "@/lib/teamLogos";
 type Pitcher = {
   id: number;
   name: string;
+  imageUrl?: string;
 };
 
 type GamePitcherProps = {
@@ -24,7 +25,7 @@ export default function GamePitcher({
 
   const photoUrl = pitcher
     ? league === "LMP"
-      ? `https://images.cloudgfx.com/player/mugshot/${pitcher.id}?app=lamp&h=350&w=250`
+      ? pitcher.imageUrl ?? `https://images.cloudgfx.com/player/mugshot/${pitcher.id}?app=lamp&h=350&w=250`
       : league === "MLB"
         ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${pitcher.id}/headshot/67/current`
         : league === "LMB"
