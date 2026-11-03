@@ -4258,3 +4258,51 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     text-wrap: balance;
   }
 }
+
+/* Insignias tipo MLB en la franja inferior: transparentes, sin fondos/círculos.
+ * Estos filtros SOLO afectan al explorador de equipos, nunca a los logos de
+ * partidos, posiciones ni fotos de jugadores. */
+.teamLogoRail .teamLogoChoice img {
+  background: transparent;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="/logos/lmb/nav/"] {
+  width: 39px;
+  height: 39px;
+  filter: drop-shadow(0 0 0.7px rgba(245,255,245,.24));
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="sultanes-monterrey.png"] {
+  filter: brightness(2.65) saturate(.94) drop-shadow(0 0 1px rgba(205,217,255,.50));
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="bravos-leon.png"] {
+  filter: brightness(2.15) saturate(1.08) drop-shadow(0 0 1px rgba(175,245,198,.48));
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="conspiradores-queretaro.png"] {
+  filter: brightness(1.65) drop-shadow(0 0 1.3px rgba(233,236,255,.75));
+  transform: scale(1.12);
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="pericos-puebla.png"] {
+  filter: brightness(1.42) saturate(1.06) drop-shadow(0 0 .7px rgba(216,245,153,.33));
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="algodoneros-union-laguna.png"] {
+  filter: brightness(1.52) saturate(1.08);
+}
+.teamExplorer--lmb .teamLogoChoice img[src*="charros-jalisco.png"] {
+  filter: brightness(1.45) saturate(1.1);
+}
+/* Los diez monogramas LMP ya son de tipo gorra. Afinar únicamente los
+ * de contraste bajo que comparten esta misma franja flotante. */
+.teamExplorer--lmp .teamLogoChoice img[src*="yaquis-obregon.png"] {
+  filter: brightness(1.95) saturate(1.07) drop-shadow(0 0 .9px rgba(202,225,255,.3));
+}
+.teamExplorer--lmp .teamLogoChoice img[src*="jaguares-nayarit.png"] {
+  filter: brightness(2.7) saturate(1.12) drop-shadow(0 0 1px rgba(199,218,255,.35));
+}
+@media (max-width: 600px) {
+  .teamExplorer--lmb .teamLogoChoice img[src*="/logos/lmb/nav/"] {
+    width: 35px;
+    height: 35px;
+  }
+}

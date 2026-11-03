@@ -46,6 +46,22 @@ const FALLBACK_TEAMS: Record<LeagueCode, Array<{ id: number; name: string }>> = 
   ].map(name=>({id:0,name})),
 };
 
+// Insignias de gorra transparentes para la franja, sin sustituir el logo
+// completo de cada club en partidos, tablas ni fichas.
+function getStripLogo(league: LeagueCode, teamId: number, teamName: string): string | null {
+  if (league === "LMB") {
+    const normalized = teamName.normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    if (normalized.includes("leones de yucatan") || normalized === "leones") {
+      return "/logos/lmb/nav/leones-cap.svg";
+    }
+    if (normalized.includes("guerreros de oaxaca") || normalized === "guerreros") {
+      return "/logos/lmb/nav/guerreros-cap.svg";
+    }
+  }
+  return getTeamLogo(league, teamId, teamName);
+}
+
 type Participant = { country: string; flagSrc: string; league: string };
 type Team = {
   key: string;
@@ -82,7 +98,7 @@ function listTeams(
     seen.add(key);
     return [{
       key,id:t.id,name:display,
-      logo:getTeamLogo(league,t.id,t.name),
+      logo:getStripLogo(league,t.id,t.name),
       standing:t.standing,
       region:t.standing?.division,
     }];
@@ -113,7 +129,7 @@ export default function TeamLogoStrip({
     : undefined;
 
   return (
-    <div className="teamExplorer">
+    <div className={`teamExplorer teamExplorer--${league.toLowerCase()}`}>
       <div className="teamLogoRail" aria-label={league==="CARIBE"?"Participantes del Caribe":`Equipos de ${league}`}>
         <div className="teamLogoTrack">
           {teams.map(team=>(
