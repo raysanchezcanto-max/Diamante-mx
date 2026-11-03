@@ -20,6 +20,7 @@ export async function GET(request: Request){
    mlb:"https://www.mlbstatic.com/team-logos/league-on-dark/1.svg",
    lmb:"https://lmb.com.mx/images/logo.png",
    lmp:"https://www.lmp.mx/assets/img/header/lmp_logo_header.png",
+   lmpicon:"https://www.lmp.mx/assets/img/icons/fav/android-chrome-512x512.png?cache=5",
    caribe:"https://www.seriedelcaribe.net/storage/images/CoAHHyMHLi2kFNkJRU3G6LcqpLbhVbIHYOHaMvHy.svg"
  };
  const imageKey = new URL(request.url).searchParams.get("image") ?? "";
