@@ -470,3 +470,10 @@
 - Se contrastó el cambio de marca de la liga desde agosto/septiembre 2026 y el video público de la propia LMP publicado el 31/ago/2026 (`https://www.youtube.com/watch?v=3mBXkNckMXA`), que anuncia transmisiones 2026–27 con `/@lmp_beisbol`. Se actualizó `LMP_YOUTUBE` en `lib/broadcasts.ts` a `https://www.youtube.com/@lmp_beisbol`, que también usa el mapeo de canales LMP sin duplicar botones.
 - Se conserva intacto `https://www.mlb.com/live-stream-games/lmp/2026-schedule`, confirmado por captura de la usuaria como calendario LMP correcto. La opción YouTube sigue identificada como canal/membresía y **no promete** enlace directo del partido; se recomienda confirmar visualmente el nuevo destino en un navegador.
 - **Estado de despliegue:** commits recientes de Vercel están limitados por cuota («Deployment rate limited — retry in 24 hours»). Este commit queda en GitHub hasta que exista un despliegue exitoso; no afirmar que el botón haya cambiado en producción antes de un deploy `READY` con esta SHA.
+
+## 45. Se retira enlace de YouTube LMP no verificado — 2/nov/2026
+
+- Capturas de la usuaria: `youtube.com/@LigaArcoMX` conduce a «Cetronic Server»; `youtube.com/@lmp_beisbol` muestra «Esta página no está disponible». **Ninguno es un destino válido.** Un handle de redes sociales o una noticia de años previos no bastan para afirmar la dirección actual.
+- Se modificó `lib/broadcasts.ts`: la opción `YouTube LMP · Membresía` queda deshabilitada (sin URL); un botón distinto `LMP · Consultar canales oficiales` lleva a `https://www.lmp.mx/`, identificado como sitio informativo, no video directo. Se preserva el enlace a calendario LMP de MLB.TV `https://www.mlb.com/live-stream-games/lmp/2026-schedule`, comprobado por la usuaria.
+- Fuentes públicas de octubre 2026 mencionan transmisiones por membresía de YouTube, pero **no pudo confirmarse un enlace funcional del canal oficial**. Evitar otros enlaces de YouTube sin verificar.
+- Confirmar despliegue Vercel antes de declarar aplicada la corrección en la página pública: el límite de tasa reportó «Deployment rate limited — retry in 24 hours».

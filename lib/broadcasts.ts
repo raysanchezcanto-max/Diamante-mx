@@ -22,13 +22,14 @@ export type BroadcastGameContext = {
 };
 
 const MLB_API = "https://statsapi.mlb.com/api/v1";
-const LMP_YOUTUBE = "https://www.youtube.com/@lmp_beisbol";
+const LMP_OFFICIAL_SITE = "https://www.lmp.mx/";
 const LMB_TV = "https://www.lmb.tv/";
 
 function canonicalProviderUrl(name: string, league: LeagueCode): string | undefined {
   const n = name.toLowerCase();
   if (league === "LMP") {
-    if (n.includes("youtube")) return LMP_YOUTUBE;
+    // El identificador exacto del canal oficial YouTube no está verificado.
+    if (n.includes("youtube")) return undefined;
     if (n.includes("mlb.tv")) return "https://www.mlb.com/live-stream-games/lmp/2026-schedule";
     // TV channels can change their schedule: don't link to a random broadcaster.
     return undefined;
@@ -172,13 +173,15 @@ async function lmpGameChannels(context: BroadcastGameContext): Promise<Broadcast
 }
 
 async function getLmpBroadcasts(context: BroadcastGameContext): Promise<Broadcast[]> {
-  // These two destinations are explicitly for LMP, not the generic MLB home page.
+  // Los botones LMP conocidos abren información oficial, no streams inventados.
   const start = context.startTime ? new Date(context.startTime) : new Date();
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
   const year = start.getMonth() <= 2 ? season - 1 : season;
   const known: Broadcast[] = [
-    { name: "YouTube oficial LMP · Membresía", type: "Streaming", url: LMP_YOUTUBE,
-      note: "Canal oficial de LMP; acceso a juegos mediante membresía. Selecciona el encuentro dentro de YouTube." },
+    { name: "YouTube LMP · Membresía", type: "Streaming",
+      note: "La liga anuncia transmisiones en YouTube, pero no tenemos un enlace del canal verificado; opción deshabilitada." },
+    { name: "LMP · Consultar canales oficiales", type: "Streaming", url: LMP_OFFICIAL_SITE,
+      note: "Abre la web oficial LMP para consultar opciones; no reproduce directamente un partido." },
     { name: "Calendario LMP en MLB.TV", type: "Streaming",
       url: `https://www.mlb.com/live-stream-games/lmp/${year}-schedule`,
       note: "Calendario oficial de LMP en MLB.TV; requiere suscripción y no abre directamente el reproductor." },
