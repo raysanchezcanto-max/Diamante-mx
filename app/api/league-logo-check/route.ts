@@ -9,6 +9,7 @@ const domains={
 const extract=(html:string)=>({
  meta:[...html.matchAll(/<meta\s+[^>]*(?:og:image|twitter:image)[^>]*>/gi)].map(x=>x[0].slice(0,600)).slice(0,8),
  imgs:[...html.matchAll(/<(?:img|image|link|source)[^>]*(?:logo|Logo|LOGO|favicon|icon|brand|Brand)[^>]*>/g)].map(m=>m[0].slice(0,500)).slice(0,30),
+ logoMentions:[...html.matchAll(/logo/gi)].slice(0,30).map(m=>html.slice(Math.max(0,m.index-230),Math.min(html.length,m.index+440))),
  urls:[...new Set([...html.matchAll(/(?:https?:\/\/|\/)[^"'\s<>]{0,140}(?:logo|Logo|LMB|LMP|caribe)[^"'\s<>]{0,140}/g)].map(x=>x[0]))].slice(0,25),
  preview:html.slice(0,1700)
 });
