@@ -7,6 +7,7 @@ export async function GET(req: Request) {
     a: [180, 74, 27, 27],
     b: [178, 73, 30, 29],
     c: [181, 75, 26, 25],
+    d: [180, 75, 27, 23],
   };
   if (!samples[v]) return NextResponse.json({error:"invalid variant"},{status:400});
   try {
