@@ -16,7 +16,7 @@ export async function GET(req: Request) {
     const b=Buffer.from(await r.arrayBuffer()), typ=r.headers.get("content-type")||"";
     if (q.get("inspect") === "1") {
       const full=b.toString("utf8");
-      const needles=[".png",".svg","GSV","JAL","NAV","NAY","MAZ","equipos","standings","teams","logo","escudo","assets/img"];
+      const needles=q.get("needles")?.split(",").filter(Boolean).slice(0,12) ?? [".png",".svg","GSV","JAL","NAV","NAY","MAZ","equipos","standings","teams","logo","escudo","assets/img"];
       const entries:Record<string,string[]>={};
       for (const needle of needles){
         const out:string[]=[];
