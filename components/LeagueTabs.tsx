@@ -12,7 +12,7 @@ const LEAGUES = [
 export default function LeagueTabs({ activeLeague }: LeagueTabsProps) {
   return (
     <div className="leagueWrap">
-      <nav className="tabs" aria-label="Seleccionar liga">
+      <div className="tabs" role="navigation" aria-label="Seleccionar liga">
         {LEAGUES.map((league) => {
           const active = activeLeague === league.code;
           return (
@@ -34,7 +34,7 @@ export default function LeagueTabs({ activeLeague }: LeagueTabsProps) {
             </a>
           );
         })}
-      </nav>
+      </div>
     </div>
   );
 }
