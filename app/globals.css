@@ -4356,3 +4356,61 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     height: 39px;
   }
 }
+
+/* Explorador de ligas: cerrado de inicio, hover desktop y clic/tap persistente. */
+.leagueTeamDropdown .clubExplorerControlRow {
+  max-width: 1152px;
+  margin: 0 auto;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--line);
+}
+.leagueTeamDropdown.is-expanded .clubExplorerControlRow {
+  border-bottom-color: transparent;
+}
+.clubExplorerToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 30px;
+  padding: 5px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .10em;
+  cursor: pointer;
+}
+.clubExplorerToggle span {
+  font-size: 17px;
+  line-height: 1;
+  color: var(--accent);
+}
+.clubExplorerToggle:hover,
+.clubExplorerToggle:focus-visible {
+  color: var(--accent);
+}
+.clubExplorerToggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.clubExplorerPanel[hidden] { display: none; }
+.clubExplorerPanel:not([hidden]) {
+  animation: clubExplorerAppear .22s ease-out both;
+}
+@keyframes clubExplorerAppear {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clubExplorerPanel:not([hidden]) { animation: none; }
+}
+@media (max-width: 600px) {
+  .leagueTeamDropdown .clubExplorerControlRow {
+    margin: 0 24px;
+  }
+}
