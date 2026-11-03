@@ -2,7 +2,7 @@ export type LeagueCode = "MLB" | "LMB" | "LMP";
 
 const LMP_LOGOS: Record<string, string> = {
   "jaguares de nayarit":
-    "/logos/lmp/jaguares-nayarit.svg",
+    "/logos/lmp/jaguares-nayarit.png",
 
   "tomateros de culiacan":
     "/logos/lmp/tomateros-culiacan.svg",
