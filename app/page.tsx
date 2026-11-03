@@ -14,6 +14,7 @@ import AutoRefresh from "@/components/AutoRefresh";
 import SmartHeader from "@/components/SmartHeader";
 
 import LeagueTabs from "@/components/LeagueTabs";
+import TeamLogoStrip from "@/components/TeamLogoStrip";
 import Games from "@/components/Games";
 import Standings from "@/components/Standings";
 import Leaders from "@/components/Leaders";
@@ -435,6 +436,7 @@ const daysUntilLmp =
       </div>
 
       <LeagueTabs activeLeague={selectedLeague} />
+      <TeamLogoStrip league={selectedLeague} standings={standings} games={games} nextGames={nextGames} />
             {showLmpSeasonNotice && (
   <div className="seasonNotice">
     <div>

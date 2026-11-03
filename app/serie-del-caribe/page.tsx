@@ -2,6 +2,7 @@ import { getTeamDisplayName } from "@/lib/teamLogos";
 import type { Metadata } from "next";
 
 import LeagueTabs from "@/components/LeagueTabs";
+import TeamLogoStrip from "@/components/TeamLogoStrip";
 import CaribeFixtures from "@/components/CaribeFixtures";
 import CaribeSemifinals from "@/components/CaribeSemifinals";
 import CaribeFinalGameCard from "@/components/CaribeFinalGameCard";
@@ -104,6 +105,7 @@ export default async function SerieDelCaribePage() {
       </div>
 
       <LeagueTabs activeLeague="CARIBE" />
+      <TeamLogoStrip league="CARIBE" participants={[...CARIBE_2027_PARTICIPANTS]} />
 
       <section className="section caribeBroadcastSection" aria-label="Transmisiones Serie del Caribe 2027">
         <div className="sectionHeader">
