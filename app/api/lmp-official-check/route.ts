@@ -26,6 +26,9 @@ export async function GET(req: Request) {
     const teamSnippets=[...html.matchAll(/(?:Algodoneros|Guasave|Charros|Jalisco|Mayos|Navojoa|Jaguares|Venados|Mazatlán|MXC|GSV|NAY|NAV|JAL|MAZ)/gi)]
       .slice(0,55).map(m=>html.slice(Math.max(0,m.index-250),Math.min(html.length,m.index+360)));
     const assets=[...html.matchAll(/(?:src|href)=["']([^"']+\\.(?:svg|png|webp)(?:\\?[^"']*)?)["']/gi)].slice(0,200).map(m=>m[1]);
-    return NextResponse.json({status:r.status,url:r.url,type:typ,bytes:b.length,images,assets,teamSnippets});
+    return NextResponse.json({status:r.status,url:r.url,type:typ,bytes:b.length,images,assets,teamSnippets,
+ scripts:[...html.matchAll(/<script[^>]*src=["']([^"']+)["']/gi)].map(m=>m[1]),
+ styles:[...html.matchAll(/<link[^>]*href=["']([^"']+)["']/gi)].map(m=>m[1]),
+ first:html.slice(0,8500),last:html.slice(-3000)});
   } catch(e) {return NextResponse.json({error:String(e),url:target.toString()});}
 }
