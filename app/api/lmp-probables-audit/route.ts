@@ -24,6 +24,16 @@ export async function GET() {
         try { data=JSON.parse(body); } catch { base.excerpt=body.slice(0,450);return base; }
         const root=data as Record<string, unknown>;
         base.topKeys = Array.isArray(data) ? "array" : Object.keys(root).slice(0,30);
+        if (key === "lmp" && Array.isArray(root.response)) {
+          base.games = (root.response as Array<Record<string,unknown>>).map(g=>({
+            pk:g.boxScore, teamIds:[g.awayTeamId,g.homeTeamId],
+            away:g.awayProbablePitcher, awayId:g.awayProbablePitcherMlbid,
+            awayImage:g.awayProbablePitcherImg,
+            home:g.homeProbablePitcher, homeId:g.homeProbablePitcherMlbid,
+            homeImage:g.homeProbablePitcherImg,
+            extraKeys:Object.keys(g).filter(k=>/probable/i.test(k)),
+          }));
+        }
         if (key === "stats") {
           const dates=(root?.dates as Array<{games?: Array<Record<string, unknown>>}>)??[];
           base.games=dates.flatMap(day=>day.games??[]).map(g=>{
