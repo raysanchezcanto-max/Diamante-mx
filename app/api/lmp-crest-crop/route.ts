@@ -19,6 +19,8 @@ export async function GET(req:Request){
   const scale=meta.width/392;
   const [x,y,w,h]=css;
   const out=await sharp(buf).extract({left:Math.round(x*scale),top:Math.round(y*scale),width:Math.round(w*scale),height:Math.round(h*scale)}).png().toBuffer();
-  return NextResponse.json({abbr,width:meta.width,height:meta.height,scale,crop:{x,y,w,h},bytes:out.length,base64:out.toString("base64")},{headers:{"Cache-Control":"no-store"}});
+  const channels=(await sharp(out).stats()).channels.map(c=>({min:c.min,max:c.max,mean:c.mean}));
+  const corner=Array.from(await sharp(out).extract({left:0,top:0,width:1,height:1}).raw().toBuffer());
+  return NextResponse.json({abbr,width:meta.width,height:meta.height,scale,crop:{x,y,w,h},bytes:out.length,base64:out.toString("base64"),channels,corner},{headers:{"Cache-Control":"no-store"}});
  }catch(e){return NextResponse.json({abbr,error:String(e)}, {status:500});}
 }
