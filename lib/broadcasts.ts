@@ -173,8 +173,9 @@ async function lmpGameChannels(context: BroadcastGameContext): Promise<Broadcast
 
 async function getLmpBroadcasts(context: BroadcastGameContext): Promise<Broadcast[]> {
   // These two destinations are explicitly for LMP, not the generic MLB home page.
-  const season = context.startTime ? new Date(context.startTime).getFullYear() : new Date().getFullYear();
-  const year = Number.isFinite(season) ? season : 2026;
+  const start = context.startTime ? new Date(context.startTime) : new Date();
+  const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
+  const year = start.getMonth() <= 2 ? season - 1 : season;
   const known: Broadcast[] = [
     { name: "YouTube oficial LMP · Membresía", type: "Streaming", url: LMP_YOUTUBE,
       note: "Canal oficial de LMP; acceso a juegos mediante membresía. Selecciona el encuentro dentro de YouTube." },
