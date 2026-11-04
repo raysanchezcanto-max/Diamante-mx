@@ -626,10 +626,11 @@ const firstPitchRecorded =
     const isBeforeFirstPitch =
       gameState === "Preview" ||
       (gameState === "Live" && firstPitchRecorded !== true);
+    // Consultar el scoreboard LMP también si el feed ya tiene ambos nombres:
+    // puede aportar una URL oficial de foto sin reemplazar los IDs del feed.
     const scheduleProbables =
       league === "LMP" &&
-      isBeforeFirstPitch &&
-      (!feedAwayProbable || !feedHomeProbable)
+      isBeforeFirstPitch
         ? await getLmpScheduleProbables(
             gameId,
             gameData?.datetime?.officialDate,
@@ -670,10 +671,26 @@ const firstPitchRecorded =
       homeStarterReplaced: homePitchersUsed.length > 1,
 
       awayProbablePitcher:
-        feedAwayProbable ?? scheduleProbables?.away,
+        feedAwayProbable
+          ? {
+              ...feedAwayProbable,
+              imageUrl:
+                scheduleProbables?.away?.id === feedAwayProbable.id
+                  ? scheduleProbables.away.imageUrl
+                  : undefined,
+            }
+          : scheduleProbables?.away,
 
       homeProbablePitcher:
-        feedHomeProbable ?? scheduleProbables?.home,
+        feedHomeProbable
+          ? {
+              ...feedHomeProbable,
+              imageUrl:
+                scheduleProbables?.home?.id === feedHomeProbable.id
+                  ? scheduleProbables.home.imageUrl
+                  : undefined,
+            }
+          : scheduleProbables?.home,
 
       
 

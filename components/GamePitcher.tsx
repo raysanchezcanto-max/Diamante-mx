@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { LeagueCode } from "@/lib/teamLogos";
 
 type Pitcher = {
@@ -23,9 +23,14 @@ export default function GamePitcher({
 }: GamePitcherProps) {
   const [photoFailed, setPhotoFailed] = useState(false);
 
+  // Si cambia el pitcher, permitir cargar la foto del nuevo jugador.
+  useEffect(() => {
+    setPhotoFailed(false);
+  }, [pitcher?.id, pitcher?.imageUrl, league]);
+
   const photoUrl = pitcher
     ? league === "LMP"
-      ? pitcher.imageUrl ?? `https://images.cloudgfx.com/player/mugshot/${pitcher.id}?app=lamp&h=350&w=250`
+      ? pitcher.imageUrl ?? null
       : league === "MLB"
         ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${pitcher.id}/headshot/67/current`
         : league === "LMB"
@@ -70,7 +75,7 @@ export default function GamePitcher({
             background: "var(--panel2)",
           }}
         />
-      ) : (
+      ) : league === "LMP" ? null : (
         <div
           aria-hidden="true"
           style={{
