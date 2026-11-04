@@ -1,6 +1,7 @@
 
 import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
+import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
   ALGODONEROS_OFFICIAL as club,
@@ -230,14 +231,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                 </div>
                 <a className="clubStandingsLink" href="/?league=lmb#posiciones">Ver tabla completa ↗</a>
               </section>
-              <section className="clubPanel clubMiniLeaders">
-                <span className="clubKicker">LÍDERES DEL EQUIPO · 2026</span>
-                <h2>Bateo</h2>
-                <div><span>Promedio de bateo</span><strong>Albert Lara · .344</strong></div>
-                <div><span>Jonrones</span><strong>Mason Martin · 18</strong></div>
-                <div><span>Producidas</span><strong>Mason Martin · 68</strong></div>
-                <div><span>Robos de base</span><strong>Albert Lara · 10</strong></div>
-              </section>
+              <AlgodonerosLeaders />
             </aside>
           </div>
         )}
