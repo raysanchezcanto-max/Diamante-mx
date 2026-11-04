@@ -4533,3 +4533,78 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubNewsThumb{width:100%;height:118px;display:block;object-fit:cover;border-radius:8px;background:#23382d}
 .clubNewsCard:has(.clubNewsThumb){min-height:246px}
 @media(max-width:760px){.clubNewsThumb{height:170px}}
+
+
+/* 63 · Historia de Algodoneros. No afecta a otras ligas. */
+.clubHistory{display:grid;gap:25px;padding:6px 0 16px}
+.clubHistory h2,.clubHistory h3,.clubHistory h4{letter-spacing:-.025em}
+.clubHistoryHeading{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:25px 32px;background:linear-gradient(105deg,#11251b,#102118 58%,#321925);border:1px solid #304538;border-radius:19px}
+.clubHistoryHeading h2{font-size:clamp(26px,3.4vw,40px);margin:8px 0 12px;line-height:1.1}
+.clubHistoryHeading p{font-size:13px;line-height:1.7;color:#b9cbc1;max-width:760px;margin:0}
+.clubHistoryHeading img{width:98px;height:98px;object-fit:contain;flex-shrink:0;opacity:.95}
+.clubHistoryStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.clubHistoryStats>div{border:1px solid #2b4838;background:#10241b;border-radius:14px;padding:21px 23px;display:grid;gap:5px}
+.clubHistoryStats span{font-size:10px;color:#a7bdb0;font-weight:850;letter-spacing:.08em}
+.clubHistoryStats strong{font-size:39px;color:#e0ff65;line-height:1.1;font-variant-numeric:tabular-nums}
+.clubHistoryStats small{font-size:11px;color:#d0dacd}
+.clubHistorySectionHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-top:9px}
+.clubHistorySectionHead h3{font-size:25px;margin:7px 0 0;line-height:1.2}
+.clubHistoryNote{color:#9caf9e;font-size:11px}
+.clubHistoryChampions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.clubHistoryChampionCard{position:relative;overflow:hidden;min-height:226px;padding:25px 27px;background:linear-gradient(130deg,#50152b 0%,#321420 62%,#142119 100%);border:1px solid #834257;border-radius:16px}
+.clubHistoryChampLabel{position:relative;display:block;z-index:1;color:#f6d7dd;font-size:10px;letter-spacing:.1em;font-weight:900}
+.clubHistoryChampionCard>strong{display:block;position:relative;z-index:1;color:#fff;font-size:65px;letter-spacing:-.05em;line-height:1;margin:12px 0 4px;font-variant-numeric:tabular-nums}
+.clubHistoryChampionCard h4{font-size:19px;margin:2px 0 10px}
+.clubHistoryChampionCard p{font-size:12px;color:#ecd7dd;line-height:1.6;max-width:470px}
+.clubHistoryChampionCard a{font-size:11px;color:#e1ff65;font-weight:850}
+.clubHistoryStar{position:absolute;right:27px;top:10px;color:#fae39b;font-size:94px;opacity:.15;line-height:1}
+.clubHistoryTimeline{padding:4px 0 3px;margin:0;list-style:none;position:relative}
+.clubHistoryTimeline:before{content:"";position:absolute;top:14px;bottom:17px;left:51px;width:1px;background:linear-gradient(#d9fa6e,#324c39)}
+.clubHistoryTimeline li{display:grid;grid-template-columns:103px 1fr;gap:10px;position:relative;padding:0 0 23px}
+.clubHistoryYear{color:#e0ff65;font-size:19px;font-weight:900;letter-spacing:-.03em;padding:8px 0;background:#07120e;align-self:start}
+.clubHistoryTimelineBody{background:linear-gradient(130deg,#11261b,#0c1b14);border:1px solid #294436;border-radius:13px;padding:17px 22px}
+.clubHistoryTimelineBody h4{font-size:16px;margin:0 0 7px}
+.clubHistoryTimelineBody p{font-size:12px;line-height:1.65;color:#b6c8bd;margin:0 0 9px}
+.clubHistoryTimelineBody a{color:#ddff64;font-size:11px;font-weight:850}
+.clubHistoryIntro{margin:-13px 0 0;color:#aabeb1;font-size:12px;line-height:1.5}
+.clubHistoryLegends{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.clubHistoryLegend{display:flex;flex-direction:column;min-height:225px;padding:19px;background:#10231b;border:1px solid #2e4939;border-radius:14px}
+.clubHistoryLegendTop{display:flex;align-items:start;justify-content:space-between;gap:8px}
+.clubHistoryLegendMonogram{width:49px;height:49px;border-radius:50%;background:linear-gradient(135deg,#682238,#371828);border:1px solid #8e4459;display:grid;place-items:center;font-size:15px;font-weight:900;color:#fff}
+.clubHistoryLegendEra{font-size:11px;font-weight:900;color:#e1ff65}
+.clubHistoryLegend h4{font-size:16px;margin:13px 0 2px}
+.clubHistoryLegendRole{font-size:10px;color:#cc9eaa;font-weight:800;letter-spacing:.03em}
+.clubHistoryLegend p{flex:1;font-size:12px;color:#bbc9bf;line-height:1.55;margin:11px 0 13px}
+.clubHistoryLegend a{font-size:11px;color:#d9ff63;font-weight:850}
+.clubHistoryOrigins{display:grid;grid-template-columns:minmax(0,1fr) 215px;align-items:center;gap:23px;padding:25px 29px;background:linear-gradient(110deg,#162d20,#0e221a 67%,#301a28);border:1px solid #2e4939;border-radius:17px}
+.clubHistoryOrigins h3{font-size:25px;margin:7px 0 10px}
+.clubHistoryOrigins p{font-size:12px;line-height:1.65;color:#b7cabc;max-width:780px}
+.clubHistoryOrigins a{font-size:12px;font-weight:850;color:#e1ff65}
+.clubHistoryStadiumMark{border:1px solid #476951;border-radius:12px;min-height:143px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.clubHistoryStadiumMark span{color:#adbdab;font-size:11px;letter-spacing:.15em;font-weight:900}
+.clubHistoryStadiumMark strong{font-size:43px;color:#e1ff65}
+.clubHistorySources{border-top:1px solid #2c4938;padding-top:22px}
+.clubHistorySources p{font-size:12px;color:#a6bbac;line-height:1.6;max-width:820px}
+.clubHistorySources>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.clubHistorySources a{border:1px solid #304b3b;border-radius:10px;background:#102218;padding:10px 13px;font-size:11px;color:#d7e7da}
+.clubHistorySources a:hover{border-color:#cde85d;color:#e1ff65}
+@media(max-width:1000px){.clubHistoryLegends{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){
+ .clubHistory{gap:22px}
+ .clubHistoryHeading{padding:20px;gap:12px}
+ .clubHistoryHeading img{width:57px;height:57px}
+ .clubHistoryStats{gap:8px}
+ .clubHistoryStats>div{padding:14px 10px}
+ .clubHistoryStats strong{font-size:30px}
+ .clubHistoryStats span{font-size:9px}
+ .clubHistoryChampions{grid-template-columns:minmax(0,1fr)}
+ .clubHistorySectionHead h3{font-size:22px}
+ .clubHistoryTimeline li{grid-template-columns:75px 1fr;gap:7px}
+ .clubHistoryTimeline:before{left:40px}
+ .clubHistoryYear{font-size:16px}
+ .clubHistoryTimelineBody{padding:14px 15px}
+ .clubHistoryLegends{grid-template-columns:minmax(0,1fr)}
+ .clubHistoryLegend{min-height:auto}
+ .clubHistoryOrigins{grid-template-columns:minmax(0,1fr);padding:19px}
+ .clubHistoryStadiumMark{display:none}
+}
