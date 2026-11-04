@@ -13,7 +13,8 @@ import AutoRefresh from "@/components/AutoRefresh";
 
 import SmartHeader from "@/components/SmartHeader";
 
-import LeagueTeamExplorer from "@/components/LeagueTeamExplorer";
+import LeagueTabs from "@/components/LeagueTabs";
+import TeamLogoStrip from "@/components/TeamLogoStrip";
 import Games from "@/components/Games";
 import Standings from "@/components/Standings";
 import Leaders from "@/components/Leaders";
@@ -45,7 +46,6 @@ export const revalidate = 60;
 type PageProps = {
   searchParams?: Promise<{
     league?: string;
-    teams?: string;
   }>;
 };
 
@@ -435,14 +435,8 @@ const daysUntilLmp =
         </div>
       </div>
 
-      <LeagueTeamExplorer
-        key={selectedLeague}
-        activeLeague={selectedLeague}
-        initiallyOpen={params?.teams === "1"}
-        standings={standings}
-        games={games}
-        nextGames={nextGames}
-      />
+      <LeagueTabs activeLeague={selectedLeague} />
+      <TeamLogoStrip league={selectedLeague} standings={standings} games={games} nextGames={nextGames} />
             {showLmpSeasonNotice && (
   <div className="seasonNotice">
     <div>

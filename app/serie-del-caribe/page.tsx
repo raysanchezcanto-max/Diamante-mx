@@ -1,7 +1,8 @@
 import { getTeamDisplayName } from "@/lib/teamLogos";
 import type { Metadata } from "next";
 
-import LeagueTeamExplorer from "@/components/LeagueTeamExplorer";
+import LeagueTabs from "@/components/LeagueTabs";
+import TeamLogoStrip from "@/components/TeamLogoStrip";
 import CaribeFixtures from "@/components/CaribeFixtures";
 import CaribeSemifinals from "@/components/CaribeSemifinals";
 import CaribeFinalGameCard from "@/components/CaribeFinalGameCard";
@@ -21,12 +22,7 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function SerieDelCaribePage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ teams?: string }>;
-}) {
-  const params = await searchParams;
+export default async function SerieDelCaribePage() {
   const tournament = await getCaribeTournament2027();
   const finalMatch = tournament?.matches.find((match) => match.phase === "final") ?? null;
   const finalChampion = resolveCaribeFinalWinner(finalMatch);
@@ -108,12 +104,8 @@ export default async function SerieDelCaribePage({
         <div className="heroMark" aria-hidden="true">◆</div>
       </div>
 
-      <LeagueTeamExplorer
-        key="CARIBE"
-        activeLeague="CARIBE"
-        initiallyOpen={params?.teams === "1"}
-        participants={[...CARIBE_2027_PARTICIPANTS]}
-      />
+      <LeagueTabs activeLeague="CARIBE" />
+      <TeamLogoStrip league="CARIBE" participants={[...CARIBE_2027_PARTICIPANTS]} />
 
       <section className="section caribeBroadcastSection" aria-label="Transmisiones Serie del Caribe 2027">
         <div className="sectionHeader">

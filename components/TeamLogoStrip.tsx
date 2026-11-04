@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Game, Standing } from "@/lib/mlb";
 import {
   getTeamLogo,
@@ -106,18 +107,16 @@ function listTeams(
 
 export default function TeamLogoStrip({
   league, standings = [], games = [], nextGames = [], participants = [],
-  selectedTeam, onSelectTeam,
 }: {
   league: LeagueCode | "CARIBE";
   standings?: Standing[];
   games?: Game[];
   nextGames?: Game[];
   participants?: Participant[];
-  selectedTeam: string | null;
-  onSelectTeam: (teamKey: string | null) => void;
 }) {
+  const [selected,setSelected] = useState<string | null>(null);
   const teams = listTeams(league,standings,participants);
-  const club = teams.find(t=>t.key===selectedTeam);
+  const club = teams.find(t=>t.key===selected);
   const upcoming = club && league !== "CARIBE" ? [...games,...nextGames]
     .filter(g=>g.status==="Preview" && (g.awayId===club.id || g.homeId===club.id ||
       (!club.id && [g.away,g.home].some(name=>clean(getTeamDisplayName(league,name))===clean(club.name)))))
@@ -136,12 +135,12 @@ export default function TeamLogoStrip({
           {teams.map(team=>(
             <button
               type="button"
-              className={`teamLogoChoice${selectedTeam===team.key?" is-selected":""}`}
+              className={`teamLogoChoice${selected===team.key?" is-selected":""}`}
               aria-label={`Ver datos de ${team.name}`}
-              aria-pressed={selectedTeam===team.key}
+              aria-pressed={selected===team.key}
               title={team.name}
               key={team.key}
-              onClick={()=>onSelectTeam(selectedTeam===team.key?null:team.key)}
+              onClick={()=>setSelected(s=>s===team.key?null:team.key)}
             >
               {team.logo ? (
                 <img src={team.logo} alt="" width={38} height={38} loading="lazy" />
@@ -188,7 +187,7 @@ export default function TeamLogoStrip({
             {league!=="CARIBE" && club.standing && (
               <a href="#posiciones">Ver posiciones</a>
             )}
-            <button type="button" onClick={()=>onSelectTeam(null)} aria-label="Cerrar ficha">
+            <button type="button" onClick={()=>setSelected(null)} aria-label="Cerrar ficha">
               Cerrar ×
             </button>
           </div>
