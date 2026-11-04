@@ -75,7 +75,7 @@ export default function GamePitcher({
             background: "var(--panel2)",
           }}
         />
-      ) : league === "LMP" ? null : (
+      ) : (
         <div
           aria-hidden="true"
           style={{

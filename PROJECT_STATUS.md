@@ -588,3 +588,9 @@
 - **Pendiente:** Vercel READY para el nuevo commit, comprobar detalles LMP antes de juegos reales (incluidos Patrick Murphy y Roque Gutiérrez) y observar comportamiento con imágenes ausentes en distintas ligas.
 
 - **Compilación 55 — corrección TS:** primer deploy del cambio de fotos compiló Next.js pero TypeScript detectó dos accesos potencialmente nulos a `scheduleProbables.away.imageUrl` y `scheduleProbables.home.imageUrl`; se corrigieron usando `scheduleProbables?.away?.imageUrl` y `scheduleProbables?.home?.imageUrl`. Verificar el siguiente deploy antes de considerarlo listo.
+
+
+## 56. LMP — regresar círculo punteado cuando falta foto — 4/nov/2026
+- **Observación visual aprobada:** en Guasave–Charros la foto de Roque Gutiérrez se ve, el nombre de Patrick Murphy se muestra sin foto ni logo. La usuaria esperaba el círculo punteado anterior en el lugar del retrato faltante.
+- **Ajuste acotado:** en `components/GamePitcher.tsx` se restaura el placeholder circular vacío con borde punteado también para LMP cuando `photoUrl` está ausente o `onError` detecta fallo. Se conserva la eliminación de la URL generada automáticamente para LMP y el respaldo oficial condicionado por ID del pitcher: **ningún logo se utiliza intencionalmente como fotografía**. MLB/LMB quedan idénticos.
+- **Validar:** Vercel producción READY y detalle Guasave–Charros, comprobando el círculo punteado sin logo para Patrick; es una verificación visual pendiente de la usuaria.
