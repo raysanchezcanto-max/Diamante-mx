@@ -4503,7 +4503,7 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 /* Iteración 59: retratos y movimientos LMB, sin abrir ventanas externas de Diamante. */
 .clubRosterPlayer{min-height:60px;gap:11px;padding:5px 0}
 .clubRosterAvatar{width:46px;height:46px;flex:0 0 46px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#213b2d;border:1px solid #42624d}
-.clubRosterAvatar img{width:46px;height:46px;object-fit:cover;display:block;object-position:center top}
+.clubRosterAvatar img{width:46px;height:46px;object-fit:contain;display:block;object-position:center bottom}
 .clubRosterAvatarFallback{width:100%;height:100%;display:grid;place-items:center;font-size:13px;font-weight:900;color:#c9e5cc;background:linear-gradient(145deg,#263e30,#14271d)}
 .clubRosterPlayerInfo{min-width:0;display:grid;gap:4px}
 .clubRosterPlayerInfo strong{font-size:12px;line-height:1.25}
