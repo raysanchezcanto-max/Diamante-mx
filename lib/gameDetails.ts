@@ -676,7 +676,7 @@ const firstPitchRecorded =
               ...feedAwayProbable,
               imageUrl:
                 scheduleProbables?.away?.id === feedAwayProbable.id
-                  ? scheduleProbables.away.imageUrl
+                  ? scheduleProbables?.away?.imageUrl
                   : undefined,
             }
           : scheduleProbables?.away,
@@ -687,7 +687,7 @@ const firstPitchRecorded =
               ...feedHomeProbable,
               imageUrl:
                 scheduleProbables?.home?.id === feedHomeProbable.id
-                  ? scheduleProbables.home.imageUrl
+                  ? scheduleProbables?.home?.imageUrl
                   : undefined,
             }
           : scheduleProbables?.home,

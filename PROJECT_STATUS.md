@@ -586,3 +586,5 @@
 - **Límite de verificación:** tener una URL en el scoreboard confirma la procedencia y el ID, pero **no certifica visualmente** que el servidor entregue siempre un retrato y no un recurso gráfico de respaldo. Si la propia fuente oficial sirve un logo con HTTP 200, hará falta una validación adicional de contenido/activo para ocultarlo. Nunca afirmar que ese caso está resuelto sin prueba visual.
 - **Conservado:** nombres, estados y transiciones P. PROBABLE → ABRIDOR → ABRIÓ, fotos de MLB/LMB, marcadores, jugadas, transmisiones y navegación.
 - **Pendiente:** Vercel READY para el nuevo commit, comprobar detalles LMP antes de juegos reales (incluidos Patrick Murphy y Roque Gutiérrez) y observar comportamiento con imágenes ausentes en distintas ligas.
+
+- **Compilación 55 — corrección TS:** primer deploy del cambio de fotos compiló Next.js pero TypeScript detectó dos accesos potencialmente nulos a `scheduleProbables.away.imageUrl` y `scheduleProbables.home.imageUrl`; se corrigieron usando `scheduleProbables?.away?.imageUrl` y `scheduleProbables?.home?.imageUrl`. Verificar el siguiente deploy antes de considerarlo listo.
