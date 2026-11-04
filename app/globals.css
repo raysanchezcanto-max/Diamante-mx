@@ -4356,3 +4356,133 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     height: 39px;
   }
 }
+
+
+/* Ficha extendida de Algodoneros (LMB): estilos encapsulados.
+   La navegación principal y las tarjetas de partidos no se alteran. */
+.clubProfile{min-height:100vh;background:#07120e;color:var(--text);}
+.clubProfile a{color:inherit;text-decoration:none}
+.clubProfile .clubTopbar{max-width:1270px;margin:auto;padding:17px 25px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #23392e}
+.clubBrand{display:inline-flex;align-items:center;gap:9px;letter-spacing:.08em;font-size:16px}
+.clubBrand em{font-size:12px;font-style:normal;color:var(--accent)}
+.clubDiamond{color:var(--accent);font-size:23px}
+.clubBack{font-size:13px;color:var(--muted)!important}
+.clubBack:hover{color:var(--accent)!important}
+.clubShell{max-width:1270px;margin:25px auto;padding:0 25px 60px}
+.clubHero{min-height:202px;padding:28px 32px;border-radius:18px;background:linear-gradient(105deg,#4b1026 0%,#691b33 56%,#2c1320 100%);display:flex;justify-content:space-between;align-items:center;gap:28px;box-shadow:0 16px 40px #0002}
+.clubHeroIdentity{display:flex;gap:22px;align-items:center;min-width:0}
+.clubHeroLogo{width:112px;height:112px;flex:0 0 112px;display:grid;place-items:center;border-radius:16px;background:#fff;padding:10px}
+.clubHeroLogo img{width:100%;height:100%;object-fit:contain}
+.clubKicker{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.11em}
+.clubHero .clubKicker{color:#e8e4d3}
+.clubHeroText h1{font-size:clamp(26px,3.5vw,46px);letter-spacing:-.035em;line-height:1.04;margin:9px 0;color:#fff;max-width:600px}
+.clubHeroText p{font-size:13px;color:#f3c9d3}
+.clubHeroText p span{margin:0 6px}
+.clubHeroMeta{display:grid;gap:11px;text-align:right;min-width:185px}
+.clubHeroMeta div:not(.clubHeroLinks){display:grid;gap:3px}
+.clubHeroMeta span{font-size:10px;color:#edd0d6;letter-spacing:.08em;font-weight:800}
+.clubHeroMeta strong{font-size:13px;color:#fff}
+.clubHeroLinks{display:flex;gap:14px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+.clubHeroLinks a{font-weight:800;font-size:12px;color:#fff;text-decoration:underline;text-underline-offset:4px}
+.clubProfileTabs{display:flex;gap:6px;padding:0 13px;border-bottom:1px solid #2b4637;margin-bottom:27px}
+.clubProfileTabs a{padding:15px 20px;font-size:13px;font-weight:800;color:var(--muted);border-bottom:2px solid transparent}
+.clubProfileTabs a.is-active{color:var(--accent);border-bottom-color:var(--accent)}
+.clubProfileTabs a:hover{color:var(--text)}
+.clubContentGrid{display:grid;grid-template-columns:230px minmax(0,1fr) 270px;align-items:start;gap:20px}
+.clubSideLeft,.clubMainColumn,.clubSideRight{min-width:0;display:grid;gap:20px;align-content:start}
+.clubPanel{border:1px solid #284134;border-radius:15px;padding:18px;background:linear-gradient(160deg,#10231b,#0c1a15)}
+.clubPanel h2{font-size:18px;margin:6px 0 14px;letter-spacing:-.02em}
+.clubPanel p{color:var(--muted);font-size:12px;line-height:1.5}
+.clubCalendarPanel{text-align:center;padding:23px 17px}
+.clubCalendarEmblem{width:80px;height:80px;margin:28px auto 15px;border:1px dashed #4c6456;border-radius:50%;display:grid;place-items:center;font-size:40px;filter:grayscale(.4)}
+.clubCalendarPanel strong{font-size:13px;display:block}
+.clubCalendarPanel a,.clubStandingsLink{display:inline-block;color:var(--accent)!important;font-size:12px;font-weight:800;margin-top:12px}
+.clubRecordGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.clubRecordGrid div{text-align:center;display:grid;gap:4px}
+.clubRecordGrid strong{font-size:22px}
+.clubRecordGrid span{font-size:9px;color:var(--muted);letter-spacing:.04em}
+.clubFeature{min-height:365px;position:relative;overflow:hidden;display:flex;align-items:flex-end;border:1px solid #482c38;border-radius:17px;background:radial-gradient(circle at 70% 25%,#79263d,#341321 58%,#191418)}
+.clubFeatureImage{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.clubFeatureEmblem{position:absolute;right:8%;top:12%;width:min(46%,220px);height:62%;object-fit:contain;opacity:.24;filter:grayscale(.15)}
+.clubFeatureShade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,9,9,.94),rgba(7,13,12,.50) 45%,rgba(5,9,9,.05))}
+.clubFeatureContent{position:relative;z-index:1;padding:27px 29px}
+.clubFeatureContent h2{font-size:clamp(24px,2.7vw,34px);line-height:1.12;margin:11px 0 11px;max-width:560px}
+.clubFeatureContent p{font-size:12px;color:#d6d6d2;margin:0 0 18px}
+.clubFeatureContent a{display:inline-flex;border:1px solid #9cb074;padding:9px 13px;border-radius:8px;color:var(--accent);font-weight:800;font-size:12px}
+.clubEditorialSection{min-width:0}
+.clubSectionTitle{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:4px 0 13px}
+.clubSectionTitle h2{font-size:23px;margin:5px 0 0;letter-spacing:-.03em}
+.clubSectionTitle a{color:var(--accent);font-size:12px;font-weight:800}
+.clubNewsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.clubNewsCard{background:#10241b;border:1px solid #294235;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:11px;min-height:154px}
+.clubNewsCard span{font-size:10px;color:var(--accent);font-weight:800}
+.clubNewsCard strong{font-size:13px;line-height:1.45;flex:1}
+.clubNewsCard small{font-size:11px;color:var(--muted)}
+.clubVideoGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.clubVideoCard{border-radius:12px;border:1px solid #2c4639;overflow:hidden;background:#10221b}
+.clubVideoPoster{height:122px;position:relative;display:grid;place-items:center;background:radial-gradient(circle,#50162b,#0c1d16)}
+.clubVideoPoster img{position:absolute;left:12px;bottom:10px;opacity:.26;object-fit:contain}
+.clubVideoPoster>span{border:1px solid #9ba691;width:45px;height:45px;border-radius:50%;display:grid;place-items:center;padding-left:3px;color:var(--accent)}
+.clubVideoPoster small{position:absolute;right:10px;bottom:10px;color:var(--muted);font-size:9px}
+.clubVideoCard strong{font-size:12px;display:block;padding:12px 14px;min-height:60px;line-height:1.4}
+.clubSmallNote{font-size:11px!important;color:var(--muted);line-height:1.5}
+.clubSideHeading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.clubSideHeading h2{margin:0}
+.clubSideHeading span{font-size:10px;font-weight:900;color:var(--accent)}
+.clubHeadlines{display:grid;gap:0}
+.clubHeadlines>a{display:flex;gap:10px;align-items:baseline;padding:12px 0;border-top:1px solid #284134}
+.clubHeadlines>a:hover strong{color:var(--accent)}
+.clubHeadlines strong{font-size:12px;line-height:1.4}
+.clubHeadlineIndex{font-weight:900;color:#9e586e;font-size:16px}
+.clubStandingsScroll{width:100%;overflow-x:auto}
+.clubStandingsTable{min-width:0!important;width:100%}
+.clubStandingsTable th,.clubStandingsTable td{padding:9px 5px;text-align:center;font-size:11px}
+.clubStandingsTable th:first-child,.clubStandingsTable td:first-child{text-align:left}
+.clubStandingsTable td:first-child{display:flex;align-items:center;gap:8px;min-width:0}
+.clubStandingsTable td:first-child img{width:22px;height:22px;object-fit:contain;flex-shrink:0}
+.clubStandingsTable td:first-child span{font-size:10px;line-height:1.2}
+.clubStandingsTable .clubCurrentTeam{background:#243821;color:var(--accent);font-weight:800}
+.clubMiniLeaders>div{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #284134;padding:11px 0;font-size:11px}
+.clubMiniLeaders>div span{color:var(--muted)}
+.clubMiniLeaders>div strong{text-align:right}
+.clubRosterContent{display:grid;gap:12px}
+.clubRosterContent .clubSectionTitle{margin-bottom:0}
+.clubRosterGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.clubRosterGroup{padding:18px 22px;border:1px solid #294337;border-radius:15px;background:#11241b}
+.clubRosterGroup h3{font-size:17px;margin:0 0 15px;display:flex;gap:8px;align-items:center}
+.clubRosterGroup h3 span{font-size:11px;color:var(--accent)}
+.clubRosterPlayers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 14px}
+.clubRosterPlayer{font-size:12px;display:flex;gap:9px;align-items:center;min-height:27px}
+.clubJersey{color:var(--accent);font-weight:900;font-size:12px;min-width:23px}
+.clubFooter{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;padding:33px 0 0;color:var(--muted);font-size:11px}
+.clubFooter a{color:var(--accent)}
+.clubNewsCard:hover,.clubVideoCard:hover{border-color:#608245;transform:translateY(-1px)}
+@media(max-width:1100px){
+ .clubContentGrid{grid-template-columns:210px minmax(0,1fr)}
+ .clubSideRight{grid-column:1/-1;grid-template-columns:1fr 1fr}
+ .clubSideRight .clubMiniLeaders{grid-column:1/-1}
+}
+@media(max-width:760px){
+ .clubShell{padding:0 15px 36px;margin-top:14px}
+ .clubProfile .clubTopbar{padding:15px}
+ .clubHero{padding:20px;display:block}
+ .clubHeroIdentity{align-items:flex-start;gap:13px}
+ .clubHeroLogo{width:72px;height:72px;flex-basis:72px;padding:7px}
+ .clubHeroText h1{font-size:29px}
+ .clubHeroMeta{margin-top:20px;text-align:left;display:flex;gap:15px 22px;flex-wrap:wrap}
+ .clubHeroLinks{justify-content:flex-start}
+ .clubContentGrid{grid-template-columns:minmax(0,1fr)}
+ .clubSideLeft{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .clubSideRight{grid-column:auto;grid-template-columns:minmax(0,1fr)}
+ .clubSideRight .clubMiniLeaders{grid-column:auto}
+ .clubNewsGrid{grid-template-columns:minmax(0,1fr)}
+ .clubRosterGrid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:470px){
+ .clubSideLeft{grid-template-columns:minmax(0,1fr)}
+ .clubFeature{min-height:330px}
+ .clubFeatureContent{padding:20px}
+ .clubFeatureContent h2{font-size:25px}
+ .clubRosterPlayers{grid-template-columns:minmax(0,1fr)}
+ .clubVideoGrid{grid-template-columns:minmax(0,1fr)}
+}

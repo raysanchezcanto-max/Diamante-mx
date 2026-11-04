@@ -132,23 +132,42 @@ export default function TeamLogoStrip({
     <div className={`teamExplorer teamExplorer--${league.toLowerCase()}`}>
       <div className="teamLogoRail" aria-label={league==="CARIBE"?"Participantes del Caribe":`Equipos de ${league}`}>
         <div className="teamLogoTrack">
-          {teams.map(team=>(
-            <button
-              type="button"
-              className={`teamLogoChoice${selected===team.key?" is-selected":""}`}
-              aria-label={`Ver datos de ${team.name}`}
-              aria-pressed={selected===team.key}
-              title={team.name}
-              key={team.key}
-              onClick={()=>setSelected(s=>s===team.key?null:team.key)}
-            >
-              {team.logo ? (
-                <img src={team.logo} alt="" width={38} height={38} loading="lazy" />
-              ) : (
-                <span className="teamLogoInitials">{team.name.slice(0,2)}</span>
-              )}
-            </button>
-          ))}
+          {teams.map(team=>{
+            const normalizedName = clean(team.name);
+            const isAlgodonerosLmb = league === "LMB" &&
+              (normalizedName.includes("algodoneros") && normalizedName.includes("laguna"));
+            const content = team.logo ? (
+              <img src={team.logo} alt="" width={38} height={38} loading="lazy" />
+            ) : (
+              <span className="teamLogoInitials">{team.name.slice(0,2)}</span>
+            );
+            return isAlgodonerosLmb ? (
+              <a
+                href="/equipos/lmb/algodoneros"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={"teamLogoChoice" + (selected===team.key?" is-selected":"")}
+                aria-label={"Abrir perfil completo de " + team.name + " en otra pestaña"}
+                title={team.name + " · Abrir ficha completa"}
+                key={team.key}
+                onClick={()=>setSelected(s=>s===team.key?null:team.key)}
+              >
+                {content}
+              </a>
+            ) : (
+              <button
+                type="button"
+                className={"teamLogoChoice" + (selected===team.key?" is-selected":"")}
+                aria-label={"Ver datos de " + team.name}
+                aria-pressed={selected===team.key}
+                title={team.name}
+                key={team.key}
+                onClick={()=>setSelected(s=>s===team.key?null:team.key)}
+              >
+                {content}
+              </button>
+            );
+          })}
         </div>
       </div>
       {club && (
@@ -175,6 +194,12 @@ export default function TeamLogoStrip({
             )}
           </div>
           <div className="teamQuickActions">
+            {league === "LMB" && clean(club.name).includes("algodoneros") &&
+              clean(club.name).includes("laguna") && (
+              <a href="/equipos/lmb/algodoneros" target="_blank" rel="noopener noreferrer">
+                Ver perfil completo ↗
+              </a>
+            )}
             {opponent && upcoming ? (
               <span className="teamQuickFixture">
                 Próximo vs. {opponent} · {new Intl.DateTimeFormat("es-MX",{
