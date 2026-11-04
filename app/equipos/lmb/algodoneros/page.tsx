@@ -1,6 +1,7 @@
 
 import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
+import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
@@ -9,6 +10,7 @@ import {
   ALGODONEROS_VIDEOS as videos,
   ALGODONEROS_ROSTER as roster,
   ALGODONEROS_NORTH_2026 as fallbackNorth,
+  ALGODONEROS_MOVEMENTS as movements,
 } from "@/lib/algodonerosProfile";
 
 export const revalidate = 3600;
@@ -54,6 +56,7 @@ async function getFeaturePhoto(): Promise<string | null> {
 export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const params = await searchParams;
   const rosterView = params?.vista === "plantilla";
+  const movementsView = params?.vista === "movimientos";
   const [officialStandings, featurePhoto] = await Promise.all([
     getLmbStandings(),
     getFeaturePhoto(),
@@ -105,8 +108,9 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
         </div>
 
         <nav className="clubProfileTabs" aria-label="Secciones del equipo">
-          <a href="/equipos/lmb/algodoneros" className={!rosterView ? "is-active":""} aria-current={!rosterView ? "page":undefined}>Resumen</a>
+          <a href="/equipos/lmb/algodoneros" className={!rosterView && !movementsView ? "is-active":""} aria-current={!rosterView && !movementsView ? "page":undefined}>Resumen</a>
           <a href="/equipos/lmb/algodoneros?vista=plantilla" className={rosterView ? "is-active":""} aria-current={rosterView ? "page":undefined}>Plantilla</a>
+          <a href="/equipos/lmb/algodoneros?vista=movimientos" className={movementsView ? "is-active":""} aria-current={movementsView ? "page":undefined}>Movimientos</a>
         </nav>
 
         {rosterView ? (
@@ -123,14 +127,61 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   <div className="clubRosterPlayers">
                     {group.players.map(player=>(
                       <div className="clubRosterPlayer" key={group.name + player.number + player.name}>
-                        <span className="clubJersey">{player.number}</span>
-                        <span>{player.name}</span>
+                        <LmbRosterHeadshot playerId={player.playerId} name={player.name} />
+                        <span className="clubRosterPlayerInfo">
+                          <strong>{player.name}</strong>
+                          <small>#{player.number} · {group.name}</small>
+                        </span>
                       </div>
                     ))}
                   </div>
                 </section>
               ))}
             </div>
+          </section>
+        ) : movementsView ? (
+          <section className="clubMovementsContent" aria-label="Movimientos de Algodoneros">
+            <div className="clubSectionTitle">
+              <div>
+                <span className="clubKicker">MOVIMIENTOS · LMB 2026</span>
+                <h2>Últimas operaciones oficiales</h2>
+              </div>
+              <a href="https://lmb.com.mx/equipos/algodoneros" target="_blank" rel="noopener noreferrer">
+                Ver equipo en LMB ↗
+              </a>
+            </div>
+            <p className="clubSmallNote">
+              Operaciones publicadas por la Liga Mexicana de Beisbol sobre Unión Laguna.
+              Las altas en listas de academia o las cesiones de derechos no implican
+              necesariamente un movimiento del roster activo.
+            </p>
+            <div className="clubMovementsTimeline">
+              {movements.map(event => (
+                <article className="clubMovementItem" key={event.date + event.title}>
+                  <div className="clubMovementDate">
+                    <span>{new Intl.DateTimeFormat("es-MX", {
+                      day: "numeric", month: "long", year: "numeric",
+                      timeZone: "UTC",
+                    }).format(new Date(event.date + "T12:00:00Z"))}</span>
+                    <span className="clubMovementType">{event.type}</span>
+                  </div>
+                  <div className="clubMovementBody">
+                    <img src={logo} alt="" width={53} height={53} />
+                    <div>
+                      <h3>{event.title}</h3>
+                      <p>{event.description}</p>
+                      <a href={event.url} target="_blank" rel="noopener noreferrer">
+                        Consultar comunicado de LMB ↗
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <p className="clubSmallNote">
+              Archivo editorial consultado el 4 de noviembre de 2026. No es un reporte
+              automático de altas, bajas y estatus activos de jugadores.
+            </p>
           </section>
         ) : (
           <div className="clubContentGrid">

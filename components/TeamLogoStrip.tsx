@@ -144,13 +144,10 @@ export default function TeamLogoStrip({
             return isAlgodonerosLmb ? (
               <a
                 href="/equipos/lmb/algodoneros"
-                target="_blank"
-                rel="noopener noreferrer"
                 className={"teamLogoChoice" + (selected===team.key?" is-selected":"")}
-                aria-label={"Abrir perfil completo de " + team.name + " en otra pestaña"}
+                aria-label={"Abrir perfil completo de " + team.name + " en Diamante MX"}
                 title={team.name + " · Abrir ficha completa"}
                 key={team.key}
-                onClick={()=>setSelected(s=>s===team.key?null:team.key)}
               >
                 {content}
               </a>
@@ -196,8 +193,8 @@ export default function TeamLogoStrip({
           <div className="teamQuickActions">
             {league === "LMB" && clean(club.name).includes("algodoneros") &&
               clean(club.name).includes("laguna") && (
-              <a href="/equipos/lmb/algodoneros" target="_blank" rel="noopener noreferrer">
-                Ver perfil completo ↗
+              <a href="/equipos/lmb/algodoneros">
+                Ver perfil completo →
               </a>
             )}
             {opponent && upcoming ? (

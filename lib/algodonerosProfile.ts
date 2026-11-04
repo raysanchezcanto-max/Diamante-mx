@@ -66,45 +66,45 @@ export const ALGODONEROS_VIDEOS = [
   },
 ] as const;
 
-type RosterEntry = { number: number; name: string };
+type RosterEntry = { number: number; name: string; playerId: number };
 type RosterGroup = { name: string; players: RosterEntry[] };
 
 export const ALGODONEROS_ROSTER: RosterGroup[] = [
   {
     name: "Lanzadores",
     players: [
-      {number:37,name:"Aldo Montes"},{number:26,name:"Ángel Perdomo"},
-      {number:40,name:"Austin Pope"},{number:65,name:"Brandon Brennan"},
-      {number:31,name:"Eddy Demurias"},{number:8,name:"Héctor Pérez"},
-      {number:67,name:"Jacob Barnes"},{number:32,name:"Luke Albright"},
-      {number:98,name:"Lupe Chávez"},{number:80,name:"Matt Foster"},
-      {number:56,name:"Miguel Vázquez"},{number:46,name:"Omar Araujo"},
-      {number:55,name:"Roenis Elías"},{number:68,name:"Ryan Hendrix"},
-      {number:95,name:"Thomas McIlraith"},{number:88,name:"Touki Toussaint"},
+      {number:37,name:"Aldo Montes",playerId:594105},{number:26,name:"Ángel Perdomo",playerId:622780},
+      {number:40,name:"Austin Pope",playerId:687166},{number:65,name:"Brandon Brennan",playerId:592165},
+      {number:31,name:"Eddy Demurias",playerId:681493},{number:8,name:"Héctor Pérez",playerId:660431},
+      {number:67,name:"Jacob Barnes",playerId:606930},{number:32,name:"Luke Albright",playerId:681475},
+      {number:98,name:"Lupe Chávez",playerId:660826},{number:80,name:"Matt Foster",playerId:641582},
+      {number:56,name:"Miguel Vázquez",playerId:703722},{number:46,name:"Omar Araujo",playerId:807586},
+      {number:55,name:"Roenis Elías",playerId:606273},{number:68,name:"Ryan Hendrix",playerId:641682},
+      {number:95,name:"Thomas McIlraith",playerId:641852},{number:88,name:"Touki Toussaint",playerId:657053},
     ],
   },
   {
     name: "Receptores",
     players: [
-      {number:5,name:"Dean Nevarez"},{number:39,name:"Francisco Arcia"},
-      {number:64,name:"Jorge Ramírez"},
+      {number:5,name:"Dean Nevarez",playerId:681944},{number:39,name:"Francisco Arcia",playerId:516472},
+      {number:64,name:"Jorge Ramírez",playerId:808525},
     ],
   },
   {
     name: "Jugadores del cuadro",
     players: [
-      {number:99,name:"Adrián Tovalín"},{number:62,name:"Albert Lara"},
-      {number:18,name:"Didi Gregorius"},{number:13,name:"Eguy Rosario"},
-      {number:1,name:"Isan Díaz"},{number:31,name:"Mason Martin"},
+      {number:99,name:"Adrián Tovalín",playerId:668210},{number:62,name:"Albert Lara",playerId:804107},
+      {number:18,name:"Didi Gregorius",playerId:544369},{number:13,name:"Eguy Rosario",playerId:666703},
+      {number:1,name:"Isan Díaz",playerId:656371},{number:31,name:"Mason Martin",playerId:676733},
     ],
   },
   {
     name: "Jardineros",
     players: [
-      {number:66,name:"Edgar Robles"},{number:53,name:"Edward Olivares"},
-      {number:36,name:"Je'Von Ward"},{number:3,name:"Julián Escobedo"},
-      {number:10,name:"Nicholas Torres"},{number:54,name:"Valentín Hernández"},
-      {number:33,name:"Yadir Drake"},
+      {number:66,name:"Edgar Robles",playerId:677977},{number:53,name:"Edward Olivares",playerId:658668},
+      {number:36,name:"Je'Von Ward",playerId:669219},{number:3,name:"Julián Escobedo",playerId:686659},
+      {number:10,name:"Nicholas Torres",playerId:657051},{number:54,name:"Valentín Hernández",playerId:835166},
+      {number:33,name:"Yadir Drake",playerId:660436},
     ],
   },
 ];
@@ -122,4 +122,45 @@ export const ALGODONEROS_NORTH_2026 = [
   {team:"Saraperos de Saltillo",wins:38,losses:55,pct:".409",gamesBack:"23.0"},
   {team:"Tecos de los Dos Laredos",wins:36,losses:57,pct:".387",gamesBack:"25.0"},
   {team:"Dorados de Chihuahua",wins:35,losses:58,pct:".376",gamesBack:"26.0"},
+] as const;
+
+
+// Hechos extraídos de notas oficiales de LMB. Archivo editorial 2026, no feed live.
+// Las altas de academia no equivalen a altas del roster activo.
+export const ALGODONEROS_MOVEMENTS = [
+  {
+    date: "2026-10-28",
+    type: "Academia rookie",
+    title: "Alta de dos prospectos",
+    description: "Ramón Armando Gutiérrez Torres (P) y Luis Alberto Meza Mendoza (IF) fueron registrados en la lista de academia rookie.",
+    url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-28-de-octubre-de-2026",
+  },
+  {
+    date: "2026-10-19",
+    type: "Academia rookie",
+    title: "Alta de Jesús Antonio Hernández Villegas",
+    description: "El lanzador Jesús Antonio Hernández Villegas, de Torreón, fue inscrito en la lista de academia rookie.",
+    url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-19-de-octubre-de-2026",
+  },
+  {
+    date: "2026-10-07",
+    type: "Cesión de derechos",
+    title: "Julián Escobedo pasa a Yucatán",
+    description: "Algodoneros cedió definitivamente los derechos del jardinero Julián André Escobedo a Leones de Yucatán.",
+    url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-7-de-octubre-de-2026",
+  },
+  {
+    date: "2026-10-01",
+    type: "Cesión de derechos",
+    title: "Dos lanzadores cedidos a Leones",
+    description: "Se cedieron definitivamente a Leones de Yucatán los derechos de José Marcos Torres Muro y Matthew James Foster.",
+    url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-1-de-octubre-de-2026",
+  },
+  {
+    date: "2026-09-23",
+    type: "Bajas de lista",
+    title: "Bajas de Gregorius y Martínez",
+    description: "Mariekson Julius Gregorius y Alberth Alexander Martínez Zambrano salieron de la lista de jugadores no nacidos en México.",
+    url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-23-de-septiembre-de-2026",
+  },
 ] as const;

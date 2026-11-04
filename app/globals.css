@@ -4498,3 +4498,32 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
  .clubRosterPlayers{grid-template-columns:minmax(0,1fr)}
  .clubVideoGrid{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* Iteración 59: retratos y movimientos LMB, sin abrir ventanas externas de Diamante. */
+.clubRosterPlayer{min-height:60px;gap:11px;padding:5px 0}
+.clubRosterAvatar{width:46px;height:46px;flex:0 0 46px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#213b2d;border:1px solid #42624d}
+.clubRosterAvatar img{width:46px;height:46px;object-fit:cover;display:block;object-position:center top}
+.clubRosterAvatarFallback{width:100%;height:100%;display:grid;place-items:center;font-size:13px;font-weight:900;color:#c9e5cc;background:linear-gradient(145deg,#263e30,#14271d)}
+.clubRosterPlayerInfo{min-width:0;display:grid;gap:4px}
+.clubRosterPlayerInfo strong{font-size:12px;line-height:1.25}
+.clubRosterPlayerInfo small{font-size:10px;color:var(--muted)}
+.clubMovementsContent{display:grid;gap:15px}
+.clubMovementsContent>.clubSmallNote{margin:0;max-width:900px}
+.clubMovementsTimeline{display:grid;gap:15px}
+.clubMovementItem{border:1px solid #2a4736;border-radius:14px;background:linear-gradient(150deg,#11251b,#0d1c15);padding:20px 24px}
+.clubMovementDate{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-bottom:12px;border-bottom:1px solid #294235;color:var(--accent);font-weight:900;font-size:12px;text-transform:capitalize}
+.clubMovementType{color:#d6dcd3;background:#233b2a;border-radius:30px;padding:6px 11px;font-size:10px;letter-spacing:.05em}
+.clubMovementBody{display:flex;align-items:flex-start;gap:19px;padding:17px 0 0}
+.clubMovementBody>img{flex-shrink:0;object-fit:contain}
+.clubMovementBody h3{margin:0 0 8px;font-size:18px}
+.clubMovementBody p{margin:0 0 12px;color:#b3c6b9;font-size:13px;line-height:1.55}
+.clubMovementBody a{font-size:12px;color:var(--accent);font-weight:800}
+@media(max-width:600px){
+ .clubMovementsContent .clubSectionTitle{align-items:flex-start}
+ .clubMovementItem{padding:15px}
+ .clubMovementBody{gap:12px}
+ .clubMovementBody>img{width:37px;height:37px}
+ .clubMovementBody h3{font-size:16px}
+ .clubProfileTabs a{padding:13px 11px;font-size:12px}
+}
