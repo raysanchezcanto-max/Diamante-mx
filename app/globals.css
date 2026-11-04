@@ -4608,3 +4608,71 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
  .clubHistoryOrigins{grid-template-columns:minmax(0,1fr);padding:19px}
  .clubHistoryStadiumMark{display:none}
 }
+
+
+/* 64 · Trayectorias de Unión Laguna hacia organizaciones MLB. */
+.clubProfile .clubProfileTabs{overflow-x:auto;white-space:nowrap;scrollbar-width:thin;scrollbar-color:#3b644c transparent}
+.clubProfile .clubProfileTabs a{flex-shrink:0}
+.clubBigLeagues{display:grid;gap:22px;padding:4px 0 24px}
+.clubBigLeaguesHeader{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:27px 30px;background:linear-gradient(120deg,#12281e,#15251d 58%,#4a1a2d);border:1px solid #345441;border-radius:18px}
+.clubBigLeaguesHeader h2{font-size:clamp(26px,3vw,38px);letter-spacing:-.04em;margin:9px 0 12px;line-height:1.15}
+.clubBigLeaguesHeader p{color:#bfd2c4;font-size:13px;line-height:1.7;max-width:800px;margin:0}
+.clubBigLeaguesHeaderMark{display:flex;align-items:center;gap:7px;min-width:155px;color:#d8ff66;font-size:20px;font-weight:900}
+.clubBigLeaguesHeaderMark strong{font-size:38px;color:#fff}
+.clubBigLeaguesSummary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.clubBigLeaguesSummary>div{padding:19px 22px;border:1px solid #2d4d3a;background:#10251b;border-radius:14px;display:flex;align-items:center;gap:13px}
+.clubBigLeaguesSummary strong{font-size:37px;line-height:1;color:#dcff66}
+.clubBigLeaguesSummary span{font-size:11px;color:#bbcec1;line-height:1.4}
+.clubBigLeaguesSectionHead{display:grid;gap:7px;margin-top:9px}
+.clubBigLeaguesSectionHead h3{font-size:23px;letter-spacing:-.03em;margin:0}
+.clubBigLeaguesPlayers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.clubBigLeaguesPlayer{display:flex;flex-direction:column;gap:12px;padding:21px;border:1px solid #315240;border-radius:16px;background:linear-gradient(155deg,#15281e,#0d1d15)}
+.clubBigLeaguesPlayerFeatured{background:linear-gradient(150deg,#391b28,#1e261c 62%,#0c1d15);border-color:#84516a}
+.clubBigLeaguesPlayerTop{display:flex;gap:11px;align-items:center;min-height:82px}
+.clubBigLeaguesPlayerPhoto{width:72px;height:72px;flex:0 0 72px}
+.clubBigLeaguesPlayerPhoto .clubRosterAvatar{width:72px;height:72px;border-color:#68826d}
+.clubBigLeaguesPlayerPhoto .clubRosterAvatar img{width:72px;height:72px}
+.clubBigLeaguesPlayerPhoto .clubRosterAvatarFallback{font-size:18px}
+.clubBigLeaguesPlayerIdentity{flex:1;min-width:0;display:grid;gap:4px}
+.clubBigLeaguesPlayerIdentity h4{margin:3px 0 1px;font-size:16px;line-height:1.25}
+.clubBigLeaguesPlayerIdentity>span:last-child{color:#bfcac1;font-size:11px;line-height:1.4}
+.clubBigLeaguesStatus{font-size:9px;letter-spacing:.035em;font-weight:900;line-height:1.35;color:#e7ffaa}
+.clubBigLeaguesStatus-minor{color:#a6cfe1}
+.clubBigLeaguesStatus-return{color:#f1c9aa}
+.clubBigLeaguesYear{font-size:11px;color:#e0ff6d;font-weight:900;white-space:nowrap}
+.clubBigLeaguesPlayerTop>.clubBigLeaguesYear{align-self:flex-start}
+.clubBigLeaguesPlayer>p{font-size:12px;color:#c3d3c6;line-height:1.65;margin:0;flex:1}
+.clubBigLeaguesSteps{list-style:none;margin:0;padding:11px 0;border-top:1px solid #35513e;border-bottom:1px solid #35513e;display:grid;gap:9px}
+.clubBigLeaguesSteps li{font-size:11px;color:#d5e4d6}
+.clubBigLeaguesSteps li:before{content:"◆";font-size:7px;color:#d2ff54;margin-right:8px}
+.clubBigLeaguesPlayer>a,.clubBigLeaguesProspect>a{color:#d9ff64;font-size:11px;font-weight:850}
+.clubBigLeaguesNote{margin:-11px 0 1px;font-size:12px;line-height:1.55;color:#b6c8b8}
+.clubBigLeaguesProspects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.clubBigLeaguesProspect{display:flex;flex-direction:column;padding:19px;border:1px solid #304d3c;border-radius:14px;background:#11241b;gap:9px}
+.clubBigLeaguesProspectHeader{display:flex;align-items:start;justify-content:space-between;gap:8px}
+.clubBigLeaguesInitials{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;background:#3b2130;border:1px solid #80455b;color:#fff;font-weight:900;font-size:13px}
+.clubBigLeaguesProspect h4{margin:5px 0 0;font-size:15px}
+.clubBigLeaguesProspectOrganization{font-size:11px;font-weight:750;color:#ccdea8}
+.clubBigLeaguesProspect p{flex:1;color:#bfcfc0;font-size:11px;line-height:1.6;margin:0}
+.clubBigLeaguesFooter{border:1px solid #314d3b;background:#0e2017;border-radius:13px;padding:18px 21px}
+.clubBigLeaguesFooter strong{font-size:12px;color:#dcff64}
+.clubBigLeaguesFooter p{font-size:11px;line-height:1.7;color:#b5c9b9;margin:5px 0 0}
+@media(max-width:1050px){
+ .clubBigLeaguesPlayers{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .clubBigLeaguesProspects{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .clubProfile .clubProfileTabs{padding:0 2px}
+ .clubProfile .clubProfileTabs a{padding:13px 12px}
+ .clubBigLeaguesHeader{padding:20px}
+ .clubBigLeaguesHeaderMark{display:none}
+ .clubBigLeaguesSummary{gap:7px}
+ .clubBigLeaguesSummary>div{padding:13px 9px;display:grid;gap:6px}
+ .clubBigLeaguesSummary strong{font-size:30px}
+ .clubBigLeaguesSummary span{font-size:10px}
+ .clubBigLeaguesPlayers{grid-template-columns:minmax(0,1fr)}
+ .clubBigLeaguesSectionHead h3{font-size:20px}
+}
+@media(max-width:430px){
+ .clubBigLeaguesProspects{grid-template-columns:minmax(0,1fr)}
+}

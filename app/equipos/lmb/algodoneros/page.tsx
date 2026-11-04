@@ -6,6 +6,7 @@ import { getAlgodonerosMovements } from "@/lib/lmbMovements";
 import { getAlgodonerosNews, getAlgodonerosRoster } from "@/lib/lmbClubContent";
 import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import AlgodonerosHistory from "@/components/AlgodonerosHistory";
+import AlgodonerosGrandesLigas from "@/components/AlgodonerosGrandesLigas";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
   ALGODONEROS_OFFICIAL as club,
@@ -39,9 +40,10 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const rosterView = params?.vista === "plantilla";
   const movementsView = params?.vista === "movimientos";
   const historyView = params?.vista === "historia";
+  const grandesLigasView = params?.vista === "grandes-ligas";
   const [officialStandings, newsResult, rosterResult, movementResult] = await Promise.all([
     getLmbStandings(),
-    !rosterView && !movementsView && !historyView ? getAlgodonerosNews() : Promise.resolve(null),
+    !rosterView && !movementsView && !historyView && !grandesLigasView ? getAlgodonerosNews() : Promise.resolve(null),
     rosterView ? getAlgodonerosRoster() : Promise.resolve(null),
     movementsView ? getAlgodonerosMovements() : Promise.resolve(null),
   ]);
@@ -99,9 +101,10 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
         </div>
 
         <nav className="clubProfileTabs" aria-label="Secciones del equipo">
-          <a href="/equipos/lmb/algodoneros" className={!rosterView && !movementsView && !historyView ? "is-active":""} aria-current={!rosterView && !movementsView && !historyView ? "page":undefined}>Resumen</a>
+          <a href="/equipos/lmb/algodoneros" className={!rosterView && !movementsView && !historyView && !grandesLigasView ? "is-active":""} aria-current={!rosterView && !movementsView && !historyView && !grandesLigasView ? "page":undefined}>Resumen</a>
           <a href="/equipos/lmb/algodoneros?vista=plantilla" className={rosterView ? "is-active":""} aria-current={rosterView ? "page":undefined}>Plantilla</a>
           <a href="/equipos/lmb/algodoneros?vista=movimientos" className={movementsView ? "is-active":""} aria-current={movementsView ? "page":undefined}>Movimientos</a>
+          <a href="/equipos/lmb/algodoneros?vista=grandes-ligas" className={grandesLigasView ? "is-active":""} aria-current={grandesLigasView ? "page":undefined}>Grandes Ligas</a>
           <a href="/equipos/lmb/algodoneros?vista=historia" className={historyView ? "is-active":""} aria-current={historyView ? "page":undefined}>Historia</a>
         </nav>
 
@@ -186,6 +189,8 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               Los registros anteriores no garantizan el estado actual del roster.
             </p>
           </section>
+        ) : grandesLigasView ? (
+          <AlgodonerosGrandesLigas />
         ) : historyView ? (
           <AlgodonerosHistory logo={logo} />
         ) : (
