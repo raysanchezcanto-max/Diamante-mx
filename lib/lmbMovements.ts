@@ -20,6 +20,12 @@ export type MovementResult = {
 
 const BASE = "https://lmb.com.mx";
 const PROFILE = BASE + "/equipos/algodoneros";
+
+export type LmbClubMovementSource = {
+  profileUrl: string;
+  headingAliases: readonly string[];
+  archive: readonly Omit<ClubMovement, "automatic">[];
+};
 const MONTHS: Record<string, number> = {
   enero: 1, febrero: 2, marzo: 3, abril: 4, mayo: 5, junio: 6,
   julio: 7, agosto: 8, septiembre: 9, octubre: 10, noviembre: 11, diciembre: 12,
@@ -72,14 +78,18 @@ function decodeEmbeddedArticle(html: string): string {
     .replace(/\\r|\\n|\\t/g, " ");
 }
 
-function relevantMovementsFromArticle(html: string): string[] {
+function relevantMovementsFromArticle(html: string, headingAliases: readonly string[]): string[] {
   const decoded = decodeEmbeddedArticle(html);
   const headings = [...decoded.matchAll(/<p[^>]*>\s*<(?:strong|b)[^>]*>([^<]{1,150})<\/(?:strong|b)>\s*<\/p>/gi)];
   const reports: string[] = [];
   for (let i = 0; i < headings.length; i++) {
     const title = normalizeHeading(headings[i][1]);
-    // Nunca aceptar "Algodoneros de Guasave" de LMP o la liga de softbol.
-    if (!/(?:^|[^A-Z])LAGUNA(?:$|[^A-Z])/.test(title)) continue;
+    // Solo encabezados de equipos expresamente autorizados por su configuración.
+    // Impide confundir equipos homónimos de LMB, LMP y softbol.
+    if (!headingAliases.some(alias => {
+      const normalized = normalizeHeading(alias);
+      return normalized.length > 2 && title.split(/[^A-Z]+/).includes(normalized);
+    })) continue;
     const start = headings[i].index! + headings[i][0].length;
     const end = headings[i + 1]?.index ?? Math.min(decoded.length, start + 6500);
     const section = decoded.slice(start, Math.min(end, start + 6500));
@@ -145,9 +155,11 @@ function recentSlugs(now: Date): string[] {
   return links;
 }
 
-export async function getAlgodonerosMovements(now = new Date()): Promise<MovementResult> {
-  const fallback = ALGODONEROS_MOVEMENTS.map(item => ({ ...item, automatic: false }));
-  const html = await officialHtml(PROFILE);
+export async function getLmbClubMovements(
+  config: LmbClubMovementSource, now = new Date()
+): Promise<MovementResult> {
+  const fallback = config.archive.map(item => ({ ...item, automatic: false }));
+  const html = await officialHtml(config.profileUrl);
   const profileLinks = html ? linksFromOfficialProfile(html) : [];
   const candidates = [...new Set([...profileLinks, ...recentSlugs(now)])]
     .filter(url => movementDate(url) !== null)
@@ -159,7 +171,7 @@ export async function getAlgodonerosMovements(now = new Date()): Promise<Movemen
     if (!date) return [];
     const source = await officialHtml(url);
     if (!source) return [];
-    const excerpts = relevantMovementsFromArticle(source);
+    const excerpts = relevantMovementsFromArticle(source, config.headingAliases);
     // Un enlace listado en la ficha del club es evidencia de pertinencia;
     // los artículos descubiertos por fecha requieren además mención LAGUNA.
     if (excerpts.length === 0) {
@@ -194,6 +206,12 @@ export async function getAlgodonerosMovements(now = new Date()): Promise<Movemen
   };
 }
 
-// Exportado para que el diagnóstico temporal compruebe las fechas y filtros.
-// La ruta de diagnóstico se retirará antes de aprobar producción.
-export const movementAudit = { movementDate, linksFromOfficialProfile, relevantMovementsFromArticle };
+// Mismo lector reutilizable: próximos equipos solo aportan su URL, el encabezado
+// de su nombre oficial en los boletines y el archivo histórico de respaldo.
+export async function getAlgodonerosMovements(now = new Date()): Promise<MovementResult> {
+  return getLmbClubMovements({
+    profileUrl: PROFILE,
+    headingAliases: ["LAGUNA"],
+    archive: ALGODONEROS_MOVEMENTS,
+  }, now);
+}
