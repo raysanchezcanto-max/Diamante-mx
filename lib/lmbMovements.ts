@@ -152,7 +152,7 @@ export async function getAlgodonerosMovements(now = new Date()): Promise<Movemen
   const candidates = [...new Set([...profileLinks, ...recentSlugs(now)])]
     .filter(url => movementDate(url) !== null)
     .slice(0, 20);
-  const existingUrls = new Set(fallback.map(item => item.url));
+  const existingUrls = new Set<string>(fallback.map(item => item.url));
   const freshCandidates = candidates.filter(url => !existingUrls.has(url));
   const articles = await Promise.all(freshCandidates.map(async url => {
     const date = movementDate(url);
