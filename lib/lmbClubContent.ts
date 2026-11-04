@@ -211,5 +211,4 @@ export async function getAlgodonerosRoster(): Promise<RosterResult> {
   return getLmbClubRoster("algodoneros");
 }
 
-// La prueba temporal inspecciona solo datos públicos y sus conteos.
-export const clubContentAudit = { readNewsFromOfficialHtml, readRosterFromOfficialHtml };
+

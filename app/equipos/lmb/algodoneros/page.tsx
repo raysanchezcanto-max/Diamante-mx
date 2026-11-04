@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
+import { getAlgodonerosNews, getAlgodonerosRoster } from "@/lib/lmbClubContent";
 import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
@@ -32,37 +33,23 @@ function formatPct(value: string) { return value.startsWith(".") ? value : "." +
 
 const PLAYER_LOGO = "/logos/lmb/algodoneros-union-laguna.png";
 
-// Foto editorial opcional: se lee del metadato de la publicación oficial.
-// Si LMB no lo ofrece, el diseño sigue funcionando sin inventar fotografías.
-async function getFeaturePhoto(): Promise<string | null> {
-  try {
-    const response = await fetch(stories[0].url, {
-      next: { revalidate: 21600 },
-      signal: AbortSignal.timeout(6000),
-    });
-    if (!response.ok) return null;
-    const html = await response.text();
-    const match = html.match(/<meta[^>]+(?:property|name)=["']og:image["'][^>]+content=["']([^"']+)["']/i)
-      ?? html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']og:image["']/i);
-    if (!match?.[1]) return null;
-    const raw = match[1].replace(/&amp;/g, "&");
-    const url = new URL(raw, stories[0].url);
-    if (url.protocol !== "https:") return null;
-    return url.href;
-  } catch {
-    return null;
-  }
-}
-
 export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const params = await searchParams;
   const rosterView = params?.vista === "plantilla";
   const movementsView = params?.vista === "movimientos";
-  const [officialStandings, featurePhoto, movementResult] = await Promise.all([
+  const [officialStandings, newsResult, rosterResult, movementResult] = await Promise.all([
     getLmbStandings(),
-    getFeaturePhoto(),
+    !rosterView && !movementsView ? getAlgodonerosNews() : Promise.resolve(null),
+    rosterView ? getAlgodonerosRoster() : Promise.resolve(null),
     movementsView ? getAlgodonerosMovements() : Promise.resolve(null),
   ]);
+  const displayedStories = newsResult?.stories ?? stories.map(story => ({
+    ...story, imageUrl: null as string | null,
+  }));
+  const displayedRoster = rosterResult?.roster ?? roster;
+  const newsConnected = newsResult?.sourceStatus === "connected";
+  const rosterConnected = rosterResult?.sourceStatus === "connected";
+  const featuredStory = displayedStories[0];
 
   // Tabla real: solo si incluye al club; si falla, conservar el corte oficial 2026.
   const officialNorth = officialStandings.filter(s => normalize(s.division).includes("norte"));
@@ -118,12 +105,19 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
         {rosterView ? (
           <section className="clubRosterContent" aria-label="Plantilla de Algodoneros">
             <div className="clubSectionTitle">
-              <div><span className="clubKicker">PLANTILLA · ARCHIVO 2026</span><h2>Jugadores de Algodoneros</h2></div>
+              <div>
+                <span className="clubKicker">{rosterConnected ? "PLANTILLA · FUENTE OFICIAL LMB" : "PLANTILLA · ARCHIVO 2026"}</span>
+                <h2>Jugadores de Algodoneros</h2>
+              </div>
               <a href={club.lmbRoster} target="_blank" rel="noopener noreferrer">Ver roster oficial ↗</a>
             </div>
-            <p className="clubSmallNote">Nombres y dorsales tomados del roster publicado por LMB para 2026. No representa un listado de altas y bajas actualizado en tiempo real.</p>
+            <p className="clubSmallNote">
+              {rosterConnected
+                ? "Roster obtenido de LMB. Se consulta automáticamente al visitar la página, con caché aproximada de 30 minutos. Los cambios aparecen cuando la liga actualiza su lista."
+                : "Archivo de respaldo 2026. La fuente oficial no pudo verificarse o no devolvió un roster válido; este listado no debe interpretarse como plantilla actual."}
+            </p>
             <div className="clubRosterGrid">
-              {roster.map(group=>(
+              {displayedRoster.map(group=>(
                 <section className="clubRosterGroup" key={group.name}>
                   <h3>{group.name} <span>{group.players.length}</span></h3>
                   <div className="clubRosterPlayers">
@@ -213,26 +207,32 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
 
             <div className="clubMainColumn">
               <section className="clubFeature" aria-label="Noticia destacada">
-                {featurePhoto ? (
-                  <img src={featurePhoto} className="clubFeatureImage" alt="Fotografía de la noticia destacada publicada por LMB" loading="lazy" />
+                {featuredStory.imageUrl ? (
+                  <img src={featuredStory.imageUrl} className="clubFeatureImage" alt={"Imagen de " + featuredStory.title} loading="lazy" />
                 ) : (
                   <img src={logo} className="clubFeatureEmblem" alt="" width={220} height={220} />
                 )}
                 <div className="clubFeatureShade"/>
                 <div className="clubFeatureContent">
-                  <span className="clubKicker">NOTICIA DESTACADA · LMB 2026</span>
-                  <h2>{stories[0].title}</h2>
-                  <p>La postemporada de Algodoneros y sus momentos más importantes.</p>
-                  <a href={stories[0].url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a>
+                  <span className="clubKicker">{newsConnected ? "NOTICIA DESTACADA · FUENTE LMB" : "NOTICIA DESTACADA · ARCHIVO 2026"}</span>
+                  <h2>{featuredStory.title}</h2>
+                  <p>{newsConnected
+                    ? "Selección publicada en el sitio oficial de LMB. Se consulta periódicamente."
+                    : "Selección del archivo histórico de LMB mientras se recupera la fuente."}</p>
+                  <a href={featuredStory.url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a>
                 </div>
               </section>
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
-                  <div><span className="clubKicker">ARCHIVO LMB · 2026</span><h2>Noticias relacionadas</h2></div>
+                  <div><span className="clubKicker">{newsConnected ? "NOTICIAS · FUENTE LMB" : "ARCHIVO LMB · 2026"}</span><h2>Noticias relacionadas</h2></div>
                 </div>
+                <p className="clubSmallNote">{newsConnected
+                  ? "Publicaciones seleccionadas por la LMB. Actualización automática al abrir la página, con caché de aproximadamente 30 minutos."
+                  : "Archivo histórico 2026: no se pudo verificar la fuente oficial recientemente."}</p>
                 <div className="clubNewsGrid">
-                  {stories.slice(1,4).map(story=>(
+                  {displayedStories.slice(1,4).map(story=>(
                     <a className="clubNewsCard" href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
+                      {story.imageUrl && <img className="clubNewsThumb" src={story.imageUrl} alt="" loading="lazy" />}
                       <span>{story.label}</span><strong>{story.title}</strong><small>Leer en LMB ↗</small>
                     </a>
                   ))}
@@ -257,9 +257,9 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
 
             <aside className="clubSideRight">
               <section className="clubPanel">
-                <div className="clubSideHeading"><h2>Titulares</h2><span>2026</span></div>
+                <div className="clubSideHeading"><h2>Titulares</h2><span>{newsConnected ? "LMB" : "2026"}</span></div>
                 <div className="clubHeadlines">
-                  {stories.slice(2).map((story,i)=>(
+                  {displayedStories.slice(2,9).map((story,i)=>(
                     <a href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
                       <span className="clubHeadlineIndex">{String(i+1).padStart(2,"0")}</span>
                       <strong>{story.title}</strong>
