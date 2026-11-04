@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
+import { getAlgodonerosMovements } from "@/lib/lmbMovements";
 import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
@@ -13,7 +14,7 @@ import {
   ALGODONEROS_MOVEMENTS as movements,
 } from "@/lib/algodonerosProfile";
 
-export const revalidate = 3600;
+export const revalidate = 1800;
 export const metadata: Metadata = {
   title: "Algodoneros del Unión Laguna | Equipos LMB | Diamante MX",
   description: "Perfil de Algodoneros, noticias destacadas, videos oficiales, roster y posiciones LMB 2026.",
@@ -57,9 +58,10 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const params = await searchParams;
   const rosterView = params?.vista === "plantilla";
   const movementsView = params?.vista === "movimientos";
-  const [officialStandings, featurePhoto] = await Promise.all([
+  const [officialStandings, featurePhoto, movementResult] = await Promise.all([
     getLmbStandings(),
     getFeaturePhoto(),
+    movementsView ? getAlgodonerosMovements() : Promise.resolve(null),
   ]);
 
   // Tabla real: solo si incluye al club; si falla, conservar el corte oficial 2026.
@@ -151,13 +153,15 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               </a>
             </div>
             <p className="clubSmallNote">
-              Operaciones publicadas por la Liga Mexicana de Beisbol sobre Unión Laguna.
-              Las altas en listas de academia o las cesiones de derechos no implican
-              necesariamente un movimiento del roster activo.
+              Operaciones oficiales de Unión Laguna. Las altas de academia y las cesiones
+              de derechos no implican necesariamente movimientos del roster activo.
+              {movementResult?.sourceStatus === "connected"
+                ? " Fuente LMB conectada · consulta automática con caché de 30 minutos."
+                : " Archivo de respaldo: no se pudo verificar la fuente oficial recientemente."}
             </p>
             <div className="clubMovementsTimeline">
-              {movements.map(event => (
-                <article className="clubMovementItem" key={event.date + event.title}>
+              {(movementResult?.movements ?? movements).map((event, index) => (
+                <article className="clubMovementItem" key={event.url + event.title + index}>
                   <div className="clubMovementDate">
                     <span>{new Intl.DateTimeFormat("es-MX", {
                       day: "numeric", month: "long", year: "numeric",
@@ -179,8 +183,10 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               ))}
             </div>
             <p className="clubSmallNote">
-              Archivo editorial consultado el 4 de noviembre de 2026. No es un reporte
-              automático de altas, bajas y estatus activos de jugadores.
+              Se combinan los movimientos archivados con publicaciones recientes de LMB,
+              sin duplicar los comunicados. Esta página verifica nuevas publicaciones al
+              recibir visitas, aproximadamente cada 30 minutos; no son alertas instantáneas.
+              Los registros anteriores no garantizan el estado actual del roster.
             </p>
           </section>
         ) : (
