@@ -173,7 +173,7 @@ const fallbackRoster: OfficialRosterGroup[] = ALGODONEROS_ROSTER.map(group => ({
   players: group.players.map(player => ({ ...player })),
 }));
 
-export async function getLmbClubNews(slug: string, fallback = fallbackStories): Promise<NewsResult> {
+export async function getLmbClubNews(slug: string, fallback: OfficialStory[] = []): Promise<NewsResult> {
   if (!validClubSlug(slug)) return { stories: fallback, sourceStatus: "fallback" };
   const html = await readOfficialHtml(BASE + "/equipos/" + slug);
   const news = html ? readNewsFromOfficialHtml(html) : [];
@@ -181,7 +181,7 @@ export async function getLmbClubNews(slug: string, fallback = fallbackStories): 
   return { stories: news, sourceStatus: "connected" };
 }
 
-export async function getLmbClubRoster(slug: string, fallback = fallbackRoster): Promise<RosterResult> {
+export async function getLmbClubRoster(slug: string, fallback: OfficialRosterGroup[] = []): Promise<RosterResult> {
   if (!validClubSlug(slug)) return { roster: fallback, sourceStatus: "fallback" };
   const html = await readOfficialHtml(BASE + "/equipos/" + slug + "/roster");
   const parsed = html ? readRosterFromOfficialHtml(html) : [];
@@ -204,11 +204,53 @@ export async function getLmbClubRoster(slug: string, fallback = fallbackRoster):
 }
 
 export async function getAlgodonerosNews(): Promise<NewsResult> {
-  return getLmbClubNews("algodoneros");
+  return getLmbClubNews("algodoneros", fallbackStories);
 }
 
 export async function getAlgodonerosRoster(): Promise<RosterResult> {
-  return getLmbClubRoster("algodoneros");
+  return getLmbClubRoster("algodoneros", fallbackRoster);
 }
 
 
+
+export type LmbClubOverview = {
+  stadium: string | null;
+  capacity: number | null;
+  website: string | null;
+  tickets: string | null;
+  sourceStatus: LmbSourceStatus;
+};
+
+// Solo metadatos observados en el encabezado del club de la página LMB;
+// nunca rellenar con información del otro club.
+export async function getLmbClubOverview(slug: string): Promise<LmbClubOverview> {
+  const empty: LmbClubOverview = {
+    stadium: null, capacity: null, website: null, tickets: null, sourceStatus: "fallback",
+  };
+  if (!validClubSlug(slug)) return empty;
+  const html = await readOfficialHtml(BASE + "/equipos/" + slug);
+  if (!html) return empty;
+  const from = html.indexOf("Estadio:");
+  if (from < 0) return empty;
+  const chunk = html.slice(from, from + 3000);
+  const visible = plainText(chunk);
+  const stadium = visible.match(/Estadio:\s*(.{4,130}?)\s*(?:Capacidad:|Sitio Oficial|Boletos)/i)?.[1].trim() ?? null;
+  const capacityMatch = visible.match(/Capacidad:\s*([\d.,]{3,9})/i)?.[1];
+  const cap = capacityMatch ? Number(capacityMatch.replace(/[,\.]/g, "")) : NaN;
+  const hrefs = [...chunk.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)];
+  const findLink = (label: RegExp): string | null => {
+    const match = hrefs.find(v => label.test(plainText(v[2])));
+    if (!match) return null;
+    try {
+      const url = new URL(decodeEntities(match[1]), BASE);
+      return url.protocol === "https:" ? url.href : null;
+    } catch { return null; }
+  };
+  return {
+    stadium,
+    capacity: Number.isInteger(cap) && cap > 1000 && cap < 100000 ? cap : null,
+    website: findLink(/sitio oficial/i),
+    tickets: findLink(/boletos/i),
+    sourceStatus: "connected",
+  };
+}

@@ -4813,3 +4813,58 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
  .topbar{padding:12px 15px;flex-wrap:wrap;gap:12px}
  .topbar nav{font-size:12px;gap:12px}
 }
+
+
+/* 66 · Perfil compartido para los otros 19 equipos LMB.
+   Usa los componentes y convenciones ya aprobados en Algodoneros. */
+.clubProfile--all .clubHero{background:linear-gradient(115deg,#311c27,#522036 55%,#12251c)}
+.clubProfile--all .clubHeroLogo>span{font-size:48px;color:#d7ff4f}
+.clubProfile--all .clubProfileTabs{overflow-x:auto;white-space:nowrap;scrollbar-width:thin;scrollbar-color:#3b644c transparent}
+.clubProfile--all .clubProfileTabs a{flex-shrink:0}
+.clubDirectoryNotice{border:1px solid #344c3c;background:linear-gradient(120deg,#15251d,#0e1b14);border-radius:15px;padding:24px;display:grid;gap:11px}
+.clubDirectoryNotice .clubKicker{font-size:10px}
+.clubDirectoryNotice h2,.clubDirectoryNotice h3{font-size:20px;letter-spacing:-.025em;margin:0}
+.clubDirectoryNotice p{font-size:12px;line-height:1.75;color:#b7c8bd;max-width:800px;margin:0}
+.clubDirectoryNotice a{font-size:12px;color:var(--accent)!important;font-weight:850}
+.clubDirectoryHeroBadge{position:absolute;inset:0;display:grid;place-items:center;opacity:.35;font-size:100px}
+.clubDirectoryHeroBadge img{object-fit:contain}
+.clubDirectoryDetailLink{color:var(--accent)!important;display:inline-block;font-size:11px;font-weight:850;margin-top:8px}
+.clubDirectoryMlb,.clubDirectoryHistory{display:grid;gap:23px;margin:0 0 24px}
+.clubDirectorySectionHero{display:grid;gap:9px;padding:27px 29px;border:1px solid #385340;border-radius:17px;background:linear-gradient(110deg,#172b1d,#122219 65%,#3b202e)}
+.clubDirectorySectionHero h2{margin:2px 0 0;font-size:clamp(24px,3.5vw,37px);letter-spacing:-.04em}
+.clubDirectorySectionHero p{font-size:13px;color:#bdcdbf;line-height:1.75;max-width:950px;margin:0}
+.clubDirectoryMlb .clubDirectoryVeterans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.clubDirectoryVeteran{display:flex;align-items:center;gap:14px;padding:20px;border:1px solid #36503d;background:#11241b;border-radius:15px}
+.clubDirectoryVeteran>div{min-width:0;flex:1;display:grid;gap:7px}
+.clubDirectoryVeteran h3{font-size:16px;margin:0;line-height:1.3}
+.clubDirectoryVeteran p{font-size:11px;color:#c0cec0;margin:0;line-height:1.5}
+.clubDirectoryVeteran a{font-size:11px;color:var(--accent)!important;font-weight:850}
+.clubDirectoryVeteran .clubRosterAvatar{width:60px;height:60px;flex:0 0 60px}
+.clubDirectoryVeteran .clubRosterAvatar img{width:60px;height:60px}
+.clubDirectorySource{display:inline-flex;align-items:center;justify-self:start;font-size:11px;font-weight:900;color:#d9ff72!important}
+.clubDirectoryStadiumText{font-size:clamp(13px,1.8vw,19px)!important;line-height:1.2!important;overflow-wrap:anywhere}
+.clubDirectoryTitleYears{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.clubDirectoryTitleYear{display:flex;align-items:center;flex-direction:column;gap:8px;padding:19px 13px;background:linear-gradient(145deg,#48202c,#1b281d);border:1px solid #744153;border-radius:13px}
+.clubDirectoryTitleYear>span{color:#f0d48c;font-size:22px}
+.clubDirectoryTitleYear strong{font-size:32px;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.clubDirectoryTitleYear small{font-size:10px;letter-spacing:.07em;color:#d9bec8;font-weight:800}
+.clubDirectoryHistory>.clubSmallNote a{color:#d6f55a!important;text-decoration:underline;text-underline-offset:3px}
+.clubDirectoryHistoryGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.clubDirectoryHistoryPanel{display:grid;align-content:start;gap:12px;padding:22px;border:1px solid #39503c;background:#10231a;border-radius:15px}
+.clubDirectoryHistoryPanel h3{font-size:21px;margin:0}
+.clubDirectoryHistoryPanel p{font-size:12px;color:#b8cabc;line-height:1.7;margin:0}
+.clubDirectoryHistoryPanel a{color:#d9ff65!important;font-size:11px;font-weight:900}
+.clubProfile--all .clubFeatureContent{max-width:850px}
+.clubProfile--all .clubHeroMeta strong{overflow-wrap:anywhere}
+@media(max-width:1120px){
+ .clubDirectoryMlb .clubDirectoryVeterans{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .clubProfile--all .clubProfileTabs{padding:0 3px}
+ .clubProfile--all .clubProfileTabs a{padding:13px 12px;font-size:12px}
+ .clubProfile--all .clubHero{padding:20px}
+ .clubDirectorySectionHero{padding:20px}
+ .clubDirectoryHistoryGrid{grid-template-columns:minmax(0,1fr)}
+ .clubDirectoryMlb .clubDirectoryVeterans{grid-template-columns:minmax(0,1fr)}
+ .clubDirectoryTitleYears{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

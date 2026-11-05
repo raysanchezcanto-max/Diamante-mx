@@ -25,6 +25,7 @@ export type LmbClubMovementSource = {
   profileUrl: string;
   headingAliases: readonly string[];
   archive: readonly Omit<ClubMovement, "automatic">[];
+  clubName?: string;
 };
 const MONTHS: Record<string, number> = {
   enero: 1, febrero: 2, marzo: 3, abril: 4, mayo: 5, junio: 6,
@@ -88,7 +89,8 @@ function relevantMovementsFromArticle(html: string, headingAliases: readonly str
     // Impide confundir equipos homónimos de LMB, LMP y softbol.
     if (!headingAliases.some(alias => {
       const normalized = normalizeHeading(alias);
-      return normalized.length > 2 && title.split(/[^A-Z]+/).includes(normalized);
+      const words = title.replace(/[^A-Z0-9]+/g, " ").trim();
+      return normalized.length > 2 && (" " + words + " ").includes(" " + normalized + " ");
     })) continue;
     const start = headings[i].index! + headings[i][0].length;
     const end = headings[i + 1]?.index ?? Math.min(decoded.length, start + 6500);
@@ -172,20 +174,20 @@ export async function getLmbClubMovements(
     const source = await officialHtml(url);
     if (!source) return [];
     const excerpts = relevantMovementsFromArticle(source, config.headingAliases);
-    // Un enlace listado en la ficha del club es evidencia de pertinencia;
-    // los artículos descubiertos por fecha requieren además mención LAGUNA.
+    // Los enlaces del perfil oficial del club son evidencia de pertinencia;
+    // los boletines descubiertos por fecha exigen un encabezado del club.
     if (excerpts.length === 0) {
       return profileLinks.includes(url)
         ? [{
           date, type: "Movimiento oficial", title: "Movimiento publicado por LMB",
-          description: "La liga publicó un movimiento vinculado a Unión Laguna. Consulta el comunicado para los detalles.",
+          description: "La liga vinculó el comunicado a este club. Consulta el enlace para detalles.",
           url, automatic: true,
         }]
         : [];
     }
     return excerpts.map((entry, index) => ({
       date, type: classification(entry),
-      title: "Movimiento de Unión Laguna" + (excerpts.length > 1 ? " · " + (index + 1) : ""),
+      title: "Movimiento de " + (config.clubName ?? "LMB") + (excerpts.length > 1 ? " · " + (index + 1) : ""),
       description: shortExcerpt(entry),
       url, automatic: true,
     }));
@@ -213,5 +215,6 @@ export async function getAlgodonerosMovements(now = new Date()): Promise<Movemen
     profileUrl: PROFILE,
     headingAliases: ["LAGUNA"],
     archive: ALGODONEROS_MOVEMENTS,
+    clubName: "Unión Laguna",
   }, now);
 }

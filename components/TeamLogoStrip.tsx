@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { lmbClubHref } from "@/lib/lmbClubs";
 import type { Game, Standing } from "@/lib/mlb";
 import {
   getTeamLogo,
@@ -133,17 +134,15 @@ export default function TeamLogoStrip({
       <div className="teamLogoRail" aria-label={league==="CARIBE"?"Participantes del Caribe":`Equipos de ${league}`}>
         <div className="teamLogoTrack">
           {teams.map(team=>{
-            const normalizedName = clean(team.name);
-            const isAlgodonerosLmb = league === "LMB" &&
-              (normalizedName.includes("algodoneros") && normalizedName.includes("laguna"));
+            const profileUrl = league === "LMB" ? lmbClubHref(team.name) : null;
             const content = team.logo ? (
               <img src={team.logo} alt="" width={38} height={38} loading="lazy" />
             ) : (
               <span className="teamLogoInitials">{team.name.slice(0,2)}</span>
             );
-            return isAlgodonerosLmb ? (
+            return profileUrl ? (
               <a
-                href="/equipos/lmb/algodoneros"
+                href={profileUrl}
                 className={"teamLogoChoice" + (selected===team.key?" is-selected":"")}
                 aria-label={"Abrir perfil completo de " + team.name + " en Diamante MX"}
                 title={team.name + " · Abrir ficha completa"}
@@ -191,9 +190,8 @@ export default function TeamLogoStrip({
             )}
           </div>
           <div className="teamQuickActions">
-            {league === "LMB" && clean(club.name).includes("algodoneros") &&
-              clean(club.name).includes("laguna") && (
-              <a href="/equipos/lmb/algodoneros">
+            {league === "LMB" && lmbClubHref(club.name) && (
+              <a href={lmbClubHref(club.name)!}>
                 Ver perfil completo →
               </a>
             )}
