@@ -4924,7 +4924,7 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .liveGameSourceWaiting{font-size:12px;line-height:1.7;color:#a9c1b5;margin:4px 0 0}
 
 
-/* LMP EN VIVO: historial compacto de relevos debajo de Situación del juego. */
+/* LMP EN VIVO: relevos agrupados en dos columnas por equipo. */
 .lmpPitchingChanges { margin-top: 24px; }
 .lmpPitchingChangesHeader {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -4933,43 +4933,79 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .lmpPitchingChangesCount {
   color: var(--muted); font-size: 11px; font-weight: 600;
 }
-.lmpPitchingChangesList { display: grid; gap: 10px; margin-top: 16px; }
-.lmpPitchingChange {
+.lmpPitchingChangesColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 14px;
+  margin-top: 16px;
+}
+.lmpPitchingTeamColumn {
+  min-width: 0; padding: 13px;
   border: 1px solid var(--line);
+  border-radius: 13px;
   background: var(--panel2);
-  border-radius: 12px;
-  padding: 13px 16px;
 }
-.lmpPitchingChangeTeam {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0;
-  margin-bottom: 10px;
+.lmpPitchingTeamHeader {
+  display: flex; align-items: center; gap: 9px;
+  padding-bottom: 12px; margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
-.lmpPitchingChangeTeam img {
-  width: 28px; height: 28px; flex: 0 0 28px; object-fit: contain;
+.lmpPitchingTeamHeader img {
+  flex: 0 0 36px; width: 36px; height: 36px; object-fit: contain;
 }
-.lmpPitchingChangeTeam strong {
-  color: var(--text); font-size: 12px; overflow-wrap: anywhere;
+.lmpPitchingTeamIdentity {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.lmpPitchingTeamIdentity strong {
+  color: var(--text); font-size: 13px; line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.lmpPitchingTeamSide {
+  color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em;
+}
+.lmpPitchingTeamCount {
+  flex: 0 0 auto; color: var(--muted);
+  font-size: 10px; font-weight: 700; white-space: nowrap;
+}
+.lmpPitchingTeamEmpty {
+  color: var(--muted); font-size: 12px; margin: 4px 0 2px;
+}
+.lmpPitchingChangesList {
+  display: grid; gap: 9px;
+}
+.lmpPitchingChange {
+  min-width: 0; padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+.lmpPitchingChangeHeading {
+  display: flex; justify-content: flex-end; margin-bottom: 10px;
 }
 .lmpPitchingChangeInning {
-  color: var(--muted); font-size: 10px; font-weight: 800;
-  letter-spacing: .06em; margin-left: auto; white-space: nowrap;
+  color: var(--muted); font-size: 10px;
+  font-weight: 800; letter-spacing: .06em;
 }
 .lmpPitchingChangePlayers {
-  display: grid; grid-template-columns: minmax(0,1fr) 24px minmax(0,1fr);
-  gap: 10px; align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr);
+  gap: 7px; align-items: center;
 }
 .lmpPitchingChangePlayers > div {
-  display: flex; flex-direction: column; gap: 5px; min-width: 0;
+  min-width: 0; display: flex; flex-direction: column; gap: 5px;
 }
 .lmpPitchingChangePlayers small {
-  color: var(--muted); font-size: 10px; letter-spacing: .08em; font-weight: 800;
+  color: var(--muted); font-size: 10px;
+  letter-spacing: .08em; font-weight: 800;
 }
 .lmpPitchingChangePlayers strong {
-  color: var(--text); font-size: 13px; font-weight: 750;
+  color: var(--text); font-size: 12px; font-weight: 750;
   line-height: 1.4; overflow-wrap: anywhere;
 }
 .lmpPitchingChangeArrow {
-  color: var(--accent); text-align: center; font-size: 18px;
+  color: var(--accent); text-align: center; font-size: 17px;
 }
 .lmpPitchingChangesToggle {
   display: block; width: 100%; margin-top: 12px; padding: 10px;
@@ -4979,9 +5015,12 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 }
 .lmpPitchingChangesToggle:hover { border-color: var(--accent); }
 .lmpPitchingChangesToggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-@media(max-width: 760px) {
-  .lmpPitchingChange { padding: 12px; }
-  .lmpPitchingChangePlayers { gap: 6px; grid-template-columns: minmax(0,1fr) 18px minmax(0,1fr); }
-  .lmpPitchingChangePlayers strong { font-size: 12px; }
-  .lmpPitchingChangeTeam strong { font-size: 11px; }
+@media (max-width: 760px) {
+  .lmpPitchingChangesColumns { grid-template-columns: minmax(0, 1fr); }
+  .lmpPitchingTeamColumn { padding: 11px; }
+  .lmpPitchingChangePlayers { gap: 6px; }
+}
+@media (max-width: 380px) {
+  .lmpPitchingTeamHeader { flex-wrap: wrap; }
+  .lmpPitchingTeamCount { margin-left: auto; }
 }
