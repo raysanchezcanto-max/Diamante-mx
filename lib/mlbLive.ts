@@ -1,4 +1,5 @@
 import { translateBaseballText } from "@/lib/translateBaseball";
+import { getLmpPitchingChanges, type LmpPitchingChange } from "@/lib/lmpPitchingChanges";
 export type MlbPlayState = {
   first: number;
   second: number;
@@ -34,6 +35,7 @@ lineScoreTotals?: {
   };
 };
   plays?: string[];
+  pitchingChanges?: LmpPitchingChange[];
 };
 function translateMlbDescription(
   description: string
@@ -531,6 +533,10 @@ const plays =
       }
     )
   );
+    // La LMP reutiliza el mismo feed para relevos: sin petición adicional.
+    const pitchingChanges =
+      league === "LMP" ? getLmpPitchingChanges(allPlays) : undefined;
+
     return {
       first: offense.first ? 1 : 0,
       second: offense.second ? 1 : 0,
@@ -571,6 +577,7 @@ pitchCount,
       inningLines,
 lineScoreTotals,
       plays,
+      pitchingChanges,
   
     };
   } catch {
