@@ -6,6 +6,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "toros": {
     "intro": "La historia moderna de Toros en Tijuana pasó de la llegada a la frontera a una etapa ganadora: sus títulos de 2017, 2021 y 2026 convirtieron al club en tricampeón de la Liga Mexicana.",
     "debutYear": "2004",
+    "stadiumOpened": "1977",
+    "stadiumSource": "https://www.intheballparks.com/mexican/chevron",
     "milestones": [
       {
         "year": "2004",
@@ -80,6 +82,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "el-aguila": {
     "intro": "El Águila de Veracruz remonta sus orígenes a 1903 y participó en el inicio de LMB en 1925; cuenta con seis títulos del circuito, desde 1937 y 1938 hasta 2012.",
     "debutYear": "1925",
+    "stadiumOpened": "1992",
+    "stadiumSource": "https://es.wikipedia.org/wiki/Parque_Deportivo_Universitario_%22Beto_%C3%81vila%22",
     "debutLabel": "PRIMERA PARTICIPACIÓN LMB",
     "milestones": [
       {
@@ -161,6 +165,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "guerreros": {
     "intro": "Guerreros de Oaxaca comenzó su trayectoria en la Liga Mexicana en 1996 y celebró su primera corona apenas dos campañas después, en 1998, bajo el liderazgo de Nelson Barrera.",
     "debutYear": "1996",
+    "stadiumOpened": "2026",
+    "stadiumSource": "https://www.oaxaca.gob.mx/comunicacion/atestiguan-salomon-jara-e-irma-bolanos-la-inauguracion-del-estadio-de-beisbol-yuva-nueva-casa-de-los-guerreros-de-oaxaca/",
     "milestones": [
       {
         "year": "1996",
@@ -222,6 +228,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "pericos": {
     "intro": "El béisbol poblano tiene raíces antiguas: Pericos comenzó su etapa profesional en 1942 y ha vivido cambios de nombre y de franquicia, con triunfos históricos en 1963, 2016 y 2023.",
     "debutYear": "1942",
+    "stadiumOpened": "1973",
+    "stadiumSource": "https://www.milb.com/news/pericos-49-aniversario-del-parque-hermanos-serdan",
     "milestones": [
       {
         "year": "1942",
@@ -296,6 +304,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "tigres": {
     "intro": "Nacidos en 1955 como Tigres Capitalinos, los felinos jugaron en Ciudad de México, Puebla y Cancún, donde alcanzaron doce campeonatos; el más reciente fue en 2015.",
     "debutYear": "1955",
+    "stadiumOpened": "1980",
+    "stadiumSource": "https://www.milb.com/news/gcs-157972514",
     "milestones": [
       {
         "year": "1955",
@@ -364,6 +374,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "bravos": {
     "intro": "León guarda una tradición beisbolera que alcanzó la cima con la corona de Bravos en 1990. El equipo regresó al circuito para una nueva etapa después de varios años de ausencia.",
     "debutYear": "1979",
+    "stadiumOpened": "1973",
+    "stadiumSource": "https://bajio.quadratin.com.mx/domingo-santana-diamante-historico-leones/",
     "debutLabel": "ANTECEDENTE EN LEÓN DESDE",
     "milestones": [
       {
@@ -432,6 +444,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "dorados": {
     "intro": "Dorados de Chihuahua participó por primera vez en LMB en 1940 y volvió en 2024 para comenzar su cuarta etapa de participación en el circuito de verano.",
     "debutYear": "1940",
+    "stadiumOpened": "2004",
+    "stadiumSource": "https://netnoticias.mx/revista/felices-16",
     "debutLabel": "PRIMERA PARTICIPACIÓN LMB",
     "milestones": [
       {
@@ -489,6 +503,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "conspiradores": {
     "intro": "Conspiradores de Querétaro fue presentado en 2022 y comenzó a competir en 2024, una expansión que abrió una nueva etapa del béisbol profesional de LMB en la entidad.",
     "debutYear": "2024",
+    "stadiumOpened": "2024",
+    "stadiumSource": "https://www.milb.com/news/leones-conspiradores-gana-su-primer-juego-en-queretaro",
     "milestones": [
       {
         "year": "2022",
