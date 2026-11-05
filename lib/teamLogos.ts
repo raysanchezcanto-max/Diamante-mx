@@ -41,7 +41,7 @@ const LMP_LOGOS: Record<string, string> = {
     "/logos/lmb/caliente-durango.png",
 
   "sultanes de monterrey":
-    "/logos/lmb/sultanes-monterrey.png",
+    "/logos/lmb/nav/sultanes-cap.svg",
 
   "charros de jalisco":
     "/logos/lmb/charros-jalisco.png",
@@ -53,10 +53,10 @@ const LMP_LOGOS: Record<string, string> = {
     "/logos/lmb/acereros-monclova.png",
 
   "algodoneros union laguna":
-    "/logos/lmb/algodoneros-union-laguna.png",
+    "/logos/lmb/nav/algodoneros-cap.svg",
 
   "algodoneros de union laguna":
-    "/logos/lmb/algodoneros-union-laguna.png",
+    "/logos/lmb/nav/algodoneros-cap.svg",
 
   "rieleros de aguascalientes":
     "/logos/lmb/rieleros-aguascalientes.png",

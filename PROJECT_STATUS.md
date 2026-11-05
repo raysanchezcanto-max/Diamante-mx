@@ -1,14 +1,14 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 3 de noviembre de 2026  
+**Última revisión:** 5 de noviembre de 2026  
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (cierre 2/nov/2026):** cuando se restablezca la cuota de Vercel, desplegar únicamente el último HEAD de `main` y comprobar transmisiones MLB/LMB/LMP/CARIBE; después validar datos LMP reales y pendientes de CARIBE. La APK Android TWA ya está instalada y navegable, NO se debe rehacer.  
+**Prioridad actual (5/nov/2026):** auditar escudos LMB con fuentes fieles sin fondos intrusivos ni amplificaciones artificiales; confirmar el despliegue READY del último HEAD y continuar pendientes editoriales/visuales. La APK Android TWA ya está instalada y no se debe rehacer.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (3/nov/2026):** leer la sección 46 del final. GitHub `main` está en el commit `99e17b35030b0f478ee6f6edc904f98cdd113769`, que deshabilita los dos handles de YouTube LMP invalidados por capturas. Último Vercel producción `READY` visto: `1c77205acb139c51294a01e9ca09b5cef522dd02` (no contiene todos los cambios posteriores). Los commits recientes, incluido el último, tienen estado Vercel `failure` con mensaje **`Deployment rate limited — retry in 24 hours`**. No declarar que la web publica el último commit hasta que el SHA se vea en Vercel `READY`. No volver a sustituir YouTube por otro handle sin abrirlo y contrastarlo con publicación actual del organizador.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (96) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1023,3 +1023,14 @@
 - **Corrección visual verificada en el código:** `components/AlgodonerosLeaders.tsx` aplica `className="clubLeaderName"` a los enlaces oficiales de Albert Lara, Mason Martin y lanzadores, activando la misma regla de ajuste de nombres largos que en los otros 19 clubes. La nota descriptiva ahora aparece tanto en Bateo como en Pitcheo y advierte que 2026 es archivo histórico, no roster actual ni datos en vivo.
 - **Accesibilidad adicional:** `app/globals.css` añade un anillo `:focus-visible` contrastado a las cinco pestañas de navegación en el perfil LMB, facilitando uso con teclado sin alterar el diseño normal ni añadir controles.
 - **Entrega:** tres archivos actualizados juntos en un **único commit**; verificar después que el despliegue automático de Vercel esté READY, sin solicitar otra compilación manual. Faltan la inspección de logos definitivos de alta resolución y una prueba física Android/iPhone.
+
+## 96. LMB — primer lote de insignias vectoriales transparentes (5/nov/2026)
+
+- **Objetivo:** mejorar nitidez y contraste de los logos LMB sin sacrificar el estilo de emblemas transparentes de la franja inspirado en MLB ni reemplazar una identidad por una variante con recuadro blanco.
+- **Auditoría de fuentes:** la fuente principal de LMB conserva 12 imágenes locales de 96×96 o 160×160 px. El catálogo de LMB TV `https://www.lmb.tv/teams` ofrece insignias de 283–592 píxeles y transparencia externa, pero la mayoría incorpora **discos blancos** en el centro: se examinaron como candidatas, sin incorporarlas indiscriminadamente.
+- **Primer lote seguro de vectores:** `public/logos/lmb/nav/algodoneros-cap.svg` procede de Wikimedia Commons, «Algodoneros de Unión Laguna cap insignia.svg», con fuente indicada MiLB, y conserva el monograma UL guinda con contorno blanco; `public/logos/lmb/nav/sultanes-cap.svg` procede de Wikimedia Commons, «Sultanes de Monterrey logo.svg», con fuente MiLB, y conserva la insignia azul de Monterrey sin fondo. Wikimedia identifica estas imágenes como logos y advierte posibles restricciones de marca registrada. Fuentes: `https://commons.wikimedia.org/wiki/File:Algodoneros_de_Uni%C3%B3n_Laguna_cap_insignia.svg` y `https://commons.wikimedia.org/wiki/File:Sultanes_de_Monterrey_logo.svg`.
+- **Cambios:** `lib/teamLogos.ts` apunta a estos dos SVG en los lugares que llaman `getTeamLogo("LMB", ...)`. Los PNG originales se conservan para revertir en caso necesario. **No se modificaron los otros 18 logos, la lógica de partidos, MLB ni LMP.**
+- **Alternativas descartadas:** la comparación de SVG de Diablos, El Águila, Pericos y la insignia de gorra de Sultanes mostró fondos sólidos o proporciones distintas para tarjetas pequeñas. Conservar los originales hasta obtener versiones equivalentes; no transformar los símbolos oficiales ni inventar vectores.
+- **QA técnica:** XML SVG válido, sin scripts ni imágenes externas. En sandbox aislado, `npx tsc --noEmit` y `npm run build` exitosos. El repositorio no contiene `package-lock.json`; se usó una instalación temporal `npm install --no-save --no-package-lock`, sin agregar dependencias al repositorio.
+- **Publicación y siguientes pruebas:** esperar un único despliegue automático de GitHub→Vercel, comprobar SHA y READY antes de declarar publicación. Probar logos en la franja, marcador y ficha a 360/390 px y escritorio; el hardware físico queda pendiente. Los demás escudos de baja resolución permanecen abiertos.
+
