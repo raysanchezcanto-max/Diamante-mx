@@ -3,6 +3,7 @@
 import type { EditorialHistory } from "./lmbHistoryEditorial";
 
 export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = 
+
 {
   "toros": {
     "intro": "La historia moderna de Toros en Tijuana pasó de la llegada a la frontera a una etapa ganadora: sus títulos de 2017, 2021 y 2026 convirtieron al club en tricampeón de la Liga Mexicana.",
@@ -35,6 +36,12 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> =
         "url": "https://www.milb.com/news/lmb-2021-el-ano-en-el-que-brillaron-las-estrellas"
       },
       {
+        "year": "2023",
+        "title": "Tres inmortales en el cuerpo técnico",
+        "description": "Vicente Romo, Alonso Téllez e Isidro Márquez integraron el staff de Toros; su vínculo con Tijuana fue como coaches, no como peloteros históricos de la franquicia.",
+        "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
+      },
+      {
         "year": "2026",
         "title": "Tercera estrella ante Olmecas",
         "description": "Los astados se impusieron 4–2 en la Serie del Rey; ganaron el sexto partido por 2–0 con dos carreras producidas por Gilberto Celestino.",
@@ -62,9 +69,46 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> =
         "year": "2026",
         "highlight": "Conectó el hit de dos carreras que decidió el título de Toros ante Olmecas en 2026.",
         "url": "https://torosdetijuana.com/index.php/toros-de-tijuana-es-campeon-de-la-liga-mexicana-de-beisbol-banorte/2026/09/"
+      },
+      {
+        "name": "Vicente Romo",
+        "role": "Coach asistente de bullpen e inmortal",
+        "year": "2014–2023",
+        "highlight": "Miembro del Salón de la Fama desde 1992 y colaborador de largo recorrido en el cuerpo técnico tijuanense.",
+        "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
+      },
+      {
+        "name": "Alonso Téllez",
+        "role": "Coach asistente de bateo e inmortal",
+        "year": "2023",
+        "highlight": "Entronizado en 2010, formó parte del cuerpo técnico del equipo como especialista de bateo.",
+        "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
+      },
+      {
+        "name": "Isidro Márquez",
+        "role": "Coach de pitcheo e inmortal",
+        "year": "2022–2023",
+        "highlight": "Miembro de la Clase 2020 del Salón de la Fama; llegó al cuerpo técnico de Toros como instructor de lanzadores.",
+        "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
       }
     ],
-    "immortals": [],
+    "immortals": [
+      {
+        "name": "Vicente Romo",
+        "year": 1992,
+        "role": "Coach asistente de bullpen de Toros en 2023"
+      },
+      {
+        "name": "Alonso Téllez",
+        "year": 2010,
+        "role": "Coach asistente de bateo de Toros en 2023"
+      },
+      {
+        "name": "Isidro Márquez",
+        "year": 2020,
+        "role": "Coach de pitcheo de Toros en 2023"
+      }
+    ],
     "sources": [
       {
         "label": "Trayectoria de la franquicia · LMB",
@@ -77,6 +121,10 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> =
       {
         "label": "Campeonato 2026 · Toros",
         "url": "https://torosdetijuana.com/index.php/toros-de-tijuana-es-campeon-de-la-liga-mexicana-de-beisbol-banorte/2026/09/"
+      },
+      {
+        "label": "Coaches inmortales de Toros · comunicado del club",
+        "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
       }
     ]
   },
