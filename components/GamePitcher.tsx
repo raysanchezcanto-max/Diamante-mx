@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import type { LeagueCode } from "@/lib/teamLogos";
+import { getLmpPitcherPhotos } from "@/lib/lmpPitcherPhotos";
 
 type Pitcher = {
   id: number;
@@ -39,7 +40,7 @@ export default function GamePitcher({
     : null;
   const candidates = pitcher
     ? league === "LMP"
-      ? [pitcher.imageUrl, milbPhoto]
+      ? getLmpPitcherPhotos(pitcher.id, pitcher.imageUrl)
       : league === "MLB"
         ? [mlbPhoto]
         : league === "LMB"
