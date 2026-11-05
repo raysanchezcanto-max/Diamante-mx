@@ -49,7 +49,7 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
                   <article key={player.title} className="clubBigLeaguesProspect">
                     <span className="clubBigLeaguesStatus">DEBUT MLB CONFIRMADO</span>
                     <h4>{player.title}</h4>
-                    <span className="clubBigLeaguesProspectOrganization">{player.mlbClub}</span>
+                    <span className="clubBigLeaguesProspectOrganization">{player.mlbClub} · {player.debutDate}</span>
                     <p>{player.description}</p>
                     <a href={player.source} target="_blank" rel="noopener noreferrer">Ver debut en fuente oficial ↗</a>
                   </article>
@@ -63,7 +63,7 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
             <h3>Prospectos firmados por organizaciones MLB</h3>
           </div>
           <p className="clubBigLeaguesNote">
-            Estas firmas fueron reportadas por el propio club. No demuestran
+            Estas firmas están documentadas en fuentes de clubes, LMB, MiLB o MLB. No demuestran
             por sí mismas que los jugadores hayan disputado un encuentro de Grandes Ligas,
             ni confirman su contrato o equipo actual.
           </p>
@@ -91,7 +91,7 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
               vigentes ni de todos los prospectos del club.
             </p>
             <a className="clubDirectorySource" href={record.source} target="_blank" rel="noopener noreferrer">
-              Fuente oficial del equipo ↗
+              Consultar documentación ↗
             </a>
           </div>
         </>
