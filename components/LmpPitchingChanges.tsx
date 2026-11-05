@@ -25,7 +25,7 @@ export default function LmpPitchingChanges({
     { side: "home" as const, label: "LOCAL", name: home, logo: homeLogo },
   ];
 
-  // Cada equipo mantiene su propia secuencia cronológica de relevos.
+  // Cada equipo muestra primero los relevos más recientes, sin alterar el feed.
   const showToggle = teams.some(
     (team) => changes.filter((change) => change.side === team.side).length > VISIBLE_PER_TEAM
   );
@@ -42,8 +42,9 @@ export default function LmpPitchingChanges({
       <div className="lmpPitchingChangesColumns">
         {teams.map((team) => {
           const teamChanges = changes.filter((change) => change.side === team.side);
-          const shown = expanded || teamChanges.length <= VISIBLE_PER_TEAM
-            ? teamChanges : teamChanges.slice(-VISIBLE_PER_TEAM);
+          const shown = (
+            expanded ? teamChanges : teamChanges.slice(-VISIBLE_PER_TEAM)
+          ).slice().reverse();
 
           return (
             <div className="lmpPitchingTeamColumn" key={team.side}>
