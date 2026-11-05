@@ -231,6 +231,22 @@ const lmpPitchingChanges =
     ? playState.pitchingChanges
     : [];
 
+// Fotos LMP verificadas por ID: reutilizar en la tarjeta de decisiones
+// la misma imagen individual que recibe ABRIÓ/ABRIDOR.
+const lmpDecisionPitcherPhotos: Record<number, string> = {};
+if (league === "LMP") {
+  for (const pitcher of [
+    game.awayStartingPitcher,
+    game.homeStartingPitcher,
+    game.awayProbablePitcher,
+    game.homeProbablePitcher,
+  ]) {
+    if (pitcher?.id && pitcher.imageUrl) {
+      lmpDecisionPitcherPhotos[pitcher.id] = pitcher.imageUrl;
+    }
+  }
+}
+
 // Abridores reales: usar el primer pitcher del boxscore o la secuencia
 // de lanzamientos verificada por LMP. Nunca confundir con P. PROBABLE.
 const isPlayed = (isLive || isFinal) && !specialStatus;
@@ -744,6 +760,7 @@ const time =
             decisions={gameExtras.decisions}
             finished
             league={league}
+            pitcherPhotos={league === "LMP" ? lmpDecisionPitcherPhotos : undefined}
           />
           <BaseballPlayerStats
             awayStats={gameExtras.awayStats}
