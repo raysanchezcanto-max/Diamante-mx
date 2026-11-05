@@ -174,6 +174,12 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                     <div>
                       <h3>{event.title}</h3>
                       <p>{event.description}</p>
+                      {event.direction && event.otherClub && (
+                        <div className="clubMovementDirection">
+                          <span>{event.direction === "out" ? "DERECHOS CEDIDOS A" : "DERECHOS RECIBIDOS DE"}</span>
+                          <strong>{event.otherClub}</strong>
+                        </div>
+                      )}
                       <a href={event.url} target="_blank" rel="noopener noreferrer">
                         Consultar comunicado de LMB ↗
                       </a>
