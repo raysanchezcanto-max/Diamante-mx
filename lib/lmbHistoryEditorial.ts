@@ -1,3 +1,6 @@
+import { LMB_HISTORY_NORTH_A } from "./lmbHistoryNorthA";
+import { LMB_HISTORY_NORTH_B } from "./lmbHistoryNorthB";
+
 // Trayectorias históricas y vínculos con inmortales documentados de clubes LMB.
 // La ausencia de un perfil no permite inferir su fundación o sus leyendas.
 export type HistoryMilestone={year:string;title:string;description:string;url:string};
@@ -142,6 +145,14 @@ export const LMB_EDITORIAL_HISTORY:Record<string,EditorialHistory>={
   },
 };
 
+// Primero los perfiles históricos ya investigados; las ampliaciones cubren
+// únicamente los demás clubes, sin alterar los expedientes anteriores.
+const COMPLETE_LMB_HISTORY: Record<string, EditorialHistory> = {
+  ...LMB_EDITORIAL_HISTORY,
+  ...LMB_HISTORY_NORTH_A,
+  ...LMB_HISTORY_NORTH_B,
+};
+
 export function lmbEditorialHistory(slug:string):EditorialHistory|null {
-  return LMB_EDITORIAL_HISTORY[slug]??null;
+  return COMPLETE_LMB_HISTORY[slug]??null;
 }
