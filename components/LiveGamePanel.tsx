@@ -2,6 +2,7 @@ import BaseDiamond from "./BaseDiamond";
 
 type LiveGamePanelProps = {
   warmup?: boolean;
+  lmpMode?: boolean;
   away: string;
 home: string;
   inning?: number;
@@ -79,6 +80,7 @@ function formatInningState(
 
 export default function LiveGamePanel({
   warmup = false,
+  lmpMode = false,
   inning,
   inningState,
   away,
@@ -110,6 +112,24 @@ const displayInning =
   typeof inning === "number"
     ? inning + 1
     : inning;
+// En LMP, Middle/End indican una transición, no un turno activo.
+const isInningTransition =
+  lmpMode &&
+  (normalizedInningState === "middle" ||
+    normalizedInningState === "end");
+const nextInningLabel =
+  typeof inning === "number" && inning > 0
+    ? normalizedInningState === "middle"
+      ? `SIGUE · BAJA ${inning}`
+      : `SIGUE · ALTA ${inning + 1}`
+    : "ESPERANDO SIGUIENTE TURNO";
+const finishedHalfLabel =
+  typeof inning === "number" && inning > 0
+    ? normalizedInningState === "middle"
+      ? `Terminó la alta ${inning}.`
+      : `Terminó la baja ${inning}.`
+    : "Terminó la media entrada.";
+
 const playHistoryLabel =
   normalizedInningState === "middle" && typeof inning === "number"
     ? `JUGADAS DE LA ALTA ${inning}`
@@ -157,11 +177,21 @@ const battingTeam =
     }}
   >
     <strong className="liveGameInning">
-      {formattedInningState}{" "}
-      {displayInning}
+      {isInningTransition
+        ? "CAMBIO DE ENTRADA"
+        : `${formattedInningState} ${displayInning ?? ""}`}
     </strong>
 
-    {battingTeam && (
+    {isInningTransition && (
+      <span
+        className="liveGameBattingTeam"
+        style={{ display: "block", color: "#cbd5d1", fontWeight: 700 }}
+      >
+        {nextInningLabel}
+      </span>
+    )}
+
+    {!isInningTransition && battingTeam && (
       <span
         className="liveGameBattingTeam"
         style={{
@@ -177,7 +207,7 @@ const battingTeam =
       </span>
     )}
 
-    {batterName && (
+    {!isInningTransition && batterName && (
       <span
         style={{
           display: "block",
@@ -193,7 +223,7 @@ const battingTeam =
       </span>
     )}
 
-    {pitcherName && (
+    {!isInningTransition && pitcherName && (
       <span
         style={{
           display: "block",
@@ -215,6 +245,15 @@ const battingTeam =
 
 </div>
 
+      {isInningTransition ? (
+        <div className="liveGamePanelBody">
+          <p className="liveGameSourceWaiting">
+            {finishedHalfLabel} Los equipos cambian de turno. El conteo
+            y los jugadores del siguiente turno aparecerán cuando
+            la fuente registre el comienzo de la nueva media entrada.
+          </p>
+        </div>
+      ) : (
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
           <BaseDiamond
@@ -241,6 +280,7 @@ const battingTeam =
           </div>
         </div>
       </div>
+      )}
 
     {plays.length > 0 ? (
   <div className="liveGamePlay">
