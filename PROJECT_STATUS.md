@@ -867,3 +867,10 @@
 - **Alcance:** solo el historial de relevos LMP. No se modifican los nombres de jugadores, fuentes deportivas, lógica de recolección de cambios, marcadores, MLB, LMB ni estadísticas finales.
 - **Commits:** `8185ceb` (IDs), `a85706a` (miniaturas), `31594ac` (CSS). Deployment `dpl_Mo2w487BRWqdNvajxXq9mJmcwvTe` correspondiente al último commit, **READY** en producción.
 - **Pendiente:** validación visual con un partido LMP con varios relevos y en móvil; confirmar qué pitchers publican realmente headshot MiLB y que ausencia de foto no altere espaciado. READY confirma build, no que todas las fotografías existan.
+
+## 80. LMP — relevos más recientes primero por equipo (4/nov/2026)
+
+- **Ajuste visual solicitado:** en la tarjeta «CAMBIOS DE LANZADOR» de dos columnas (visitante/local), mostrar el movimiento **más reciente arriba** y los anteriores debajo, tanto en el resumen de tres cambios como en «Ver todos los cambios».
+- **Código:** `components/LmpPitchingChanges.tsx` calcula `shown = (expanded ? teamChanges : teamChanges.slice(-VISIBLE_PER_TEAM)).slice().reverse()`. Cada columna se filtra por `side` y se invierte su presentación separadamente, sin modificar `changes` ni su orden en el feed. Conserva fotos, nombres, ALTA/BAJA, conteos por equipo, diseño móvil y expansión.
+- **Prueba de orden:** sobre un ejemplo con cambios 1–6, vista resumida = 6,5,4; expandida = 6,5,4,3,2,1, manteniendo el arreglo original. Commit `44e6c01`.
+- **Verificación pendiente:** confirmar deployment READY y capturas visuales con varios relevos para ambos equipos.
