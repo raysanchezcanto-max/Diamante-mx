@@ -21,22 +21,33 @@ export default function GamePitcher({
   league,
   label = "P. PROBABLE",
 }: GamePitcherProps) {
-  const [photoFailed, setPhotoFailed] = useState(false);
+  const [photoAttempt, setPhotoAttempt] = useState(0);
 
   // Si cambia el pitcher, permitir cargar la foto del nuevo jugador.
   useEffect(() => {
-    setPhotoFailed(false);
+    setPhotoAttempt(0);
   }, [pitcher?.id, pitcher?.imageUrl, league]);
 
-  const photoUrl = pitcher
-    ? league === "LMP"
-      ? pitcher.imageUrl ?? null
-      : league === "MLB"
-        ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${pitcher.id}/headshot/67/current`
-        : league === "LMB"
-          ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_70,g_auto,c_fill/v1/people/${pitcher.id}/headshot/milb/current`
-          : null
+  // La LMP puede publicar el mugshot real en su scoreboard. Si esa
+  // imagen falla o el feed no la trae, se prueba el retrato oficial
+  // MiLB del MISMO playerId; nunca se reemplaza por un escudo de equipo.
+  const mlbPhoto = pitcher?.id
+    ? `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${pitcher.id}/headshot/67/current`
     : null;
+  const milbPhoto = pitcher?.id
+    ? `https://img.mlbstatic.com/mlb-photos/image/upload/c_fill,g_auto/w_80/v1/people/${pitcher.id}/headshot/milb/current`
+    : null;
+  const candidates = pitcher
+    ? league === "LMP"
+      ? [pitcher.imageUrl, milbPhoto]
+      : league === "MLB"
+        ? [mlbPhoto]
+        : league === "LMB"
+          ? [milbPhoto]
+          : []
+    : [];
+  const photos = [...new Set(candidates.filter((url): url is string => Boolean(url)))];
+  const photoUrl = photos[photoAttempt] ?? null;
 
   return (
     <div
@@ -60,13 +71,13 @@ export default function GamePitcher({
         {label}
       </span>
 
-      {photoUrl && !photoFailed ? (
+      {photoUrl ? (
         <img
           src={photoUrl}
           alt={`Foto de ${pitcher?.name}`}
           width={48}
           height={48}
-          onError={() => setPhotoFailed(true)}
+          onError={() => setPhotoAttempt((attempt) => attempt + 1)}
           style={{
             width: "48px",
             height: "48px",

@@ -230,7 +230,10 @@ const [playState, gameExtras] = await Promise.all([
     : league === "LMB" ? getLmbPlayState(gameId)
     : league === "LMP" ? getLmpPlayState(gameId)
     : getMlbPlayState(gameId),
-  getBaseballGameExtras(league, gameId),
+  // No se consulta boxscore/estadísticas antes del primer lanzamiento.
+  isLive || isFinal
+    ? getBaseballGameExtras(league, gameId)
+    : Promise.resolve(null),
 ]);
 
 // Abridores reales: usar el primer pitcher del boxscore o la secuencia
@@ -238,11 +241,21 @@ const [playState, gameExtras] = await Promise.all([
 const isPlayed = (isLive || isFinal) && !specialStatus;
 const awayStarter = game.awayStartingPitcher ??
   (gameExtras?.awayStats.starter
-    ? { id: gameExtras.awayStats.starter.id, name: gameExtras.awayStats.starter.name }
+    ? {
+        id: gameExtras.awayStats.starter.id,
+        name: gameExtras.awayStats.starter.name,
+        imageUrl: game.awayProbablePitcher?.id === gameExtras.awayStats.starter.id
+          ? game.awayProbablePitcher.imageUrl : undefined,
+      }
     : undefined);
 const homeStarter = game.homeStartingPitcher ??
   (gameExtras?.homeStats.starter
-    ? { id: gameExtras.homeStats.starter.id, name: gameExtras.homeStats.starter.name }
+    ? {
+        id: gameExtras.homeStats.starter.id,
+        name: gameExtras.homeStats.starter.name,
+        imageUrl: game.homeProbablePitcher?.id === gameExtras.homeStats.starter.id
+          ? game.homeProbablePitcher.imageUrl : undefined,
+      }
     : undefined);
 const awayHasReliever = Boolean(game.awayStarterReplaced) ||
   (gameExtras?.awayStats.pitchers.length ?? 0) > 1;
@@ -675,17 +688,63 @@ const time =
 )}
 
       </section>
-      {gameExtras && (
-        <>
-          <BaseballLineScoreCard
-            data={gameExtras}
+      {/* POR COMENZAR: situación sin inventar bolas, strikes ni outs. */}
+      {isLmpWarmup && (
+        <LiveGamePanel warmup away={awayDisplayName} home={homeDisplayName} />
+      )}
+
+      {/* EN VIVO: la situación aparece antes de cualquier tabla. */}
+      {isLive && (
+        playState ? (
+          <LiveGamePanel
+            inning={playState.inning ?? game.inning}
+            inningState={playState.inningState ?? game.inningState}
             away={awayDisplayName}
             home={homeDisplayName}
-            activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
+            first={playState.first}
+            second={playState.second}
+            third={playState.third}
+            balls={playState.balls}
+            strikes={playState.strikes}
+            outs={playState.outs}
+            description={playState.description}
+            batterName={playState.batterName}
+            pitcherName={playState.pitcherName}
+            pitchCount={playState.pitchCount}
+            inningLines={playState.inningLines}
+            lineScoreTotals={playState.lineScoreTotals}
+            plays={playState.plays}
           />
+        ) : (
+          <section className="liveGamePanel" aria-label="Situación del juego">
+            <div className="liveGamePanelHeader">
+              <span className="eyebrow">SITUACIÓN DEL JUEGO</span>
+              <span className="liveGameWarmupState">EN VIVO</span>
+            </div>
+            <p className="liveGameSourceWaiting">
+              La fuente oficial aún no publica las jugadas del encuentro.
+              La situación aparecerá en cuanto estén disponibles.
+            </p>
+          </section>
+        )
+      )}
+
+      {/* Pizarra por entradas durante el juego y al finalizar. */}
+      {(isLive || isFinal) && gameExtras && (
+        <BaseballLineScoreCard
+          data={gameExtras}
+          away={awayDisplayName}
+          home={homeDisplayName}
+          activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
+        />
+      )}
+
+      {/* Bateo, pitcheo y decisiones de pitchers solo cuando sea FINAL. */}
+      {isFinal && gameExtras && (
+        <>
           <BaseballPitchingDecisions
             decisions={gameExtras.decisions}
-            finished={isFinal}
+            finished
             league={league}
           />
           <BaseballPlayerStats
@@ -696,35 +755,6 @@ const time =
           />
         </>
       )}
-    {isLive && playState && (
-  <LiveGamePanel
-  inning={
-  playState.inning ??
-  game.inning
-}
-inningState={
-  playState.inningState ??
-  game.inningState
-}
-    away={awayDisplayName}
-home={homeDisplayName}
-    first={playState.first}
-    second={playState.second}
-    third={playState.third}
-    balls={playState.balls}
-    strikes={playState.strikes}
-    outs={playState.outs}
-    description={playState.description}
-    batterName={playState.batterName}
-    pitcherName={playState.pitcherName}
-pitchCount={playState.pitchCount}
-inningLines={playState.inningLines}
-lineScoreTotals={playState.lineScoreTotals}
-    plays={playState.plays}
-  
-
-  />
-)}
 
     </main>
   );

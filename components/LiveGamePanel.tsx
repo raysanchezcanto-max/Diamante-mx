@@ -1,6 +1,7 @@
 import BaseDiamond from "./BaseDiamond";
 
 type LiveGamePanelProps = {
+  warmup?: boolean;
   away: string;
 home: string;
   inning?: number;
@@ -77,7 +78,7 @@ function formatInningState(
 }
 
 export default function LiveGamePanel({
-
+  warmup = false,
   inning,
   inningState,
   away,
@@ -114,7 +115,23 @@ const battingTeam =
     ? away
     : formattedInningState === "BAJA"
       ? home
-      : ""; 
+      : "";
+  if (warmup) {
+    return (
+      <section className="liveGamePanel liveGameWarmupPanel" aria-label="Situación del juego: calentamiento">
+        <div className="liveGamePanelHeader">
+          <span className="eyebrow">SITUACIÓN DEL JUEGO</span>
+          <span className="liveGameWarmupState">POR COMENZAR</span>
+        </div>
+        <div className="liveGameWarmupContent">
+          <span className="liveGameWarmupDot" aria-hidden="true" />
+          <strong>CALENTAMIENTO</strong>
+          <p>{away} vs. {home}</p>
+          <span>Los equipos se preparan para el primer lanzamiento.</span>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="liveGamePanel">
       <div className="liveGamePanelHeader">

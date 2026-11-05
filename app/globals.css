@@ -4910,3 +4910,15 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
  .clubToMlbProspectGrid{grid-template-columns:minmax(0,1fr)}
  .clubToMlbProspectGrid .clubBigLeaguesProspect{min-height:0}
 }
+
+
+/* 69 · LMP POR COMENZAR: situación de calentamiento, sin estadísticas previas. */
+.liveGameWarmupPanel{margin-top:24px}
+.liveGameWarmupPanel .liveGamePanelHeader{border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:15px;margin-bottom:0}
+.liveGameWarmupState{font-size:11px;font-weight:900;letter-spacing:.07em;color:#ffad67}
+.liveGameWarmupContent{min-height:142px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px 12px}
+.liveGameWarmupContent strong{font-size:clamp(22px,3vw,30px);letter-spacing:.04em;color:#f5f9f4}
+.liveGameWarmupContent p{font-size:12px;font-weight:700;color:#c9d8d1;margin:0}
+.liveGameWarmupContent>span:last-child{font-size:11px;color:#94aaa0;line-height:1.5}
+.liveGameWarmupDot{width:10px;height:10px;flex:none;border-radius:50%;background:#ffad67;box-shadow:0 0 0 6px rgba(255,173,103,.12)}
+.liveGameSourceWaiting{font-size:12px;line-height:1.7;color:#a9c1b5;margin:4px 0 0}

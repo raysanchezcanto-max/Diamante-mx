@@ -37,8 +37,8 @@ export type GameDetails = {
   };
 
   // Lanzadores que realmente iniciaron el encuentro LMP.
-  awayStartingPitcher?: { id: number; name: string };
-  homeStartingPitcher?: { id: number; name: string };
+  awayStartingPitcher?: { id: number; name: string; imageUrl?: string };
+  homeStartingPitcher?: { id: number; name: string; imageUrl?: string };
   awayStarterReplaced?: boolean;
   homeStarterReplaced?: boolean;
 
@@ -626,11 +626,13 @@ const firstPitchRecorded =
     const isBeforeFirstPitch =
       gameState === "Preview" ||
       (gameState === "Live" && firstPitchRecorded !== true);
-    // Consultar el scoreboard LMP también si el feed ya tiene ambos nombres:
-    // puede aportar una URL oficial de foto sin reemplazar los IDs del feed.
+    // La LMP publica fotografías de pitchers probables en su scoreboard.
+    // También lo consultamos DURANTE el juego, pero solo reutilizamos su foto
+    // para el abridor si coincide el ID ya verificado mediante lanzamientos.
+    // Nunca inferimos un abridor por la foto o la predicción.
     const scheduleProbables =
       league === "LMP" &&
-      isBeforeFirstPitch
+      (isBeforeFirstPitch || gameState === "Live")
         ? await getLmpScheduleProbables(
             gameId,
             gameData?.datetime?.officialDate,
@@ -665,8 +667,24 @@ const firstPitchRecorded =
           : undefined,
 
 
-      awayStartingPitcher: awayPitchersUsed[0],
-      homeStartingPitcher: homePitchersUsed[0],
+      awayStartingPitcher: awayPitchersUsed[0]
+        ? {
+            ...awayPitchersUsed[0],
+            imageUrl:
+              scheduleProbables?.away?.id === awayPitchersUsed[0].id
+                ? scheduleProbables.away.imageUrl
+                : undefined,
+          }
+        : undefined,
+      homeStartingPitcher: homePitchersUsed[0]
+        ? {
+            ...homePitchersUsed[0],
+            imageUrl:
+              scheduleProbables?.home?.id === homePitchersUsed[0].id
+                ? scheduleProbables.home.imageUrl
+                : undefined,
+          }
+        : undefined,
       awayStarterReplaced: awayPitchersUsed.length > 1,
       homeStarterReplaced: homePitchersUsed.length > 1,
 
