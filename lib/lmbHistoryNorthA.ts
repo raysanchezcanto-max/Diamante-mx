@@ -6,6 +6,9 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "tecos": {
     "intro": "La pelota ha unido Nuevo Laredo y Laredo a través de distintas épocas de los Tecolotes: desde su debut profesional en 1940 hasta cinco campeonatos documentados en la Liga Mexicana de Beisbol.",
     "debutYear": "1940",
+    "stadiumOpened": "1957 · 2012",
+    "stadiumSource": "https://tecolotes2laredos.com/el-uni-trade-stadium-se-renueva-para-la-temporada-2019/",
+    "stadiumOpenedNote": "Las dos sedes de Tecos abrieron en años diferentes: Parque La Junta (1957) y Uni-Trade Stadium (2012). ",
     "milestones": [
       {
         "year": "1940",
@@ -63,6 +66,8 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "acereros": {
     "intro": "El béisbol profesional llegó a Monclova en 1974; tras décadas de búsqueda y dos finales perdidas, la Furia Azul alcanzó su primera corona en la Serie del Rey de 2019.",
     "debutYear": "1974",
+    "stadiumOpened": "1975",
+    "stadiumSource": "https://editor.acereros.com.mx/historia/",
     "debutLabel": "LMB EN MONCLOVA DESDE",
     "milestones": [
       {
@@ -129,6 +134,8 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "caliente": {
     "intro": "Caliente de Durango es una franquicia de etapa reciente, presentada oficialmente en 2024 para mantener el béisbol de la Liga Mexicana en la capital duranguense.",
     "debutYear": "2024",
+    "stadiumOpened": "1972",
+    "stadiumSource": "https://www.milb.com/news/lmb-los-mejores-por-temporada-y-posicion-de-durango",
     "milestones": [
       {
         "year": "2024",
@@ -167,6 +174,8 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "charros": {
     "intro": "La historia veraniega de Charros de Jalisco comenzó en 1949, suma dos campeonatos y volvió al circuito de la Liga Mexicana en 2024 después de casi tres décadas.",
     "debutYear": "1949",
+    "stadiumOpened": "2011",
+    "stadiumSource": "https://www.si.com/es-us/mlb/guia-estadio-panamericano-sede-serie-caribe-2026",
     "milestones": [
       {
         "year": "1949",
@@ -241,6 +250,8 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "rieleros": {
     "intro": "Aguascalientes estrenó su equipo de la Liga Mexicana en 1975 y pronto celebró la conquista de 1978, una campaña recordada por el pitcheo de Horacio Piña y sus compañeros.",
     "debutYear": "1975",
+    "stadiumOpened": "1946",
+    "stadiumSource": "https://www.agssports.com/?p=11280",
     "milestones": [
       {
         "year": "1975",
@@ -315,6 +326,8 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "saraperos": {
     "intro": "Saraperos representa a Saltillo desde 1970 y construyó un legado de tres campeonatos, incluido un bicampeonato consecutivo en 2009 y 2010.",
     "debutYear": "1970",
+    "stadiumOpened": "1963",
+    "stadiumSource": "https://www.saraperos.com.mx/estadio",
     "milestones": [
       {
         "year": "1970",
@@ -394,6 +407,8 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "sultanes": {
     "intro": "Monterrey participa en LMB desde 1939: de Carta Blanca e Industriales a los Fantasmas Grises, una historia de títulos y una de las tradiciones más duraderas del circuito.",
     "debutYear": "1939",
+    "stadiumOpened": "1990",
+    "stadiumSource": "https://estadio.sultanes.com.mx/nuestra-historea",
     "milestones": [
       {
         "year": "1939",
