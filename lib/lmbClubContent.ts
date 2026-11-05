@@ -123,7 +123,7 @@ function readNewsFromOfficialHtml(html: string): OfficialStory[] {
   return list;
 }
 
-function readRosterFromOfficialHtml(html: string): OfficialRosterGroup[] {
+export function readRosterFromOfficialHtml(html: string): OfficialRosterGroup[] {
   const first = html.indexOf("RosterList_headerTitle");
   if (first < 0) return [];
   const last = html.indexOf(">Titulares<", first);
