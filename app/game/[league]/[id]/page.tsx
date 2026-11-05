@@ -222,6 +222,15 @@ const [playState, gameExtras] = await Promise.all([
     : Promise.resolve(null),
 ]);
 
+// Los estados MLB/LMB comparten un tipo con LMP; validar el campo exclusivo.
+const lmpPitchingChanges =
+  league === "LMP" &&
+  playState &&
+  "pitchingChanges" in playState &&
+  Array.isArray(playState.pitchingChanges)
+    ? playState.pitchingChanges
+    : [];
+
 // Abridores reales: usar el primer pitcher del boxscore o la secuencia
 // de lanzamientos verificada por LMP. Nunca confundir con P. PROBABLE.
 const isPlayed = (isLive || isFinal) && !specialStatus;
@@ -718,9 +727,9 @@ const time =
       )}
 
       {/* LMP: historial de relevos únicamente durante el juego y si hay cambios. */}
-      {isLive && league === "LMP" && Boolean(playState?.pitchingChanges?.length) && (
+      {isLive && league === "LMP" && lmpPitchingChanges.length > 0 && (
         <LmpPitchingChanges
-          changes={playState?.pitchingChanges ?? []}
+          changes={lmpPitchingChanges}
           away={awayDisplayName}
           home={homeDisplayName}
           awayLogo={awayLogo}
