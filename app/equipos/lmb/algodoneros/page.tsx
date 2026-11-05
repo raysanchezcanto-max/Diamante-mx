@@ -275,13 +275,16 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               <section className="clubPanel">
                 <div className="clubSideHeading"><h2>Titulares</h2><span>{newsConnected ? "LMB" : "2026"}</span></div>
                 <div className="clubHeadlines">
-                  {displayedStories.slice(2,9).map((story,i)=>(
+                  {displayedStories.slice(4,11).map((story,i)=>(
                     <a href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
                       <span className="clubHeadlineIndex">{String(i+1).padStart(2,"0")}</span>
                       <strong>{story.title}</strong>
                     </a>
                   ))}
                 </div>
+                {displayedStories.length<=4&&(
+                  <p className="clubSmallNote">Sin titulares adicionales confirmados para este equipo.</p>
+                )}
               </section>
               <section className="clubPanel" id="tabla-de-posiciones">
                 <div className="clubSideHeading"><h2>Posiciones</h2><span>NORTE</span></div>
