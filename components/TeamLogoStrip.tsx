@@ -77,30 +77,31 @@ const clean = (name: string) => name.normalize("NFD")
   .replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 
 // Corrección óptica exclusiva de la franja LMB: misma caja y escala por club.
+// Escalas calibradas a partir de los dibujos visibles (no del lienzo PNG/SVG).
 // Los valores compensan siluetas y espacios transparentes, no alteran
 // los escudos usados en partidos, tablas ni perfiles individuales.
 const LMB_LOGO_SCALE: Record<string, number> = {
-  "acereros del norte": 0.95,
-  "acereros de monclova": 0.95,
-  "algodoneros union laguna": 0.94,
-  "algodoneros del union laguna": 0.94,
-  "algodoneros de union laguna": 0.94,
+  "acereros del norte": 1.03,
+  "acereros de monclova": 1.03,
+  "algodoneros union laguna": 0.90,
+  "algodoneros del union laguna": 0.90,
+  "algodoneros de union laguna": 0.90,
   "bravos de leon": 1,
-  "caliente de durango": 1,
+  "caliente de durango": 1.47,
   "charros de jalisco": 1,
-  "conspiradores de queretaro": 0.90,
-  "diablos rojos del mexico": 0.96,
-  "dorados de chihuahua": 0.91,
-  "el aguila de veracruz": 1.08,
-  "guerreros de oaxaca": 1.08,
-  "leones de yucatan": 1.06,
+  "conspiradores de queretaro": 1.15,
+  "diablos rojos del mexico": 0.92,
+  "dorados de chihuahua": 1.12,
+  "el aguila de veracruz": 1.17,
+  "guerreros de oaxaca": 0.95,
+  "leones de yucatan": 0.98,
   "olmecas de tabasco": 1,
-  "pericos de puebla": 1.06,
-  "piratas de campeche": 0.95,
-  "rieleros de aguascalientes": 1,
-  "saraperos de saltillo": 1.05,
+  "pericos de puebla": 0.90,
+  "piratas de campeche": 1.05,
+  "rieleros de aguascalientes": 0.90,
+  "saraperos de saltillo": 0.93,
   "sultanes de monterrey": 0.94,
-  "tecos de los dos laredos": 0.90,
+  "tecos de los dos laredos": 1.00,
   "tigres de quintana roo": 0.93,
   "toros de tijuana": 1,
 };

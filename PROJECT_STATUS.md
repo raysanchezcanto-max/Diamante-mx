@@ -8,7 +8,7 @@
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (98) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (99) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1052,4 +1052,14 @@
 - **Verificación local:** `npx tsc --noEmit` y `npm run build` pasaron en sandbox. Playwright con Chrome Headless Shell verificó las 20 imágenes LMB en **360, 390 y 1280 px**: 20/20 con factor de escala aplicado, botones uniformes, cero logos que excedan su botón y documento sin desbordamiento horizontal en los tres anchos. Se probaron MLB (30 logos) y LMP (10): ninguno recibió variable de escala LMB; cero imágenes rotas observadas en estas comprobaciones iniciales.
 - **Publicación:** cambios agrupados en un solo commit de `main`; al reanudar comprobar que su despliegue automático de Vercel esté `READY`, sea el mismo SHA y que la página en producción presente las escalas. La inspección visual subjetiva en un teléfono físico y la valoración de la usuaria son pasos de afinación, no una garantía implícita por pasar las pruebas.
 - **Próximo paso:** con una captura nueva de LMB, si alguna silueta sigue sintiéndose pesada/ligera, retocar solo su escala dentro del mapa, sin alterar archivos de escudos ni afectar otras ligas.
+
+
+## 99. LMB — corrección visual de tamaño efectivo tras captura de usuaria (5/nov/2026)
+
+- **Problema detectado:** aunque la sección 98 igualó las cajas CSS, una captura real mostró diferencias por el espacio transparente interno, la proporción de las insignias y el contraste de los monogramas. Se midieron las regiones visibles: Caliente 23×20 px, Conspiradores 36×21 px, Dorados 32×25 px y Pericos 37×40 px, pese a dimensiones nominales similares. Por eso las escalas anteriores no lograron uniformidad aparente.
+- **Ajuste calibrado:** se revisó `LMB_LOGO_SCALE` en `components/TeamLogoStrip.tsx` utilizando los dibujos visibles y sin tocar PNG/SVG, perfiles ni otros componentes. Caliente pasa a 1.47 para compensar márgenes transparentes, Dorados a 1.12, Tecos a 1.00, Conspiradores (logotipo horizontal) a 1.15, Pericos a 0.90. Se afinaron también otros monogramas para aproximar alturas de 30–34 px; mantener las proporciones del logo, no estirarlo ni deformarlo.
+- **Mejora de contraste:** `app/globals.css` ajusta luminosidad solo de insignias de Sultanes y Rieleros que se veían excesivamente oscuras; no cambia logos ni colores de las demás ligas. Se añade `pointer-events: none` a las imágenes de LMB en la franja para mantener los clics exclusivamente en el botón de 48/44 px aun cuando la caja transparente de Caliente se amplifique.
+- **Evidencia gráfica cuantitativa:** tras renderizar localmente la franja en navegador Chrome Headless a 1302 px, con el mismo umbral de color, se midieron: Caliente **33×30 px**, Dorados **40×31 px**, Tecos **34×34 px**, Pericos **31×34 px**, Conspiradores **46×26 px**. La imagen de Conspiradores permanece horizontal por ser marca horizontal; igualar su altura a la de un monograma cuadrado deformaría la identidad. El rango de altura de la mayoría es de 28–34 px.
+- **QA:** `npx tsc --noEmit`, `npm run build` y `git diff --check` correctos. Navegador con tamaños 360, 390 y 1280 px: 20/20 logos LMB cargados y ajustados, sin desbordamiento horizontal del documento; MLB (30 logos) y LMP (10 logos) sin escalas LMB ni modificación de imágenes. El clic y la etiqueta accesible se conservan en el botón original.
+- **Entrega:** un solo commit a `main`; confirmar despliegue Vercel READY con el SHA correspondiente y verificar en producción que se muestra la mejora, sin modificar otras secciones. La valoración estética final requerirá una nueva captura de la usuaria, ya que los números verifican renderización, no gusto personal.
 

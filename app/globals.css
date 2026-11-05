@@ -4368,6 +4368,7 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   max-height: none;
   transform: scale(var(--lmb-logo-scale, 1));
   transform-origin: center;
+  pointer-events: none; /* la zona clicable continúa siendo el botón 48/44 px */
 }
 @media (max-width: 600px) {
   .teamExplorer--lmb .teamLogoRail .teamLogoTrack .teamLogoChoice img {
@@ -4376,6 +4377,13 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   }
 }
 
+/* Refuerzo sutil de marcas oscuras: la escala no basta si casi no se ven. */
+.teamExplorer--lmb .teamLogoRail img[src*="sultanes-cap.svg"] {
+  filter: brightness(1.55) saturate(1.08) drop-shadow(0 0 0.8px rgba(176,200,255,.30));
+}
+.teamExplorer--lmb .teamLogoRail img[src*="rieleros-aguascalientes.png"] {
+  filter: brightness(1.4) saturate(1.08);
+}
 /* Ficha extendida de Algodoneros (LMB): estilos encapsulados.
    La navegación principal y las tarjetas de partidos no se alteran. */
 .clubProfile{min-height:100vh;background:#07120e;color:var(--text);}
