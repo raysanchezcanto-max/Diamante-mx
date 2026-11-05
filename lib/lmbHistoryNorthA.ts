@@ -2,7 +2,8 @@
 // por enlaces editoriales de liga, clubes y Salón de la Fama.
 import type { EditorialHistory } from "./lmbHistoryEditorial";
 
-export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
+export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = 
+{
   "tecos": {
     "intro": "La pelota ha unido Nuevo Laredo y Laredo a través de distintas épocas de los Tecolotes: desde su debut profesional en 1940 hasta cinco campeonatos documentados en la Liga Mexicana de Beisbol.",
     "debutYear": "1940",
@@ -51,7 +52,13 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
         "url": "https://www.milb.com/news/lmb-los-mejores-por-temporada-y-posicion-de-tecolotes"
       }
     ],
-    "immortals": [],
+    "immortals": [
+      {
+        "name": "Andrés Mora",
+        "year": 2003,
+        "role": "Bateador de poder histórico de los Tecolotes"
+      }
+    ],
     "sources": [
       {
         "label": "Historia fronteriza · Texas State Historical Association",
@@ -230,6 +237,11 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
         "name": "Benjamín Reyes",
         "year": 1992,
         "role": "Mánager de la segunda corona de Charros"
+      },
+      {
+        "name": "Guillermo Garibay",
+        "year": 1977,
+        "role": "Mánager del primer campeonato de Charros en 1967"
       }
     ],
     "sources": [
@@ -305,6 +317,11 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
       {
         "name": "Horacio Piña",
         "year": 1988,
+        "role": "Lanzador del equipo campeón de 1978"
+      },
+      {
+        "name": "Ángel Moreno",
+        "year": 2012,
         "role": "Lanzador del equipo campeón de 1978"
       }
     ],
@@ -387,6 +404,11 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
         "name": "Noé Muñoz",
         "year": 2023,
         "role": "Receptor y capitán del equipo campeón"
+      },
+      {
+        "name": "Andrés Mora",
+        "year": 2003,
+        "role": "Jardinero y bateador con trayectoria en Saltillo"
       }
     ],
     "sources": [
@@ -463,6 +485,16 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
         "name": "Héctor Espino",
         "year": 1988,
         "role": "Bateador histórico de Sultanes"
+      },
+      {
+        "name": "Lázaro Salazar",
+        "year": 1964,
+        "role": "Mánager de las primeras cuatro coronas de Monterrey"
+      },
+      {
+        "name": "Andrés Mora",
+        "year": 2003,
+        "role": "Jugador de los Sultanes e inmortal del béisbol mexicano"
       }
     ],
     "sources": [
