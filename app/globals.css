@@ -4388,6 +4388,7 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubProfileTabs a{padding:15px 20px;font-size:13px;font-weight:800;color:var(--muted);border-bottom:2px solid transparent}
 .clubProfileTabs a.is-active{color:var(--accent);border-bottom-color:var(--accent)}
 .clubProfileTabs a:hover{color:var(--text)}
+.clubProfileTabs a:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:6px;color:var(--accent)}
 .clubContentGrid{display:grid;grid-template-columns:230px minmax(0,1fr) 270px;align-items:start;gap:20px}
 .clubSideLeft,.clubMainColumn,.clubSideRight{min-width:0;display:grid;gap:20px;align-content:start}
 .clubPanel{border:1px solid #284134;border-radius:15px;padding:18px;background:linear-gradient(160deg,#10231b,#0c1a15)}

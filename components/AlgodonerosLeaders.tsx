@@ -114,7 +114,7 @@ export default function AlgodonerosLeaders() {
           <div className="clubLeaderRow" key={item.metric}>
             <span className="clubLeaderMetric">{item.metric}</span>
             {item.source ? (
-              <a href={item.source} target="_blank" rel="noopener noreferrer" title={"Ver estadísticas oficiales de " + item.name}>
+              <a className="clubLeaderName" href={item.source} target="_blank" rel="noopener noreferrer" title={"Ver estadísticas oficiales de " + item.name}>
                 {item.name} ↗
               </a>
             ) : (
@@ -126,12 +126,11 @@ export default function AlgodonerosLeaders() {
             </span>
           </div>
         ))}
-        {batting ? null : (
-          <p className="clubSmallNote clubLeadersNote">
-            Destacados con estadísticas individuales verificadas en LMB 2026.
-            No representan un ranking completo de todos los lanzadores.
-          </p>
-        )}
+        <p className="clubSmallNote clubLeadersNote">
+          Selección de estadísticas individuales verificadas de LMB 2026.
+          Son registros históricos del equipo, no un roster actual ni datos en vivo.
+          {!batting && " Los destacados de pitcheo no representan un ranking completo de todos los lanzadores."}
+        </p>
       </div>
     </section>
   );
