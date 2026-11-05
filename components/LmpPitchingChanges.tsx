@@ -11,7 +11,7 @@ type Props = {
   homeLogo?: string | null;
 };
 
-const VISIBLE_CHANGES = 3;
+const VISIBLE_PER_TEAM = 3;
 
 export default function LmpPitchingChanges({
   changes, away, home, awayLogo, homeLogo,
@@ -19,9 +19,15 @@ export default function LmpPitchingChanges({
   const [expanded, setExpanded] = useState(false);
   if (changes.length === 0) return null;
 
-  // Orden cronológico: los tres últimos inicialmente; ver todos a petición.
-  const shown = expanded || changes.length <= VISIBLE_CHANGES
-    ? changes : changes.slice(-VISIBLE_CHANGES);
+  const teams = [
+    { side: "away" as const, label: "VISITANTE", name: away, logo: awayLogo },
+    { side: "home" as const, label: "LOCAL", name: home, logo: homeLogo },
+  ];
+
+  // Cada equipo mantiene su propia secuencia cronológica de relevos.
+  const showToggle = teams.some(
+    (team) => changes.filter((change) => change.side === team.side).length > VISIBLE_PER_TEAM
+  );
 
   return (
     <section className="baseballExtrasPanel lmpPitchingChanges" aria-label="Cambios de lanzador">
@@ -32,39 +38,59 @@ export default function LmpPitchingChanges({
         </span>
       </div>
 
-      <div className="lmpPitchingChangesList">
-        {shown.map((change) => {
-          const name = change.side === "away" ? away : home;
-          const logo = change.side === "away" ? awayLogo : homeLogo;
+      <div className="lmpPitchingChangesColumns">
+        {teams.map((team) => {
+          const teamChanges = changes.filter((change) => change.side === team.side);
+          const shown = expanded || teamChanges.length <= VISIBLE_PER_TEAM
+            ? teamChanges : teamChanges.slice(-VISIBLE_PER_TEAM);
 
           return (
-            <article className="lmpPitchingChange" key={change.id}>
-              <div className="lmpPitchingChangeTeam">
-                {logo && (
-                  <img src={logo} alt="" width={28} height={28} loading="lazy" />
+            <div className="lmpPitchingTeamColumn" key={team.side}>
+              <header className="lmpPitchingTeamHeader">
+                {team.logo && (
+                  <img src={team.logo} alt="" width={36} height={36} loading="lazy" />
                 )}
-                <strong>{name}</strong>
-                <span className="lmpPitchingChangeInning">
-                  {change.half} {change.inning}
+                <div className="lmpPitchingTeamIdentity">
+                  <span className="lmpPitchingTeamSide">{team.label}</span>
+                  <strong>{team.name}</strong>
+                </div>
+                <span className="lmpPitchingTeamCount">
+                  {teamChanges.length} {teamChanges.length === 1 ? "cambio" : "cambios"}
                 </span>
-              </div>
-              <div className="lmpPitchingChangePlayers">
-                <div>
-                  <small>SALIÓ</small>
-                  <strong>{change.outName}</strong>
+              </header>
+
+              {teamChanges.length === 0 ? (
+                <p className="lmpPitchingTeamEmpty">Sin relevos registrados.</p>
+              ) : (
+                <div className="lmpPitchingChangesList">
+                  {shown.map((change) => (
+                    <article className="lmpPitchingChange" key={change.id}>
+                      <div className="lmpPitchingChangeHeading">
+                        <span className="lmpPitchingChangeInning">
+                          {change.half} {change.inning}
+                        </span>
+                      </div>
+                      <div className="lmpPitchingChangePlayers">
+                        <div>
+                          <small>SALIÓ</small>
+                          <strong>{change.outName}</strong>
+                        </div>
+                        <span className="lmpPitchingChangeArrow" aria-hidden="true">→</span>
+                        <div>
+                          <small>ENTRÓ</small>
+                          <strong>{change.inName}</strong>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
                 </div>
-                <span className="lmpPitchingChangeArrow" aria-hidden="true">→</span>
-                <div>
-                  <small>ENTRÓ</small>
-                  <strong>{change.inName}</strong>
-                </div>
-              </div>
-            </article>
+              )}
+            </div>
           );
         })}
       </div>
 
-      {changes.length > VISIBLE_CHANGES && (
+      {showToggle && (
         <button
           type="button"
           className="lmpPitchingChangesToggle"
@@ -72,7 +98,7 @@ export default function LmpPitchingChanges({
           onClick={() => setExpanded((current) => !current)}
         >
           {expanded
-            ? "Mostrar los tres últimos"
+            ? "Mostrar los tres últimos por equipo"
             : `Ver todos los cambios (${changes.length})`}
         </button>
       )}
