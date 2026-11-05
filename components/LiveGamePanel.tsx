@@ -110,6 +110,13 @@ const displayInning =
   typeof inning === "number"
     ? inning + 1
     : inning;
+const playHistoryLabel =
+  normalizedInningState === "middle" && typeof inning === "number"
+    ? `JUGADAS DE LA ALTA ${inning}`
+    : normalizedInningState === "end" && typeof inning === "number"
+      ? `JUGADAS DE LA BAJA ${inning}`
+      : "JUGADAS DEL INNING";
+
 const battingTeam =
   formattedInningState === "ALTA"
     ? away
@@ -237,7 +244,7 @@ const battingTeam =
 
     {plays.length > 0 ? (
   <div className="liveGamePlay">
-    <small>JUGADAS DEL INNING</small>
+    <small>{playHistoryLabel}</small>
 
     <div className="inningPlayList">
       {plays.map((play, index) => (
