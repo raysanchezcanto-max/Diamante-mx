@@ -55,11 +55,12 @@ export function BaseballLineScoreCard({
 }
 
 export function BaseballPitchingDecisions({
-  decisions, finished, league,
+  decisions, finished, league, pitcherPhotos,
 }: {
   decisions: BaseballDecision[];
   finished: boolean;
   league: "MLB" | "LMB" | "LMP" | "CARIBE";
+  pitcherPhotos?: Record<number, string>;
 }) {
   if (!finished || decisions.length === 0) return null;
 
@@ -90,7 +91,11 @@ export function BaseballPitchingDecisions({
               )}
             </div>
             <div className="baseballExtrasDecisionPlayer">
-              <BaseballDecisionPhoto playerId={playerId} league={league} />
+              <BaseballDecisionPhoto
+                playerId={playerId}
+                league={league}
+                imageUrl={league === "LMP" && playerId ? pitcherPhotos?.[playerId] : undefined}
+              />
               <strong>{name}</strong>
             </div>
           </div>
