@@ -307,6 +307,12 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <div className="clubMovementBody">
                       {logo&&<img src={logo} alt="" width={53} height={53}/>}
                       <div><h3>{item.title}</h3><p>{item.description}</p>
+                        {item.direction && item.otherClub && (
+                          <div className="clubMovementDirection">
+                            <span>{item.direction === "out" ? "DERECHOS CEDIDOS A" : "DERECHOS RECIBIDOS DE"}</span>
+                            <strong>{item.otherClub}</strong>
+                          </div>
+                        )}
                         <a href={item.url} target="_blank" rel="noopener noreferrer">Consultar comunicado LMB ↗</a></div>
                     </div>
                   </article>
