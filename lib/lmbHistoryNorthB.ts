@@ -364,6 +364,7 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
   "bravos": {
     "intro": "León guarda una tradición beisbolera que alcanzó la cima con la corona de Bravos en 1990. El equipo regresó al circuito para una nueva etapa después de varios años de ausencia.",
     "debutYear": "1979",
+    "debutLabel": "ANTECEDENTE EN LEÓN DESDE",
     "milestones": [
       {
         "year": "1979",
