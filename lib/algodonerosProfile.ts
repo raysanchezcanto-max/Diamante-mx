@@ -148,6 +148,8 @@ export const ALGODONEROS_MOVEMENTS = [
     title: "Julián Escobedo pasa a Yucatán",
     description: "Algodoneros cedió definitivamente los derechos del jardinero Julián André Escobedo a Leones de Yucatán.",
     url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-7-de-octubre-de-2026",
+    direction: "out",
+    otherClub: "Leones de Yucatán",
   },
   {
     date: "2026-10-01",
@@ -155,6 +157,8 @@ export const ALGODONEROS_MOVEMENTS = [
     title: "Dos lanzadores cedidos a Leones",
     description: "Se cedieron definitivamente a Leones de Yucatán los derechos de José Marcos Torres Muro y Matthew James Foster.",
     url: "https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-1-de-octubre-de-2026",
+    direction: "out",
+    otherClub: "Leones de Yucatán",
   },
   {
     date: "2026-09-23",
