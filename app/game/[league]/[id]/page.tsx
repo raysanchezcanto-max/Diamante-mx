@@ -239,7 +239,7 @@ const [playState, gameExtras] = await Promise.all([
 // Abridores reales: usar el primer pitcher del boxscore o la secuencia
 // de lanzamientos verificada por LMP. Nunca confundir con P. PROBABLE.
 const isPlayed = (isLive || isFinal) && !specialStatus;
-const awayStarter = game.awayStartingPitcher ??
+const awayStarter = (league === "LMP" && isLive ? game.awayStartingPitcher : game.awayStartingPitcher ??
   (gameExtras?.awayStats.starter
     ? {
         id: gameExtras.awayStats.starter.id,
@@ -247,8 +247,8 @@ const awayStarter = game.awayStartingPitcher ??
         imageUrl: game.awayProbablePitcher?.id === gameExtras.awayStats.starter.id
           ? game.awayProbablePitcher.imageUrl : undefined,
       }
-    : undefined);
-const homeStarter = game.homeStartingPitcher ??
+    : undefined));
+const homeStarter = (league === "LMP" && isLive ? game.homeStartingPitcher : game.homeStartingPitcher ??
   (gameExtras?.homeStats.starter
     ? {
         id: gameExtras.homeStats.starter.id,
@@ -256,19 +256,27 @@ const homeStarter = game.homeStartingPitcher ??
         imageUrl: game.homeProbablePitcher?.id === gameExtras.homeStats.starter.id
           ? game.homeProbablePitcher.imageUrl : undefined,
       }
-    : undefined);
+    : undefined));
 const awayHasReliever = Boolean(game.awayStarterReplaced) ||
   (gameExtras?.awayStats.pitchers.length ?? 0) > 1;
 const homeHasReliever = Boolean(game.homeStarterReplaced) ||
   (gameExtras?.homeStats.pitchers.length ?? 0) > 1;
 
-const awayDisplayedPitcher = isPlayed ? awayStarter : game.awayProbablePitcher;
-const homeDisplayedPitcher = isPlayed ? homeStarter : game.homeProbablePitcher;
+// En LMP, durante el juego solo es ABRIDOR quien ya lanzó.
+ // Si aún no ha tomado la lomita, mostrar el probable sin confirmarlo.
+const awayAwaitingLmpStarter = league === "LMP" && isLive && !awayStarter;
+const homeAwaitingLmpStarter = league === "LMP" && isLive && !homeStarter;
+const awayDisplayedPitcher = awayAwaitingLmpStarter
+  ? game.awayProbablePitcher
+  : isPlayed ? awayStarter : game.awayProbablePitcher;
+const homeDisplayedPitcher = homeAwaitingLmpStarter
+  ? game.homeProbablePitcher
+  : isPlayed ? homeStarter : game.homeProbablePitcher;
 const showPitchers = !specialStatus && (isPlayed ||
   game.status === "Preview" || isLmpWarmup);
-const awayPitcherLabel = !isPlayed ? "P. PROBABLE" :
+const awayPitcherLabel = !isPlayed || awayAwaitingLmpStarter ? "P. PROBABLE" :
   isFinal || awayHasReliever ? "ABRIÓ" : "ABRIDOR";
-const homePitcherLabel = !isPlayed ? "P. PROBABLE" :
+const homePitcherLabel = !isPlayed || homeAwaitingLmpStarter ? "P. PROBABLE" :
   isFinal || homeHasReliever ? "ABRIÓ" : "ABRIDOR";
 
 
@@ -480,7 +488,7 @@ const time =
 </strong>
             ) : null}
   
-{showPitchers && awayDisplayedPitcher && (
+{showPitchers && (awayDisplayedPitcher || (league === "LMP" && isLive)) && (
     <GamePitcher pitcher={awayDisplayedPitcher} league={league} label={awayPitcherLabel} />
   )}
 
@@ -636,7 +644,7 @@ const time =
 </strong>
             ) : null}
   
-{showPitchers && homeDisplayedPitcher && (
+{showPitchers && (homeDisplayedPitcher || (league === "LMP" && isLive)) && (
     <GamePitcher pitcher={homeDisplayedPitcher} league={league} label={homePitcherLabel} />
   )}
 
@@ -688,6 +696,16 @@ const time =
 )}
 
       </section>
+      {/* Pizarra por entradas durante el juego y al finalizar. */}
+      {(isLive || isFinal) && gameExtras && (
+        <BaseballLineScoreCard
+          data={gameExtras}
+          away={awayDisplayName}
+          home={homeDisplayName}
+          activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
+        />
+      )}
+
       {/* POR COMENZAR: situación sin inventar bolas, strikes ni outs. */}
       {isLmpWarmup && (
         <LiveGamePanel warmup away={awayDisplayName} home={homeDisplayName} />
@@ -727,16 +745,6 @@ const time =
             </p>
           </section>
         )
-      )}
-
-      {/* Pizarra por entradas durante el juego y al finalizar. */}
-      {(isLive || isFinal) && gameExtras && (
-        <BaseballLineScoreCard
-          data={gameExtras}
-          away={awayDisplayName}
-          home={homeDisplayName}
-          activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
-        />
       )}
 
       {/* Bateo, pitcheo y decisiones de pitchers solo cuando sea FINAL. */}
