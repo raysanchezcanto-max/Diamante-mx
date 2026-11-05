@@ -9,6 +9,8 @@ import LmbToMlbClubProfile from "@/components/LmbToMlbClubProfile";
 import { lmbClubChampionships } from "@/lib/lmbClubHistory";
 import LmbClubEditorialHistory from "@/components/LmbClubEditorialHistory";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
+import LmbClubStatLeaders from "@/components/LmbClubStatLeaders";
+import { getLmbClubStatLeaders } from "@/lib/lmbClubLeaders";
 
 export const revalidate = 1800;
 type PageProps = {
@@ -41,7 +43,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const club=getLmbClub(slug);
   if(!club)notFound();
   const view:View=views.some(v=>v.id===q?.vista)?(q?.vista as View):"resumen";
-  const [overview,standings,news,roster,movements]=await Promise.all([
+  const [overview,standings,news,roster,movements,statLeaders]=await Promise.all([
     getLmbClubOverview(club.slug),
     view==="resumen"?getLmbStandings():Promise.resolve([]),
     view==="resumen"?getLmbClubNews(club.slug):Promise.resolve(null),
@@ -52,6 +54,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
       clubName:club.name,
       archive:[],
     }):Promise.resolve(null),
+    view==="resumen"?getLmbClubStatLeaders(club.slug):Promise.resolve(null),
   ]);
   const logo=getTeamLogo("LMB",0,club.name);
   const home="/equipos/lmb/"+club.slug;
@@ -250,6 +253,9 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   Salón de la Fama ↗
                 </a>
               </section>
+              {statLeaders && (
+                <LmbClubStatLeaders clubName={club.name} data={statLeaders} />
+              )}
             </aside>
           </div>
         )}
