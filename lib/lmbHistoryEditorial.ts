@@ -9,6 +9,8 @@ export type HistoryImmortal={name:string;year:number;role:string};
 export type EditorialHistory={
   intro:string;
   debutYear:string;
+  // Diferenciar fundación, primera participación y regreso cuando corresponde.
+  debutLabel?:string;
   stadiumOpened?:string;
   stadiumSource?:string;
   milestones:readonly HistoryMilestone[];
