@@ -521,9 +521,7 @@ marginTop: "5px",
                   />
                 )}
 
-                <span style={{ color: awayLeading ? "var(--accent)" : undefined }}>
-                  {awayDisplayName}
-                </span>
+                <span>{awayDisplayName}</span>
               </div>
 
              
@@ -597,9 +595,7 @@ specialStatus === "POSPUESTO"
                   />
                 )}
 
-                <span style={{ color: homeLeading ? "var(--accent)" : undefined }}>
-                  {homeDisplayName}
-                </span>
+                <span>{homeDisplayName}</span>
               </div>
 
              
