@@ -277,6 +277,9 @@ export async function getAlgodonerosRoster(): Promise<RosterResult> {
 export type LmbClubOverview = {
   stadium: string | null;
   capacity: number | null;
+  // Informes documentados para clubes con varias sedes (LMB no da capacidad única).
+  capacityDetail?: string | null;
+  capacitySource?: string | null;
   website: string | null;
   tickets: string | null;
   sourceStatus: LmbSourceStatus;
@@ -310,6 +313,10 @@ export async function getLmbClubOverview(slug: string): Promise<LmbClubOverview>
   return {
     stadium,
     capacity: Number.isInteger(cap) && cap > 1000 && cap < 100000 ? cap : null,
+    ...(slug === "tecos" ? {
+      capacityDetail: "5,000 (Parque La Junta) · 6,000 (Uni-Trade)",
+      capacitySource: "https://www.postadeportes.com/beisbol/tecos-de-los-dos-laredos-donde-juegan-y-como-comprar-boletos-/vl2004130",
+    } : {}),
     website: findLink(/sitio oficial/i),
     tickets: findLink(/boletos/i),
     sourceStatus: "connected",
