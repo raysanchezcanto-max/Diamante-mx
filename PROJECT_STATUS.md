@@ -702,3 +702,11 @@
 - **Fuentes históricas:** \`https://cerocero.com.mx/noticias/todos-campeones-serie-del-rey-lmb/\`, \`https://www.clarosports.com/beisbol/mexicano/todos-los-campeones-de-la-liga-mexicana-de-beisbol-ano-por-ano/\`, \`https://www.milb.com/news/gcs-16712968\`, \`https://lmb.com.mx/equipos\`. Fuentes oficiales de MLB para \`mlbDebutDate\`.
 - **Limitaciones:** en los 19 clubes solo se automatizan noticias, roster y movimientos; el apartado de grandes ligas detecta veteranos actuales, no historial exhaustivo de exportación; las historias contienen títulos verificados, no aún biografías de leyendas para cada equipo ni vínculos al salón con filtro individual. Aclararlo a usuaria, no presentar esta fase como idéntica al contenido editorial exhaustivo de Algodoneros.
 - **Validación pendiente:** comprobar Vercel READY, rutas/ligas, y ejemplos de ambas zonas (p. ej. Acereros, Olmecas, Diablos, Leones) para fuente conectada, nombres correctos y registros; comprobar todos los 19 perfiles HTTP 200 en siguientes consultas. Añadir correcciones y registrar métricas reales antes de declarar el despliegue listo.
+
+
+### 66.1 Validación de 19 rosters y recuperación ante caché incompleta
+
+- 19 fichas Resumen verificadas por HTTP 200; 19 con noticias de su club, estadios y navegación correcta. Prueba en todas las vistas Plantilla: 9 de 19 rosters conectados en primera consulta y 10 en fallback inesperado.
+- Diagnóstico oficial directo desde Vercel: los 10 rosters sí estaban publicados por LMB (4 grupos y ~30-38 enlaces a jugadores). Un diagnóstico aisló la causa: `readRosterFromOfficialHtml` devolvió 32 entradas para Saraperos y Olmecas, 31 para Diablos y 32 para Guerreros al recibir HTML no-store, mientras `getLmbClubRoster` con fetch cacheado devolvía fallback vacío.
+- Corrección: `getLmbClubRoster` intenta lectura con caché de 30 minutos y, solo si el resultado no es válido, hace un segundo fetch `cache:"no-store"` con timeout 12 s y vuelve a ejecutar el parser. Sin crear listas falsas, preserva fallback por equipo. Quita ruta diagnóstica `app/api/lmb-roster-diagnostic/route.ts`.
+- Pendiente: confirmar producción READY y repetir pruebas de los 19 rosters; no afirmar cobertura total hasta corroborar resultados.

@@ -123,7 +123,7 @@ function readNewsFromOfficialHtml(html: string): OfficialStory[] {
   return list;
 }
 
-export function readRosterFromOfficialHtml(html: string): OfficialRosterGroup[] {
+function readRosterFromOfficialHtml(html: string): OfficialRosterGroup[] {
   const first = html.indexOf("RosterList_headerTitle");
   if (first < 0) return [];
   const last = html.indexOf(">Titulares<", first);
@@ -183,8 +183,28 @@ export async function getLmbClubNews(slug: string, fallback: OfficialStory[] = [
 
 export async function getLmbClubRoster(slug: string, fallback: OfficialRosterGroup[] = []): Promise<RosterResult> {
   if (!validClubSlug(slug)) return { roster: fallback, sourceStatus: "fallback" };
-  const html = await readOfficialHtml(BASE + "/equipos/" + slug + "/roster");
-  const parsed = html ? readRosterFromOfficialHtml(html) : [];
+  const url = BASE + "/equipos/" + slug + "/roster";
+  const html = await readOfficialHtml(url);
+  let parsed = html ? readRosterFromOfficialHtml(html) : [];
+
+  // Los rosters LMB pueden regresar una respuesta HTML obsoleta/incompleta
+  // desde la caché de Next, aunque la página oficial sí incluya los jugadores.
+  // Solo ante un roster inválido hacemos recuperación directa no-store.
+  if (!parsed.length) {
+    try {
+      const retry = await fetch(url, {
+        cache: "no-store",
+        headers: { Accept: "text/html" },
+        signal: AbortSignal.timeout(12000),
+      });
+      if (retry.ok && (retry.headers.get("content-type") ?? "").includes("text/html")) {
+        const fresh = await retry.text();
+        parsed = readRosterFromOfficialHtml(stripFlight(fresh));
+      }
+    } catch {
+      // Mantener respaldo correspondiente al club; nunca usar otro equipo.
+    }
+  }
   if (!parsed.length) return { roster: fallback, sourceStatus: "fallback" };
   // Conservamos acentos en los nombres ya verificados, pero nuevos jugadores
   // siempre provienen del roster actual LMB y jamás del archivo.
