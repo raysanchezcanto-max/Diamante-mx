@@ -10,6 +10,7 @@ import { lmbClubChampionships } from "@/lib/lmbClubHistory";
 import LmbClubEditorialHistory from "@/components/LmbClubEditorialHistory";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import LmbClubStatLeaders from "@/components/LmbClubStatLeaders";
+import LmbClubTabs from "@/components/LmbClubTabs";
 import { getLmbClubStatLeaders } from "@/lib/lmbClubLeaders";
 
 export const revalidate = 1800;
@@ -104,14 +105,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
           </div>
         </div>
 
-        <nav className="clubProfileTabs" aria-label={"Secciones de "+club.name}>
-          {views.map(tab=><a
-            key={tab.id}
-            href={tab.id==="resumen"?home:home+"?vista="+tab.id}
-            className={view===tab.id?"is-active":""}
-            aria-current={view===tab.id?"page":undefined}
-          >{tab.label}</a>)}
-        </nav>
+        <LmbClubTabs home={home} clubName={club.name} currentView={view} />
 
         {view==="resumen"&&(
           <div className="clubContentGrid">
