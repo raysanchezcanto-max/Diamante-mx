@@ -1,4 +1,5 @@
 import { ALGODONEROS_MOVEMENTS } from "./algodonerosProfile";
+import { LMB_CLUB_DIRECTORY } from "./lmbClubs";
 
 // Datos públicos de LMB. No hay API oficial de movimientos documentada
 // para este uso: se leen enlaces y comunicados publicados en lmb.com.mx.
@@ -9,6 +10,9 @@ export type ClubMovement = {
   description: string;
   url: string;
   automatic?: boolean;
+  // Solo las cesiones explícitas permiten afirmar quién entrega o recibe derechos.
+  direction?: "out" | "in";
+  otherClub?: string;
 };
 
 export type MovementResult = {
@@ -112,6 +116,53 @@ function relevantMovementsFromArticle(html: string, headingAliases: readonly str
   return [...matches].slice(0, 20);
 }
 
+// No confundir una cesión de derechos con un traspaso del roster activo.
+function normalizedClub(value: string): string {
+  return normalizeHeading(value)
+    .replace(/\b(?:DE|DEL|LA|EL|LOS|LAS)\b/g, " ")
+    .replace(/[^A-Z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+}
+
+function rightsTransfer(entry: string, headingAliases: readonly string[]): {
+  title: string;
+  direction: "out" | "in";
+  otherClub: string;
+} | null {
+  const content = stripTags(entry).replace(/^[*•·–—\s]+/, "").trim();
+  const match = content.match(
+    /\bel club\s+(.+?)\s+(?:cede|cedió|cedio)\s+(?:de manera definitiva\s+)?(?:los\s+)?derechos\s+de\s+(.+?)\s+al club\s+(.+?)(?:\.|$)/i
+  );
+  if (!match) return null;
+  const from = match[1].trim();
+  const to = match[3].trim();
+  const playerNames = match[2].replace(/\([^)]*\)/g, " ")
+    .replace(/\s+/g, " ").trim();
+  if (!playerNames) return null;
+
+  const current = LMB_CLUB_DIRECTORY.find(club =>
+    headingAliases.some(alias => normalizedClub(alias) === normalizedClub(club.bulletinHeading))
+  );
+  if (!current) return null;
+
+  const origin = normalizedClub(from);
+  const destination = normalizedClub(to);
+  const own = normalizedClub(current.name);
+  const outgoing = own === origin;
+  const incoming = own === destination;
+  // Si no puede identificarse la dirección con nombres oficiales, omitirla.
+  if (outgoing === incoming) return null;
+
+  const counterparty = outgoing ? to : from;
+  const heading = outgoing ? "Derechos cedidos" : "Derechos recibidos";
+  const words = playerNames.split(/\s+/);
+  const concise = words.slice(0, 14).join(" ") + (words.length > 14 ? "…" : "");
+  return {
+    title: heading + ": " + concise,
+    direction: outgoing ? "out" : "in",
+    otherClub: counterparty,
+  };
+}
+
 function classification(text: string): string {
   if (/academia rookie/i.test(text)) return "Academia rookie";
   if (/ced[ei]|cesi[oó]n|derechos|pr[eé]stamo/i.test(text)) return "Traspaso o derechos";
@@ -203,11 +254,18 @@ export async function getLmbClubMovements(
   config: LmbClubMovementSource, now = new Date()
 ): Promise<MovementResult> {
   const fallback = config.archive.map(item => ({ ...item, automatic: false }));
-  const html = await officialHtml(config.profileUrl);
+  // Los enlaces de la ficha del equipo pueden quedarse en julio/agosto. La
+  // portada de Noticias sí presenta boletines recientes (p.ej. noviembre).
+  const [html, newsIndex] = await Promise.all([
+    officialHtml(config.profileUrl),
+    officialHtml(BASE + "/noticias"),
+  ]);
   const profileLinks = html ? linksFromOfficialProfile(html) : [];
-  const candidates = [...new Set([...profileLinks, ...recentSlugs(now)])]
+  const newsLinks = newsIndex ? linksFromOfficialProfile(newsIndex) : [];
+  const candidates = [...new Set([...profileLinks, ...newsLinks, ...recentSlugs(now)])]
     .filter(url => movementDate(url) !== null)
-    .slice(0, 20);
+    .sort((a,b) => (movementDate(b) ?? "").localeCompare(movementDate(a) ?? ""))
+    .slice(0, 24);
   const existingUrls = new Set<string>(fallback.map(item => item.url));
   const freshCandidates = candidates.filter(url => !existingUrls.has(url));
   const articles = await Promise.all(freshCandidates.map(async url => {
@@ -218,12 +276,21 @@ export async function getLmbClubMovements(
     const excerpts = relevantMovementsFromArticle(source, config.headingAliases);
     // No inventar una operación cuando el cuerpo del boletín no pudo leerse.
     if (excerpts.length === 0) return [];
-    return excerpts.map(entry => ({
-      date, type: classification(entry),
-      title: operationTitle(entry),
-      description: shortExcerpt(entry),
-      url, automatic: true,
-    }));
+    return excerpts.map(entry => {
+      const transfer = rightsTransfer(entry, config.headingAliases);
+      return {
+        date,
+        type: classification(entry),
+        title: transfer?.title ?? operationTitle(entry),
+        description: shortExcerpt(entry),
+        url,
+        automatic: true,
+        ...(transfer ? {
+          direction: transfer.direction,
+          otherClub: transfer.otherClub,
+        } : {}),
+      };
+    });
   }));
   const combined = [...fallback, ...articles.flat()];
   const seen = new Set<string>();
@@ -235,8 +302,9 @@ export async function getLmbClubMovements(
   }).sort((a,b) => b.date.localeCompare(a.date) || Number(b.automatic) - Number(a.automatic));
   return {
     movements,
-    sourceStatus: html && profileLinks.length > 0 ? "connected" : "fallback",
-    verifiedAt: html ? new Date().toISOString() : null,
+    sourceStatus: (html && profileLinks.length > 0) || (newsIndex && newsLinks.length > 0)
+      ? "connected" : "fallback",
+    verifiedAt: html || newsIndex ? new Date().toISOString() : null,
     recentDetected: articles.flat().length,
   };
 }
