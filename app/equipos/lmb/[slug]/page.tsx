@@ -68,7 +68,10 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
     return team ? team.region===club.region :
       row.division.toLowerCase().includes(club.region.toLowerCase());
   }).sort((a,b)=>Number.parseFloat(b.pct)-Number.parseFloat(a.pct));
-  const headlines=(news?.stories??[]).slice(2,9);
+  // Evitar que una noticia aparezca dos veces en Resumen. El destacado
+  // ocupa el índice 0; las tarjetas 1-3 y los titulares desde el índice 4.
+  const relatedNews=(news?.stories??[]).slice(1,4);
+  const headlines=(news?.stories??[]).slice(4,11);
   return (
     <main className="clubProfile clubProfile--all">
       <header className="clubTopbar">
@@ -93,7 +96,10 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
             <div><span>CAPACIDAD</span><strong>{overview.capacity?overview.capacity.toLocaleString("es-MX")+" espectadores":"No informada"}</strong></div>
             <div className="clubHeroLinks">
               <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Ficha LMB ↗</a>
-              {overview.website&&<a href={overview.website} target="_blank" rel="noopener noreferrer">Sitio del club ↗</a>}
+              {overview.website&&<a href={overview.website} target="_blank" rel="noopener noreferrer">
+                {overview.website.toLowerCase().includes("store") ? "Tienda del club ↗" : "Sitio del club ↗"}
+              </a>}
+              {overview.tickets&&<a href={overview.tickets} target="_blank" rel="noopener noreferrer">Boletos ↗</a>}
             </div>
           </div>
         </div>
@@ -111,11 +117,12 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
           <div className="clubContentGrid">
             <aside className="clubSideLeft">
               <section className="clubPanel clubCalendarPanel">
-                <span className="clubKicker">TEMPORADA LMB</span>
-                <h2>Calendario</h2>
+                <span className="clubKicker">CALENDARIO OFICIAL · LMB</span>
+                <h2>Próximos juegos</h2>
                 <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
-                <p>Consulta las fechas de los próximos partidos directamente con LMB.</p>
-                <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Ver calendario oficial ↗</a>
+                <strong>Próxima fecha por confirmar</strong>
+                <p>No mostramos el siguiente encuentro hasta contar con un calendario verificable del club.</p>
+                <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Consultar programación en LMB ↗</a>
               </section>
               <section className="clubPanel clubRecordPanel">
                 <span className="clubKicker">ÚLTIMA TABLA LMB DISPONIBLE</span>
@@ -158,11 +165,14 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                 </div>
                 <p className="clubSmallNote">La liga selecciona estas publicaciones. Consulta automática con caché aproximada de 30 minutos; no garantiza orden cronológico.</p>
                 <div className="clubNewsGrid">
-                  {(news?.stories??[]).slice(1,7).map(story=><a href={story.url} className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
+                  {relatedNews.map(story=><a href={story.url} className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                     {story.imageUrl&&<img src={story.imageUrl} className="clubNewsThumb" alt="" loading="lazy"/>}
                     <span>{story.label}</span><strong>{story.title}</strong><small>Leer en LMB ↗</small>
                   </a>)}
                 </div>
+                {!relatedNews.length&&(
+                  <p className="clubSmallNote">No hay otras noticias verificadas para este club en la consulta actual.</p>
+                )}
               </section>
               <section className="clubEditorialSection" aria-label={"Videos de béisbol relacionados con "+club.name}>
                 <div className="clubSectionTitle">
