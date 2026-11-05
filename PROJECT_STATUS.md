@@ -710,3 +710,14 @@
 - Diagnóstico oficial directo desde Vercel: los 10 rosters sí estaban publicados por LMB (4 grupos y ~30-38 enlaces a jugadores). Un diagnóstico aisló la causa: `readRosterFromOfficialHtml` devolvió 32 entradas para Saraperos y Olmecas, 31 para Diablos y 32 para Guerreros al recibir HTML no-store, mientras `getLmbClubRoster` con fetch cacheado devolvía fallback vacío.
 - Corrección: `getLmbClubRoster` intenta lectura con caché de 30 minutos y, solo si el resultado no es válido, hace un segundo fetch `cache:"no-store"` con timeout 12 s y vuelve a ejecutar el parser. Sin crear listas falsas, preserva fallback por equipo. Quita ruta diagnóstica `app/api/lmb-roster-diagnostic/route.ts`.
 - Pendiente: confirmar producción READY y repetir pruebas de los 19 rosters; no afirmar cobertura total hasta corroborar resultados.
+
+
+### 66.2 Validación final en producción — 19 de 19 equipos LMB
+
+- Despliegue de la corrección `bf43365`: estado **READY** con alias `diamante-mx.vercel.app`.
+- Validación directa de vistas Resumen: **19 de 19** rutas nuevas HTTP 200, nombre y estadio de su propio club correctos, noticias oficiales conectadas y cinco pestañas presentes. Los logos de la franja LMB enlazan a las **19 rutas correctas**. Las tarjetas MLB/LMP/Caribe no fueron alteradas.
+- Validación de plantillas después de la recuperación de HTML no-store: **19 de 19** roster conectados; entre **27 y 33 jugadores** por club y cuatro grupos de posiciones. Ninguna ficha muestra el roster de Algodoneros como respaldo. Esta es una comprobación de lectura actual, no prueba de futuros cambios de plantilla.
+- Validación de Movimientos: **19 de 19** secciones HTTP 200 con datos vinculados a cada club en la fuente LMB. Algunas publicaciones solo producen tarjetas neutras con enlace al boletín, cuando no se pueden extraer detalles específicos; no presentar estas tarjetas como un registro individual de alta/baja verificado.
+- Ejemplos comprobados: Acereros, Diablos y Olmecas identifican peloteros con `mlbDebutDate` mediante la API de MLB; Historia de Toros incluye el título 2026; Diablos lista sus años de campeonato; Algodoneros conserva Historia completa e Inmortales, y el Salón general sigue disponible.
+- Diagnóstico temporal `/api/lmb-roster-diagnostic` eliminado: **HTTP 404**. Ruta de Historia de Algodoneros y Salón de la Fama mantienen HTTP 200.
+- **Pendiente editorial, no técnico:** documentar fundación, cronologías y leyendas históricas para los otros 19 clubes, asociar a cada uno los inmortales con fuentes verificadas, e investigar fichajes de jugadores desde LMB hacia MLB para todos los equipos. Mientras tanto no equiparar la sección de veteranos MLB con exportaciones ni presentar un palmarés como biografía completa.
