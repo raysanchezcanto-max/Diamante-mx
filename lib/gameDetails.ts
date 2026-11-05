@@ -503,7 +503,9 @@ homeRuns:
       `${MLB_API}/game/${gameId}/feed/live`,
       {
         next: {
-          revalidate: 30,
+          // LMP EN VIVO se refresca cada 15 s. Evitar que el encabezado
+          // permanezca detrás de la situación por caché de 30 s.
+          revalidate: league === "LMP" ? 15 : 30,
         },
       }
     );
