@@ -174,7 +174,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                     <div>
                       <h3>{event.title}</h3>
                       <p>{event.description}</p>
-                      {event.direction && event.otherClub && (
+                      {"direction" in event && "otherClub" in event && event.direction && event.otherClub && (
                         <div className="clubMovementDirection">
                           <span>{event.direction === "out" ? "DERECHOS CEDIDOS A" : "DERECHOS RECIBIDOS DE"}</span>
                           <strong>{event.otherClub}</strong>
