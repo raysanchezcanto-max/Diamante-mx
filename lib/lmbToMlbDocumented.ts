@@ -399,5 +399,24 @@ export const LMB_TO_MLB_DOCUMENTED: Record<string, LmbToMlbClub> =
     ],
     "debuts": [],
     "source": "https://www.zocalo.com.mx/firma-victor-huerta-con-caliente-de-durango/"
+  },
+  "dorados": {
+    "abbreviation": "LMB",
+    "intro": "Eli Villalobos es un caso de reincorporación a una organización MLB después de jugar en Dorados. Su debut en Grandes Ligas ocurrió ANTES de su etapa en Chihuahua: no es un debut originado por Dorados ni una transferencia de derechos entre clubes.",
+    "prospects": [
+      {
+        "name": "Eli Villalobos",
+        "role": "Lanzador derecho",
+        "organization": "San Diego Padres",
+        "seasonLabel": "2026",
+        "initials": "EV",
+        "priorMlbDebut": "05/05/2024 · Miami Marlins",
+        "note": "Debutó en MLB con Miami el 5 de mayo de 2024, jugó con Dorados de Chihuahua en la LMB de 2025 y firmó como agente libre un contrato de Ligas Menores con San Diego el 13 de febrero de 2026. El registro oficial no acredita que Dorados lo transfiriera directamente: esta es una firma posterior a su paso por el club.",
+        "source": "https://www.mlb.com/es/player/eli-villalobos-681871",
+        "confirmationSource": "https://lmb.com.mx/noticias/eli-villalobos-y-samuel-alvarado-nuevos-refuerzos-de-saraperos"
+      }
+    ],
+    "debuts": [],
+    "source": "https://www.mlb.com/es/player/eli-villalobos-681871"
   }
 };
