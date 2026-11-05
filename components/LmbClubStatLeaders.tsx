@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type KeyboardEvent } from "react";
 import type { LmbClubStatLeaders } from "@/lib/lmbClubLeaders";
 
 type Props = {
@@ -13,6 +13,20 @@ export default function LmbClubStatLeaders({ clubName, data }: Props) {
   const baseId = useId();
   const batting = category === "bateo";
   const items = batting ? data.batting : data.pitching;
+  const onTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const tabs = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    if (!tabs || tabs.length !== 2) return;
+    const index = category === "bateo" ? 0 : 1;
+    const nextIndex = event.key === "ArrowRight" ? (index + 1) % 2
+      : event.key === "ArrowLeft" ? (index + 1) % 2
+      : event.key === "Home" ? 0
+      : event.key === "End" ? 1
+      : null;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    setCategory(nextIndex === 0 ? "bateo" : "pitcheo");
+    tabs[nextIndex]?.focus();
+  };
 
   return (
     <section className="clubPanel clubMiniLeaders" aria-label={`Estadísticas de ${clubName}`}>
@@ -26,6 +40,8 @@ export default function LmbClubStatLeaders({ clubName, data }: Props) {
           id={`${baseId}-bateo`}
           aria-controls={`${baseId}-panel`}
           aria-selected={batting}
+          tabIndex={batting ? 0 : -1}
+          onKeyDown={onTabKeyDown}
           onClick={() => setCategory("bateo")}
         >
           Bateo
@@ -37,6 +53,8 @@ export default function LmbClubStatLeaders({ clubName, data }: Props) {
           id={`${baseId}-pitcheo`}
           aria-controls={`${baseId}-panel`}
           aria-selected={!batting}
+          tabIndex={batting ? -1 : 0}
+          onKeyDown={onTabKeyDown}
           onClick={() => setCategory("pitcheo")}
         >
           Pitcheo
