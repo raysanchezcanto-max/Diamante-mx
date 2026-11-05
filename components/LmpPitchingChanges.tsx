@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { LmpPitchingChange } from "@/lib/lmpPitchingChanges";
+import BaseballDecisionPhoto from "@/components/BaseballDecisionPhoto";
 
 type Props = {
   changes: LmpPitchingChange[];
@@ -73,12 +74,18 @@ export default function LmpPitchingChanges({
                       <div className="lmpPitchingChangePlayers">
                         <div>
                           <small>SALIÓ</small>
-                          <strong>{change.outName}</strong>
+                          <div className="lmpPitchingChangePlayerIdentity">
+                            <BaseballDecisionPhoto playerId={change.outId} league="LMP" />
+                            <strong>{change.outName}</strong>
+                          </div>
                         </div>
                         <span className="lmpPitchingChangeArrow" aria-hidden="true">→</span>
                         <div>
                           <small>ENTRÓ</small>
-                          <strong>{change.inName}</strong>
+                          <div className="lmpPitchingChangePlayerIdentity">
+                            <BaseballDecisionPhoto playerId={change.inId} league="LMP" />
+                            <strong>{change.inName}</strong>
+                          </div>
                         </div>
                       </div>
                     </article>
