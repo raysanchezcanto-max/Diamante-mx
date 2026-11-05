@@ -33,7 +33,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    </header>
 
    <div className="clubHistoryStats">
-    <div><span>{editorial?"DEBUT HISTÓRICO LMB":"ZONA LMB"}</span>
+    <div><span>{editorial?(editorial.debutLabel??"DEBUT HISTÓRICO LMB"):"ZONA LMB"}</span>
       <strong>{editorial?.debutYear??club.region}</strong>
       <small>{editorial?"Primeras temporadas documentadas":"Ubicación en la liga"}</small>
     </div>
