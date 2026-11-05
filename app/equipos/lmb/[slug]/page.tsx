@@ -5,7 +5,7 @@ import { getTeamLogo } from "@/lib/teamLogos";
 import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
 import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview } from "@/lib/lmbClubContent";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
-import { getLmbMlbVeterans } from "@/lib/lmbMlbVeterans";
+import LmbToMlbClubProfile from "@/components/LmbToMlbClubProfile";
 import { lmbClubChampionships } from "@/lib/lmbClubHistory";
 import LmbClubEditorialHistory from "@/components/LmbClubEditorialHistory";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
@@ -45,7 +45,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
     getLmbClubOverview(club.slug),
     view==="resumen"?getLmbStandings():Promise.resolve([]),
     view==="resumen"?getLmbClubNews(club.slug):Promise.resolve(null),
-    view==="plantilla"||view==="grandes-ligas"?getLmbClubRoster(club.slug):Promise.resolve(null),
+    view==="plantilla"?getLmbClubRoster(club.slug):Promise.resolve(null),
     view==="movimientos"?getLmbClubMovements({
       profileUrl:official(club.slug),
       headingAliases:[club.bulletinHeading,club.bulletinHeading==="DOS LAREDOS"?"LAREDO":club.bulletinHeading],
@@ -57,8 +57,6 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const home="/equipos/lmb/"+club.slug;
   const titleYears=lmbClubChampionships(club.slug);
   const teamRecord=standings.find(row=>findLmbClubByName(row.team)?.slug===club.slug);
-  const veterans=view==="grandes-ligas"&&roster?.sourceStatus==="connected"
-    ?await getLmbMlbVeterans(roster.roster):null;
   const topStory=news?.stories[0];
   return (
     <main className="clubProfile clubProfile--all">
@@ -239,33 +237,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         )}
 
         {view==="grandes-ligas"&&(
-          <section className="clubDirectoryMlb">
-            <div className="clubDirectorySectionHero">
-              <span className="clubKicker">PUENTE ENTRE LMB Y MLB</span>
-              <h2>Grandes Ligas · {club.name}</h2>
-              <p>Identificamos, entre los jugadores del roster oficial del club, a quienes tienen un <b>debut real en MLB</b> registrado por Major League Baseball. No equivale a decir que fueron contratados por MLB después de jugar aquí.</p>
-            </div>
-            {veterans?.status==="connected"&&veterans.players.length?(
-              <div className="clubDirectoryVeterans">
-                {veterans.players.map(player=>(
-                  <article className="clubDirectoryVeteran" key={player.playerId}>
-                    <LmbRosterHeadshot playerId={player.playerId} name={player.name}/>
-                    <div><span className="clubKicker">EXPERIENCIA MLB CONFIRMADA</span>
-                      <h3>{player.name}</h3>
-                      <p>#{player.number} · Debut MLB: {formatDate(player.mlbDebutDate)}</p>
-                      <a href={"https://www.mlb.com/player/"+player.playerId} target="_blank" rel="noopener noreferrer">Ficha oficial MLB ↗</a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ):(
-              <div className="clubDirectoryNotice">
-                <h3>{veterans?.status==="unavailable"?"Verificación MLB no disponible":"Sin coincidencias verificadas en la plantilla consultada"}</h3>
-                <p>Este resultado no descarta que otros exjugadores del club hayan llegado a Grandes Ligas. Las trayectorias históricas de exportación se agregarán con fuentes individualmente contrastadas.</p>
-              </div>
-            )}
-            <a className="clubDirectorySource" href="https://www.mlb.com/es" target="_blank" rel="noopener noreferrer">Fuente: Major League Baseball ↗</a>
-          </section>
+          <LmbToMlbClubProfile club={club} logo={logo}/>
         )}
 
         {view==="historia"&&(

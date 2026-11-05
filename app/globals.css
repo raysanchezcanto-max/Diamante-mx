@@ -4889,3 +4889,24 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
  .clubProfile--all .clubHistoryChampionCard>strong{font-size:45px}
  .clubProfile--all .clubHistorySources>div{display:grid}
 }
+
+
+/* 68 · Dirección correcta LMB → MLB: prospectos surgidos del club. */
+.clubToMlbHeroLogo{
+  width:64px;height:64px;object-fit:contain;flex:0 0 64px;
+  padding:7px;border-radius:16px;background:#eaf0e7;border:1px solid #627c66;
+}
+.clubToMlbProspectGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.clubToMlbProspectGrid .clubBigLeaguesStatus{font-size:9px;letter-spacing:.055em}
+.clubToMlbProspectGrid .clubBigLeaguesProspect{gap:10px;min-height:240px}
+.clubToMlbProspectGrid .clubBigLeaguesProspectOrganization{line-height:1.4}
+.clubToMlbProspectGrid .clubBigLeaguesProspect>a{margin-top:auto}
+.clubDirectoryMlb .clubBigLeaguesFooter{display:grid;gap:8px}
+.clubDirectoryMlb .clubBigLeaguesFooter a{margin-top:2px}
+@media(max-width:1030px){
+ .clubToMlbProspectGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:610px){
+ .clubToMlbProspectGrid{grid-template-columns:minmax(0,1fr)}
+ .clubToMlbProspectGrid .clubBigLeaguesProspect{min-height:0}
+}
