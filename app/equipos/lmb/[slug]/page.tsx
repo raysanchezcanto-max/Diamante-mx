@@ -58,6 +58,14 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const titleYears=lmbClubChampionships(club.slug);
   const teamRecord=standings.find(row=>findLmbClubByName(row.team)?.slug===club.slug);
   const topStory=news?.stories[0];
+  // Misma tabla y titulares de referencia usados en el Resumen de Algodoneros.
+  // Nunca mostramos estadísticas o noticias de otro club como respaldo.
+  const zoneStandings=standings.filter(row=>{
+    const team=findLmbClubByName(row.team);
+    return team ? team.region===club.region :
+      row.division.toLowerCase().includes(club.region.toLowerCase());
+  }).sort((a,b)=>Number.parseFloat(b.pct)-Number.parseFloat(a.pct));
+  const headlines=(news?.stories??[]).slice(2,9);
   return (
     <main className="clubProfile clubProfile--all">
       <header className="clubTopbar">
@@ -153,25 +161,94 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   </a>)}
                 </div>
               </section>
+              <section className="clubEditorialSection" aria-label={"Videos de béisbol relacionados con "+club.name}>
+                <div className="clubSectionTitle">
+                  <div>
+                    <span className="clubKicker">COBERTURA AUDIOVISUAL · LMB</span>
+                    <h2>Videos destacados</h2>
+                  </div>
+                  <a href="https://lmb.com.mx/videos" target="_blank" rel="noopener noreferrer">
+                    Ver catálogo LMB ↗
+                  </a>
+                </div>
+                <div className="clubVideoGrid">
+                  <a className="clubVideoCard" href="https://lmb.com.mx/videos"
+                    target="_blank" rel="noopener noreferrer">
+                    <div className="clubVideoPoster">
+                      {logo&&<img src={logo} alt="" width={70} height={70}/>}
+                      <span aria-hidden="true">▶</span>
+                      <small>CATÁLOGO LMB</small>
+                    </div>
+                    <strong>Explorar videos oficiales de la Liga Mexicana de Beisbol</strong>
+                  </a>
+                </div>
+                <p className="clubSmallNote">
+                  El catálogo es general de LMB. No atribuimos clips a {club.name} sin
+                  una identificación verificable del partido o del equipo.
+                </p>
+              </section>
             </div>
             <aside className="clubSideRight">
               <section className="clubPanel">
-                <span className="clubKicker">IDENTIDAD DEL CLUB</span>
-                <h2>{club.name}</h2>
-                <p>Zona {club.region}. Ficha enlazada a los recursos oficiales de la Liga Mexicana de Beisbol.</p>
-                <a href={home+"?vista=historia"} className="clubDirectoryDetailLink">Explorar su historia ↗</a>
+                <div className="clubSideHeading">
+                  <h2>Titulares</h2>
+                  <span>{news?.sourceStatus==="connected"?"LMB":"SIN DATOS"}</span>
+                </div>
+                {headlines.length>0?(
+                  <div className="clubHeadlines">
+                    {headlines.map((story,i)=>(
+                      <a href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
+                        <span className="clubHeadlineIndex">{String(i+1).padStart(2,"0")}</span>
+                        <strong>{story.title}</strong>
+                      </a>
+                    ))}
+                  </div>
+                ):(
+                  <p className="clubSmallNote">Sin titulares adicionales confirmados para este equipo.</p>
+                )}
+              </section>
+              <section className="clubPanel" id="tabla-de-posiciones">
+                <div className="clubSideHeading"><h2>Posiciones</h2><span>{club.region.toUpperCase()}</span></div>
+                <p className="clubSmallNote">
+                  Última tabla de temporada regular disponible en LMB; no es marcador en vivo.
+                </p>
+                {zoneStandings.length>0?(
+                  <div className="clubStandingsScroll">
+                    <table className="clubStandingsTable">
+                      <thead><tr><th>Equipo</th><th>G</th><th>P</th><th>PCT</th></tr></thead>
+                      <tbody>
+                        {zoneStandings.map(team=>(
+                          <tr key={team.teamId||team.team}
+                            className={findLmbClubByName(team.team)?.slug===club.slug?"clubCurrentTeam":""}>
+                            <td>
+                              {getTeamLogo("LMB",0,team.team)&&(
+                                <img src={getTeamLogo("LMB",0,team.team)!} alt="" width={25} height={25}/>
+                              )}
+                              <span>{team.team}</span>
+                            </td>
+                            <td>{team.wins}</td><td>{team.losses}</td><td>{team.pct}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ):(
+                  <p className="clubSmallNote">
+                    La fuente no devolvió una tabla verificable para la zona.
+                  </p>
+                )}
+                <a className="clubStandingsLink" href="/?league=lmb#posiciones">Ver tabla completa ↗</a>
               </section>
               <section className="clubPanel">
-                <span className="clubKicker">PALMARÉS LMB · HASTA 2026</span>
-                <h2>{titleYears.years.length} {titleYears.years.length===1?"campeonato":"campeonatos"}</h2>
-                <p>{titleYears.years.length?titleYears.years.join(" · "):"No registra una corona de liga en el historial consultado."}</p>
-                <a href={home+"?vista=historia"} className="clubDirectoryDetailLink">Ver títulos documentados ↗</a>
-              </section>
-              <section className="clubPanel">
-                <span className="clubKicker">SALÓN DE LA FAMA</span>
-                <h2>Legado mexicano</h2>
-                <p>Explora los inmortales reconocidos oficialmente. La asociación con este club se añadirá tras verificar trayectorias individuales.</p>
-                <a href="/salon-de-la-fama" className="clubDirectoryDetailLink">Visitar Salón de la Fama ↗</a>
+                <div className="clubSideHeading"><h2>Legado del club</h2><span>LMB</span></div>
+                <p className="clubSmallNote">{titleYears.years.length}
+                  {titleYears.years.length===1?" campeonato":" campeonatos"} documentados hasta 2026.
+                  Consulta la historia del equipo y sus vínculos históricos verificados.
+                </p>
+                <a href={home+"?vista=historia"} className="clubDirectoryDetailLink">Historia y palmarés ↗</a>
+                <a href="/salon-de-la-fama" className="clubDirectoryDetailLink" style={{display:"block"}}>
+                  Salón de la Fama ↗
+                </a>
               </section>
             </aside>
           </div>
