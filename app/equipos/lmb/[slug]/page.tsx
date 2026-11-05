@@ -95,7 +95,11 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
           </div>
           <div className="clubHeroMeta">
             <div><span>ESTADIO</span><strong>{overview.stadium??"Consultar ficha oficial"}</strong></div>
-            <div><span>CAPACIDAD</span><strong>{overview.capacity?overview.capacity.toLocaleString("es-MX")+" espectadores":"No informada"}</strong></div>
+            <div><span>CAPACIDAD</span>
+              <strong>{overview.capacityDetail??(overview.capacity?overview.capacity.toLocaleString("es-MX")+" espectadores":"No informada")}</strong>
+              {overview.capacitySource&&<a className="clubCapacitySource" href={overview.capacitySource}
+                target="_blank" rel="noopener noreferrer">Capacidades por sede · fuente ↗</a>}
+            </div>
             <div className="clubHeroLinks">
               <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Ficha LMB ↗</a>
               {overview.website&&<a href={overview.website} target="_blank" rel="noopener noreferrer">
