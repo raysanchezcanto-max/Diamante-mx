@@ -38,9 +38,13 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
       <small>{editorial?"Primeras temporadas documentadas":"Ubicación en la liga"}</small>
     </div>
     <div><span>CAMPEONATOS LMB</span><strong>{String(years.length).padStart(2,"0")}</strong><small>Hasta la temporada 2026</small></div>
-    <div><span>{editorial?.stadiumOpened?"APERTURA DEL ESTADIO":"SEDE ACTUAL"}</span>
-      <strong className={editorial?.stadiumOpened?"":"clubDirectoryStadiumText"}>{editorial?.stadiumOpened??(overview.stadium??"—")}</strong>
-      <small>{editorial?.stadiumOpened?overview.stadium??"Recinto del club":"Fuente LMB"}</small>
+    <div><span>{editorial?.stadiumOpened
+        ? (editorial.stadiumOpenedNote?"APERTURA DE LAS SEDES":"APERTURA DEL ESTADIO")
+        : (overview.capacity?"CAPACIDAD DEL ESTADIO":"SEDE ACTUAL")}</span>
+      <strong className={editorial?.stadiumOpened?"":"clubDirectoryStadiumText"}>
+        {editorial?.stadiumOpened??(overview.capacity?overview.capacity.toLocaleString("es-MX"):overview.stadium??"—")}
+      </strong>
+      <small>{editorial?.stadiumOpened?overview.stadium??"Recinto del club":overview.capacity?"Espectadores · fuente LMB":"Fuente LMB"}</small>
     </div>
    </div>
 
@@ -149,15 +153,17 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
     <div>
      <span className="clubKicker">LA CASA DEL EQUIPO</span>
      <h3>{overview.stadium??"El estadio de "+club.name}</h3>
-     <p>{editorial?.stadiumOpened?
-       "El recinto abrió sus puertas en "+editorial.stadiumOpened+" y forma parte de la tradición deportiva del club. ":
-       "Este es el estadio que la Liga Mexicana identifica actualmente como casa del equipo. "}
+     <p>{editorial?.stadiumOpened
+       ? editorial.stadiumOpenedNote
+         ?? "El recinto abrió sus puertas en "+editorial.stadiumOpened+" y forma parte de la tradición deportiva del club. "
+       : "Este es el estadio que la Liga Mexicana identifica actualmente como casa del equipo. "}
        {overview.capacity?" Capacidad actual informada por LMB: "+overview.capacity.toLocaleString("es-MX")+" espectadores.":""}</p>
      <a href={editorial?.stadiumSource??"https://lmb.com.mx/equipos/"+club.slug} target="_blank" rel="noopener noreferrer">Conocer el estadio ↗</a>
     </div>
-    <div className="clubHistoryStadiumMark" aria-hidden="true">
-      <span>ESTADIO</span><strong>{editorial?.stadiumOpened??"LMB"}</strong>
-      <span>{editorial?.stadiumOpened?"HISTORIA DEL CLUB":"SEDE OFICIAL"}</span>
+    <div className={"clubHistoryStadiumMark"+(editorial?.stadiumOpenedNote?" clubHistoryStadiumMark--multi":"")} aria-hidden="true">
+      <span>{editorial?.stadiumOpenedNote?"ESTADIOS":"ESTADIO"}</span>
+      <strong>{editorial?.stadiumOpened??(overview.capacity?overview.capacity.toLocaleString("es-MX"):"—")}</strong>
+      <span>{editorial?.stadiumOpenedNote?"APERTURAS":editorial?.stadiumOpened?"AÑO DE INAUGURACIÓN":overview.capacity?"CAPACIDAD · PERSONAS":"SIN FECHA VERIFICADA"}</span>
     </div>
    </div>
 
