@@ -117,19 +117,6 @@ const isInningTransition =
   lmpMode &&
   (normalizedInningState === "middle" ||
     normalizedInningState === "end");
-const nextInningLabel =
-  typeof inning === "number" && inning > 0
-    ? normalizedInningState === "middle"
-      ? `SIGUE · BAJA ${inning}`
-      : `SIGUE · ALTA ${inning + 1}`
-    : "ESPERANDO SIGUIENTE TURNO";
-const finishedHalfLabel =
-  typeof inning === "number" && inning > 0
-    ? normalizedInningState === "middle"
-      ? `Terminó la alta ${inning}.`
-      : `Terminó la baja ${inning}.`
-    : "Terminó el turno al bate.";
-
 // Conservar la rotulación anterior de MLB/LMB; en LMP el título será genérico.
 const playHistoryLabel =
   normalizedInningState === "middle" && typeof inning === "number"
@@ -178,21 +165,8 @@ const battingTeam =
     }}
   >
     <strong className="liveGameInning">
-      {isInningTransition
-        ? normalizedInningState === "middle"
-          ? "CAMBIO DE TURNO"
-          : "CAMBIO DE ENTRADA"
-        : `${formattedInningState} ${displayInning ?? ""}`}
+      {`${formattedInningState} ${displayInning ?? ""}`}
     </strong>
-
-    {isInningTransition && (
-      <span
-        className="liveGameBattingTeam"
-        style={{ display: "block", color: "#cbd5d1", fontWeight: 700 }}
-      >
-        {nextInningLabel}
-      </span>
-    )}
 
     {!isInningTransition && battingTeam && (
       <span
@@ -251,9 +225,7 @@ const battingTeam =
       {isInningTransition ? (
         <div className="liveGamePanelBody">
           <p className="liveGameSourceWaiting">
-            {finishedHalfLabel} Los equipos cambian de turno. El conteo
-            y los jugadores del siguiente turno aparecerán cuando
-            la fuente registre el comienzo del siguiente turno al bate.
+            Esperando el inicio del turno al bate.
           </p>
         </div>
       ) : (
@@ -285,7 +257,7 @@ const battingTeam =
       </div>
       )}
 
-    {(lmpMode || plays.length > 0 || description) && (
+    {(!isInningTransition && (lmpMode || plays.length > 0 || description)) && (
       <div className="liveGamePlay">
         <small>
           {lmpMode
@@ -295,11 +267,7 @@ const battingTeam =
               : "ÚLTIMA JUGADA"}
         </small>
 
-        {lmpMode && isInningTransition ? (
-          <p className="liveGameSourceWaiting">
-            Esperando las jugadas del siguiente turno al bate.
-          </p>
-        ) : plays.length > 0 ? (
+        {plays.length > 0 ? (
           <div className="inningPlayList">
             {plays.map((play, index) => (
               <div
