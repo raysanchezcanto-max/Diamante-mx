@@ -3,6 +3,7 @@ import { BaseballLineScoreCard, BaseballPitchingDecisions, BaseballPlayerStats }
 import { getMlbPlayState } from "@/lib/mlbLive";
 import { getLmpPlayState } from "@/lib/lmpLive";
 import LiveGamePanel from "@/components/LiveGamePanel";
+import LmpPitchingChanges from "@/components/LmpPitchingChanges";
 
 import GamePitcher from "@/components/GamePitcher";
 
@@ -714,6 +715,17 @@ const time =
             </p>
           </section>
         )
+      )}
+
+      {/* LMP: historial de relevos únicamente durante el juego y si hay cambios. */}
+      {isLive && league === "LMP" && Boolean(playState?.pitchingChanges?.length) && (
+        <LmpPitchingChanges
+          changes={playState?.pitchingChanges ?? []}
+          away={awayDisplayName}
+          home={homeDisplayName}
+          awayLogo={awayLogo}
+          homeLogo={homeLogo}
+        />
       )}
 
       {/* Bateo, pitcheo y decisiones de pitchers solo cuando sea FINAL. */}
