@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 
 type Category = "bateo" | "pitcheo";
 type StatLine = {
@@ -13,11 +13,11 @@ type StatLine = {
 
 // Bateo: las cinco categorías publicadas en la ficha oficial del club 2026.
 const BATTING: StatLine[] = [
-  { metric: "Porcentaje de bateo", name: "Albert Lara", value: ".344", unit: "AVG" },
-  { metric: "Jonrones", name: "Mason Martin", value: "18", unit: "HR" },
-  { metric: "Carreras producidas", name: "Mason Martin", value: "68", unit: "RBI" },
-  { metric: "Carreras anotadas", name: "Albert Lara", value: "68", unit: "R" },
-  { metric: "Bases robadas", name: "Albert Lara", value: "10", unit: "SB" },
+  { metric: "Porcentaje de bateo", name: "Albert Lara", value: ".344", unit: "AVG", source: "https://lmb.com.mx/jugador/804107" },
+  { metric: "Jonrones", name: "Mason Martin", value: "18", unit: "HR", source: "https://lmb.com.mx/jugador/676733" },
+  { metric: "Carreras producidas", name: "Mason Martin", value: "68", unit: "RBI", source: "https://lmb.com.mx/jugador/676733" },
+  { metric: "Carreras anotadas", name: "Albert Lara", value: "68", unit: "R", source: "https://lmb.com.mx/jugador/804107" },
+  { metric: "Bases robadas", name: "Albert Lara", value: "10", unit: "SB", source: "https://lmb.com.mx/jugador/804107" },
 ];
 
 // Pitcheo: cifras verificadas en las fichas INDIVIDUALES de LMB 2026.
@@ -57,6 +57,20 @@ export default function AlgodonerosLeaders() {
   const [category, setCategory] = useState<Category>("bateo");
   const batting = category === "bateo";
   const items = batting ? BATTING : PITCHING;
+  const onTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const tabs = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    if (!tabs || tabs.length !== 2) return;
+    const index = category === "bateo" ? 0 : 1;
+    const nextIndex = event.key === "ArrowRight" ? (index + 1) % 2
+      : event.key === "ArrowLeft" ? (index + 1) % 2
+      : event.key === "Home" ? 0
+      : event.key === "End" ? 1
+      : null;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    setCategory(nextIndex === 0 ? "bateo" : "pitcheo");
+    tabs[nextIndex]?.focus();
+  };
 
   return (
     <section className="clubPanel clubMiniLeaders" aria-label="Estadísticas de Algodoneros">
@@ -70,6 +84,8 @@ export default function AlgodonerosLeaders() {
           role="tab"
           aria-controls="algodoneros-panel"
           aria-selected={batting}
+          tabIndex={batting ? 0 : -1}
+          onKeyDown={onTabKeyDown}
           onClick={() => setCategory("bateo")}
         >
           Bateo
@@ -81,6 +97,8 @@ export default function AlgodonerosLeaders() {
           role="tab"
           aria-controls="algodoneros-panel"
           aria-selected={!batting}
+          tabIndex={batting ? -1 : 0}
+          onKeyDown={onTabKeyDown}
           onClick={() => setCategory("pitcheo")}
         >
           Pitcheo
