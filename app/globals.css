@@ -5000,6 +5000,13 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   color: var(--muted); font-size: 10px;
   letter-spacing: .08em; font-weight: 800;
 }
+.lmpPitchingChangePlayerIdentity {
+  display: flex; align-items: center; gap: 7px; min-width: 0;
+}
+.lmpPitchingChangePlayerIdentity .baseballExtrasDecisionPortrait {
+  width: 28px; height: 28px; flex: 0 0 28px;
+  border-radius: 50%; object-fit: cover;
+}
 .lmpPitchingChangePlayers strong {
   color: var(--text); font-size: 12px; font-weight: 750;
   line-height: 1.4; overflow-wrap: anywhere;
@@ -5023,4 +5030,8 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 @media (max-width: 380px) {
   .lmpPitchingTeamHeader { flex-wrap: wrap; }
   .lmpPitchingTeamCount { margin-left: auto; }
+  .lmpPitchingChangePlayerIdentity { gap: 5px; }
+  .lmpPitchingChangePlayerIdentity .baseballExtrasDecisionPortrait {
+    width: 24px; height: 24px; flex-basis: 24px;
+  }
 }
