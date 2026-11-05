@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
-import { getAlgodonerosNews, getAlgodonerosRoster } from "@/lib/lmbClubContent";
+import { getAlgodonerosNews, getAlgodonerosRoster, getLmbClubVideos } from "@/lib/lmbClubContent";
 import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import AlgodonerosHistory from "@/components/AlgodonerosHistory";
 import AlgodonerosGrandesLigas from "@/components/AlgodonerosGrandesLigas";
@@ -12,7 +12,7 @@ import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
   ALGODONEROS_OFFICIAL as club,
   ALGODONEROS_STORIES as stories,
-  ALGODONEROS_VIDEOS as videos,
+  ALGODONEROS_VIDEOS as archivedVideos,
   ALGODONEROS_ROSTER as roster,
   ALGODONEROS_NORTH_2026 as fallbackNorth,
   ALGODONEROS_MOVEMENTS as movements,
@@ -44,16 +44,20 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const grandesLigasView = params?.vista === "grandes-ligas";
   const currentView = rosterView ? "plantilla" : movementsView ? "movimientos"
     : grandesLigasView ? "grandes-ligas" : historyView ? "historia" : "resumen";
-  const [officialStandings, newsResult, rosterResult, movementResult] = await Promise.all([
+  const [officialStandings, newsResult, rosterResult, movementResult, videoResult] = await Promise.all([
     getLmbStandings(),
     !rosterView && !movementsView && !historyView && !grandesLigasView ? getAlgodonerosNews() : Promise.resolve(null),
     rosterView ? getAlgodonerosRoster() : Promise.resolve(null),
     movementsView ? getAlgodonerosMovements() : Promise.resolve(null),
+    currentView==="resumen" ? getLmbClubVideos("algodoneros") : Promise.resolve(null),
   ]);
   const displayedStories = newsResult?.stories ?? stories.map(story => ({
     ...story, imageUrl: null as string | null,
   }));
   const displayedRoster = rosterResult?.roster ?? roster;
+  const displayedVideos = videoResult?.videos.length
+    ? videoResult.videos
+    : archivedVideos.map(video => ({ ...video, imageUrl: null as string | null }));
   const newsConnected = newsResult?.sourceStatus === "connected";
   const rosterConnected = rosterResult?.sourceStatus === "connected";
   const featuredStory = displayedStories[0];
@@ -257,14 +261,22 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   <a href="https://lmb.com.mx/videos" target="_blank" rel="noopener noreferrer">Ver más en LMB ↗</a>
                 </div>
                 <div className="clubVideoGrid">
-                  {videos.map((video,i)=>(
+                  {displayedVideos.map((video,i)=>(
                     <a className="clubVideoCard" href={video.url} target="_blank" rel="noopener noreferrer" key={video.url}>
-                      <div className="clubVideoPoster"><img src={logo} alt="" width={70} height={70}/><span aria-hidden="true">▶</span><small>CLIP {i+1}</small></div>
+                      <div className={"clubVideoPoster"+(video.imageUrl?" clubVideoPoster--clip":"")}>
+                        {video.imageUrl ? (
+                          <img src={video.imageUrl} alt="" className="clubVideoThumbnail" loading="lazy"/>
+                        ) : <img src={logo} alt="" width={70} height={70}/>}
+                        <span aria-hidden="true">▶</span><small>CLIP {i+1}</small>
+                      </div>
                       <strong>{video.title}</strong>
                     </a>
                   ))}
                 </div>
-                <p className="clubSmallNote">Los clips abren sus páginas oficiales de LMB; la disponibilidad del reproductor depende del proveedor.</p>
+                <p className="clubSmallNote">{videoResult?.sourceStatus==="connected"
+                  ? "Clips publicados en la ficha oficial de Algodoneros. La selección se actualiza desde LMB."
+                  : "Clips del archivo oficial 2026. La fuente reciente no pudo verificarse en esta consulta."}
+                  {" "}La reproducción depende del proveedor LMB.</p>
               </section>
             </div>
 
