@@ -78,14 +78,21 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
     ]
   },
   "el-aguila": {
-    "intro": "El Águila de Veracruz remonta sus orígenes a 1903 y cuenta con seis títulos de la Liga Mexicana, desde las coronas de 1937 y 1938 hasta la Serie del Rey de 2012.",
-    "debutYear": "1937",
+    "intro": "El Águila de Veracruz remonta sus orígenes a 1903 y participó en el inicio de LMB en 1925; cuenta con seis títulos del circuito, desde 1937 y 1938 hasta 2012.",
+    "debutYear": "1925",
+    "debutLabel": "PRIMERA PARTICIPACIÓN LMB",
     "milestones": [
       {
         "year": "1903",
         "title": "Nace El Águila en Veracruz",
         "description": "El club jugó su primer encuentro el 16 de septiembre de 1903, antes de la creación de la Liga Mexicana.",
         "url": "https://www.milb.com/news/gcs-60803360"
+      },
+      {
+        "year": "1925",
+        "title": "Debut en el nuevo circuito",
+        "description": "El 5 de julio El Águila disputó un partido de la naciente Liga Mexicana ante el 74 Regimiento de Puebla; tras una breve participación volvió en 1937.",
+        "url": "https://www.milb.com/news/gcs-8036758"
       },
       {
         "year": "1937–1938",
@@ -361,8 +368,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
       {
         "year": "1979",
         "title": "Béisbol de LMB en León",
-        "description": "La plaza guanajuatense contó con el equipo Cachorros de León, antecedente de la etapa posterior de Bravos.",
-        "url": "https://mexpedia.org/index.php/Bravos_de_Le%C3%B3n"
+        "description": "La plaza guanajuatense estrenó béisbol de LMB con los Cachorros, antecedente de la etapa posterior de Bravos.",
+        "url": "https://www.milb.com/news/la-hazana-de-dani-gamer-en-el-ederby-resuena-en-leon"
       },
       {
         "year": "1990",
@@ -373,8 +380,8 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
       {
         "year": "2017",
         "title": "Vuelve el béisbol de verano",
-        "description": "Bravos regresó a competir en LMB después de una prolongada ausencia, con el Estadio Domingo Santana como sede.",
-        "url": "https://www.milb.com/news/previa-transicion-para-los-del-bajio-en-2021"
+        "description": "Bravos regresó a competir en LMB después de 25 años de ausencia y alcanzó la postemporada en su campaña de retorno.",
+        "url": "https://www.milb.com/news/bravos-y-su-exitoso-regreso-en-2017"
       },
       {
         "year": "2024",
@@ -422,9 +429,28 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
     ]
   },
   "dorados": {
-    "intro": "Dorados de Chihuahua regresó a la Liga Mexicana en 2024 para iniciar una cuarta etapa de participación y recuperar el vínculo entre la ciudad y el béisbol profesional de verano.",
-    "debutYear": "2024",
+    "intro": "Dorados de Chihuahua participó por primera vez en LMB en 1940 y volvió en 2024 para comenzar su cuarta etapa de participación en el circuito de verano.",
+    "debutYear": "1940",
+    "debutLabel": "PRIMERA PARTICIPACIÓN LMB",
     "milestones": [
+      {
+        "year": "1940",
+        "title": "Primera participación de Chihuahua",
+        "description": "Dorados tuvo una primera estancia breve en la Liga Mexicana, antes de regresar en otras etapas de la competencia.",
+        "url": "https://www.milb.com/news/dorados-regresan-a-la-liga-mexicana-de-beisbol"
+      },
+      {
+        "year": "1973",
+        "title": "Regreso a la LMB",
+        "description": "Chihuahua inició su segunda etapa en el circuito a mediados de la década de 1970.",
+        "url": "https://www.milb.com/news/dorados-regresan-a-la-liga-mexicana-de-beisbol"
+      },
+      {
+        "year": "2007–2010",
+        "title": "Tercera época en la Liga Mexicana",
+        "description": "Dorados disputó cuatro campañas consecutivas y clasificó a postemporada en dos de ellas.",
+        "url": "https://www.milb.com/news/dorados-regresan-a-la-liga-mexicana-de-beisbol"
+      },
       {
         "year": "2023",
         "title": "Se anuncia el regreso",
