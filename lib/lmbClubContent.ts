@@ -23,6 +23,15 @@ export type NewsResult = {
   stories: OfficialStory[];
   sourceStatus: LmbSourceStatus;
 };
+export type OfficialVideo = {
+  title: string;
+  url: string;
+  imageUrl: string | null;
+};
+export type VideosResult = {
+  videos: OfficialVideo[];
+  sourceStatus: LmbSourceStatus;
+};
 export type RosterResult = {
   roster: OfficialRosterGroup[];
   sourceStatus: LmbSourceStatus;
@@ -87,7 +96,8 @@ function externalPhoto(raw: string | undefined): string | null {
     // Solo assets de publicaciones oficiales conocidas, no hosts inesperados.
     if (original.hostname !== "d11rb39sj794dg.cloudfront.net" &&
         original.hostname !== "lmb.com.mx" &&
-        original.hostname !== "img.mlbstatic.com") return null;
+        original.hostname !== "img.mlbstatic.com" &&
+        original.hostname !== "portland-data-prod-thumb.s3.amazonaws.com") return null;
     return original.href;
   } catch {
     return null;
@@ -121,6 +131,37 @@ function readNewsFromOfficialHtml(html: string): OfficialStory[] {
     if (list.length >= 20) break;
   }
   return list;
+}
+
+// Videos identificados POR la ficha oficial de este club. No usar clips de otra
+// franquicia ni atribuirle videos de una colección genérica de la LMB.
+function readVideosFromOfficialHtml(html: string): OfficialVideo[] {
+  const start = html.indexOf(">Top Videos<");
+  if (start < 0) return [];
+  const end = html.indexOf(">Más Noticias<", start);
+  const section = html.slice(start, end > start ? end : Math.min(html.length, start + 45000));
+  const videos: OfficialVideo[] = [];
+  const seen = new Set<string>();
+  const anchor = /<a\b[^>]*href="(\/videos\/[0-9a-f-]{36})"[^>]*>([\s\S]*?)<\/a>/gi;
+  for (const match of section.matchAll(anchor)) {
+    if (seen.has(match[1])) continue;
+    const fragment = match[2];
+    const title = decodeEntities(fragment.match(/<img\b[^>]*\balt="([^"]+)"/i)?.[1] ?? "").trim();
+    if (title.length < 12 || title.length > 180) continue;
+    const src = fragment.match(/<img\b[^>]*\bsrc="([^"]+)"/i)?.[1];
+    const imageUrl = externalPhoto(src);
+    videos.push({ title, url: BASE + match[1], imageUrl });
+    seen.add(match[1]);
+    if (videos.length >= 4) break;
+  }
+  return videos;
+}
+
+export async function getLmbClubVideos(slug: string): Promise<VideosResult> {
+  if (!validClubSlug(slug)) return { videos: [], sourceStatus: "fallback" };
+  const html = await readOfficialHtml(BASE + "/equipos/" + slug);
+  const videos = html ? readVideosFromOfficialHtml(html) : [];
+  return { videos, sourceStatus: videos.length ? "connected" : "fallback" };
 }
 
 function readRosterFromOfficialHtml(html: string): OfficialRosterGroup[] {
