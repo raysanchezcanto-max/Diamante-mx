@@ -227,6 +227,18 @@ const isMlbWarmup =
 
       
 
+
+        // Ventaja real: solo EN VIVO/FINAL, sin estado especial ni empate.
+        const hasDecisiveScore =
+          (game.status === "Live" || game.status === "Final") &&
+          !specialStatus &&
+          !isMlbWarmup &&
+          typeof game.awayRuns === "number" &&
+          typeof game.homeRuns === "number" &&
+          game.awayRuns !== game.homeRuns;
+        const awayLeading = hasDecisiveScore && game.awayRuns! > game.homeRuns!;
+        const homeLeading = hasDecisiveScore && game.homeRuns! > game.awayRuns!;
+
 const showMlbRegularPitchers =
   (league === "LMP" ||
     (league === "MLB" && game.gameType === "R")) &&
@@ -509,7 +521,9 @@ marginTop: "5px",
                   />
                 )}
 
-                <span>{awayDisplayName}</span>
+                <span style={{ color: awayLeading ? "var(--accent)" : undefined }}>
+                  {awayDisplayName}
+                </span>
               </div>
 
              
@@ -520,24 +534,9 @@ marginTop: "5px",
       specialStatus === "POSPUESTO"
         ? "none"
         : undefined,
-    color:
-
-      
-(league === "LMB" ||
-  league === "LMP" ||
-  (league === "MLB" && game.gameType === "R")) &&
-
-     
-game.status === "Final" &&
-!specialStatus &&
-typeof game.awayRuns === "number" &&
-
-      typeof game.homeRuns === "number" &&
-      game.awayRuns !== game.homeRuns
-        ? game.awayRuns > game.homeRuns
-          ? "var(--accent)"
-          : "var(--muted)"
-        : undefined,
+    color: hasDecisiveScore
+      ? awayLeading ? "var(--accent)" : "var(--muted)"
+      : undefined,
   }}
 >
 
@@ -598,7 +597,9 @@ specialStatus === "POSPUESTO"
                   />
                 )}
 
-                <span>{homeDisplayName}</span>
+                <span style={{ color: homeLeading ? "var(--accent)" : undefined }}>
+                  {homeDisplayName}
+                </span>
               </div>
 
              
@@ -609,24 +610,9 @@ specialStatus === "POSPUESTO"
       specialStatus === "POSPUESTO"
         ? "none"
         : undefined,
-    color:
-
-     
-(league === "LMB" ||
-  league === "LMP" ||
-  (league === "MLB" && game.gameType === "R")) &&
-
-     
-game.status === "Final" &&
-!specialStatus &&
-typeof game.awayRuns === "number" &&
-
-      typeof game.homeRuns === "number" &&
-      game.awayRuns !== game.homeRuns
-        ? game.homeRuns > game.awayRuns
-          ? "var(--accent)"
-          : "var(--muted)"
-        : undefined,
+    color: hasDecisiveScore
+      ? homeLeading ? "var(--accent)" : "var(--muted)"
+      : undefined,
   }}
 >
 
