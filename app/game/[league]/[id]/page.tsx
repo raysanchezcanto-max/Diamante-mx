@@ -88,21 +88,6 @@ function formatGameDate(
     }
   ).format(gameDate);
 }
-function formatInningHalf(
-  inningState?: string
-) {
-  if (!inningState) return "";
-
-  const value = inningState.trim().toLowerCase();
-
-  if (value === "top") return "ALTA";
-  if (value === "bottom") return "BAJA";
-  if (value === "middle") return "MEDIA";
-  if (value === "end") return "FIN";
-
-  return inningState.toUpperCase();
-}
-
 function formatGameTime(
   startTime: string,
   league: LeagueCode
@@ -338,13 +323,6 @@ const time =
       ? "HORA POR CONFIRMAR"
       : formatGameTime(game.startTime, league);
 
-
-
-  const liveInningLabel =
-  isLive && game.inning
-    ? `${formatInningHalf(game.inningState)} ${game.inning}`
-    : "";
-
   return (
     <main className="gamePage">
    <AutoRefresh
@@ -557,17 +535,7 @@ const time =
 )}
 
 
-    {isLive && liveInningLabel ? (
-      <strong
-        style={{
-          color: "var(--text)",
-          fontSize: "24px",
-        }}
-      >
-        {liveInningLabel}
-      </strong>
-  
-    ) : !isFinal && !isLive ? (
+    {!isFinal && !isLive ? (
       <strong
         style={{
           color:
