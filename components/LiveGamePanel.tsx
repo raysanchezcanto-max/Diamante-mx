@@ -128,14 +128,7 @@ const finishedHalfLabel =
     ? normalizedInningState === "middle"
       ? `Terminó la alta ${inning}.`
       : `Terminó la baja ${inning}.`
-    : "Terminó la media entrada.";
-
-const playHistoryLabel =
-  normalizedInningState === "middle" && typeof inning === "number"
-    ? `JUGADAS DE LA ALTA ${inning}`
-    : normalizedInningState === "end" && typeof inning === "number"
-      ? `JUGADAS DE LA BAJA ${inning}`
-      : "JUGADAS DEL INNING";
+    : "Terminó el turno al bate.";
 
 const battingTeam =
   formattedInningState === "ALTA"
@@ -178,7 +171,9 @@ const battingTeam =
   >
     <strong className="liveGameInning">
       {isInningTransition
-        ? "CAMBIO DE ENTRADA"
+        ? normalizedInningState === "middle"
+          ? "CAMBIO DE TURNO"
+          : "CAMBIO DE ENTRADA"
         : `${formattedInningState} ${displayInning ?? ""}`}
     </strong>
 
@@ -250,7 +245,7 @@ const battingTeam =
           <p className="liveGameSourceWaiting">
             {finishedHalfLabel} Los equipos cambian de turno. El conteo
             y los jugadores del siguiente turno aparecerán cuando
-            la fuente registre el comienzo de la nueva media entrada.
+            la fuente registre el comienzo del siguiente turno al bate.
           </p>
         </div>
       ) : (
@@ -282,37 +277,43 @@ const battingTeam =
       </div>
       )}
 
-    {plays.length > 0 ? (
-  <div className="liveGamePlay">
-    <small>{playHistoryLabel}</small>
+    {(lmpMode || plays.length > 0 || description) && (
+      <div className="liveGamePlay">
+        <small>
+          {lmpMode || plays.length > 0
+            ? "JUGADAS DEL INNING"
+            : "ÚLTIMA JUGADA"}
+        </small>
 
-    <div className="inningPlayList">
-      {plays.map((play, index) => (
-        <div
-          className="inningPlayItem"
-          key={`${index}-${play}`}
-        >
-          <span>
-            {index + 1}
-          </span>
-
-          <p>{play}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-) : description ? (
-  <div className="liveGamePlay">
-    <small>ÚLTIMA JUGADA</small>
-
-    <p>
-      {description.toLowerCase() === "al bat" &&
-      batterName
-        ? `Al bat: ${batterName}`
-        : description}
-    </p>
-  </div>
-) : null}
+        {lmpMode && isInningTransition ? (
+          <p className="liveGameSourceWaiting">
+            Esperando las jugadas del siguiente turno al bate.
+          </p>
+        ) : plays.length > 0 ? (
+          <div className="inningPlayList">
+            {plays.map((play, index) => (
+              <div
+                className="inningPlayItem"
+                key={`${index}-${play}`}
+              >
+                <span>{index + 1}</span>
+                <p>{play}</p>
+              </div>
+            ))}
+          </div>
+        ) : lmpMode ? (
+          <p className="liveGameSourceWaiting">
+            Esperando las primeras jugadas de este turno al bate.
+          </p>
+        ) : (
+          <p>
+            {description?.toLowerCase() === "al bat" && batterName
+              ? `Al bat: ${batterName}`
+              : description}
+          </p>
+        )}
+      </div>
+    )}
     </section>
   );
 }
