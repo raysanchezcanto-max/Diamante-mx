@@ -4922,3 +4922,66 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .liveGameWarmupContent>span:last-child{font-size:11px;color:#94aaa0;line-height:1.5}
 .liveGameWarmupDot{width:10px;height:10px;flex:none;border-radius:50%;background:#ffad67;box-shadow:0 0 0 6px rgba(255,173,103,.12)}
 .liveGameSourceWaiting{font-size:12px;line-height:1.7;color:#a9c1b5;margin:4px 0 0}
+
+
+/* LMP EN VIVO: historial compacto de relevos debajo de Situación del juego. */
+.lmpPitchingChanges { margin-top: 24px; }
+.lmpPitchingChangesHeader {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.lmpPitchingChangesCount {
+  color: var(--muted); font-size: 11px; font-weight: 600;
+}
+.lmpPitchingChangesList { display: grid; gap: 10px; margin-top: 16px; }
+.lmpPitchingChange {
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  border-radius: 12px;
+  padding: 13px 16px;
+}
+.lmpPitchingChangeTeam {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0;
+  margin-bottom: 10px;
+}
+.lmpPitchingChangeTeam img {
+  width: 28px; height: 28px; flex: 0 0 28px; object-fit: contain;
+}
+.lmpPitchingChangeTeam strong {
+  color: var(--text); font-size: 12px; overflow-wrap: anywhere;
+}
+.lmpPitchingChangeInning {
+  color: var(--muted); font-size: 10px; font-weight: 800;
+  letter-spacing: .06em; margin-left: auto; white-space: nowrap;
+}
+.lmpPitchingChangePlayers {
+  display: grid; grid-template-columns: minmax(0,1fr) 24px minmax(0,1fr);
+  gap: 10px; align-items: center;
+}
+.lmpPitchingChangePlayers > div {
+  display: flex; flex-direction: column; gap: 5px; min-width: 0;
+}
+.lmpPitchingChangePlayers small {
+  color: var(--muted); font-size: 10px; letter-spacing: .08em; font-weight: 800;
+}
+.lmpPitchingChangePlayers strong {
+  color: var(--text); font-size: 13px; font-weight: 750;
+  line-height: 1.4; overflow-wrap: anywhere;
+}
+.lmpPitchingChangeArrow {
+  color: var(--accent); text-align: center; font-size: 18px;
+}
+.lmpPitchingChangesToggle {
+  display: block; width: 100%; margin-top: 12px; padding: 10px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: transparent; color: var(--text);
+  font-size: 12px; font-weight: 800; cursor: pointer;
+}
+.lmpPitchingChangesToggle:hover { border-color: var(--accent); }
+.lmpPitchingChangesToggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media(max-width: 760px) {
+  .lmpPitchingChange { padding: 12px; }
+  .lmpPitchingChangePlayers { gap: 6px; grid-template-columns: minmax(0,1fr) 18px minmax(0,1fr); }
+  .lmpPitchingChangePlayers strong { font-size: 12px; }
+  .lmpPitchingChangeTeam strong { font-size: 11px; }
+}
