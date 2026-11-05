@@ -80,49 +80,83 @@ function decodeEmbeddedArticle(html: string): string {
 }
 
 function relevantMovementsFromArticle(html: string, headingAliases: readonly string[]): string[] {
+  // Los artículos LMB contienen el boletín en el payload Next.js codificado:
+  // <p><span><strong><span>TABASCO</span></strong></span></p>
+  // seguido de <ul><li><span>Activa en roster a ...</span></li></ul>.
+  // El parser anterior solo admitía <p><strong>... inmediato y descartaba todo.
   const decoded = decodeEmbeddedArticle(html);
-  const headings = [...decoded.matchAll(/<p[^>]*>\s*<(?:strong|b)[^>]*>([^<]{1,150})<\/(?:strong|b)>\s*<\/p>/gi)];
-  const reports: string[] = [];
+  const headings = [...decoded.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .filter(m => /<strong\b/i.test(m[1]))
+    .map(m => ({
+      index: m.index!,
+      end: m.index! + m[0].length,
+      label: normalizeHeading(m[1]).replace(/\s*[–—-]\s*/g, " - ").replace(/\s+/g, " ").trim(),
+    }))
+    .filter(m => m.label.length >= 4 && m.label.length < 100 && /^[A-Z0-9 -]+$/.test(m.label));
+  const matches = new Set<string>();
+  const cleanAliases = headingAliases.map(a => normalizeHeading(a).replace(/\s+/g, " ").trim());
   for (let i = 0; i < headings.length; i++) {
-    const title = normalizeHeading(headings[i][1]);
-    // Solo encabezados de equipos expresamente autorizados por su configuración.
-    // Impide confundir equipos homónimos de LMB, LMP y softbol.
-    if (!headingAliases.some(alias => {
-      const normalized = normalizeHeading(alias);
-      const words = title.replace(/[^A-Z0-9]+/g, " ").trim();
-      return normalized.length > 2 && (" " + words + " ").includes(" " + normalized + " ");
-    })) continue;
-    const start = headings[i].index! + headings[i][0].length;
-    const end = headings[i + 1]?.index ?? Math.min(decoded.length, start + 6500);
-    const section = decoded.slice(start, Math.min(end, start + 6500));
-    const entries = [...section.matchAll(/<(?:li|p)\b[^>]*>([\s\S]*?)<\/(?:li|p)>/gi)];
-    for (const entry of entries) {
-      const text = stripTags(entry[1])
-        .replace(/\\+"?\s*$/, "")
-        .trim();
-      if (!text || text.length < 18 || text.length > 1500) continue;
-      // Omitir encabezados, notas y texto del pie de la página.
-      if (!/(?:activa|desactiva|alta|baja|ced[ei]|derechos|lista|roster|recibe|env[ií]a|coloca|club)/i.test(text)) continue;
-      if (!reports.includes(text)) reports.push(text);
+    const heading = headings[i];
+    const parts = heading.label.split(/\s+-\s+/);
+    if (!parts.some(part => cleanAliases.includes(part))) continue;
+    const end = headings[i + 1]?.index ?? Math.min(decoded.length, heading.end + 12000);
+    const section = decoded.slice(heading.end, Math.min(end, heading.end + 12000));
+    for (const match of section.matchAll(/<(li|p)\b[^>]*>([\s\S]*?)<\/\1>/gi)) {
+      const entry = stripTags(match[2]).replace(/\\[rn]\b/g, " ").trim();
+      if (entry.length < 18 || entry.length > 1200) continue;
+      if (!/(?:activa|desactiva|da de alta|da de baja|ced[ei]|derechos|lista|roster|recibe|env[ií]a|coloca|pr[eé]stamo|adquiere|contrata|registra|m[aá]nager|coach)/i.test(entry)) continue;
+      // No repetir el mismo anuncio en un boletín con contenido duplicado.
+      matches.add(entry);
     }
   }
-  return reports.slice(0, 8);
+  return [...matches].slice(0, 20);
 }
 
 function classification(text: string): string {
   if (/academia rookie/i.test(text)) return "Academia rookie";
-  if (/ced[ei]|cesi[oó]n|derechos/i.test(text)) return "Cesión de derechos";
+  if (/ced[ei]|cesi[oó]n|derechos|pr[eé]stamo/i.test(text)) return "Traspaso o derechos";
+  if (/lesionados/i.test(text)) return "Lista de lesionados";
+  if (/da de alta.*activ[a-zá]* en roster/i.test(text)) return "Alta y activación";
   if (/activa en roster/i.test(text)) return "Activación de roster";
-  if (/baja|desactiva/i.test(text)) return "Baja o desactivación";
-  if (/alta/i.test(text)) return "Alta de lista";
-  return "Movimiento oficial";
+  if (/desactiva/i.test(text)) return "Desactivación de roster";
+  if (/da de baja|waiver/i.test(text)) return "Baja de lista";
+  if (/da de alta|registra/i.test(text)) return "Alta de lista";
+  if (/m[aá]nager|coach|cuerpo t[eé]cnico/i.test(text)) return "Cuerpo técnico";
+  return "Operación oficial";
+}
+
+function operationTitle(text: string): string {
+  const clean = text.replace(/\([^)]{2,250}\)/g, " ")
+    .replace(/\s+/g, " ").replace(/^\*+/, "").trim();
+  const action = classification(text);
+  // La mayoría son operaciones en singular; usar nombre y dorsal reales.
+  const patterns = [
+    /^(?:activa en roster a|desactiva(?: de roster)? a|coloca a|da de baja(?: \(envía a waiver\))? a|da de alta (?:al agente libre |a ))\s*(.+)/i,
+    /^(?:el club\s+.+?\s+)?(?:cede|recibe)\s+(?:de manera definitiva\s+)?(?:los\s+)?derechos de\s+(.+)/i,
+  ];
+  let name = "";
+  for (const pattern of patterns) {
+    const m = clean.match(pattern);
+    if (m) { name = m[1]; break; }
+  }
+  if (!name) {
+    // En comunicados complejos mostramos una frase real, no un título genérico.
+    const words = clean.split(/\s+/);
+    return words.slice(0, 10).join(" ") + (words.length > 10 ? "…" : "");
+  }
+  name = name.split(/\s+(?:en su lista|de su lista|a su lista|procedente|al club|y lo activa|y la activa)\b/i)[0]
+    .replace(/\s*#\d{1,3}\s*$/, "").trim();
+  const words = name.split(/\s+/);
+  return action + ": " + words.slice(0, 8).join(" ") + (words.length > 8 ? "…" : "");
 }
 
 function shortExcerpt(text: string): string {
-  // No reproducir íntegro el comunicado oficial; el detalle queda en LMB.
-  const withoutBio = text.replace(/\([^)]{5,200}\)/g, "").replace(/\s+/g," ").trim();
-  const words = withoutBio.split(/\s+/);
-  return words.slice(0, 18).join(" ") + (words.length > 18 ? "…" : "");
+  const clean = text
+    .replace(/\([^)]{5,220}\)/g, "")
+    .replace(/\\[rn]\b/g, " ")
+    .replace(/\s+/g, " ").trim();
+  const words = clean.split(/\s+/);
+  return words.slice(0, 35).join(" ") + (words.length > 35 ? "…" : "");
 }
 
 async function officialHtml(url: string): Promise<string | null> {
@@ -174,20 +208,11 @@ export async function getLmbClubMovements(
     const source = await officialHtml(url);
     if (!source) return [];
     const excerpts = relevantMovementsFromArticle(source, config.headingAliases);
-    // Los enlaces del perfil oficial del club son evidencia de pertinencia;
-    // los boletines descubiertos por fecha exigen un encabezado del club.
-    if (excerpts.length === 0) {
-      return profileLinks.includes(url)
-        ? [{
-          date, type: "Movimiento oficial", title: "Movimiento publicado por LMB",
-          description: "La liga vinculó el comunicado a este club. Consulta el enlace para detalles.",
-          url, automatic: true,
-        }]
-        : [];
-    }
-    return excerpts.map((entry, index) => ({
+    // No inventar una operación cuando el cuerpo del boletín no pudo leerse.
+    if (excerpts.length === 0) return [];
+    return excerpts.map(entry => ({
       date, type: classification(entry),
-      title: "Movimiento de " + (config.clubName ?? "LMB") + (excerpts.length > 1 ? " · " + (index + 1) : ""),
+      title: operationTitle(entry),
       description: shortExcerpt(entry),
       url, automatic: true,
     }));
