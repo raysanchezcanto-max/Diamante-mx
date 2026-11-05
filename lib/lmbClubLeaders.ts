@@ -42,6 +42,7 @@ const HITTING_MIN_AB = 100;
 const PITCHING_MIN_IP = 30;
 
 const numberValue = (value: StatValue): number => {
+  if (value === null || value === undefined || value === "") return NaN;
   const numeric = typeof value === "number" ? value : Number(value);
   return Number.isFinite(numeric) ? numeric : NaN;
 };
@@ -50,7 +51,7 @@ const numberValue = (value: StatValue): number => {
 function innings(value: StatValue): number {
   if (value === undefined || value === null) return NaN;
   const raw = String(value);
-  const matched = raw.match(/^(\d+)(?:\\.([012]))?$/);
+  const matched = raw.match(/^(\d+)(?:\.([012]))?$/);
   if (!matched) return NaN;
   return Number(matched[1]) + Number(matched[2] ?? 0) / 3;
 }
