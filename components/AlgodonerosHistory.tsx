@@ -90,6 +90,39 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
         ))}
       </div>
 
+      <section className="clubHistoryHall" aria-labelledby="clubHistoryHallTitle">
+        <div className="clubHistoryHallHeader">
+          <div>
+            <span className="clubKicker">RECONOCIMIENTO OFICIAL</span>
+            <h3 id="clubHistoryHallTitle">Inmortales de la Máquina Guinda</h3>
+            <p>
+              Estas figuras tuvieron vínculo con Unión Laguna y están entronizadas
+              en el Salón de la Fama del Beisbol Mexicano. Su año de ingreso
+              está confirmado por el directorio oficial.
+            </p>
+          </div>
+          <a className="clubHistoryHallAll" href="/salon-de-la-fama?club=algodoneros">
+            Ver inmortales del club ↗
+          </a>
+        </div>
+        <div className="clubHistoryHallGrid">
+          {[
+            {name:"Martín Dihigo",year:1964,role:"Jugador-mánager · campeón 1942"},
+            {name:"Guillermo Garibay",year:1977,role:"Mánager · campeón 1950"},
+            {name:"Jesús Díaz",year:1979,role:"Jardinero · Novato del Año 1942"},
+            {name:"Antonio Pollorena",year:1991,role:"Lanzador · Unión Laguna"},
+          ].map(item=>(
+            <a className="clubHistoryHallMember" key={item.name}
+              href={"/salon-de-la-fama?club=algodoneros&persona="+encodeURIComponent(item.name)}>
+              <span className="clubHistoryHallMedal" aria-hidden="true">★</span>
+              <strong>{item.name}</strong>
+              <small>{item.role}</small>
+              <span>Entronizado {item.year} ↗</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
       <div className="clubHistoryOrigins">
         <div>
           <span className="clubKicker">EL HOGAR DE LA MÁQUINA GUINDA</span>

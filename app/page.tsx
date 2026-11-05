@@ -404,6 +404,7 @@ const daysUntilLmp =
           <a href="#juegos">Juegos</a>
           <a href="#posiciones">Posiciones</a>
           <a href="#lideres">Líderes</a>
+          <a href="/salon-de-la-fama">Salón de la Fama</a>
     
         </nav>
       </header>
