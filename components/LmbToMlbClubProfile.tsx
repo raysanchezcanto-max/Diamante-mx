@@ -78,7 +78,11 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
                 <h4>{player.name}</h4>
                 <span className="clubBigLeaguesProspectOrganization">{player.role} · {player.organization}</span>
                 <p>{player.note}</p>
-                <a href={player.source} target="_blank" rel="noopener noreferrer">Leer comunicado del club ↗</a>
+                <a href={player.source} target="_blank" rel="noopener noreferrer">Ver fuente documentada ↗</a>
+                {player.confirmationSource&&(
+                  <a href={player.confirmationSource} target="_blank" rel="noopener noreferrer"
+                    style={{display:"block",marginTop:7}}>Confirmar contrato en MiLB ↗</a>
+                )}
               </article>
             ))}
           </div>
