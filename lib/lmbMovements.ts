@@ -39,6 +39,15 @@ const MONTH_NAMES = Object.keys(MONTHS);
 const LINK_RE = /\/noticias\/lmb-movimientos-en-listas-de-reserva-\d{1,2}-de-[a-z]+-de-\d{4}(?:-\d+)?/gi;
 const TTL_SECONDS = 1800;
 
+// Boletines oficiales verificados que incluyen cesiones entre DOS clubes.
+// Se consultan en ambos perfiles para evitar que el cedente y receptor
+// muestren historias distintas cuando la ficha de uno no indexa el artículo.
+const VERIFIED_TRANSFER_BULLETINS = [
+  BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-1-de-octubre-de-2026",
+  BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-7-de-octubre-de-2026",
+  BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-13-de-junio-de-2026",
+];
+
 function movementDate(url: string): string | null {
   const m = url.match(/reserva-(\d{1,2})-de-([a-z]+)-de-(\d{4})(?:-\d+)?$/i);
   if (!m) return null;
@@ -262,7 +271,7 @@ export async function getLmbClubMovements(
   ]);
   const profileLinks = html ? linksFromOfficialProfile(html) : [];
   const newsLinks = newsIndex ? linksFromOfficialProfile(newsIndex) : [];
-  const candidates = [...new Set([...profileLinks, ...newsLinks, ...recentSlugs(now)])]
+  const candidates = [...new Set([...profileLinks, ...newsLinks, ...VERIFIED_TRANSFER_BULLETINS, ...recentSlugs(now)])]
     .filter(url => movementDate(url) !== null)
     .sort((a,b) => (movementDate(b) ?? "").localeCompare(movementDate(a) ?? ""))
     .slice(0, 24);
