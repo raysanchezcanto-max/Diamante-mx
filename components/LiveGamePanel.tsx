@@ -130,6 +130,14 @@ const finishedHalfLabel =
       : `Terminó la baja ${inning}.`
     : "Terminó el turno al bate.";
 
+// Conservar la rotulación anterior de MLB/LMB; en LMP el título será genérico.
+const playHistoryLabel =
+  normalizedInningState === "middle" && typeof inning === "number"
+    ? `JUGADAS DE LA ALTA ${inning}`
+    : normalizedInningState === "end" && typeof inning === "number"
+      ? `JUGADAS DE LA BAJA ${inning}`
+      : "JUGADAS DEL INNING";
+
 const battingTeam =
   formattedInningState === "ALTA"
     ? away
@@ -280,9 +288,11 @@ const battingTeam =
     {(lmpMode || plays.length > 0 || description) && (
       <div className="liveGamePlay">
         <small>
-          {lmpMode || plays.length > 0
+          {lmpMode
             ? "JUGADAS DEL INNING"
-            : "ÚLTIMA JUGADA"}
+            : plays.length > 0
+              ? playHistoryLabel
+              : "ÚLTIMA JUGADA"}
         </small>
 
         {lmpMode && isInningTransition ? (
