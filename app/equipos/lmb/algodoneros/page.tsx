@@ -7,6 +7,7 @@ import { getAlgodonerosNews, getAlgodonerosRoster } from "@/lib/lmbClubContent";
 import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
 import AlgodonerosHistory from "@/components/AlgodonerosHistory";
 import AlgodonerosGrandesLigas from "@/components/AlgodonerosGrandesLigas";
+import LmbClubTabs from "@/components/LmbClubTabs";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
   ALGODONEROS_OFFICIAL as club,
@@ -41,6 +42,8 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const movementsView = params?.vista === "movimientos";
   const historyView = params?.vista === "historia";
   const grandesLigasView = params?.vista === "grandes-ligas";
+  const currentView = rosterView ? "plantilla" : movementsView ? "movimientos"
+    : grandesLigasView ? "grandes-ligas" : historyView ? "historia" : "resumen";
   const [officialStandings, newsResult, rosterResult, movementResult] = await Promise.all([
     getLmbStandings(),
     !rosterView && !movementsView && !historyView && !grandesLigasView ? getAlgodonerosNews() : Promise.resolve(null),
@@ -100,13 +103,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
           </div>
         </div>
 
-        <nav className="clubProfileTabs" aria-label="Secciones del equipo">
-          <a href="/equipos/lmb/algodoneros" className={!rosterView && !movementsView && !historyView && !grandesLigasView ? "is-active":""} aria-current={!rosterView && !movementsView && !historyView && !grandesLigasView ? "page":undefined}>Resumen</a>
-          <a href="/equipos/lmb/algodoneros?vista=plantilla" className={rosterView ? "is-active":""} aria-current={rosterView ? "page":undefined}>Plantilla</a>
-          <a href="/equipos/lmb/algodoneros?vista=movimientos" className={movementsView ? "is-active":""} aria-current={movementsView ? "page":undefined}>Movimientos</a>
-          <a href="/equipos/lmb/algodoneros?vista=grandes-ligas" className={grandesLigasView ? "is-active":""} aria-current={grandesLigasView ? "page":undefined}>Grandes Ligas</a>
-          <a href="/equipos/lmb/algodoneros?vista=historia" className={historyView ? "is-active":""} aria-current={historyView ? "page":undefined}>Historia</a>
-        </nav>
+        <LmbClubTabs home="/equipos/lmb/algodoneros" clubName={club.name} currentView={currentView} />
 
         {rosterView ? (
           <section className="clubRosterContent" aria-label="Plantilla de Algodoneros">
