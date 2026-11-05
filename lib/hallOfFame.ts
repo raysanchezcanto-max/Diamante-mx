@@ -32,6 +32,15 @@ const aliasCorrections: Record<string,string> = {
 export const ALGODONEROS_HALL_KEYS = ["martindihigo","guillermogaribay","antoniopollorena","jesusdiaz"];
 export const HALL_VERIFIED_CLUBS:Record<string,string> = {
   algodoneros:"Algodoneros del Unión Laguna",
+  tecos:"Tecos de los Dos Laredos",
+  charros:"Charros de Jalisco",
+  rieleros:"Rieleros de Aguascalientes",
+  saraperos:"Saraperos de Saltillo",
+  sultanes:"Sultanes de Monterrey",
+  "el-aguila":"El Águila de Veracruz",
+  pericos:"Pericos de Puebla",
+  tigres:"Tigres de Quintana Roo",
+  dorados:"Dorados de Chihuahua",
   olmecas:"Olmecas de Tabasco",
   piratas:"Piratas de Campeche",
   leones:"Leones de Yucatán",
@@ -43,6 +52,15 @@ const HALL_VERIFIED_MEMBERS:Record<string,readonly string[]>={
   piratas:["franciscoestrada","herminiodominguez"],
   leones:["williamberzunza","juanjosepacho","mercedesesquer","corneliogarcia"],
   "diablos-rojos":["nelsonbarrera","joseluissandoval","alfredoharphelu"],
+  tecos:["andresmora"],
+  charros:["benjaminreyes","guillermogaribay"],
+  rieleros:["horaciopina","angelmoreno"],
+  saraperos:["miguelsolis","noemunoz","andresmora"],
+  sultanes:["hectorespino","lazarosalazar","andresmora"],
+  "el-aguila":["martindihigo","santosamaro"],
+  pericos:["miguelsotelo","ronniecamacho"],
+  tigres:["alejoperaltaydiazceballos","robertovizcarra","guillermogaribay"],
+  dorados:["oscarrobles"],
 };
 export function hallVerifiedClubs(name:string):string[]{
   const key=hallKey(name);
