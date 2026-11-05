@@ -291,26 +291,39 @@ const homePitcherLabel = !isPlayed || homeAwaitingLmpStarter ? "P. PROBABLE" :
   isFinal || homeHasReliever ? "ABRIÓ" : "ABRIDOR";
 
 
+// Durante LMP EN VIVO el score y la línea usan el mismo feed reciente
+// que alimenta SITUACIÓN DEL JUEGO; el resto conserva su fuente original.
+const liveLmpTotals =
+  league === "LMP" && isLive && playState &&
+  "lineScoreTotals" in playState
+    ? playState.lineScoreTotals
+    : undefined;
+const liveLmpLines =
+  league === "LMP" && isLive && playState &&
+  "inningLines" in playState && Array.isArray(playState.inningLines) &&
+  playState.inningLines.length > 0
+    ? playState.inningLines
+    : undefined;
+const awayRunsShown = liveLmpTotals?.away.runs ?? game.awayRuns;
+const homeRunsShown = liveLmpTotals?.home.runs ?? game.homeRuns;
+const liveLmpLineScore =
+  liveLmpTotals && liveLmpLines && gameExtras
+    ? { ...gameExtras, lines: liveLmpLines, totals: liveLmpTotals }
+    : gameExtras;
+
 const hasScore =
   specialStatus !== "POSPUESTO" &&
-  game.awayRuns !== undefined &&
-  game.homeRuns !== undefined;
-
+  awayRunsShown !== undefined &&
+  homeRunsShown !== undefined;
 
 const awayIsWinning =
-  hasScore &&
-  !specialStatus &&
-  game.awayRuns! > game.homeRuns!;
+  hasScore && !specialStatus && awayRunsShown! > homeRunsShown!;
 
 const homeIsWinning =
-  hasScore &&
-  !specialStatus &&
-  game.homeRuns! > game.awayRuns!;
-
+  hasScore && !specialStatus && homeRunsShown! > awayRunsShown!;
 
 const isTied =
-  hasScore &&
-  game.awayRuns === game.homeRuns;
+  hasScore && awayRunsShown === homeRunsShown;
 
   const date =
     formatGameDate(
@@ -488,7 +501,7 @@ const time =
         : "scoreTied"
   }`}
 >
-  {game.awayRuns}
+  {awayRunsShown}
 </strong>
             ) : null}
   
@@ -634,7 +647,7 @@ const time =
         : "scoreTied"
   }`}
 >
-  {game.homeRuns}
+  {homeRunsShown}
 </strong>
             ) : null}
   
@@ -693,10 +706,10 @@ const time =
       {/* Pizarra por entradas durante el juego y al finalizar. */}
       {(isLive || isFinal) && gameExtras && (
         <BaseballLineScoreCard
-          data={gameExtras}
+          data={liveLmpLineScore ?? gameExtras}
           away={awayDisplayName}
           home={homeDisplayName}
-          activeInning={isLive ? (game.inning ?? playState?.inning) : undefined}
+          activeInning={isLive ? (playState?.inning ?? game.inning) : undefined}
         />
       )}
 
