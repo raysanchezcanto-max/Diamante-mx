@@ -4518,6 +4518,13 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubMovementBody>img{flex-shrink:0;object-fit:contain}
 .clubMovementBody h3{margin:0 0 8px;font-size:18px}
 .clubMovementBody p{margin:0 0 12px;color:#b3c6b9;font-size:13px;line-height:1.55}
+.clubMovementDirection{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;
+  border-left:2px solid var(--accent);padding:5px 10px;
+  margin:0 0 14px;color:#d9e5df;font-size:12px;line-height:1.5
+}
+.clubMovementDirection span{color:#9eb9aa;font-size:10px;letter-spacing:.055em;font-weight:850}
+.clubMovementDirection strong{font-size:12px;font-weight:800}
 .clubMovementBody a{font-size:12px;color:var(--accent);font-weight:800}
 @media(max-width:600px){
  .clubMovementsContent .clubSectionTitle{align-items:flex-start}
