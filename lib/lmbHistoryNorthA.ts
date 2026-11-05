@@ -63,6 +63,7 @@ export const LMB_HISTORY_NORTH_A: Record<string, EditorialHistory> = {
   "acereros": {
     "intro": "El béisbol profesional llegó a Monclova en 1974; tras décadas de búsqueda y dos finales perdidas, la Furia Azul alcanzó su primera corona en la Serie del Rey de 2019.",
     "debutYear": "1974",
+    "debutLabel": "LMB EN MONCLOVA DESDE",
     "milestones": [
       {
         "year": "1974",
