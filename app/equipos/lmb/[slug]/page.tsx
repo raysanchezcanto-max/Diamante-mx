@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getLmbStandings } from "@/lib/lmb";
 import { getTeamLogo } from "@/lib/teamLogos";
 import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
-import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview } from "@/lib/lmbClubContent";
+import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview, getLmbClubVideos } from "@/lib/lmbClubContent";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
 import LmbToMlbClubProfile from "@/components/LmbToMlbClubProfile";
 import { lmbClubChampionships } from "@/lib/lmbClubHistory";
@@ -44,7 +44,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const club=getLmbClub(slug);
   if(!club)notFound();
   const view:View=views.some(v=>v.id===q?.vista)?(q?.vista as View):"resumen";
-  const [overview,standings,news,roster,movements,statLeaders]=await Promise.all([
+  const [overview,standings,news,roster,movements,statLeaders,videos]=await Promise.all([
     getLmbClubOverview(club.slug),
     view==="resumen"?getLmbStandings():Promise.resolve([]),
     view==="resumen"?getLmbClubNews(club.slug):Promise.resolve(null),
@@ -56,6 +56,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
       archive:[],
     }):Promise.resolve(null),
     view==="resumen"?getLmbClubStatLeaders(club.slug):Promise.resolve(null),
+    view==="resumen"?getLmbClubVideos(club.slug):Promise.resolve(null),
   ]);
   const logo=getTeamLogo("LMB",0,club.name);
   const home="/equipos/lmb/"+club.slug;
@@ -178,20 +179,35 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     Ver catálogo LMB ↗
                   </a>
                 </div>
-                <div className="clubVideoGrid">
-                  <a className="clubVideoCard" href="https://lmb.com.mx/videos"
-                    target="_blank" rel="noopener noreferrer">
-                    <div className="clubVideoPoster">
-                      {logo&&<img src={logo} alt="" width={70} height={70}/>}
-                      <span aria-hidden="true">▶</span>
-                      <small>CATÁLOGO LMB</small>
-                    </div>
-                    <strong>Explorar videos oficiales de la Liga Mexicana de Beisbol</strong>
-                  </a>
-                </div>
+                {videos?.videos.length ? (
+                  <div className="clubVideoGrid">
+                    {videos.videos.map((video,i)=>(
+                      <a className="clubVideoCard" href={video.url}
+                        target="_blank" rel="noopener noreferrer" key={video.url}>
+                        <div className={"clubVideoPoster"+(video.imageUrl?" clubVideoPoster--clip":"")}>
+                          {video.imageUrl ? (
+                            <img src={video.imageUrl} alt="" className="clubVideoThumbnail" loading="lazy"/>
+                          ) : logo ? (
+                            <img src={logo} alt="" width={70} height={70}/>
+                          ) : null}
+                          <span aria-hidden="true">▶</span>
+                          <small>CLIP {i+1}</small>
+                        </div>
+                        <strong>{video.title}</strong>
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="clubDirectoryNotice">
+                    <p>LMB no devolvió clips identificados para {club.name} en la consulta actual.</p>
+                    <a href="https://lmb.com.mx/videos" target="_blank" rel="noopener noreferrer">
+                      Explorar catálogo oficial LMB ↗
+                    </a>
+                  </div>
+                )}
                 <p className="clubSmallNote">
-                  El catálogo es general de LMB. No atribuimos clips a {club.name} sin
-                  una identificación verificable del partido o del equipo.
+                  Clips que la LMB publica en la ficha oficial de {club.name}.
+                  La selección puede cambiar; la reproducción se realiza en LMB.
                 </p>
               </section>
             </div>
