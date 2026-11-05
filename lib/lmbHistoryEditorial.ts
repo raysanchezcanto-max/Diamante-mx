@@ -12,6 +12,8 @@ export type EditorialHistory={
   // Diferenciar fundación, primera participación y regreso cuando corresponde.
   debutLabel?:string;
   stadiumOpened?:string;
+  // Nota específica para equipos con dos estadios o una apertura que requiere contexto.
+  stadiumOpenedNote?:string;
   stadiumSource?:string;
   milestones:readonly HistoryMilestone[];
   legends:readonly HistoryLegend[];
@@ -27,6 +29,7 @@ const source={
   olmecas2026:"https://torosdetijuana.com/index.php/toros-de-tijuana-es-campeon-de-la-liga-mexicana-de-beisbol-banorte/2026/09/",
   hall:"https://www.salondelafamadelbeisbolmexicano.com/inmortales-por-orden-alfabetico",
   piratas:"https://www.milb.com/news/gcs-8024694",
+  piratasStadium:"https://www.milb.com/news/gcs-18828262",
   diabloOrigins:"https://www.diablos.com.mx/pdf/folleto-informativo.pdf",
   diabloPark:"https://www.diablos.com.mx/noticias/1er-aniversario-del-estadio-alfredo-harp-helu",
   diabloSandoval:"https://www.milb.com/news/diablos-rojos-jose-luis-sandoval-ingresa-al-salon-de-la-fama",
@@ -72,7 +75,7 @@ export const LMB_EDITORIAL_HISTORY:Record<string,EditorialHistory>={
   },
   piratas:{
     intro:"Desde su llegada a la Ciudad de las Murallas en 1980, los Piratas han escrito episodios de campeonatos y grandes hazañas desde la loma de pitcheo.",
-    debutYear:"1980",
+    debutYear:"1980",stadiumOpened:"2001",stadiumSource:source.piratasStadium,
     milestones:[
       {year:"1980",title:"La franquicia llega a Campeche",description:"Álvaro Lebrija trasladó la franquicia de Alacranes de Durango a Campeche, donde nacieron los Piratas.",url:source.piratas},
       {year:"1983",title:"Primera corona corsaria",description:"Los Piratas conquistaron su primer campeonato de LMB, dirigidos por Francisco «Paquín» Estrada.",url:source.piratas},
