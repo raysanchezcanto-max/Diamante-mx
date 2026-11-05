@@ -302,7 +302,11 @@ const liveLmpLines =
   league === "LMP" && isLive && playState &&
   "inningLines" in playState && Array.isArray(playState.inningLines) &&
   playState.inningLines.length > 0
-    ? playState.inningLines
+    ? playState.inningLines.map((line) => ({
+        number: line.inning,
+        away: line.away,
+        home: line.home,
+      }))
     : undefined;
 const awayRunsShown = liveLmpTotals?.away.runs ?? game.awayRuns;
 const homeRunsShown = liveLmpTotals?.home.runs ?? game.homeRuns;
