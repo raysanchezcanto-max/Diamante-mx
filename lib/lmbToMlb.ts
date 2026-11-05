@@ -1,3 +1,5 @@
+import { LMB_TO_MLB_DOCUMENTED } from "./lmbToMlbDocumented";
+
 // Vínculos documentados del sistema de desarrollo de clubes LMB hacia
 // organizaciones de Major League Baseball (incluidas sus sucursales).
 // Una firma de Ligas Menores NO acredita debut en la MLB.
@@ -77,6 +79,12 @@ const documented: Record<string,LmbToMlbClub> = {
     ],
   },
 };
+// Mantener la ficha Olmecas ya investigada; agregar nuevas fichas sin
+// atribuir resultados de clubes distintos ni inventar debuts.
+const complete: Record<string,LmbToMlbClub> = {
+  ...documented,
+  ...LMB_TO_MLB_DOCUMENTED,
+};
 export function getLmbToMlbClub(slug:string):LmbToMlbClub|null{
-  return documented[slug]??null;
+  return complete[slug]??null;
 }
