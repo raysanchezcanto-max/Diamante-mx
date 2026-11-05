@@ -791,3 +791,9 @@
 - **Tarjetas:** `components/Games.tsx` calcula `hasDecisiveScore` para juegos `Live` o `Final` con carreras numéricas distintas, excluye `specialStatus` y calentamiento; pone en lima el **nombre y carreras** del equipo que va ganando y en gris las carreras del otro equipo. Nombres de rivales sin ventaja, empate, Preview, calentamiento y estados especiales no reciben color de ganador. Se aplica a tarjetas regulares LMP/LMB/MLB sin modificar nombres, resultados ni fuente.
 - **Commits:** `a5ef502` (detalle), `edc11f0` (tarjetas). Ambos deployments Vercel Production **READY**; el segundo `dpl_7HtEXXH4GeVhvxzk3DYefZa8wWTF` incluye ambos cambios.
 - **Verificación pendiente:** captura de la usuaria en producción para detalle LMP en vivo (estadio sin inning central, tabla arriba) y marcadores LMP en juego con ventaja/empate. READY confirma build, no la inspección visual ni la frescura del feed.
+
+## 71. Ganador resaltado solo en marcador (4/nov/2026)
+
+- Ajuste visual aprobado a partir de captura LMP: los nombres de ambos equipos en las tarjetas principales permanecen con su color normal; **solo el número de carreras del equipo que lleva ventaja** se muestra en lima. El número del perdedor permanece gris; empates sin ventaja, y estados Preview/calentamiento/especiales conservan la lógica anterior.
+- Archivo: `components/Games.tsx`. Se retiraron únicamente los estilos condicionales `awayLeading/homeLeading` del texto del equipo, sin modificar el cálculo de ventaja ni los estilos de resultados.
+- Commit: `6ea351c`. Pendiente comprobar despliegue READY y captura visual.
