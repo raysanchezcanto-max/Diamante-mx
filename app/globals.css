@@ -4868,3 +4868,24 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
  .clubDirectoryMlb .clubDirectoryVeterans{grid-template-columns:minmax(0,1fr)}
  .clubDirectoryTitleYears{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+
+/* 67 · Historias editoriales y movimientos legibles para cada club LMB. */
+.clubProfile .clubMovementDate{text-transform:none}
+.clubProfile--all .clubMovementBody>img{
+  width:55px;height:55px;object-fit:contain;flex:0 0 55px;
+  background:#e9efe7;border-radius:12px;padding:7px;
+}
+.clubProfile--all .clubHistoryStats>div{min-width:0}
+.clubProfile--all .clubHistoryStats strong{overflow-wrap:anywhere}
+.clubProfile--all .clubHistoryChampionCard>strong{font-size:clamp(39px,5vw,65px)}
+.clubProfile--all .clubHistoryChampionCard{min-height:205px}
+.clubProfile--all .clubHistoryIntro{line-height:1.6}
+.clubProfile--all .clubHistoryTimelineBody h4{line-height:1.35}
+.clubProfile--all .clubHistoryHallHeader a{color:#e1ff65}
+@media(max-width:650px){
+ .clubProfile--all .clubHistoryHeading h2{font-size:27px}
+ .clubProfile--all .clubHistoryStats strong{font-size:clamp(16px,5vw,30px)}
+ .clubProfile--all .clubHistoryChampionCard>strong{font-size:45px}
+ .clubProfile--all .clubHistorySources>div{display:grid}
+}

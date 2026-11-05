@@ -11,6 +11,7 @@ export type HallInductee = {
   year: number;
   activity: string;
   algodoneros: boolean;
+  clubs: readonly string[];
 };
 export type HallResult = {
   inductees: HallInductee[];
@@ -29,6 +30,26 @@ const aliasCorrections: Record<string,string> = {
   "robertoavila":"Roberto Ávila",
 };
 export const ALGODONEROS_HALL_KEYS = ["martindihigo","guillermogaribay","antoniopollorena","jesusdiaz"];
+export const HALL_VERIFIED_CLUBS:Record<string,string> = {
+  algodoneros:"Algodoneros del Unión Laguna",
+  olmecas:"Olmecas de Tabasco",
+  piratas:"Piratas de Campeche",
+  leones:"Leones de Yucatán",
+  "diablos-rojos":"Diablos Rojos del México",
+};
+const HALL_VERIFIED_MEMBERS:Record<string,readonly string[]>={
+  algodoneros:["martindihigo","guillermogaribay","antoniopollorena","jesusdiaz"],
+  olmecas:["juannavarrete","salvadorcolorado","cecilioruiz"],
+  piratas:["franciscoestrada","herminiodominguez"],
+  leones:["williamberzunza","juanjosepacho","mercedesesquer","corneliogarcia"],
+  "diablos-rojos":["nelsonbarrera","joseluissandoval","alfredoharphelu"],
+};
+export function hallVerifiedClubs(name:string):string[]{
+  const key=hallKey(name);
+  return Object.entries(HALL_VERIFIED_MEMBERS)
+    .filter(([,names])=>names.includes(key)).map(([club])=>club);
+}
+
 export const ALGODONEROS_HALL_DETAILS: Record<string,{relation:string;highlight:string}> = {
   martindihigo: {relation:"Jugador-mánager · campeón 1942",highlight:"Condujo a Unión Laguna al primer campeonato de la LMB en 1942."},
   guillermogaribay: {relation:"Mánager · campeón 1950",highlight:"Dirigió a Algodoneros a su segunda corona de LMB, en 1950."},
@@ -77,7 +98,7 @@ export function parseHallAlphabetical(html:string):HallInductee[]{
     const name=entry[1].trim();
     const key=hallKey(name);
     if(!key||found.has(key))continue;
-    found.set(key,{name:aliasCorrections[key]??name,year,activity:"Sin clasificar",algodoneros:ALGODONEROS_HALL_KEYS.includes(key)});
+    found.set(key,{name:aliasCorrections[key]??name,year,activity:"Sin clasificar",algodoneros:ALGODONEROS_HALL_KEYS.includes(key),clubs:hallVerifiedClubs(name)});
   }
   return [...found.values()].sort((a,b)=>a.name.localeCompare(b.name,"es"));
 }
@@ -135,8 +156,14 @@ const fallback:HallInductee[]=[
   ["Alfredo Harp Helú",2023,"Directivos"],["Antonio Delfín “Lañiza”",1939,"Lanzadores"],
   ["Lucas Juárez",1939,"Lanzadores"],["Teodoro Higuera",2011,"Lanzadores"],
   ["Jorge Orta",1996,"Segunda base"],["Andrés Mora",2003,"Jardineros"],
+  ["Juan Navarrete",1998,"Segunda base"],["Cecilio Ruiz",2024,"Lanzadores"],
+  ["Salvador Colorado",2009,"Lanzadores"],["Francisco Estrada",2000,"Receptores"],
+  ["Herminio Domínguez",2005,"Lanzadores"],["William Berzunza",1995,"Jardineros"],
+  ["Juan José Pacho",2009,"Parador en corto"],["Mercedes Esquer",2011,"Lanzadores"],
+  ["Cornelio García",2013,"Jardineros"],["Nelson Barrera",2003,"Tercera base"],
+  ["José Luis Sandoval",2020,"Parador en corto"],
   ["Matías Carrillo",2020,"Jardineros"],["Aurelio López",1993,"Lanzadores"],
-].map(([name,year,activity])=>({name:String(name),year:Number(year),activity:String(activity),algodoneros:ALGODONEROS_HALL_KEYS.includes(hallKey(String(name)))}))
+].map(([name,year,activity])=>({name:String(name),year:Number(year),activity:String(activity),algodoneros:ALGODONEROS_HALL_KEYS.includes(hallKey(String(name))),clubs:hallVerifiedClubs(String(name))}))
 .sort((a,b)=>a.name.localeCompare(b.name,"es"));
 
 async function fetchPage(url:string):Promise<string|null>{

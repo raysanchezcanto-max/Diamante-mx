@@ -6,7 +6,8 @@ import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
 import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview } from "@/lib/lmbClubContent";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
 import { getLmbMlbVeterans } from "@/lib/lmbMlbVeterans";
-import { LMB_CHAMPIONSHIP_SOURCE, lmbClubChampionships } from "@/lib/lmbClubHistory";
+import { lmbClubChampionships } from "@/lib/lmbClubHistory";
+import LmbClubEditorialHistory from "@/components/LmbClubEditorialHistory";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 
 export const revalidate = 1800;
@@ -268,47 +269,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         )}
 
         {view==="historia"&&(
-          <section className="clubDirectoryHistory">
-            <div className="clubDirectorySectionHero">
-              <span className="clubKicker">LEGADO · LIGA MEXICANA DE BEISBOL</span>
-              <h2>La historia de {club.name}</h2>
-              <p>Un recorrido por su palmarés y su presencia en la liga. Esta ficha reúne únicamente datos históricos con fuente verificable; las biografías y cronologías específicas se incorporarán conforme se documenten.</p>
-            </div>
-            <div className="clubHistoryStats">
-              <div><span>CAMPEONATOS LMB</span><strong>{String(titleYears.years.length).padStart(2,"0")}</strong><small>Historial hasta 2026</small></div>
-              <div><span>ZONA</span><strong>{club.region}</strong><small>LMB</small></div>
-              <div><span>ESTADIO ACTUAL</span><strong className="clubDirectoryStadiumText">{overview.stadium??"—"}</strong><small>Según ficha de LMB</small></div>
-            </div>
-            <div className="clubHistorySectionHead"><div><span className="clubKicker">LAS CORONAS DEL CLUB</span><h3>Campeonatos documentados</h3></div></div>
-            {titleYears.years.length?(
-              <div className="clubDirectoryTitleYears">
-                {titleYears.years.map(year=>(
-                  <span className="clubDirectoryTitleYear" key={year}><span aria-hidden="true">★</span><strong>{year}</strong><small>CAMPEÓN LMB</small></span>
-                ))}
-              </div>
-            ):<div className="clubDirectoryNotice"><p>El club no registra campeonatos de la LMB en el historial consultado hasta 2026.</p></div>}
-            {titleYears.note&&<p className="clubSmallNote">{titleYears.note}</p>}
-            <p className="clubSmallNote">Fuente histórica: <a href={LMB_CHAMPIONSHIP_SOURCE} target="_blank" rel="noopener noreferrer">Historial de campeones de LMB ↗</a></p>
-            <div className="clubDirectoryHistoryGrid">
-              <article className="clubDirectoryHistoryPanel">
-                <span className="clubKicker">SEDE DEL EQUIPO</span>
-                <h3>{overview.stadium??"Estadio del club"}</h3>
-                <p>{overview.capacity?"Capacidad publicada por LMB: "+overview.capacity.toLocaleString("es-MX")+" espectadores.":"Consulta la ficha oficial de la liga para conocer el recinto y su aforo."}</p>
-                <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Conocer la sede en LMB ↗</a>
-              </article>
-              <article className="clubDirectoryHistoryPanel">
-                <span className="clubKicker">MEMORIA DEL BEISBOL MEXICANO</span>
-                <h3>Salón de la Fama</h3>
-                <p>El Salón reúne a las figuras oficialmente entronizadas del béisbol mexicano. Los vínculos individuales con este club se verificarán antes de habilitar un filtro específico.</p>
-                <a href="/salon-de-la-fama">Explorar inmortales ↗</a>
-              </article>
-            </div>
-            <div className="clubDirectoryNotice">
-              <h3>Leyendas y momentos históricos</h3>
-              <p>Para proteger la precisión de Diamante MX, esta sección no atribuye jugadores históricos, fechas de fundación ni premios que aún no estén documentados para el club. La ficha de Algodoneros conserva su cronología y leyendas ya verificadas.</p>
-              {overview.website&&<a href={overview.website} target="_blank" rel="noopener noreferrer">Consultar archivo del club ↗</a>}
-            </div>
-          </section>
+          <LmbClubEditorialHistory club={club} overview={overview} logo={logo}/>
         )}
       </div>
     </main>

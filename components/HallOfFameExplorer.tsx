@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import {
   ALGODONEROS_HALL_DETAILS,
   HALL_FEATURED,
+  HALL_VERIFIED_CLUBS,
   HALL_OFFICIAL_ACTIVITY,
   HALL_OFFICIAL_DIRECTORY,
   hallKey,
@@ -30,7 +31,7 @@ export default function HallOfFameExplorer({
   records,sourceStatus,activitiesVerified,initialClub="",initialPerson=""
 }:Props){
   const [query,setQuery]=useState(initialPerson);
-  const [club,setClub]=useState(initialClub==="algodoneros"?"algodoneros":"todos");
+  const [club,setClub]=useState(Object.prototype.hasOwnProperty.call(HALL_VERIFIED_CLUBS,initialClub)?initialClub:"todos");
   const [activity,setActivity]=useState("todos");
   const [year,setYear]=useState("todos");
   const [limit,setLimit]=useState(PAGE_SIZE);
@@ -41,7 +42,7 @@ export default function HallOfFameExplorer({
     const term=searchKey(query);
     return records.filter(p=>(
       (!term||searchKey(p.name).includes(term)) &&
-      (club==="todos"||p.algodoneros) &&
+      (club==="todos"||p.clubs.includes(club)) &&
       (activity==="todos"||p.activity===activity) &&
       (year==="todos"||String(p.year)===year)
     ));
@@ -115,7 +116,9 @@ export default function HallOfFameExplorer({
             <span>Vínculo con un club</span>
             <select value={club} onChange={e=>updateFilters(()=>setClub(e.target.value))}>
               <option value="todos">Todos los inmortales</option>
-              <option value="algodoneros">Algodoneros del Unión Laguna</option>
+              {Object.entries(HALL_VERIFIED_CLUBS).map(([slug,name])=>(
+                <option value={slug} key={slug}>{name}</option>
+              ))}
             </select>
           </label>
           <label>
@@ -136,7 +139,7 @@ export default function HallOfFameExplorer({
 
         <div className="hallResultsHeading">
           <p><strong>{filtered.length}</strong> {filtered.length===1?"registro encontrado":"registros encontrados"}
-            {club==="algodoneros"?" · Relación con Unión Laguna verificada":""}</p>
+            {club!=="todos"?" · Relación con "+HALL_VERIFIED_CLUBS[club]+" verificada":""}</p>
           {Boolean(isNarrowed)&&<button type="button" onClick={reset}>Limpiar filtros</button>}
         </div>
         {filtered.length?(
@@ -157,7 +160,9 @@ export default function HallOfFameExplorer({
                     </span>
                     <strong>{person.name}</strong>
                     <span className="hallMemberRole">{person.activity}</span>
-                    {person.algodoneros&&<span className="hallClubTag">Algodoneros · Unión Laguna</span>}
+                    {person.clubs.map(slug=>(
+                      <span className="hallClubTag" key={slug}>{HALL_VERIFIED_CLUBS[slug]}</span>
+                    ))}
                     <span className="hallMemberMore">{open?"Ocultar ficha −":"Ver ficha +"} </span>
                   </button>
                   {open&&(

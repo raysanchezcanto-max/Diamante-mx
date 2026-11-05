@@ -115,11 +115,11 @@ function relevantMovementsFromArticle(html: string, headingAliases: readonly str
 function classification(text: string): string {
   if (/academia rookie/i.test(text)) return "Academia rookie";
   if (/ced[ei]|cesi[oó]n|derechos|pr[eé]stamo/i.test(text)) return "Traspaso o derechos";
+  if (/da de baja|waiver/i.test(text)) return "Baja de lista";
   if (/lesionados/i.test(text)) return "Lista de lesionados";
   if (/da de alta.*activ[a-zá]* en roster/i.test(text)) return "Alta y activación";
   if (/activa en roster/i.test(text)) return "Activación de roster";
   if (/desactiva/i.test(text)) return "Desactivación de roster";
-  if (/da de baja|waiver/i.test(text)) return "Baja de lista";
   if (/da de alta|registra/i.test(text)) return "Alta de lista";
   if (/m[aá]nager|coach|cuerpo t[eé]cnico/i.test(text)) return "Cuerpo técnico";
   return "Operación oficial";
@@ -145,14 +145,13 @@ function operationTitle(text: string): string {
     return words.slice(0, 10).join(" ") + (words.length > 10 ? "…" : "");
   }
   name = name.split(/\s+(?:en su lista|de su lista|a su lista|procedente|al club|y lo activa|y la activa)\b/i)[0]
-    .replace(/\s*#\d{1,3}\s*$/, "").trim();
+    .replace(/\s*#\d{1,3}\b/g, "").replace(/[.,;]+\s*$/g, "").trim();
   const words = name.split(/\s+/);
   return action + ": " + words.slice(0, 8).join(" ") + (words.length > 8 ? "…" : "");
 }
 
 function shortExcerpt(text: string): string {
   const clean = text
-    .replace(/\([^)]{5,220}\)/g, "")
     .replace(/\\[rn]\b/g, " ")
     .replace(/\s+/g, " ").trim();
   const words = clean.split(/\s+/);
