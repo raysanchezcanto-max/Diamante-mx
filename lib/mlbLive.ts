@@ -337,7 +337,8 @@ text = text.replace(
     );
 }
 export async function getMlbPlayState(
-  gameId: number
+  gameId: number,
+  league: "MLB" | "LMP" = "MLB"
 ): Promise<MlbPlayState | null> {
   try {
     const response = await fetch(
@@ -478,12 +479,20 @@ const currentInning =
     currentPlay?.about?.inning ??
     0
   );
+const inningPhase = String(
+  linescore?.inningState ??
+  currentPlay?.about?.halfInning ??
+  ""
+).toLowerCase();
+
+// Middle/End describen cambios de entrada; los eventos usan top/bottom.
+// Solo la LMP usa esta normalización: MLB conserva el comportamiento anterior.
 const currentHalf =
-  String(
-    linescore?.inningState ??
-    currentPlay?.about?.halfInning ??
-    ""
-  ).toLowerCase();
+  league === "LMP" && inningPhase === "middle"
+    ? "top"
+    : league === "LMP" && inningPhase === "end"
+      ? "bottom"
+      : inningPhase;
 
 const rawInningPlays =
   (
