@@ -4590,6 +4590,8 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHistoryStadiumMark{border:1px solid #476951;border-radius:12px;min-height:143px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
 .clubHistoryStadiumMark span{color:#adbdab;font-size:11px;letter-spacing:.15em;font-weight:900}
 .clubHistoryStadiumMark strong{font-size:43px;color:#e1ff65}
+.clubHistoryStadiumMark--multi strong{font-size:clamp(19px,2.2vw,27px);letter-spacing:-.03em;white-space:nowrap}
+.clubHistoryStadiumMark--multi span{letter-spacing:.09em}
 .clubHistorySources{border-top:1px solid #2c4938;padding-top:22px}
 .clubHistorySources p{font-size:12px;color:#a6bbac;line-height:1.6;max-width:820px}
 .clubHistorySources>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
