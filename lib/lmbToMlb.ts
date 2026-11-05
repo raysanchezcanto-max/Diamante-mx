@@ -10,6 +10,8 @@ export type LmbToMlbProspect = {
   seasonLabel: string;
   note: string;
   source: string;
+  // En casos que requieren distinguir el vínculo con LMB del contrato MLB.
+  confirmationSource?: string;
   initials: string;
 };
 export type LmbToMlbExport = {
