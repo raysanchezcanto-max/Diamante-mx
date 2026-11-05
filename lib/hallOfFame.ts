@@ -41,6 +41,7 @@ export const HALL_VERIFIED_CLUBS:Record<string,string> = {
   pericos:"Pericos de Puebla",
   tigres:"Tigres de Quintana Roo",
   dorados:"Dorados de Chihuahua",
+  toros:"Toros de Tijuana",
   olmecas:"Olmecas de Tabasco",
   piratas:"Piratas de Campeche",
   leones:"Leones de Yucatán",
@@ -61,6 +62,7 @@ const HALL_VERIFIED_MEMBERS:Record<string,readonly string[]>={
   pericos:["miguelsotelo","ronniecamacho"],
   tigres:["alejoperaltaydiazceballos","robertovizcarra","guillermogaribay"],
   dorados:["oscarrobles"],
+  toros:["vicenteromo","alonsotellez","isidromarquez"],
 };
 export function hallVerifiedClubs(name:string):string[]{
   const key=hallKey(name);
