@@ -157,8 +157,11 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
        ? editorial.stadiumOpenedNote
          ?? "El recinto abrió sus puertas en "+editorial.stadiumOpened+" y forma parte de la tradición deportiva del club. "
        : "Este es el estadio que la Liga Mexicana identifica actualmente como casa del equipo. "}
-       {overview.capacity?" Capacidad actual informada por LMB: "+overview.capacity.toLocaleString("es-MX")+" espectadores.":""}</p>
+       {overview.capacity?" Capacidad actual informada por LMB: "+overview.capacity.toLocaleString("es-MX")+" espectadores.":
+          overview.capacityDetail?" Capacidades aproximadas de las dos sedes: "+overview.capacityDetail+".":""}</p>
      <a href={editorial?.stadiumSource??"https://lmb.com.mx/equipos/"+club.slug} target="_blank" rel="noopener noreferrer">Conocer el estadio ↗</a>
+      {overview.capacitySource&&<a href={overview.capacitySource} target="_blank" rel="noopener noreferrer"
+        style={{display:"block",marginTop:8}}>Consultar capacidades de las sedes ↗</a>}
     </div>
     <div className={"clubHistoryStadiumMark"+(editorial?.stadiumOpenedNote?" clubHistoryStadiumMark--multi":"")} aria-hidden="true">
       <span>{editorial?.stadiumOpenedNote?"ESTADIOS":"ESTADIO"}</span>
