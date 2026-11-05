@@ -683,6 +683,7 @@ const time =
       {isLive && (
         playState ? (
           <LiveGamePanel
+            lmpMode={league === "LMP"}
             inning={playState.inning ?? game.inning}
             inningState={playState.inningState ?? game.inningState}
             away={awayDisplayName}
