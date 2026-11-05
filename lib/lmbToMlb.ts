@@ -12,6 +12,8 @@ export type LmbToMlbProspect = {
   source: string;
   // En casos que requieren distinguir el vínculo con LMB del contrato MLB.
   confirmationSource?: string;
+  // Debut previo al paso por LMB: una nueva firma no es un debut posterior.
+  priorMlbDebut?: string;
   initials: string;
 };
 export type LmbToMlbExport = {
