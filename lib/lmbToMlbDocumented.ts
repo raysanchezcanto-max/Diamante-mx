@@ -3,6 +3,7 @@
 import type { LmbToMlbClub } from "./lmbToMlb";
 
 export const LMB_TO_MLB_DOCUMENTED: Record<string, LmbToMlbClub> =
+
 {
   "tecos": {
     "abbreviation": "LMB",
@@ -380,5 +381,23 @@ export const LMB_TO_MLB_DOCUMENTED: Record<string, LmbToMlbClub> =
     ],
     "debuts": [],
     "source": "https://www.milb.com/news/bravos-bryan-lara-es-historica-firma-de-la-academia-bravos-code-para-dodgers"
+  },
+  "caliente": {
+    "abbreviation": "LMB",
+    "intro": "Una firma documentada de un prospecto vinculado al desarrollo de Caliente de Durango hacia una organización de MLB. El vínculo de cantera y el contrato de Ligas Menores se corroboran por fuentes independientes.",
+    "prospects": [
+      {
+        "name": "Juan Márquez",
+        "role": "Lanzador derecho",
+        "organization": "Minnesota Twins",
+        "seasonLabel": "2025",
+        "note": "Prensa de Monclova lo identifica como prospecto de las sucursales de Caliente de Durango. El registro de MiLB confirma que Minnesota le otorgó un contrato de Ligas Menores el 19 de agosto de 2025; jugó en DSL Twins en 2026. No se registra un debut en MLB.",
+        "source": "https://www.zocalo.com.mx/firma-victor-huerta-con-caliente-de-durango/",
+        "confirmationSource": "https://www.milb.com/player/juan-marquez-836435",
+        "initials": "JM"
+      }
+    ],
+    "debuts": [],
+    "source": "https://www.zocalo.com.mx/firma-victor-huerta-con-caliente-de-durango/"
   }
 };
