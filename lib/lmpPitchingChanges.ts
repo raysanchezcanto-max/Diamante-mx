@@ -8,6 +8,8 @@ export type LmpPitchingChange = {
   half: "ALTA" | "BAJA";
   outName: string;
   inName: string;
+  outId?: number;
+  inId?: number;
 };
 
 type Pitcher = { id: number; name: string };
@@ -40,6 +42,28 @@ export function getLmpPitchingChanges(allPlays: unknown): LmpPitchingChange[] {
   const seenIncoming = new Set<string>();
   const previous: Partial<Record<Side, Pitcher>> = {};
 
+  // Resolver los IDs solamente a partir de pitchers que efectivamente
+  // lanzaron para ese equipo en el mismo juego, no por coincidencia global
+  // de nombres ni por probables.
+  const idsByTeam: Record<Side, Map<string, number>> = {
+    away: new Map(),
+    home: new Map(),
+  };
+  for (const rawPlay of allPlays) {
+    const item = rawPlay as any;
+    const half = text(item?.about?.halfInning).toLowerCase();
+    const side: Side | null =
+      half === "top" ? "home" : half === "bottom" ? "away" : null;
+    const pitcher = item?.matchup?.pitcher;
+    const id = pitcher?.id;
+    const name = text(pitcher?.fullName);
+    const pitched = Array.isArray(item?.playEvents) &&
+      item.playEvents.some((event: any) => event?.isPitch === true);
+    if (side && pitched && Number.isSafeInteger(id) && id > 0 && name) {
+      idsByTeam[side].set(normalizedName(name), id);
+    }
+  }
+
   const add = (
     side: Side, inning: number, half: "ALTA" | "BAJA",
     outName: string, inName: string
@@ -56,6 +80,8 @@ export function getLmpPitchingChanges(allPlays: unknown): LmpPitchingChange[] {
     changes.push({
       id: `${side}-${inning}-${normalizedName(inName)}`,
       side, inning, half, outName, inName,
+      outId: idsByTeam[side].get(normalizedName(outName)),
+      inId: idsByTeam[side].get(normalizedName(inName)),
     });
   };
 
