@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { lmbClubHref } from "@/lib/lmbClubs";
 import type { Game, Standing } from "@/lib/mlb";
 import {
@@ -76,6 +76,36 @@ type Team = {
 const clean = (name: string) => name.normalize("NFD")
   .replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 
+// Corrección óptica exclusiva de la franja LMB: misma caja y escala por club.
+// Los valores compensan siluetas y espacios transparentes, no alteran
+// los escudos usados en partidos, tablas ni perfiles individuales.
+const LMB_LOGO_SCALE: Record<string, number> = {
+  "acereros del norte": 0.95,
+  "acereros de monclova": 0.95,
+  "algodoneros union laguna": 0.94,
+  "algodoneros del union laguna": 0.94,
+  "algodoneros de union laguna": 0.94,
+  "bravos de leon": 1,
+  "caliente de durango": 1,
+  "charros de jalisco": 1,
+  "conspiradores de queretaro": 0.90,
+  "diablos rojos del mexico": 0.96,
+  "dorados de chihuahua": 0.91,
+  "el aguila de veracruz": 1.08,
+  "guerreros de oaxaca": 1.08,
+  "leones de yucatan": 1.06,
+  "olmecas de tabasco": 1,
+  "pericos de puebla": 1.06,
+  "piratas de campeche": 0.95,
+  "rieleros de aguascalientes": 1,
+  "saraperos de saltillo": 1.05,
+  "sultanes de monterrey": 0.94,
+  "tecos de los dos laredos": 0.90,
+  "tigres de quintana roo": 0.93,
+  "toros de tijuana": 1,
+};
+
+
 function listTeams(
   league: LeagueCode | "CARIBE",
   standings: Standing[],
@@ -135,8 +165,12 @@ export default function TeamLogoStrip({
         <div className="teamLogoTrack">
           {teams.map(team=>{
             const profileUrl = league === "LMB" ? lmbClubHref(team.name) : null;
+            const logoStyle = league === "LMB"
+              ? { "--lmb-logo-scale": LMB_LOGO_SCALE[clean(team.name)] ?? 1 } as CSSProperties
+              : undefined;
             const content = team.logo ? (
-              <img src={team.logo} alt="" width={38} height={38} loading="lazy" />
+              <img src={team.logo} alt="" width={38} height={38}
+                loading="lazy" style={logoStyle} />
             ) : (
               <span className="teamLogoInitials">{team.name.slice(0,2)}</span>
             );

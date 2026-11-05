@@ -4358,6 +4358,24 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 }
 
 
+/* Uniformidad óptica LMB: una misma caja, escalas por club en TeamLogoStrip.
+   Prevalece sobre ampliaciones antiguas de Conspiradores/Caliente/Bravos
+   y las rutas .png obsoletas de Tecos. No afecta MLB, LMP ni tarjetas. */
+.teamExplorer--lmb .teamLogoRail .teamLogoTrack .teamLogoChoice img {
+  width: 38px;
+  height: 38px;
+  max-width: none;
+  max-height: none;
+  transform: scale(var(--lmb-logo-scale, 1));
+  transform-origin: center;
+}
+@media (max-width: 600px) {
+  .teamExplorer--lmb .teamLogoRail .teamLogoTrack .teamLogoChoice img {
+    width: 34px;
+    height: 34px;
+  }
+}
+
 /* Ficha extendida de Algodoneros (LMB): estilos encapsulados.
    La navegación principal y las tarjetas de partidos no se alteran. */
 .clubProfile{min-height:100vh;background:#07120e;color:var(--text);}

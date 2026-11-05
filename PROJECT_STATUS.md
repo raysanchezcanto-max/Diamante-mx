@@ -8,7 +8,7 @@
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (97) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (98) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1043,3 +1043,13 @@
 - **Fuentes investigadas que NO se insertan:** Wikimedia Commons tiene `Guerreros de Oaxaca insignia.svg`, pero la variante observada incorpora un fondo cuadrado oscuro y otra composición respecto al PNG general; la franja ya usa `nav/guerreros-cap.svg` y no hay motivo para sustituir el logo de perfil. `Logoacerero.png` y `Logosaraperos.jpg` tienen fondos/colores diferentes, y `Logopiratas.png` tiene fondo blanco opaco, frente al PNG transparente de Piratas. Las variantes LMB TV de Conspiradores y de otros clubes no replican exactamente los monogramas actuales.
 - **Verificaciones:** TypeScript y build de Next.js aprobados antes de subir el lote; después del commit, esperar Vercel automático en READY, comprobar SHA, descargar la imagen WebP desde el dominio público y verificar que el perfil de Tecos apunte al archivo nuevo. Prueba visual de teléfono físico todavía pendiente.
 - **Pendientes:** nueve logos de baja resolución aún requieren SVG/PNG auténticos, transparentes, de alta resolución y con la composición actual; no reconstruir o inventar identidades ni reemplazar el contenido con variantes obsoletas.
+
+## 98. LMB — corrección óptica de los 20 escudos en la franja principal (5/nov/2026)
+
+- **Reporte visual:** la franja LMB mostraba escudos con tamaños desiguales en comparación con MLB/LMP. El código tenía una base de 38 px, variantes nav de 39 px y antiguos aumentos a 42–46 px, incluso `scale(1.12)` para Conspiradores y `scale(1.09)` para Caliente. El nuevo logo Tecos WebP ya no coincidía con el selector antiguo `.png`. El problema no se resolvía sustituyendo imágenes, sino con una corrección óptica de la navegación.
+- **Corrección implementada:** `components/TeamLogoStrip.tsx` incorpora `LMB_LOGO_SCALE` por nombre normalizado, con alias para Acereros y Algodoneros, cubriendo los 20 clubes; usa la variable CSS `--lmb-logo-scale` **solo para imágenes de la franja LMB**. Escalas entre **0.90 y 1.08**, con base común y opción de reajuste fino. Las tarjetas de partido, estadísticas, fichas, logos fuente, MLB, LMP y Caribe NO se modifican.
+- **CSS:** `app/globals.css` añade una regla de mayor precedencia al final de los ajustes históricos para definir imagen **38×38 px en escritorio y 34×34 px en móvil**, centrada, con escalado óptico. Los botones conservan **48×48 px** (escritorio) y **44×44 px** (móvil). No añadir fondos, márgenes propios o círculos; los filtros de contraste preexistentes se conservan.
+- **Verificación local:** `npx tsc --noEmit` y `npm run build` pasaron en sandbox. Playwright con Chrome Headless Shell verificó las 20 imágenes LMB en **360, 390 y 1280 px**: 20/20 con factor de escala aplicado, botones uniformes, cero logos que excedan su botón y documento sin desbordamiento horizontal en los tres anchos. Se probaron MLB (30 logos) y LMP (10): ninguno recibió variable de escala LMB; cero imágenes rotas observadas en estas comprobaciones iniciales.
+- **Publicación:** cambios agrupados en un solo commit de `main`; al reanudar comprobar que su despliegue automático de Vercel esté `READY`, sea el mismo SHA y que la página en producción presente las escalas. La inspección visual subjetiva en un teléfono físico y la valoración de la usuaria son pasos de afinación, no una garantía implícita por pasar las pruebas.
+- **Próximo paso:** con una captura nueva de LMB, si alguna silueta sigue sintiéndose pesada/ligera, retocar solo su escala dentro del mapa, sin alterar archivos de escudos ni afectar otras ligas.
+
