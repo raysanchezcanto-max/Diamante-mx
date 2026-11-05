@@ -23,7 +23,7 @@ export const LMB_CLUB_DIRECTORY: readonly LmbClubRecord[] = [
   {slug:"leones",name:"Leones de Yucatán",aliases:["leones","leones de yucatan"],bulletinHeading:"YUCATÁN",region:"Sur"},
   {slug:"pericos",name:"Pericos de Puebla",aliases:["pericos","pericos de puebla"],bulletinHeading:"PUEBLA",region:"Sur"},
   {slug:"piratas",name:"Piratas de Campeche",aliases:["piratas","piratas de campeche"],bulletinHeading:"CAMPECHE",region:"Sur"},
-  {slug:"tigres",name:"Tigres de Quintana Roo",aliases:["tigres","tigres de quintana roo"],bulletinHeading:"QUINTANA ROO",region:"Sur"},
+  {slug:"tigres",name:"Tigres de Quintana Roo",aliases:["tigres","tigres de quintana roo"],bulletinHeading:"TIGRES",region:"Sur"},
   {slug:"bravos",name:"Bravos de León",aliases:["bravos","bravos de leon"],bulletinHeading:"LEÓN",region:"Sur"},
   {slug:"olmecas",name:"Olmecas de Tabasco",aliases:["olmecas","olmecas de tabasco"],bulletinHeading:"TABASCO",region:"Sur"},
   {slug:"dorados",name:"Dorados de Chihuahua",aliases:["dorados","dorados de chihuahua"],bulletinHeading:"CHIHUAHUA",region:"Norte"},

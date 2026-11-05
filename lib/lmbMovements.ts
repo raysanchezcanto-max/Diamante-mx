@@ -115,6 +115,7 @@ function relevantMovementsFromArticle(html: string, headingAliases: readonly str
 function classification(text: string): string {
   if (/academia rookie/i.test(text)) return "Academia rookie";
   if (/ced[ei]|cesi[oó]n|derechos|pr[eé]stamo/i.test(text)) return "Traspaso o derechos";
+  if (/cuerpo t[eé]cnico|m[aá]nager|coach|trainers?|batboys?|clubby|traductor/i.test(text)) return "Cuerpo técnico";
   if (/da de baja|waiver/i.test(text)) return "Baja de lista";
   if (/lesionados/i.test(text)) return "Lista de lesionados";
   if (/da de alta.*activ[a-zá]* en roster/i.test(text)) return "Alta y activación";
@@ -127,11 +128,19 @@ function classification(text: string): string {
 
 function operationTitle(text: string): string {
   const clean = text.replace(/\([^)]{2,250}\)/g, " ")
-    .replace(/\s+/g, " ").replace(/^\*+/, "").trim();
+    .replace(/\s+/g, " ").replace(/^[*•·–—\s]+/, "")
+    .replace(/^(?:asimismo|además)[,;:]?\s+/i, "").trim();
   const action = classification(text);
+  if (action === "Cuerpo técnico") {
+    const name = clean.match(/\b(?:a los|a las|al|a la)\s+(?:coaches?|trainers?|batboys?|clubby|traductores?|m[aá]nager(?:es)?)\s+(.+?)(?:\s+de su lista|\s*\.|$)/i)?.[1];
+    if (name) {
+      const words = name.split(/\s+/);
+      return "Cuerpo técnico: " + words.slice(0, 9).join(" ") + (words.length > 9 ? "…" : "");
+    }
+  }
   // La mayoría son operaciones en singular; usar nombre y dorsal reales.
   const patterns = [
-    /^(?:activa en roster a|desactiva(?: de roster)? a|coloca a|da de baja(?: \(envía a waiver\))? a|da de alta (?:al agente libre |a ))\s*(.+)/i,
+    /^(?:activa en roster(?: a)?|desactiva(?: de roster)? a|coloca a|da de baja(?: \(envía a waiver\))? a|da de alta (?:al agente libre |a ))\s*(.+)/i,
     /^(?:el club\s+.+?\s+)?(?:cede|recibe)\s+(?:de manera definitiva\s+)?(?:los\s+)?derechos de\s+(.+)/i,
   ];
   let name = "";
