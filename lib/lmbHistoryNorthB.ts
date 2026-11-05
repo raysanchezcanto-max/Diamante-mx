@@ -2,7 +2,8 @@
 // de LMB/MiLB, clubes y Salón de la Fama. Sin inferir inmortales no documentados.
 import type { EditorialHistory } from "./lmbHistoryEditorial";
 
-export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
+export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = 
+{
   "toros": {
     "intro": "La historia moderna de Toros en Tijuana pasó de la llegada a la frontera a una etapa ganadora: sus títulos de 2017, 2021 y 2026 convirtieron al club en tricampeón de la Liga Mexicana.",
     "debutYear": "2004",
@@ -146,7 +147,18 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
         "url": "https://www.milb.com/news/gcs-37586638"
       }
     ],
-    "immortals": [],
+    "immortals": [
+      {
+        "name": "Martín Dihigo",
+        "year": 1964,
+        "role": "Figura del bicampeonato 1937–1938 de El Águila"
+      },
+      {
+        "name": "Santos Amaro",
+        "year": 1977,
+        "role": "Mánager campeón con El Águila en 1952 y 1961"
+      }
+    ],
     "sources": [
       {
         "label": "Orígenes del club · LMB",
@@ -285,7 +297,18 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
         "url": "https://www.milb.com/news/lmb-los-pericos-vuelan-con-la-copa-zaachila-rumbo-a-la-gloria"
       }
     ],
-    "immortals": [],
+    "immortals": [
+      {
+        "name": "Miguel Sotelo",
+        "year": 1985,
+        "role": "Lanzador del equipo campeón en 1963"
+      },
+      {
+        "name": "Ronnie Camacho",
+        "year": 1983,
+        "role": "Figura del club campeón de 1963"
+      }
+    ],
     "sources": [
       {
         "label": "Historia del club · Pericos de Puebla",
@@ -355,7 +378,23 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
         "url": "https://www.milb.com/news/gcs-150131634"
       }
     ],
-    "immortals": [],
+    "immortals": [
+      {
+        "name": "Alejo Peralta y Díaz Ceballos",
+        "year": 1983,
+        "role": "Fundador de Tigres Capitalinos en 1955"
+      },
+      {
+        "name": "Roberto Vizcarra",
+        "year": 2023,
+        "role": "Mánager campeón de Tigres en 2013 y 2015"
+      },
+      {
+        "name": "Guillermo Garibay",
+        "year": 1977,
+        "role": "Mánager campeón de Tigres en 1960"
+      }
+    ],
     "sources": [
       {
         "label": "65 años de historia · Tigres",
@@ -488,7 +527,13 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> = {
         "url": "https://www.milb.com/news/dorados-regresan-a-la-liga-mexicana-de-beisbol"
       }
     ],
-    "immortals": [],
+    "immortals": [
+      {
+        "name": "Óscar Robles",
+        "year": 2025,
+        "role": "Mánager del regreso de Dorados a LMB en 2024"
+      }
+    ],
     "sources": [
       {
         "label": "Regreso de Dorados · LMB",
