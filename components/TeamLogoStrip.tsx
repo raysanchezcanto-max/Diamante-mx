@@ -103,7 +103,7 @@ const LMB_LOGO_SCALE: Record<string, number> = {
   "sultanes de monterrey": 0.94,
   "tecos de los dos laredos": 1.00,
   "tigres de quintana roo": 0.93,
-  "toros de tijuana": 1,
+  "toros de tijuana": 1.12,
 };
 
 

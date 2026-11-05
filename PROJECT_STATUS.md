@@ -8,7 +8,7 @@
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (99) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (100) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1063,3 +1063,10 @@
 - **QA:** `npx tsc --noEmit`, `npm run build` y `git diff --check` correctos. Navegador con tamaños 360, 390 y 1280 px: 20/20 logos LMB cargados y ajustados, sin desbordamiento horizontal del documento; MLB (30 logos) y LMP (10 logos) sin escalas LMB ni modificación de imágenes. El clic y la etiqueta accesible se conservan en el botón original.
 - **Entrega:** un solo commit a `main`; confirmar despliegue Vercel READY con el SHA correspondiente y verificar en producción que se muestra la mejora, sin modificar otras secciones. La valoración estética final requerirá una nueva captura de la usuaria, ya que los números verifican renderización, no gusto personal.
 
+
+## 100. LMB — ajuste óptico puntual de Toros de Tijuana (5/nov/2026)
+
+- **Motivo:** tras la uniformidad visual de la sección 99, la usuaria observó que la insignia circular de Toros de Tijuana aún parecía pequeña en la franja LMB. El factor previo era 1.00 y el ancho del dibujo visible rondaba los 35 px en una captura local de escritorio.
+- **Cambio acotado:** en `components/TeamLogoStrip.tsx`, cambiar solo `"toros de tijuana": 1` por `"toros de tijuana": 1.12` en `LMB_LOGO_SCALE`. No alterar sus archivos de logo ni filtros ni ninguna otra escala: los otros diecinueve equipos conservan sus ajustes actuales.
+- **Compatibilidad:** la caja base es de 38×38 px en escritorio (factor 1.12: imagen visible CSS de ~42.6 px) y de 34×34 px en móvil (~38.1 px); los botones continúan con 48 y 44 px respectivamente. Escalado uniforme, sin deformar la proporción y sin modificar las tarjetas de resultados ni MLB/LMP.
+- **QA:** revisar TypeScript, compilación Next.js y que los selectores de LMB conserven la variable CSS; después comprobar en Vercel que el commit esté READY y que `Toros de Tijuana` renderice con escala 1.12. Valoración visual final sujeta a nueva captura de la usuaria.
