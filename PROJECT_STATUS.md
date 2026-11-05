@@ -2,13 +2,13 @@
 
 **Última revisión:** 5 de noviembre de 2026  
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (5/nov/2026):** auditar escudos LMB con fuentes fieles sin fondos intrusivos ni amplificaciones artificiales; confirmar el despliegue READY del último HEAD y continuar pendientes editoriales/visuales. La APK Android TWA ya está instalada y no se debe rehacer.
+**Prioridad actual (5/nov/2026):** auditar escudos LMB con fuentes fieles sin fondos intrusivos ni amplificaciones artificiales; verificar el último despliegue y continuar pendientes editoriales/visuales. La APK Android TWA ya está instalada y no se debe rehacer.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (96) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (97) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1034,3 +1034,12 @@
 - **QA técnica:** XML SVG válido, sin scripts ni imágenes externas. En sandbox aislado, `npx tsc --noEmit` y `npm run build` exitosos. El repositorio no contiene `package-lock.json`; se usó una instalación temporal `npm install --no-save --no-package-lock`, sin agregar dependencias al repositorio.
 - **Publicación y siguientes pruebas:** esperar un único despliegue automático de GitHub→Vercel, comprobar SHA y READY antes de declarar publicación. Probar logos en la franja, marcador y ficha a 360/390 px y escritorio; el hardware físico queda pendiente. Los demás escudos de baja resolución permanecen abiertos.
 
+
+## 97. LMB — mejora fiel de nitidez para Tecos de los Dos Laredos (5/nov/2026)
+
+- **Alcance:** segunda pasada sobre los diez escudos LMB restantes de baja resolución, después de los SVG de Algodoneros y Sultanes (sección 96). No cambiar logos con variantes incompatibles o discos blancos añadidos solamente por aumentar píxeles.
+- **Selección verificable de Tecos:** el catálogo oficial de LMB TV `https://www.lmb.tv/teams` publica el logo circular de Tecos en PNG de **592×591 px** en `https://images.streamviral.video/7fe19360-0c6d-4db6-bb55-e1e83259eda5`; el anterior archivo local de Tecos tenía solo **96×96 px**. Su versión de LMB TV conserva el emblema circular con número 2, colores y texto identificables, y mantiene las esquinas transparentes. No usar una insignia de gorra en lugar de ese logo.
+- **Optimización sin cambios de imagen:** guardar el mismo contenido píxel por píxel en `public/logos/lmb/tecos-dos-laredos.webp` (WebP lossless, 592×591, 23,162 bytes); la comparación de píxeles RGBA después de decodificar confirma identidad con el PNG de fuente (27,420 bytes). Cambiar solo la entrada Tecos de `lib/teamLogos.ts` para usar `.webp`. Conservamos el PNG previo como respaldo y no tocamos las otras ligas, ni los otros equipos.
+- **Fuentes investigadas que NO se insertan:** Wikimedia Commons tiene `Guerreros de Oaxaca insignia.svg`, pero la variante observada incorpora un fondo cuadrado oscuro y otra composición respecto al PNG general; la franja ya usa `nav/guerreros-cap.svg` y no hay motivo para sustituir el logo de perfil. `Logoacerero.png` y `Logosaraperos.jpg` tienen fondos/colores diferentes, y `Logopiratas.png` tiene fondo blanco opaco, frente al PNG transparente de Piratas. Las variantes LMB TV de Conspiradores y de otros clubes no replican exactamente los monogramas actuales.
+- **Verificaciones:** TypeScript y build de Next.js aprobados antes de subir el lote; después del commit, esperar Vercel automático en READY, comprobar SHA, descargar la imagen WebP desde el dominio público y verificar que el perfil de Tecos apunte al archivo nuevo. Prueba visual de teléfono físico todavía pendiente.
+- **Pendientes:** nueve logos de baja resolución aún requieren SVG/PNG auténticos, transparentes, de alta resolución y con la composición actual; no reconstruir o inventar identidades ni reemplazar el contenido con variantes obsoletas.

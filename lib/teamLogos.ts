@@ -65,7 +65,7 @@ const LMP_LOGOS: Record<string, string> = {
     "/logos/lmb/saraperos-saltillo.png",
 
   "tecos de los dos laredos":
-    "/logos/lmb/tecos-dos-laredos.png",
+    "/logos/lmb/tecos-dos-laredos.webp",
 
   "dorados de chihuahua":
     "/logos/lmb/dorados-chihuahua.png",
