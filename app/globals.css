@@ -5165,3 +5165,42 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* LMB: trayectoria visual a la Serie del Rey, sobre tarjetas compartidas con MLB. */
+.lmbPostseasonSection { margin-top: 28px; }
+.lmbPostseasonHeading {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 16px; margin-bottom: 16px;
+}
+.lmbPostseasonHeading h2 { margin: 5px 0 0; }
+.lmbPostseasonHeading p {
+  margin: 0; max-width: 275px; text-align: right;
+  color: var(--muted, #a9b5b2); font-size: 11px;
+}
+.lmbPostseasonZone + .lmbPostseasonZone { margin-top: 16px; }
+.lmbPostseasonZone h3 {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted, #a9b5b2); margin: 10px 0 9px;
+}
+.lmbPostseasonSeriesCard { background: rgba(16, 32, 26, .9); }
+.lmbPostseasonSeriesWinner > strong,
+.lmbPostseasonSeriesWinner > div > span { color: #c7fa4a; }
+.lmbPostseasonSeriesStatus { flex-wrap: wrap; gap: 7px; }
+.lmbPostseasonSeriesStatus a {
+  color: #c7fa4a; font-weight: 700; text-decoration: none;
+}
+.lmbPostseasonSeriesStatus a:hover { text-decoration: underline; }
+.lmbPostseasonBestLoser {
+  margin: 8px 0 0; color: var(--muted, #a9b5b2);
+  font-size: 11px; line-height: 1.5;
+}
+.lmbPostseasonBestLoser > span { color: #c7fa4a; font-weight: 700; }
+.lmbPostseasonHistory { margin-top: 18px; }
+.lmbPostseasonHistory .lmbPostseasonRound + .lmbPostseasonRound { margin-top: 24px; }
+.lmbPostseasonNoLogo { display: inline-block; width: 28px; height: 28px; }
+.lmbPostseasonSource { color: var(--muted, #a9b5b2); font-size: 10px; margin: 14px 0 0; }
+@media (max-width: 640px) {
+  .lmbPostseasonHeading { flex-direction: column; align-items: flex-start; }
+  .lmbPostseasonHeading p { text-align: left; }
+  .lmbPostseasonGrid { grid-template-columns: minmax(0, 1fr); }
+}

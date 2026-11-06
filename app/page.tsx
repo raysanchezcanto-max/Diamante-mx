@@ -7,6 +7,8 @@ import {
 import { getLmpChampion } from "@/lib/lmpChampion";
 import { getLmpPostseason } from "@/lib/lmpPostseason";
 import LmpPostseasonCard from "@/components/LmpPostseasonCard";
+import { getLmbPostseason } from "@/lib/lmbPostseason";
+import LmbPostseasonCard from "@/components/LmbPostseasonCard";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
@@ -150,6 +152,17 @@ const lmpPostseason =
   mexicoDay >= `${lmpCurrentSeason}-12-30`
     ? await getLmpPostseason(lmpCurrentSeason)
     : null;
+
+// Historial oficial LMB 2026: evita confundirlo con cruces de 2027.
+const lmbHistoricalSeason =
+  selectedLeague === "LMB" &&
+  mexicoDay >= "2026-09-16" &&
+  mexicoDay < "2027-08-08"
+    ? lmbChampion?.year ?? 2026
+    : lmbChampion?.year ?? null;
+const lmbPostseason = lmbHistoricalSeason !== null
+  ? getLmbPostseason(lmbHistoricalSeason)
+  : null;
 
 const lmpNextSeasonYear =
   lmpCurrentSeason !== null
@@ -406,6 +419,7 @@ const daysUntilLmp =
     <AutoRefresh
   enabled={
     selectedLeague === "LMP" ||
+    selectedLeague === "LMB" ||
     mlbWorldSeriesActive ||
     games.some(
       (game) =>
@@ -420,10 +434,16 @@ const daysUntilLmp =
         : games.some((game) => game.status === "Preview")
           ? 15000
           : 60000
-      : 30000
+      : selectedLeague === "LMB"
+        ? games.some((game) => game.status === "Live")
+          ? 12000
+          : games.some((game) => game.status === "Preview")
+            ? 15000
+            : 300000
+        : 30000
   }
-  refreshOnFocus={selectedLeague === "LMP"}
-  snapshotAt={selectedLeague === "LMP" ? Date.now() : undefined}
+  refreshOnFocus={selectedLeague === "LMP" || selectedLeague === "LMB"}
+  snapshotAt={selectedLeague === "LMP" || selectedLeague === "LMB" ? Date.now() : undefined}
 />
       <header className="topbar">
         <a
@@ -573,6 +593,9 @@ const daysUntilLmp =
 </div>
       {selectedLeague === "LMP" && lmpPostseason && (
         <LmpPostseasonCard postseason={lmpPostseason} />
+      )}
+      {selectedLeague === "LMB" && lmbPostseason && (
+        <LmbPostseasonCard postseason={lmbPostseason} />
       )}
       {showLmbSeasonNotice && (
   <div className="seasonNotice">

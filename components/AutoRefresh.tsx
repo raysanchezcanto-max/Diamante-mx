@@ -35,7 +35,7 @@ export default function AutoRefresh({
       router.refresh();
     };
 
-    // Si Next.js entrega al cliente un estado LMP ya caducado, no esperar
+    // Si Next.js entrega al cliente un estado LMP/LMB caducado, no esperar
     // otros 12–15 segundos para ponerlo al día. En las demás ligas
     // permanece el comportamiento anterior.
     if (refreshOnFocus && typeof snapshotAt === "number") {
