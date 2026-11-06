@@ -581,6 +581,7 @@ const daysUntilLmp =
   nextGames={nextGames}
   recentGames={recentGames}
   lmbChampion={lmbChampion}
+  lmbPostseason={lmbPostseason}
    lmbSeasonScheduled={Boolean(lmbNextSeasonStart)}
    lmpChampion={lmpChampion}
   mlbChampion={mlbChampionResolved}

@@ -2,13 +2,13 @@
 
 **Última revisión:** 6 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (6/nov/2026):** portada y detalles LMB homologados en refresco/recuperación de pestañas; tarjetas de playoffs LMB 2026 implementadas con 13 series y resultados oficiales. Playoffs LMP se activarán cuando confirmen equipos en 2027. **Siguiente: validar el diseño en producción y preparar actualización automática de playoffs LMB 2027 cuando existan fechas de rondas oficiales**. Consultar secciones 107, 106 y 105 antes de retomar. Los logos LMB de las secciones 98–100 están aprobados; la APK TWA ya está instalada y no se debe rehacer.
+**Prioridad actual (6/nov/2026):** LMB homologada visualmente con MLB: **detalle de Serie del Rey dentro de la tarjeta existente del campeón**, y debajo el desplegable **Camino a la Serie del Rey** de últimas rondas arriba a primeras abajo (sección 108). LMP sigue sin mostrar series futuras sin confirmación. **Siguiente: adaptar feed de playoffs LMB 2027 cuando LMB publique fechas de rondas oficiales**, sin reutilizar historial 2026. Consultar secciones 108, 107, 106 y 105 antes de retomar. Los logos LMB de las secciones 98–100 están aprobados; la APK TWA ya está instalada y no se debe rehacer.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (6/nov/2026):** leer la última sección (107), después 106 (playoffs LMP) y 105 (matriz por liga). LMB ya tiene recuperación de pestañas y la tarjeta histórica Camino a la Serie del Rey 2026; **no volver a desarrollar** dobles carteleras, marcadores, salvamentos, refresco LMB ni su cuadro histórico. El adaptador de nuevas temporadas LMB (2027+) queda pendiente de calendario oficial de rondas. Validar producción y futuras fechas con datos reales.
+> **REANUDACIÓN INMEDIATA (6/nov/2026):** leer primero la sección 108 (corrección visual solicitada por usuaria), luego 107 (archivo oficial playoffs LMB), 106 (playoffs LMP) y 105 (matriz entre ligas). En LMB NO duplicar la Serie del Rey debajo del campeón: el campeón es la tarjeta principal, y sus seis juegos viven en `Ver detalle de la Serie del Rey`; debajo solo `Camino a la Serie del Rey` con fases en orden inverso. Refresco LMB ya homologado. Próximo bloque: temporadas 2027+ con fuente oficial; no inventar cruces ni reabrir tareas resueltas.
 
 ### Lectura rápida vigente — auditoría 105
 
@@ -1180,6 +1180,9 @@
 
 ## 107. LMB — Camino a la Serie del Rey 2026 y refresco homologado (6/nov/2026)
 
+> **NOTA DE VIGENCIA:** la disposición visual descrita aquí fue superada en la sección 108 por solicitud de la usuaria. Datos, 13 series y refresco siguen vigentes; ya **NO** se muestra una segunda tarjeta de la Serie del Rey debajo del campeón.
+
+
 - **Origen:** la usuaria solicitó que LMB también tuviera las tarjetas de series construidas para MLB/LMP, y homologar el refresco de tarjetas y detalles. Se trabajó sobre `main` tras la sección 106, sin modificar el funcionamiento de MLB o LMP.
 - **Formato oficial LMB 2026:** seis equipos por zona al Primer Playoff, tres ganadores más el **mejor perdedor** por zona a Series de Zona; después Series de Campeonato Norte y Sur y **Serie del Rey**. Todas al mejor de siete. Referencia LMB: https://lmb.com.mx/noticias/calendario-oficial-de-la-temporada-2026-de-la-liga-mexicana-de-beisbol y https://www.milb.com/news/lmb-conoce-el-nuevo-formato-de-playoffs .
 - **Fuente verificable 2026:** `https://lmb.com.mx/juegos/api/calendar` exige `date=MM/DD/YYYY` y `startDate/endDate` como epoch **milisegundos**. Consulta de 21 ventanas de agosto 8 a septiembre 17 recuperó **72 juegos oficiales distintos**, sin errores; se agruparon por **fecha local America/Mexico_City** (no fecha UTC) y por pareja de equipos para reconstruir **13 series**: 6 primer playoff, 4 zona, 2 campeonato y 1 Serie del Rey. Las 13 alcanzaron exactamente cuatro victorias de un club; cada tarjeta conserva `lastGameId` del último partido y la lista de IDs reales. `lib/lmbPostseason.ts` guarda el archivo histórico verificado 2026, sin fabricar partidos/series de 2027.
@@ -1189,3 +1192,21 @@
 - **Refresco LMB homologado:** `app/page.tsx` usa `AutoRefresh` con 12 s para juegos en vivo, 15 s cuando hay programados y **300 s sin juegos del día** (evita consultar continuamente durante la temporada baja). `app/game/[league]/[id]/page.tsx` usa 12 s en vivo, 15 s previo y mantiene el detalle FINAL detenido. Ambos habilitan `refreshOnFocus` y `snapshotAt` para recuperar la vista desde pestaña/historial. `components/AutoRefresh.tsx` se conserva como componente común, solo cambia comentario. **No cambiar** los endpoints `lib/lmbLive.ts`: calendario hoy/ayer y jugadas ya usan `cache: no-store`.
 - **QA previo a publicación:** `npx tsc --noEmit`, `npm run build`, `git diff --check` aprobados. Test de React server-render del componente recuperó 13 tarjetas, 13 enlaces, 72 IDs y dos mejores perdedores. Browser en **390 px** y **1280 px** mostró todas las tarjetas/escudos y zonas, ningún logo roto ni scroll horizontal, HTTP 200. Las pruebas no reproducen un partido activo LMB de 2027 (temporada baja) ni certifican aún su futura fuente dinámica. Un único commit debe publicar este bloque; después verificar Vercel READY y SHA de producción.
 - **Pendientes reales:** confirmar el cambio en producción y afinar apariencia únicamente si una nueva captura revela problemas; contrato de rondas 2027 cuando anuncien oficialmente fechas y equipos; pruebas de transiciones de juego con LMB en temporada activa. No retomar entradas extras/salvamentos/doble cartelera ya implementados.
+
+
+## 108. LMB — Serie del Rey dentro del campeón; Camino histórico invertido como MLB (6/nov/2026)
+
+- **Solicitud y referencia visual:** usuaria mostró la tarjeta duplicada `POSTEMPORADA · LMB 2026 / Camino a la Serie del Rey` con Toros 4–2 Olmecas, junto al diseño correcto de MLB: **Campeón Serie Mundial**, desplegable `Ver detalle de la Serie Mundial` dentro de la tarjeta y **debajo** una barra `Camino a la Serie Mundial`. Pidió misma jerarquía en LMB, evitando repetir la Serie del Rey como tarjeta separada.
+- **Diseño resultante:** `components/Games.tsx` recibe `lmbPostseason` desde `app/page.tsx` y, cuando hay campeón LMB y serie archivada, añade **`Ver detalle de la Serie del Rey` dentro de `championCardPro`**, reutilizando clases `mlbWorldSeriesDetails` y su comportamiento nativo expandible. Se conserva sin cambios la tarjeta de campeón Toros 4–2 Olmecas. **No se añade otro encabezado ni otra tarjeta de campeón** debajo.
+- **Detalles de los juegos:** nuevo `components/LmbSerieDelReyDetails.tsx` renderiza **los seis juegos finales 2026** con la disposición de los resultados MLB: `JUEGO n`, fecha local, `FINAL`, escudos LMB, visitante–marcador–local, resaltado del ganador y enlace a `/game/lmb/{gameId}`. Se añadió al objeto de la ronda `rey` de `lib/lmbPostseason.ts` el campo `games` con IDs, fechas y resultados oficiales verificados directamente en `lmb.com.mx/juegos/api/calendar`:
+  - 08/sep `867486`: Olmecas 7–1 Toros;
+  - 09/sep `867487`: Olmecas 2–13 Toros;
+  - 11/sep `867488`: Toros 2–0 Olmecas;
+  - 12/sep `867489`: Toros 1–9 Olmecas;
+  - 13/sep `867490`: Toros 6–5 Olmecas;
+  - 15/sep `867481`: Olmecas 0–2 Toros.
+  **No agregar pestañas BATEO/PITCHEO de MLB sin datos agregados oficiales verificados**; por ahora el detalle de LMB presenta únicamente PARTIDOS y sus resultados reales, evitando contenido ficticio.
+- **Camino separado, sin repetir final:** `components/LmbPostseasonCard.tsx` ya no muestra `<Round round="rey">` ni encabezado `POSTEMPORADA / Camino` aparte; renderiza una **única barra cerrada por defecto** llamada `Camino a la Serie del Rey`, igual que el desplegable `Camino a la Serie Mundial` de MLB. Dentro, las 12 series anteriores aparecen **de arriba abajo en orden inverso**: Series de Campeonato (2), Series de Zona (4), Primer Playoff (6). Mantener Zona Norte/Sur y etiquetas de mejor perdedor. `Serie del Rey` vive solo dentro del detalle del campeón.
+- **Estilos:** `app/globals.css` reutiliza componentes de la Serie Mundial y adapta únicamente escudos/espaciados de LMB, cuidando diseño responsive. No modificar fuentes MLB/LMP, cómputo de victorias LMB, ni los intervalos de refresco verificados en sección 107.
+- **Pruebas locales:** `npx tsc --noEmit`, `npm run build` y `git diff --check` aprobados. Browser Chrome Headless sobre Next en **390 y 1280 px**: `championCardPro` = Toros de Tijuana, `Ver detalle de la Serie del Rey` muestra **6** partidos y enlace al juego 867481, el historial tiene **12** tarjetas en orden `Series de Campeonato → Series de Zona → Primer Playoff`, todos los logos presentes, ancho de página sin desbordamiento. MLB no muestra componentes LMB.
+- **Siguiente verificación:** desplegar UN commit, confirmar Vercel READY y probar las mismas condiciones en `https://diamante-mx.vercel.app/?league=lmb`; solo entonces considerar publicado. El historial corresponde exclusivamente a 2026: 2027 sigue pendiente de fuente oficial para fase nueva.

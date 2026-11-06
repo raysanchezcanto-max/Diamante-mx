@@ -14,6 +14,8 @@ import type { Game } from "@/lib/mlb";
 import { getGameSpecialStatus } from "@/lib/gameSpecialStatus";
 import { getLmpInningLabel } from "@/lib/lmpInningLabel";
 import type { LmpChampion } from "@/lib/lmpChampion";
+import type { LmbPostseason } from "@/lib/lmbPostseason";
+import LmbSerieDelReyDetails from "@/components/LmbSerieDelReyDetails";
 
 import {
   getTeamLogo,
@@ -677,6 +679,7 @@ export default function Games({
   nextGames = [],
   recentGames = [],
   lmbChampion = null,
+  lmbPostseason = null,
   lmbSeasonScheduled = false,
   lmpChampion = null,
   mlbChampion = null,
@@ -696,6 +699,7 @@ export default function Games({
   runnerUpWins: number;
   year: number;
 } | null;
+  lmbPostseason?: LmbPostseason | null;
   lmbSeasonScheduled?: boolean;
 lmpChampion?: LmpChampion | null;
 mlbChampion?: {
@@ -754,6 +758,12 @@ const championLogo =
       }
     : league === "MLB"
     ? mlbChampion
+    : null;
+const lmbFinalSeries =
+  league === "LMB" && lmbPostseason
+    ? lmbPostseason.series.find(series =>
+        series.round === "rey" && (series.games?.length ?? 0) > 0
+      ) ?? null
     : null;
 const championTitle =
   league === "MLB"
@@ -1967,6 +1977,12 @@ const hasAnyGames =
         worldSeries={mlbWorldSeries}
         stats={mlbWorldSeriesStats}
       />
+    </details>
+  )}
+  {league === "LMB" && lmbFinalSeries && (
+    <details className="mlbWorldSeriesDetails lmbSerieDelReyDetails">
+      <summary>Ver detalle de la Serie del Rey</summary>
+      <LmbSerieDelReyDetails series={lmbFinalSeries} />
     </details>
   )}
   </div>

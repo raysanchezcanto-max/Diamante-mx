@@ -9,6 +9,14 @@
 export type LmbPlayoffRound = "first" | "zone" | "championship" | "rey";
 export type LmbPlayoffZone = "Norte" | "Sur" | "General";
 export type LmbPlayoffTeam = { code: string; name: string; wins: number };
+export type LmbSerieDelReyGame = {
+  id: number;
+  date: string; // Fecha local México, extraída del calendario oficial
+  awayCode: string;
+  homeCode: string;
+  awayRuns: number;
+  homeRuns: number;
+};
 export type LmbPlayoffSeries = {
   round: LmbPlayoffRound;
   zone: LmbPlayoffZone;
@@ -17,6 +25,7 @@ export type LmbPlayoffSeries = {
   bestLoserCode: string | null;
   lastGameId: number;
   gameIds: number[];
+  games?: LmbSerieDelReyGame[];
 };
 export type LmbPostseason = { season: number; series: LmbPlayoffSeries[] };
 
@@ -376,6 +385,15 @@ const LMB_PLAYOFF_2026: LmbPostseason = {
       867489,
       867490,
       867481
+    ],
+    // Serie del Rey 2026: seis resultados oficiales (LMB API calendar).
+    "games": [
+      { "id": 867486, "date": "2026-09-08", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 7, "homeRuns": 1 },
+      { "id": 867487, "date": "2026-09-09", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 2, "homeRuns": 13 },
+      { "id": 867488, "date": "2026-09-11", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 2, "homeRuns": 0 },
+      { "id": 867489, "date": "2026-09-12", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 1, "homeRuns": 9 },
+      { "id": 867490, "date": "2026-09-13", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 6, "homeRuns": 5 },
+      { "id": 867481, "date": "2026-09-15", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 0, "homeRuns": 2 }
     ]
   }
 ]

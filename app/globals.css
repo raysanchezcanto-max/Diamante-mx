@@ -5204,3 +5204,49 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   .lmbPostseasonHeading p { text-align: left; }
   .lmbPostseasonGrid { grid-template-columns: minmax(0, 1fr); }
 }
+
+
+/* LMB · detalles de los seis encuentros de la Serie del Rey,
+   con la misma presentación de resultados de la Serie Mundial (MLB). */
+.lmbSerieDelReyGamesTab {
+  padding: 8px 14px;
+  color: #c7fa4a;
+  border: 1px solid rgba(190, 255, 0, 0.24);
+  background: rgba(190, 255, 0, 0.055);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.lmbSerieDelReyMatchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.lmbSerieDelReyMatchup .mlbWsTeamCell {
+  min-width: 0;
+}
+.lmbSerieDelReyMatchup .mlbWsResultMatchupNumbers {
+  white-space: nowrap;
+}
+.lmbPostseasonSection {
+  margin-top: 16px;
+}
+.lmbPostseasonHistory .mlbPostseasonHistoryContent {
+  margin-top: 12px;
+}
+.lmbPostseasonHistory .lmbPostseasonRound:first-child {
+  margin-top: 0;
+}
+@media (max-width: 640px) {
+  .lmbSerieDelReyMatchup {
+    gap: 7px;
+  }
+  .lmbSerieDelReyMatchup .mlbWsTeamCell {
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+  }
+}

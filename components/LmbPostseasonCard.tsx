@@ -4,14 +4,13 @@ import {
   type LmbPostseason,
   type LmbPlayoffRound,
   type LmbPlayoffSeries,
-  LMB_PLAYOFF_ROUNDS,
   LMB_PLAYOFF_ROUND_LABELS,
 } from "@/lib/lmbPostseason";
 
 function SeriesCard({ series }: { series: LmbPlayoffSeries }) {
   const winner = series.teams.find(team => team.code === series.winnerCode);
   return (
-    <div className="mlbPostseasonSeriesCard lmbPostseasonSeriesCard">
+    <div className="mlbPostseasonSeriesCard mlbPostseasonSeriesCardCompact lmbPostseasonSeriesCard">
       <div className="mlbPostseasonSeriesTop">
         <strong>{series.zone === "General" ? "Serie del Rey" : `Zona ${series.zone}`}</strong>
         <span>AL MEJOR DE 7</span>
@@ -101,34 +100,27 @@ export default function LmbPostseasonCard({
   postseason: LmbPostseason;
 }) {
   if (!postseason.series.length) return null;
-  const earlier: LmbPlayoffRound[] = LMB_PLAYOFF_ROUNDS.filter(
-    round => round !== "rey" && postseason.series.some(series => series.round === round)
+  // Exactamente como MLB: las últimas rondas arriba y las primeras abajo.
+  // La Serie del Rey ya vive en "Ver detalle" dentro de la tarjeta del campeón.
+  const rounds: LmbPlayoffRound[] = ["championship", "zone", "first"].filter(
+    (round): round is LmbPlayoffRound =>
+      postseason.series.some(series => series.round === round)
   );
-  const count = postseason.series.filter(series => series.round !== "rey").length;
+  if (!rounds.length) return null;
 
   return (
-    <section className="section lmbPostseasonSection" aria-label="Playoffs LMB">
-      <div className="lmbPostseasonHeading">
-        <div>
-          <span className="eyebrow">POSTEMPORADA · LMB {postseason.season}</span>
-          <h2>Camino a la Serie del Rey</h2>
+    <section className="section mlbPostseasonHistorySection lmbPostseasonSection" aria-label="Camino a la Serie del Rey">
+      <details className="mlbPostseasonHistory lmbPostseasonHistory">
+        <summary>Camino a la Serie del Rey</summary>
+        <div className="mlbPostseasonHistoryContent">
+          {rounds.map(round => (
+            <Round key={round} postseason={postseason} round={round} />
+          ))}
+          <p className="lmbPostseasonSource">
+            Resultados oficiales LMB · Temporada {postseason.season}
+          </p>
         </div>
-        <p>Campeones de Zona Norte y Sur · Series a ganar cuatro juegos</p>
-      </div>
-      <Round postseason={postseason} round="rey" />
-      {earlier.length > 0 && (
-        <details className="mlbPostseasonHistory lmbPostseasonHistory">
-          <summary>Ver camino completo · {count} series anteriores</summary>
-          <div className="mlbPostseasonHistoryContent">
-            {earlier.map(round => (
-              <Round key={round} postseason={postseason} round={round} />
-            ))}
-          </div>
-        </details>
-      )}
-      <p className="lmbPostseasonSource">
-        Resultados verificados con el calendario oficial de LMB · Temporada {postseason.season}
-      </p>
+      </details>
     </section>
   );
 }
