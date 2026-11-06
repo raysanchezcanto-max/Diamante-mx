@@ -2,13 +2,21 @@
 
 **Última revisión:** 5 de noviembre de 2026  
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (5/nov/2026):** auditar escudos LMB con fuentes fieles sin fondos intrusivos ni amplificaciones artificiales; verificar el último despliegue y continuar pendientes editoriales/visuales. La APK Android TWA ya está instalada y no se debe rehacer.
+**Prioridad actual (auditoría 5/nov/2026):** fase regular LMP consolidada; **siguiente desarrollo: playoffs LMP**, replicando la experiencia MLB y respetando las reglas LMP; **tras ello portar únicamente mejoras de UX faltantes a LMB**. Consultar sección 105 para estado vigente y no repetir tareas históricas. Los logos LMB de las secciones 98–100 están aprobados; la APK TWA ya está instalada y no se debe rehacer.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (104) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (105) y revisar el código actual de GitHub. Prioridad: consultar la matriz vigente de la sección 105; la fase regular LMP está implementada, playoffs LMP queda por desarrollar y LMB requiere solo adaptaciones de UX/fuente señaladas. No repetir pendientes de secciones históricas; contrastar siempre GitHub con la producción.
+
+### Lectura rápida vigente — auditoría 105
+
+- **LMP temporada regular:** implementada y con pruebas visuales aportadas (incluidas entradas extras, salvamentos, dobles carteleras, pospuestos y marcadores). Las secciones 101–104 registran el cierre de refresco, pestañas obsoletas y etiquetas EN VIVO/ALTA/BAJA.
+- **Compartido entre MLB/LMB/LMP:** tarjetas, estados base, detalles, línea de juego, bases, bolas/strikes/outs, estadísticas FINAL y decisiones de lanzadores. Los feeds y algunas reglas de visualización son específicos por liga.
+- **No compartido aún:** LMP tiene refresco sensible a fase + recuperación de pestaña/historial; LMB/MLB siguen con refresco general. Historial de relevos y helper de transición ALTA/BAJA son específicos de LMP.
+- **Siguiente desarrollo:** playoffs LMP (rondas, series y Serie Final); el campeón LMP no equivale a bracket. **Siguiente migración a LMB:** solo UX y validaciones pendientes, no rehacer módulos ya presentes.
+- **Fuente de verdad:** sección **105** y código `main` de GitHub; la sección 4 y pendientes anteriores se mantienen **solo como historial**.
 
 ## 1. Acuerdos permanentes
 
@@ -48,7 +56,7 @@
 
 **Advertencia:** la revisión del código demuestra la implementación, pero no sustituye pruebas de cada transición con un juego real.
 
-## 4. LMP — estado actual (prioridad)
+## 4. LMP — archivo histórico de pendientes (29/oct; supersedido por §105)
 
 **Confirmado en código actual y compilado:**
 - `lib/lmp.ts` consulta juegos del día y próxima fecha; `hydrate=linescore,probablePitcher`.
@@ -59,7 +67,7 @@
 - El detalle del partido LMP utiliza `getLmpPlayState` + `LiveGamePanel` para bases, B/S/O, bateador, pitcher, jugadas, etc.
 - Existen `getLmpChampion`, temporada LMP y aviso de próxima temporada en la página.
 
-**Pendientes concretos:**
+**Pendientes históricos (revisados y reclasificados en la sección 105; NO retomarlos como tareas nuevas sin cotejar código y capturas):**
 1. **POR COMENZAR LMP (implementación compilada):** detector `firstPitchRecorded` en `getLmpGames()`; estado naranja `#FF7A00` en tarjetas (`components/Games.tsx`, Paso 18) y página de detalle (`lib/gameDetails.ts` + `app/game/[league]/[id]/page.tsx`, Pasos 19–20). Se exige estado detallado Warmup/Calentamiento y que no exista lanzamiento confirmado. **Pendiente solamente validar visualmente** la transición completa con juego real y comprobar qué ocurre cuando los datos llegan con retraso.
 2. Verificar visualmente P. PROBABLE/ABRIDOR y fotografías reales en LMP. Actualmente el bloque de pitchers no se muestra si **ninguno** está anunciado; decidir si presentar “Por confirmar” aun sin datos.
 3. Validar con partidos reales las transiciones HOY → POR COMENZAR → EN VIVO → FINAL, horarios y datos en vivo.
@@ -1104,3 +1112,57 @@
 - **Situación del juego:** mantener siempre el diamante, los contadores BOLAS/STRIKES/OUTS y JUGADAS DEL INNING, incluido durante `Middle/End`. En transición limpiar temporalmente los valores del turno anterior (bases, outs, bolas, strikes e historial) para evitar reutilizar información ya concluida; mostrar «Esperando las primeras jugadas de este turno al bate». Durante `Top/Bottom`, respetar los datos y las jugadas oficiales, el equipo bateando, bateador y lanzador sin cambios.
 - **Alcance:** lógica exclusivamente de presentación para LMP; MLB y LMB conservan su formateo y sus estados. No se alteraron feeds, traducciones, intervalos, pitchers, estadística ni estados del partido.
 - **QA:** TypeScript y compilación Next.js correctos; pruebas de renderizado con React para `Top`, `Bottom`, `Middle`, `End` y extrainning 10: tarjetas sin «EN VIVO · EN VIVO», panel completo, ningún dato antiguo reutilizado. Un solo commit; tras publicarlo, comprobar SHA de Vercel y estado READY.
+
+## 105. AUDITORÍA VIGENTE — equivalencias MLB/LMB/LMP, cierre LMP regular y hoja de ruta (5/nov/2026)
+
+**Corte de auditoría:** GitHub `main` en `2f3ab9e10312753b46d404b1f86dee474ef84fdb`, comprobado contra Vercel producción READY antes de documentar. Esta sección **reemplaza las listas antiguas de pendientes de las secciones 4 y anteriores**, pero conserva esas secciones como historial. `Implementado` no equivale a `verificado en vivo`: consultar el código actual antes de marcar cualquier capacidad como resuelta o faltante.
+
+### A. Auditoría funcional por liga
+
+| Función | MLB | LMB | LMP | Evidencia, diferencias y decisión |
+| --- | --- | --- | --- | --- |
+| Tarjetas de partidos, logos, marcadores, estados HOY/PRÓXIMO/EN VIVO/FINAL | Sí | Sí | Sí | UI compartida en `components/Games.tsx`; fuentes de juegos distintas en `lib/mlb.ts`, `lib/lmb.ts`, `lib/lmp.ts`. Calentamiento/POR COMENZAR depende de reglas y evidencia de primer lanzamiento; no asumir equivalencia exacta LMB sin prueba. |
+| Posiciones, líderes, próximos y recientes | Sí | Sí | Sí | `app/page.tsx`; LMB y LMP cargan sus bloques en paralelo con `Promise.all`, no queda pendiente esa optimización en LMB. |
+| Detalle: línea por entradas, marcador, bases, B/S/O e historial | Sí | Sí | Sí | Página común `app/game/[league]/[id]/page.tsx`, `LiveGamePanel`, `BaseballLineScoreCard`; datos específicos de `getMlbPlayState`, `getLmbPlayState`, `getLmpPlayState`. Que exista código no confirma cada jugada real de LMB. |
+| Entradas extras | Sí, flujo normal | Sí, flujo normal | Sí, **captura real BAJA 10** | No implementar una lógica nueva de extrainnings: se renderiza el número de entrada de cada fuente; LMP con evidencia del 5/nov. |
+| Transición ALTA/BAJA sin “EN VIVO · EN VIVO” | Lógica propia anterior | Lógica propia anterior | **Sí, arreglo sección 104** | `lib/lmpInningLabel.ts` procesa `Top/Middle/Bottom/End` solo para LMP; `Games.tsx` muestra un único EN VIVO + entrada; `LiveGamePanel.tsx` mantiene panel completo y limpia valores del turno anterior. No aplicar helper LMP directamente a la API LMB. |
+| Pitcher probable, abridor, abrió, fotos y placeholders | Base compartida | Base compartida; contrastar feed | **Adaptación específica** | `GamePitcher` y `gameDetails.ts` son comunes, pero LMP comprueba primer lanzamiento antes de confirmar abridor, utiliza `lmpPitcherPhotos.ts` y protege datos ausentes. No declarar equivalencia de fotos y transiciones por liga sin cotejo. |
+| Relevos y cambios de lanzador | Datos de jugada por fuente | Datos de jugada por fuente, **sin tarjeta histórica LMP** | **Tarjeta histórica específica** | `LmpPitchingChanges.tsx` + `lib/lmpPitchingChanges.ts` se renderizan solo con `league === "LMP"`. Adaptar a LMB solo si su API ofrece cambios identificables y ordenados. |
+| Pitcher ganador/perdedor/salvamento | Sí | Sí | Sí | `lib/baseballGameExtras.ts` lee decisiones oficiales, incluyendo `save`; `BaseballPitchingDecisions` las presenta en FINAL. **No es pendiente volver a crear salvamentos.** |
+| Estadísticas de bateo y pitcheo al finalizar | Sí | Sí | Sí | `app/game/[league]/[id]/page.tsx` condiciona `BaseballPlayerStats` y `BaseballPitchingDecisions` a `isFinal`. |
+| Dobles carteleras J1/J2 | UI común | Sí, `inferLmbDoubleHeaders` | Sí, `doubleHeader/gameNumber` del calendario | La etiqueta ya existe; validar datos por partido sin volver a desarrollarla. |
+| Pospuestos, retrasados, reprogramados | Base común | Base común; particularidades de feed por validar | Sí, motivo y fecha reprogramada si vienen de la fuente | `getGameSpecialStatus` compartido; `Games.tsx` agrega explicación y fecha especialmente para LMP. No afirmar que LMB tiene idénticos textos de motivo sin mapear su API. |
+| Partidos que cruzan medianoche | No equiparar sin auditar MLB por fecha | Sí: calendario actual + partidos de ayer que siguen en vivo | Sí: calendario actual + en vivo de ayer | `getLmbGames` y `getLmpGames` ya contemplan arrastre; no reabrir como pendiente de implementación. |
+| Actualización automática de portada y detalle | Portada condicional 30 s; detalle 15 s | Portada condicional 30 s; detalle 15 s | **12 s en vivo/15 s previo; 60 s portada sin juegos activos** | `app/page.tsx` y detalle: en LMP se habilita `refreshOnFocus` y `snapshotAt` para recuperar vistas antiguas, **todavía no para LMB/MLB**. LMB ya usa `cache: "no-store"` para su calendario actual/ayer y las jugadas actuales en `lmbLive.ts`; por eso la mejora pendiente es UX/ciclo de refresco, no copiar consultas LMP. |
+| Transmisiones y “Dónde ver” | Sí | Sí | Sí | `getGameBroadcasts` compartido, fuentes/plataformas distintas por liga; **enlaces directos a cada juego pendientes de validación cuando existan**, sin inventar enlaces. |
+| Campeón y cierre de temporada | Sí | Sí | Sí en código | MLB con Serie Mundial, LMB con campeón Serie del Rey, LMP con `getLmpChampion`; las tarjetas no demuestran por sí solas un recorrido de eliminación completo. |
+| Recorrido gráfico completo de playoffs y series | **Sí, MLB** | **No equivalente a MLB** | **Por desarrollar** | MLB tiene `MlbPostseasonCard`, `mlbPostseason.ts`, Serie Mundial; LMP **no tiene** `lmpPostseason.ts` ni ronda/serie equivalente: campeón no es playoffs. LMB mantiene sección de campeón, pero carece de un recorrido de postemporada equivalente al de MLB. |
+
+### B. Correcciones LMP cerradas — no repetir
+
+- **Secciones 101–102:** calendario 15 s, detalle 10 s, portada/detalle 12–15 s según fase, carga paralela, desactivación de precarga obsoleta del detalle LMP, recuperar pestaña/historial con `refreshOnFocus`/`snapshotAt`. Tests y despliegues anteriores correctos; no prometer sincronía instantánea cuando la fuente tarda.
+- **Secciones 103–104:** retire de «CAMBIO DE ENTRADA» como texto visible; arreglado duplicado «EN VIVO · EN VIVO»; rotular ALTA/BAJA y mantener diamante, conteos, historial, sin trasladar datos del turno anterior.
+- **LMP temporada regular:** doble cartelera, pospuesto/reprogramado, entradas extras (BAJA 10 aportada), pitcher probable/abridor, ganador/perdedor/salvamento, fotos cuando existen y placeholders, traducción de jugadas, cambios de lanzador, marcador y estado FINAL **implementados**. Sus pruebas de casos extremos solo se abren cuando exista evidencia nueva de un fallo real.
+- **No modificar** tamaño/logos LMB aprobados en secciones 98–100 ni funcionalidades MLB/LMB al hacer trabajos específicamente LMP.
+
+### C. Qué falta realmente antes de afirmar “idéntico en las tres”
+
+1. **Portar a LMB, cuando se priorice:** recuperación de pestaña/historial (`refreshOnFocus`, `snapshotAt`) y ajustar intervalos del `AutoRefresh` para partidos activos con medición de carga/errores. Su fuente oficial hoy/ayer y jugadas ya usa `no-store`. MLB no está incluida en este cambio y debe evaluarse por separado.
+2. **Auditar estados LMB reales:** documentar significados de `inningState` y transición con la API LMB, conservar ALTA/BAJA y vista completa sin repetir EN VIVO; **no copiar** automáticamente `getLmpInningLabel` porque la nomenclatura de los feeds podría diferir.
+3. **Comparar a nivel de proveedor:** confirmación de abridores, fotos, relevos y línea por entradas; si los cambios de pitcher pueden reconstruirse con la API LMB, entonces se puede compartir un historial genérico; no inventar jugadas/atletas.
+4. **No rehacer** doble cartelera, partidos que cruzan medianoche, marcador, salvamentos ni estadísticas FINAL de LMB: ya tienen estructura en código. Validar una muestra de eventos reales la próxima temporada LMB, cuando haya partidos activos.
+5. **No existe paridad completa de playoffs**: es un módulo distinto por liga, requiere reglas de competencia y datos por serie, no portar sin adaptar.
+
+### D. Próxima fase separada: playoffs LMP 2026–2027
+
+- **Estado:** pendiente de implementación; solo `getLmpChampion` y el cierre de temporada ya están disponibles. No confundir detección de campeón con bracket/camino a la Serie Final.
+- **Formato oficial anunciado por LMP (6/may/2026):** temporada regular en dos vueltas, los **ocho clubes con más puntos acumulados** avanzan a enero de 2027; series a ganar **4 de un máximo de 7**, esquema **2–3–2** para localía. Fuente: https://editor.lmp.mx/tenemos-calendario-para-la-temporada-2026-2027/ . Validar clasificación/desempates y resembrado de semifinales con el reglamento vigente antes de fijar lógica de enfrentamientos.
+- **Diseño objetivo:** usar MLB como referencia visual, pero flujo independiente de **Primera Ronda → Semifinales → Serie Final → Campeón**. Cada serie con ganados, probable juego decisivo, estados reales y vínculos a juegos, sin mostrar series inexistentes y sin inventar fechas.
+- **Trabajo técnico posterior:** identificar fuente verificable de series/seedings/juegos de postemporada LMP, normalizar estados, implementar `lib/lmpPostseason.ts` y una tarjeta reutilizable de camino a la final, integrar de forma condicional en LMP y validar con datos oficiales. No tocar MLB/LMB ni desplegar la postemporada por adelantado.
+- **Orden recomendado:** primero cerrar esta auditoría documental; después diseñar el contrato API de playoffs LMP y la tarjeta con datos reales; en otro bloque portar los ajustes UX LMP → LMB con pruebas específicas. Evitar más despliegues por cambios de documentación que no afectan ejecución.
+
+### E. Evidencia/limitaciones de esta auditoría
+
+- **Revisado:** archivos actuales `app/page.tsx`, `app/game/[league]/[id]/page.tsx`, `components/Games.tsx`, `components/LiveGamePanel.tsx`, `components/AutoRefresh.tsx`, `BaseballGameExtras.tsx` y fuentes `lib/*` de las tres ligas, además de evidencias previas de la usuaria recogidas en secciones 101–104.
+- **Criterio:** confirmado en código ≠ probado con fuente en vivo. LMP sí cuenta con capturas recientes de CALENTAMIENTO, EN VIVO, FINAL y BAJA 10, pero esta revisión no simula un juego real nuevo en LMB/MLB.
+- **Alcance del commit:** solo mantenimiento documental `PROJECT_STATUS.md`, sin modificar código funcional, endpoints, logos o diseño. Si GitHub activa un despliegue automático de Vercel por un cambio markdown, eso no implica que se haya modificado la app.
