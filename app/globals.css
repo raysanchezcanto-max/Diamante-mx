@@ -5085,3 +5085,83 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     width: 24px; height: 24px; flex-basis: 24px;
   }
 }
+
+/* Playoffs LMP — misma jerarquía visual que el camino MLB; sin placeholders. */
+.lmpPostseasonSection {
+  margin-top: 28px;
+}
+.lmpPostseasonHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.lmpPostseasonHeading h2 {
+  margin: 5px 0 0;
+}
+.lmpPostseasonHeading p {
+  max-width: 260px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted, #a9b5b2);
+  text-align: right;
+}
+.lmpPostseasonRound + .lmpPostseasonRound {
+  margin-top: 22px;
+}
+.lmpPostseasonSeriesCard {
+  background: rgba(16, 32, 26, .9);
+}
+.lmpPostseasonSeriesWinner > strong {
+  color: #c7fa4a;
+}
+.lmpPostseasonSeriesWinner > div > span {
+  color: #c7fa4a;
+}
+.lmpPostseasonSeriesStatus {
+  flex-wrap: wrap;
+  min-height: 26px;
+}
+.lmpPostseasonSeriesStatus a {
+  color: #c7fa4a;
+  text-decoration: none;
+  font-weight: 700;
+}
+.lmpPostseasonSeriesStatus a:hover {
+  text-decoration: underline;
+}
+.lmpPostseasonLive {
+  color: #ff596d;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+}
+.lmpPostseasonNoLogo {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+}
+.lmpPostseasonCompleted {
+  font-size: 12px;
+  color: var(--muted, #a9b5b2);
+}
+.lmpPostseasonHistory {
+  margin-top: 18px;
+}
+.lmpPostseasonHistory .lmpPostseasonRound + .lmpPostseasonRound {
+  margin-top: 24px;
+}
+@media (max-width: 640px) {
+  .lmpPostseasonHeading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .lmpPostseasonHeading p {
+    text-align: left;
+  }
+  .lmpPostseasonGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -5,6 +5,8 @@ import {
   getMlbWorldSeries,
 } from "@/lib/mlbWorldSeries";
 import { getLmpChampion } from "@/lib/lmpChampion";
+import { getLmpPostseason } from "@/lib/lmpPostseason";
+import LmpPostseasonCard from "@/components/LmpPostseasonCard";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
@@ -133,6 +135,21 @@ const recentGames = lmbData
 const lmbChampion = lmbData ? lmbData[6] : null;
 const lmpChampion = lmpData ? lmpData[6] : null;
 const lmpCurrentSeason = lmpData ? lmpData[7] : null;
+
+// No consultar ni mostrar playoffs prematuros en temporada regular.
+// La fuente puede publicar encuentros con equipos "To Be Determined".
+const mexicoDay = new Intl.DateTimeFormat("sv-SE", {
+  timeZone: "America/Mexico_City",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date());
+const lmpPostseason =
+  selectedLeague === "LMP" &&
+  lmpCurrentSeason !== null &&
+  mexicoDay >= `${lmpCurrentSeason}-12-30`
+    ? await getLmpPostseason(lmpCurrentSeason)
+    : null;
 
 const lmpNextSeasonYear =
   lmpCurrentSeason !== null
@@ -554,6 +571,9 @@ const daysUntilLmp =
   league={selectedLeague}
 />
 </div>
+      {selectedLeague === "LMP" && lmpPostseason && (
+        <LmpPostseasonCard postseason={lmpPostseason} />
+      )}
       {showLmbSeasonNotice && (
   <div className="seasonNotice">
     <div>
