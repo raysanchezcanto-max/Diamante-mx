@@ -8,7 +8,7 @@
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (102) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (103) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1087,3 +1087,10 @@
 - **Causa de código:** `components/AutoRefresh.tsx` inicializaba `lastRefresh = Date.now()` cada vez que se montaba el componente. Al regresar a una página de horas de antigüedad, el primer refresco podía esperar otros 12–15 s, incluso cuando el contenido renderizado estaba desactualizado. El evento `pageshow` (restauración del historial) no estaba registrado.
 - **Solución aislada para LMP:** pasar `snapshotAt={Date.now()}` como hora de generación del contenido desde portada y detalle LMP. Al montar o restaurar una página, `AutoRefresh` compara el reloj actual con `snapshotAt`; si la vista ya supera su intervalo, pide `router.refresh()` inmediatamente, sin esperar al siguiente tick. Mantener la comprobación de pestaña visible y la limitación temporal entre solicitudes; añadir `pageshow` junto a `focus` y `visibilitychange`. Los tiempos existentes de 12 s (en vivo) y 15 s (previo) permanecen; la portada LMP pasa a 60 s cuando todos los encuentros ya son finales, para detectar la siguiente jornada al cruzar de día sin consultas intensivas. MLB/LMB no pasan timestamp ni habilitan este comportamiento.
 - **Verificación requerida:** `npx tsc --noEmit`, `npm run build`, confirmación de un único commit y Vercel READY; revisar automáticamente en navegador que el cambio no cree un bucle de solicitudes y que respete las demás ligas. La rapidez real depende de la red y de cuándo la fuente oficial entregue el nuevo estado; no sustituir datos por supuestos.
+
+## 103. LMP — transición discreta entre medias entradas (5/nov/2026)
+
+- **Motivo visual:** en captura de la usuaria la tarjeta mostraba «EN VIVO · CAMBIO DE ENTRADA» y el encabezado de SITUACIÓN DEL JUEGO repetía «CAMBIO DE ENTRADA». La indicación es demasiado extensa para la tarjeta y se percibe como una interrupción innecesaria del diseño.
+- **Cambio puntual de presentación:** en `components/Games.tsx`, el estado LMP `inningState=Middle/End` conserva el partido como «EN VIVO» sin añadir la etiqueta larga ni anticipar ALTA/BAJA; en `components/LiveGamePanel.tsx` el encabezado de la transición indica «EN VIVO», mientras el cuerpo conserva «Esperando el inicio del turno al bate». Al recibir un estado confirmado `Top/Bottom`, retorna automáticamente el formato normal «ALTA N» o «BAJA N».
+- **Sin alterar datos:** continúan los estados internos, bases, conteos, turnos, score e historial, y se mantienen las salvaguardas para no adelantar una media entrada. Ninguna modificación de MLB, LMB ni del calendario. No se alteran los intervalos de refresco anteriores.
+- **QA:** TypeScript, build, y un solo commit; comprobar Vercel READY y que los componentes ya no muestren la leyenda larga en el caso de transición.

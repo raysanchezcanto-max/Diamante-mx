@@ -91,10 +91,10 @@ function gameTime(
   league: LeagueCode
 ) {
   if (game.status === "Live") {
-  // LMP: la fuente marca Middle/End entre turnos; esperar confirmación
-  // del nuevo medio inning antes de rotular BAJA/ALTA siguiente.
+  // LMP: Middle/End indican una transición; mostrar EN VIVO sin
+  // anticipar ALTA/BAJA hasta que la fuente confirme el siguiente turno.
   if (league === "LMP" && /^(middle|end)$/i.test(game.inningState?.trim() ?? "")) {
-    return "EN VIVO · CAMBIO DE ENTRADA";
+    return "EN VIVO";
   }
  const inningInfo =
   formatInningHalf(

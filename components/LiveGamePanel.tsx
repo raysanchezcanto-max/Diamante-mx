@@ -165,7 +165,7 @@ const battingTeam =
     }}
   >
     <strong className="liveGameInning">
-      {isInningTransition ? "CAMBIO DE ENTRADA" :
+      {isInningTransition ? "EN VIVO" :
         `${formattedInningState} ${displayInning ?? ""}`}
     </strong>
 
