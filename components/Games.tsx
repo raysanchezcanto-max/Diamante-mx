@@ -91,6 +91,11 @@ function gameTime(
   league: LeagueCode
 ) {
   if (game.status === "Live") {
+  // LMP: la fuente marca Middle/End entre turnos; esperar confirmación
+  // del nuevo medio inning antes de rotular BAJA/ALTA siguiente.
+  if (league === "LMP" && /^(middle|end)$/i.test(game.inningState?.trim() ?? "")) {
+    return "EN VIVO · CAMBIO DE ENTRADA";
+  }
  const inningInfo =
   formatInningHalf(
     game.inningState,
@@ -255,6 +260,7 @@ const showMlbRegularPitchers =
         return (
           <Link
             href={`/game/${league.toLowerCase()}/${game.id}`}
+            prefetch={league !== "LMP"}
             className="gameCard gameCardLink"
             key={game.id}
           >

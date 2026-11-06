@@ -159,7 +159,7 @@ export default async function GamePage({
   if (!game) {
     notFound();
   }
-const broadcasts = await getGameBroadcasts(league, gameId, {
+const broadcastsPromise = getGameBroadcasts(league, gameId, {
   startTime: game.startTime,
   awayId: game.awayId,
   homeId: game.homeId,
@@ -211,7 +211,7 @@ const isLive =
   !specialStatus;
 
 
-const [playState, gameExtras] = await Promise.all([
+const [playState, gameExtras, broadcasts] = await Promise.all([
   !isLive ? Promise.resolve(null)
     : league === "LMB" ? getLmbPlayState(gameId)
     : league === "LMP" ? getLmpPlayState(gameId)
@@ -220,6 +220,7 @@ const [playState, gameExtras] = await Promise.all([
   isLive || isFinal
     ? getBaseballGameExtras(league, gameId)
     : Promise.resolve(null),
+  broadcastsPromise,
 ]);
 
 // Los estados MLB/LMB comparten un tipo con LMP; validar el campo exclusivo.
@@ -370,6 +371,8 @@ const time =
     <main className="gamePage">
    <AutoRefresh
   enabled={!isFinal}
+  intervalMs={league === "LMP" ? (isLive ? 12000 : 15000) : 15000}
+  refreshOnFocus={league === "LMP"}
 />
       <a
         className="gameBack"

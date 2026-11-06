@@ -26,7 +26,8 @@ function normalizeBaseballSpanish(
 }
 
 export async function translateBaseballText(
-  text: string
+  text: string,
+  maxWaitMs?: number
 ): Promise<string> {
   const cleanText = text.trim();
 
@@ -58,6 +59,9 @@ export async function translateBaseballText(
       endpoint,
       {
         method: "POST",
+        // LMP puede acotar la espera para no bloquear el marcador en vivo.
+        // MLB conserva su comportamiento anterior.
+        signal: maxWaitMs ? AbortSignal.timeout(maxWaitMs) : undefined,
 
         headers: {
           Authorization:

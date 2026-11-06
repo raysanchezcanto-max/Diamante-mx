@@ -505,7 +505,7 @@ homeRuns:
         next: {
           // LMP EN VIVO se refresca cada 15 s. Evitar que el encabezado
           // permanezca detrás de la situación por caché de 30 s.
-          revalidate: league === "LMP" ? 15 : 30,
+          revalidate: league === "LMP" ? 10 : 30,
         },
       }
     );

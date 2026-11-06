@@ -414,7 +414,8 @@ const description =
   "";
    const automaticDescription =
   await translateBaseballText(
-    description
+    description,
+    league === "LMP" ? 4000 : undefined
   );
 
 const finalDescription =
@@ -522,7 +523,8 @@ const plays =
 
         const automatic =
           await translateBaseballText(
-            original
+            original,
+            league === "LMP" ? 4000 : undefined
           );
 
         return automatic !== original

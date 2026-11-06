@@ -115,10 +115,10 @@ function mexicoDate(date = new Date()) {
 }
 
 
-async function lmpFetch(path: string) {
+async function lmpFetch(path: string, revalidate = 60) {
   const res = await fetch(`${MLB_API}${path}`, {
     next: {
-      revalidate: 60,
+      revalidate,
     },
     headers: {
       Accept: "application/json",
@@ -210,7 +210,8 @@ const yesterday = mexicoDate(
 );
 
 const todayData = await lmpFetch(
-  `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`
+  `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`,
+  15
 );
 
 const todayGames =

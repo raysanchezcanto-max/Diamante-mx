@@ -87,18 +87,31 @@ const lmbData =
       ] as const)
     : null;
 
+// LMP: evitar cargas secuenciales (actividad, jornada, posiciones, líderes,
+// próximas fechas y resultados). Los datos se solicitan en paralelo.
+const lmpData = selectedLeague === "LMP"
+  ? await Promise.all([
+      getSourceActivity("LMP"),
+      getLmpGames(),
+      getLmpStandings(),
+      getLmpLeaders(),
+      getNextGames("LMP"),
+      getRecentGames("LMP"),
+      getLmpChampion(),
+      getLmpSeasonYear(),
+    ] as const)
+  : null;
+
 const sourceActivity = lmbData
   ? lmbData[0]
-  : await getSourceActivity(selectedLeague);
+  : lmpData
+    ? lmpData[0]
+    : await getSourceActivity(selectedLeague);
 
 const [games, standings, leaders] = lmbData
   ? [lmbData[1], lmbData[2], lmbData[3]]
-  : selectedLeague === "LMP"
-    ? await Promise.all([
-        getLmpGames(),
-        getLmpStandings(),
-        getLmpLeaders(),
-      ])
+  : lmpData
+    ? [lmpData[1], lmpData[2], lmpData[3]]
     : await Promise.all([
         getGames(),
         getStandings(),
@@ -107,21 +120,19 @@ const [games, standings, leaders] = lmbData
 
 const nextGames = lmbData
   ? lmbData[4]
-  : await getNextGames(selectedLeague);
+  : lmpData
+    ? lmpData[4]
+    : await getNextGames(selectedLeague);
 
 const recentGames = lmbData
   ? lmbData[5]
-  : await getRecentGames(selectedLeague);
+  : lmpData
+    ? lmpData[5]
+    : await getRecentGames(selectedLeague);
 
 const lmbChampion = lmbData ? lmbData[6] : null;
-  const lmpChampion =
-  selectedLeague === "LMP"
-    ? await getLmpChampion()
-    : null;
-  const lmpCurrentSeason =
-  selectedLeague === "LMP"
-    ? await getLmpSeasonYear()
-    : null;
+const lmpChampion = lmpData ? lmpData[6] : null;
+const lmpCurrentSeason = lmpData ? lmpData[7] : null;
 
 const lmpNextSeasonYear =
   lmpCurrentSeason !== null
@@ -384,7 +395,12 @@ const daysUntilLmp =
         game.status === "Preview"
     )
   }
-  intervalMs={30000}
+  intervalMs={
+    selectedLeague === "LMP"
+      ? games.some((game) => game.status === "Live") ? 12000 : 15000
+      : 30000
+  }
+  refreshOnFocus={selectedLeague === "LMP"}
 />
       <header className="topbar">
         <a
