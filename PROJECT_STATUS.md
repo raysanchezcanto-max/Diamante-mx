@@ -8,7 +8,7 @@
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (103) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
+> **REANUDACIÓN INMEDIATA (5/nov/2026):** leer la última sección (104) y revisar el código actual de GitHub. Prioridad: confirmar en Vercel el SHA de producción; revisar las insignias vectoriales de Algodoneros y Sultanes en móvil; continuar buscando fuentes oficiales fieles para los logos restantes. Los apartados anteriores documentan fases históricas, no necesariamente el estado actual.
 
 ## 1. Acuerdos permanentes
 
@@ -1094,3 +1094,13 @@
 - **Cambio puntual de presentación:** en `components/Games.tsx`, el estado LMP `inningState=Middle/End` conserva el partido como «EN VIVO» sin añadir la etiqueta larga ni anticipar ALTA/BAJA; en `components/LiveGamePanel.tsx` el encabezado de la transición indica «EN VIVO», mientras el cuerpo conserva «Esperando el inicio del turno al bate». Al recibir un estado confirmado `Top/Bottom`, retorna automáticamente el formato normal «ALTA N» o «BAJA N».
 - **Sin alterar datos:** continúan los estados internos, bases, conteos, turnos, score e historial, y se mantienen las salvaguardas para no adelantar una media entrada. Ninguna modificación de MLB, LMB ni del calendario. No se alteran los intervalos de refresco anteriores.
 - **QA:** TypeScript, build, y un solo commit; comprobar Vercel READY y que los componentes ya no muestren la leyenda larga en el caso de transición.
+
+## 104. LMP — corregir EN VIVO duplicado y recuperar panel completo en transiciones (5/nov/2026)
+
+- **Captura que motivó el ajuste:** dos tarjetas de LMP mostraban «● EN VIVO · EN VIVO»; el panel SITUACIÓN DEL JUEGO se reducía a un mensaje de espera sin bases, bolas, strikes, outs ni historial. La usuaria pidió «● EN VIVO · ALTA/BAJA N» y el panel completo como en un turno activo.
+- **Causa:** en `components/Games.tsx`, `gameTime` devolvía literalmente «EN VIVO» para `Middle/End` y la tarjeta añadía otra vez su propio «EN VIVO». En `components/LiveGamePanel.tsx`, `isInningTransition` reemplazaba el cuerpo por un mensaje y ocultaba las jugadas. No era un error del marcador oficial.
+- **Solución coherente:** nuevo helper puro `lib/lmpInningLabel.ts`, compartido por la tarjeta y el detalle: `Top → ALTA N`, `Bottom → BAJA N`, `Middle → ALTA N` (último turno confirmado), `End → BAJA N` (último turno confirmado). Durante la transición no se anuncia prematuramente el siguiente turno; la etiqueta avanzará cuando la fuente informe `Top/Bottom`. Si falta el número o el estado, la tarjeta solo muestra «EN VIVO» sin duplicados.
+- **Tarjeta:** mantener el punto rojo parpadeante y un solo «EN VIVO»; añadir « · ALTA N» o « · BAJA N» únicamente si la etiqueta está disponible. El marcador y orden de partidos no cambian.
+- **Situación del juego:** mantener siempre el diamante, los contadores BOLAS/STRIKES/OUTS y JUGADAS DEL INNING, incluido durante `Middle/End`. En transición limpiar temporalmente los valores del turno anterior (bases, outs, bolas, strikes e historial) para evitar reutilizar información ya concluida; mostrar «Esperando las primeras jugadas de este turno al bate». Durante `Top/Bottom`, respetar los datos y las jugadas oficiales, el equipo bateando, bateador y lanzador sin cambios.
+- **Alcance:** lógica exclusivamente de presentación para LMP; MLB y LMB conservan su formateo y sus estados. No se alteraron feeds, traducciones, intervalos, pitchers, estadística ni estados del partido.
+- **QA:** TypeScript y compilación Next.js correctos; pruebas de renderizado con React para `Top`, `Bottom`, `Middle`, `End` y extrainning 10: tarjetas sin «EN VIVO · EN VIVO», panel completo, ningún dato antiguo reutilizado. Un solo commit; tras publicarlo, comprobar SHA de Vercel y estado READY.

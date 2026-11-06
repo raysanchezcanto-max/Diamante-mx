@@ -12,6 +12,7 @@ import type {
 import Link from "next/link";
 import type { Game } from "@/lib/mlb";
 import { getGameSpecialStatus } from "@/lib/gameSpecialStatus";
+import { getLmpInningLabel } from "@/lib/lmpInningLabel";
 import type { LmpChampion } from "@/lib/lmpChampion";
 
 import {
@@ -91,10 +92,9 @@ function gameTime(
   league: LeagueCode
 ) {
   if (game.status === "Live") {
-  // LMP: Middle/End indican una transición; mostrar EN VIVO sin
-  // anticipar ALTA/BAJA hasta que la fuente confirme el siguiente turno.
-  if (league === "LMP" && /^(middle|end)$/i.test(game.inningState?.trim() ?? "")) {
-    return "EN VIVO";
+  if (league === "LMP") {
+    const inning = getLmpInningLabel(game.inningState, game.inning);
+    return inning ? `EN VIVO · ${inning}` : "EN VIVO";
   }
  const inningInfo =
   formatInningHalf(
@@ -182,6 +182,11 @@ function GameCards({
   return (
     <div className="gamesGrid">
       {games.map((game) => {
+        const liveInningLabel = game.status === "Live"
+          ? gameTime(game, league)
+              .replace(/^EN VIVO(?:\s*·\s*)?/, "")
+              .trim()
+          : "";
         const awayDisplayName = getTeamDisplayName(league, game.away);
         const homeDisplayName = getTeamDisplayName(league, game.home);
 
@@ -419,13 +424,12 @@ marginTop: "5px",
         EN VIVO
       </span>
 
-      <span className="liveInningText">
-        {" · "}
-        {gameTime(game, league).replace(
-          /^EN VIVO\s*·\s*/,
-          ""
-        )}
-      </span>
+      {liveInningLabel && (
+        <span className="liveInningText">
+          {" · "}
+          {liveInningLabel}
+        </span>
+      )}
     </>
  
 

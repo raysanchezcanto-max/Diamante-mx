@@ -1,4 +1,5 @@
 import BaseDiamond from "./BaseDiamond";
+import { getLmpInningLabel } from "@/lib/lmpInningLabel";
 
 type LiveGamePanelProps = {
   warmup?: boolean;
@@ -117,7 +118,20 @@ const isInningTransition =
   lmpMode &&
   (normalizedInningState === "middle" ||
     normalizedInningState === "end");
-// Conservar la rotulación anterior de MLB/LMB; en LMP el título será genérico.
+// En transición, mantener visible el ÚLTIMO turno confirmado.
+ // Mostrar de nuevo el diamante y el conteo, pero sin reutilizar outs,
+ // bases o jugadas del turno que ya concluyó.
+const inningLabel = lmpMode
+  ? getLmpInningLabel(inningState, inning)
+  : `${formattedInningState} ${displayInning ?? ""}`.trim();
+const shownFirst = isInningTransition ? 0 : first;
+const shownSecond = isInningTransition ? 0 : second;
+const shownThird = isInningTransition ? 0 : third;
+const shownBalls = isInningTransition ? 0 : balls;
+const shownStrikes = isInningTransition ? 0 : strikes;
+const shownOuts = isInningTransition ? 0 : outs;
+const shownPlays = isInningTransition ? [] : plays;
+// Conservamos las etiquetas de historial de MLB/LMB.
 const playHistoryLabel =
   normalizedInningState === "middle" && typeof inning === "number"
     ? `JUGADAS DE LA ALTA ${inning}`
@@ -165,8 +179,7 @@ const battingTeam =
     }}
   >
     <strong className="liveGameInning">
-      {isInningTransition ? "EN VIVO" :
-        `${formattedInningState} ${displayInning ?? ""}`}
+      {inningLabel ?? "EN VIVO"}
     </strong>
 
     {!isInningTransition && battingTeam && (
@@ -223,42 +236,34 @@ const battingTeam =
 
 </div>
 
-      {isInningTransition ? (
-        <div className="liveGamePanelBody">
-          <p className="liveGameSourceWaiting">
-            Esperando el inicio del turno al bate.
-          </p>
-        </div>
-      ) : (
       <div className="liveGamePanelBody">
         <div className="liveGameBases">
           <BaseDiamond
-            first={first}
-            second={second}
-            third={third}
+            first={shownFirst}
+            second={shownSecond}
+            third={shownThird}
           />
         </div>
 
         <div className="liveGameStats">
           <div>
             <small>BOLAS</small>
-            <strong>{balls}</strong>
+            <strong>{shownBalls}</strong>
           </div>
 
           <div>
             <small>STRIKES</small>
-            <strong>{strikes}</strong>
+            <strong>{shownStrikes}</strong>
           </div>
 
           <div>
             <small>OUTS</small>
-            <strong>{outs}</strong>
+            <strong>{shownOuts}</strong>
           </div>
         </div>
       </div>
-      )}
 
-    {(!isInningTransition && (lmpMode || plays.length > 0 || description)) && (
+    {(lmpMode || plays.length > 0 || description) && (
       <div className="liveGamePlay">
         <small>
           {lmpMode
@@ -268,9 +273,9 @@ const battingTeam =
               : "ÚLTIMA JUGADA"}
         </small>
 
-        {plays.length > 0 ? (
+        {shownPlays.length > 0 ? (
           <div className="inningPlayList">
-            {plays.map((play, index) => (
+            {shownPlays.map((play, index) => (
               <div
                 className="inningPlayItem"
                 key={`${index}-${play}`}
