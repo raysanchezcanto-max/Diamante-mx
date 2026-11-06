@@ -388,6 +388,7 @@ const daysUntilLmp =
     <main>
     <AutoRefresh
   enabled={
+    selectedLeague === "LMP" ||
     mlbWorldSeriesActive ||
     games.some(
       (game) =>
@@ -397,10 +398,15 @@ const daysUntilLmp =
   }
   intervalMs={
     selectedLeague === "LMP"
-      ? games.some((game) => game.status === "Live") ? 12000 : 15000
+      ? games.some((game) => game.status === "Live")
+        ? 12000
+        : games.some((game) => game.status === "Preview")
+          ? 15000
+          : 60000
       : 30000
   }
   refreshOnFocus={selectedLeague === "LMP"}
+  snapshotAt={selectedLeague === "LMP" ? Date.now() : undefined}
 />
       <header className="topbar">
         <a

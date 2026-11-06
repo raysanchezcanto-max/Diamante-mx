@@ -373,6 +373,7 @@ const time =
   enabled={!isFinal}
   intervalMs={league === "LMP" ? (isLive ? 12000 : 15000) : 15000}
   refreshOnFocus={league === "LMP"}
+  snapshotAt={league === "LMP" ? Date.now() : undefined}
 />
       <a
         className="gameBack"
