@@ -1,3 +1,4 @@
+import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import {
   getOfficialLmbTeamName,
 } from "./lmb";
@@ -255,14 +256,7 @@ async function getLmpScheduleProbables(
 
   try {
     const datePath = officialDate.replace(/-/g, "/");
-    const response = await fetch(
-      `https://api.lmp.mx/3.0.0/scoreboard/${datePath}`,
-      { next: { revalidate: 60 }, signal: AbortSignal.timeout(8000) }
-    );
-    if (!response.ok) return null;
-
-    const data = await response.json();
-    const games: any[] = Array.isArray(data?.response) ? data.response : [];
+    const games = await getLmpScoreboard(datePath);
     const game = games.find((item: any) =>
       Number(item?.boxScore) === gameId &&
       Number(item?.awayTeamId) === awayTeamId &&
