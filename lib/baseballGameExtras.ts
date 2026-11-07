@@ -192,7 +192,7 @@ export async function getBaseballGameExtras(
     try {
       const response = await fetch(
         `https://statsapi.mlb.com/api/v1.1/game/${gameId}/feed/live`,
-        { next: { revalidate: 15 }, signal: AbortSignal.timeout(7500) },
+        { next: { revalidate: 10 }, signal: AbortSignal.timeout(7500) },
       );
       if (!response.ok) return fallback;
       const data = await response.json();
@@ -226,7 +226,7 @@ export async function getBaseballGameExtras(
   try {
     const response = await fetch(
       `https://statsapi.mlb.com/api/v1.1/game/${gameId}/feed/live`,
-      { next: { revalidate: 15 }, signal: AbortSignal.timeout(8000) },
+      { next: { revalidate: 10 }, signal: AbortSignal.timeout(8000) },
     );
     if (!response.ok) return null;
     const data = await response.json();
