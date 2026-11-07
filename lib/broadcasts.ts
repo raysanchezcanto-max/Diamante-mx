@@ -13,6 +13,7 @@ export type Broadcast = {
   url?: string;
   fallback?: boolean;
   note?: string;
+  verifiedGamePage?: boolean;
 };
 
 export type BroadcastGameContext = {
@@ -29,6 +30,13 @@ const LMP_OFFICIAL_SITE = "https://www.lmp.mx/";
 // descripción de vídeos de la temporada 2026-27. NO es un vídeo individual.
 const LMP_YOUTUBE_MEMBERSHIP = "https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/join";
 const LMB_TV = "https://www.lmb.tv/";
+
+// Prueba piloto puntual: página oficial de video publicada por MLB.com
+// para el Juego 1 Venados–Mayos del 7/nov/2026. No es un patrón
+// generable para otros juegos ni garantiza acceso al reproductor.
+const LMP_VERIFIED_VIDEO_PAGES: Readonly<Record<number, string>> = {
+  850466: "https://www.mlb.com/es/video/lmp-live-1-venados-vs-navojoa-251314",
+};
 
 // Serie del Rey 2026: correspondencia contrastada con el calendario
 // histórico oficial de cada gamePk (fecha/equipos/J1-J6) y las páginas
@@ -216,6 +224,17 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   const start = context.startTime ? new Date(context.startTime) : new Date();
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
   const year = start.getMonth() <= 2 ? season - 1 : season;
+  // Una dirección de video solo aparece para su gamePk y fecha verificados.
+  const gameVideo = mexicanDate(context.startTime ?? "") === "2026/11/07"
+    ? LMP_VERIFIED_VIDEO_PAGES[gameId]
+    : undefined;
+  const verified: Broadcast[] = gameVideo ? [{
+    name: "Video oficial del partido · MLB.com",
+    type: "Streaming",
+    url: gameVideo,
+    verifiedGamePage: true,
+    note: "Página individual de video publicada por MLB.com para este partido; el acceso a la reproducción depende de derechos, región y servicio. No es una URL deducida.",
+  }] : [];
   const known: Broadcast[] = [
     { name: "YouTube LMP · Membresía oficial", type: "Streaming",
       url: LMP_YOUTUBE_MEMBERSHIP,
@@ -228,7 +247,7 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   ];
   const selected = await lmpGameChannels(gameId, context);
   const extra = selected.filter(item => !item.name.toLowerCase().includes("youtube") && !item.name.toLowerCase().includes("mlb.tv"));
-  return [...known, ...extra];
+  return [...verified, ...known, ...extra];
 }
 
 async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
