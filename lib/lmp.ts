@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Game, Standing, Leader } from "./mlb";
 
 const MLB_API = "https://statsapi.mlb.com/api/v1";
@@ -47,8 +48,10 @@ export async function getLmpOpeningDay(
   Desde Opening Day:
   cambia automáticamente a la nueva temporada.
 */
-export async function getLmpSeasonYear():
-  Promise<number> {
+// Compartir el cálculo de temporada solo dentro de cada render/request.
+// React.cache no guarda resultados entre peticiones, por lo que el cambio
+// de temporada sigue respondiendo al calendario oficial actualizado.
+export const getLmpSeasonYear = cache(async (): Promise<number> => {
   const today =
     mexicoDate();
 
@@ -104,7 +107,7 @@ export async function getLmpSeasonYear():
   } catch {
     return year - 1;
   }
-}
+});
 
 
 
