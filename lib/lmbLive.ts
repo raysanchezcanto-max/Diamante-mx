@@ -1,6 +1,7 @@
-export async function getLmbGameInfo(
-  permalink: number
-) {
+import { cache } from "react";
+
+// Compartir detalle LMB dentro del render, sin almacenar juegos en vivo entre peticiones.
+export const getLmbGameInfo = cache(async (permalink: number) => {
   try {
     const response = await fetch(
       `https://lmb.com.mx/juegos/api/detail?permalink=${permalink}`,
@@ -22,7 +23,7 @@ export async function getLmbGameInfo(
 } catch {
   return null;
 }
-}
+});
 export type LmbLiveScore = {
   status: "Preview" | "Live" | "Final";
 
@@ -110,9 +111,9 @@ function getMexicoDateRange() {
     endDate,
   };
 }
-export async function getLmbCalendar(
-  offsetDays = 0
-) {
+// Reutilizar el mismo calendario por día dentro de la carga de página.
+// El cache HTTP de días actuales sigue en no-store.
+export const getLmbCalendar = cache(async (offsetDays = 0) => {
   const baseDate =
     new Date(
       Date.now() +
@@ -193,7 +194,7 @@ export async function getLmbCalendar(
   } catch {
     return [];
   }
-}
+});
 
 
 export async function getLmbNextSeasonStart(
