@@ -16,7 +16,7 @@ export async function GET() {
     if (!response.ok) return Response.json({ status: response.status });
     const html = await response.text();
     const entries = parseLmbTvResultCatalog(html);
-    const gameIds = [867486, 867481];
+    const gameIds = [867486, 867487, 867488, 867489, 867490, 867481];
 
     const games = await Promise.all(gameIds.map(async id => {
       const g = await getGameDetails("LMB", id);
