@@ -393,7 +393,7 @@ const daysUntilMlb =
 const lmbNextSeasonYear =
   lmbChampion?.year
     ? lmbChampion.year + 1
-    : new Date().getFullYear() + 1;
+    : lmbPlayoffSeason + 1;
 
 const lmbNextSeasonStartRaw =
   selectedLeague === "LMB"
