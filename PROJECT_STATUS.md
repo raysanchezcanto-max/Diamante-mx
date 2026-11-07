@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **auditoría de botones «Dónde ver» por partido para MLB/LMB/LMP (sección 116): pendiente ABIERTO**, aunque el diseño y rendimiento de las tres ligas ya estén homologados (sección 115). No confundir página de plataforma con enlace directo al video del partido. LMP YouTube permanece deshabilitado por falta de enlace funcional verificado; MLB.TV muestra un calendario LMP, LMB.TV tiene páginas individuales que aún no se asocian dinámicamente a cada gameId. Evitar inventar rutas o prometer disponibilidad por derechos, región o suscripción. Secciones 114/115 cubren rendimiento y traducción, sin cierre de transmisiones.
+**Prioridad actual (7/nov/2026):** **transmisiones MLB/LMB/LMP: pendiente de enlaces por partido ABIERTO**. Ver sección **117** (primer arreglo LMP: gamePk exacto, doble cartelera, canal MEGA 315–319 y etiquetas «Consultar»); sección 116 contiene auditoría y criterios de cierre. Ya no se vinculan canales LMP a juegos solo por equipos; YouTube sigue sin URL verificada, MLB.TV sigue siendo calendario LMP, no video individual. LMB.TV requiere mapeo seguro a /watch/uuid; MLB requiere revisar proveedores/juegos. Diseño, refresco y traducciones de secciones 114/115 conservados.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** comenzar por sección **116** (transmisiones: pendiente ABIERTO MLB/LMB/LMP), seguir con 115 (rendimiento homologado), 114 (traducción y feed), 113/112 (playoffs). Conservar diseños y refresco de 10 s. Validar por partido el canal, el destino del botón y la disponibilidad del stream; nunca asumir que una portada general reproduce el juego. LMB 2027+ y LMP playoffs nuevos requieren pruebas reales.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** comenzar por **117** (primer cierre técnico LMP de canales, pendientes de destino verificado), luego **116** (auditoría), 115/114 (rendimiento y traducciones) y 113/112 (playoffs). Mantener datos reales, 10 s de refresco y no interpretar un portal general como video del partido. La verificación de stream por partido sigue pendiente.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1355,3 +1355,29 @@
 6. Pruebas con un `Preview` o `Live` real de cada liga, en escritorio/móvil, y confirmar tras despliegue a producción. Sin esta prueba el módulo sigue **PENDIENTE**.
 
 **Cambios de código en esta auditoría:** ninguno; se inspeccionó el código y fuentes públicas y se documentó el trabajo pendiente. Las optimizaciones de las secciones 114–115 permanecen aprobadas.
+
+## 117. Transmisiones LMP — corrección de gamePk, canales MEGA y claridad de botones (7/nov/2026)
+
+### Hallazgo: canales confundibles en doble cartelera
+
+- En `lib/broadcasts.ts`, `lmpGameChannels` antes recorría la respuesta del scoreboard y escogía `games.find` por IDs o nombres de equipos; no exigía `boxScore === gameId`. Esto era ambiguo cuando un mismo visitante/local se enfrentan dos veces el mismo día. **Corregido:** se pasa el `gameId` desde `getGameBroadcasts` y se compara `Number(item.boxScore) === gameId`, con comprobación adicional de IDs de clubes cuando existen. Si no hay coincidencia segura, no se asigna ninguna señal específica, nunca se adivina un juego.
+- La estructura exacta `data.response[]`, `boxScore`, `awayTeamId`, `homeTeamId` ya está documentada y consumida en `getLmpScheduleProbables` de `lib/gameDetails.ts`. El adaptador de canales ahora usa ese arreglo en vez de recorrer recursivamente objetos que pueden parecer juegos. Reconoce canales `tvChannels` y `channels` publicados como objetos `title/name/channelName` o cadenas.
+- Nuevo `lib/lmpScoreboard.ts`: comparte la consulta oficial `https://api.lmp.mx/3.0.0/scoreboard/YYYY/MM/DD` entre abridores probables y transmisiones con `React.cache` **solo dentro del render**, revalidación HTTP de 60 s y timeout de 8 s. `lib/gameDetails.ts` reutiliza ese módulo. No se cambian el feed principal de jugadas ni las reglas de abridores. Commits `83d2583`, `6ddb63d`, `917aae7`; Vercel READY observado para `917aae7`.
+- `lib/broadcasts.ts` enriquece la señal de TV de paga oficial con canal MEGA visible: **TVC Deportes 315**, **TVC Deportes 2 316**, **Mega Sports 317**, **Mega Sports 2 318**, **Mega Sports 3 319**, siempre que el scoreboard devuelva el nombre de esa señal. Fuente: comunicado de LMP 04/jun/2025 `https://editor.lmp.mx/la-liga-arco-mexicana-del-pacifico-regresa-a-mega/`, contrastado con guías de canales 2026. No son enlaces a reproductor web; sin URL pública corroborada se mantiene estado deshabilitado. Commit `4a6b638`.
+- `app/game/[league]/[id]/page.tsx` ya no etiqueta todas las URL como **«Abrir ...»**: `Consultar ...` cuando se trata de portal o calendario; solo un enlace conocido con ruta de video `/watch/` o `youtube.com/watch` muestra `Ver transmisión · ...`. Sigue el aviso visible sobre derechos/región/suscripción y los `title` existentes. Se aplica en MLB/LMB/LMP; no altera sus fuentes. Commit `250756c` Vercel READY.
+
+### Evidencia de canales oficiales del 7/nov/2026
+
+- La web LMP `https://www.lmp.mx/videos/x8QsnB8UAfk` muestra: **Venados–Mayos TVC Deportes**, **Águilas–Cañeros Mega Sports**, **Naranjeros–Algodoneros Mega Sports 3**, **Jaguares–Tomateros Mega Sports 2**, **Charros–Yaquis TVC Deportes 2**, además de MLB.TV/YouTube como otras opciones. Fuente oficial permite contrastar la asignación por enfrentamiento, no la URL directa de reproductor.
+- `https://www.mlb.com/live-stream-games/lmp/2026-schedule` muestra calendario de partidos de noviembre y advierte que requiere suscripción, incluyendo dobles juegos. No atribuir transmisión directa a ese enlace.
+- Los handles YouTube `@LigaArcoMX` y `@lmp_beisbol` fueron reportados por la usuaria como destino incorrecto anteriormente; **no reactivarlos** sin comprobación en navegador y pertenencia al canal oficial actual.
+
+### Límites y próximos pasos (siguen ABIERTOS)
+
+1. **LMP**: verificar `/game/lmp/<gamePk>` Preview/Live **con partidos reales**, que el scoreboard de ese día devuelva `tvChannels/channels` y sus campos. La API no fue accesible en la sesión de auditoría por el navegador de consulta; el cruce está respaldado por el código de `getLmpScheduleProbables`, pero falta evidencia E2E de la correspondencia y de los nuevos rótulos. Confirmar que los canales en pantalla coincidan con LMP para las dobles carteleras; canales sin web continúan deshabilitados.
+2. **YouTube**: conseguir y abrir el canal oficial actual de membresía 2026–27 y comprobar que ofrece el contenido correspondiente; no utilizar enlaces antiguos o derivados solo de nombres.
+3. **LMB**: mapeo fiable `gameId` ↔ URL individual LMB.TV `/watch/<uuid>` mediante fecha, equipos y juego; verificar que no sea repetición/clip u otro partido.
+4. **MLB**: comprobar cadenas por partido y la navegación a su plataforma; enlazar directo solo si el proveedor ofrece URL identificada para ese juego.
+5. **Plataformas generales**: sin un enlace directo confirmado, conservar `Consultar` y la advertencia, sin prometer playback. La compilación READY **no prueba** los enlaces o derechos de cada partido.
+
+**Estado final:** implementación de prevención de cruces y etiquetas publicada; revisión de disponibilidad/enlaces directos de todas las ligas aún pendiente. Para el último commit `4a6b638` y este documento comprobar Vercel READY antes de declararlo publicado.
