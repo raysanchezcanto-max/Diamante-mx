@@ -161,7 +161,7 @@ const battingTeam =
   }
   return (
     <section className="liveGamePanel">
-      <div className="liveGamePanelHeader">
+      <div className="liveGamePanelHeader" style={{ flexWrap: "wrap" }}>
         <span className="eyebrow">
           SITUACIÓN DEL JUEGO
         </span>
@@ -174,6 +174,8 @@ const battingTeam =
       flexDirection: "column",
       alignItems: "flex-end",
       gap: "4px",
+      minWidth: 0,
+      maxWidth: "100%",
     }}
   >
     <strong className="liveGameInning">
@@ -189,7 +191,9 @@ const battingTeam =
           fontWeight: 600,
           color: "#8fa9a0",
           letterSpacing: "0.04em",
-          whiteSpace: "nowrap",
+          whiteSpace: "normal",
+           overflowWrap: "anywhere",
+           textAlign: "right",
         }}
       >
         BATEANDO · {battingTeam}
@@ -205,7 +209,9 @@ const battingTeam =
           fontWeight: 700,
           color: "#e6efec",
           letterSpacing: "0.03em",
-          whiteSpace: "nowrap",
+          whiteSpace: "normal",
+           overflowWrap: "anywhere",
+           textAlign: "right",
         }}
       >
         AL BAT · {batterName}
@@ -220,7 +226,9 @@ const battingTeam =
           fontWeight: 600,
           color: "#c7d3cf",
           letterSpacing: "0.03em",
-          whiteSpace: "nowrap",
+          whiteSpace: "normal",
+           overflowWrap: "anywhere",
+           textAlign: "right",
         }}
       >
         LANZANDO · {pitcherName}
