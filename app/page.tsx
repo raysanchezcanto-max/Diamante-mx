@@ -107,33 +107,42 @@ const lmpData = selectedLeague === "LMP"
     ] as const)
   : null;
 
+// MLB: solicitar también próximas fechas y resultados recientes en paralelo.
+// Las tres ligas cargan ahora los bloques principales simultáneamente.
+const mlbData = selectedLeague === "MLB"
+  ? await Promise.all([
+      getSourceActivity("MLB"),
+      getGames(),
+      getStandings(),
+      getLeaders(),
+      getNextGames("MLB"),
+      getRecentGames("MLB"),
+    ] as const)
+  : null;
+
 const sourceActivity = lmbData
   ? lmbData[0]
   : lmpData
     ? lmpData[0]
-    : await getSourceActivity(selectedLeague);
+    : mlbData![0];
 
 const [games, standings, leaders] = lmbData
   ? [lmbData[1], lmbData[2], lmbData[3]]
   : lmpData
     ? [lmpData[1], lmpData[2], lmpData[3]]
-    : await Promise.all([
-        getGames(),
-        getStandings(),
-        getLeaders(),
-      ]);
+    : [mlbData![1], mlbData![2], mlbData![3]];
 
 const nextGames = lmbData
   ? lmbData[4]
   : lmpData
     ? lmpData[4]
-    : await getNextGames(selectedLeague);
+    : mlbData![4];
 
 const recentGames = lmbData
   ? lmbData[5]
   : lmpData
     ? lmpData[5]
-    : await getRecentGames(selectedLeague);
+    : mlbData![5];
 
 const lmbPreviousChampion = lmbData ? lmbData[6] : null;
 const lmpChampion = lmpData ? lmpData[6] : null;
