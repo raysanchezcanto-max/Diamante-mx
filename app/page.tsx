@@ -364,13 +364,13 @@ const mlbWorldSeriesLiveState =
       )
     : null;
 const mlbNextSeasonYear =
-  mlbChampion?.year
-    ? mlbChampion.year + 1
+  mlbChampionResolved?.year
+    ? mlbChampionResolved.year + 1
     : mlbCurrentYear + 1;
 
 const mlbNextSeasonStart =
   selectedLeague === "MLB" &&
-  mlbChampion
+  mlbChampionResolved
     ? await getMlbNextSeasonStart(
         mlbNextSeasonYear
       )
@@ -378,7 +378,7 @@ const mlbNextSeasonStart =
 
 const showMlbSeasonNotice =
   selectedLeague === "MLB" &&
-  Boolean(mlbChampion) &&
+  Boolean(mlbChampionResolved) &&
   (
     !mlbNextSeasonStart ||
     Date.now() <
