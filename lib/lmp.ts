@@ -214,7 +214,7 @@ const yesterday = mexicoDate(
 
 const todayData = await lmpFetch(
   `/schedule?sportId=${LMP_SPORT_ID}&leagueId=${LMP_LEAGUE_ID}&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`,
-  15
+  10
 );
 
 const todayGames =
