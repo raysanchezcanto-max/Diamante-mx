@@ -473,25 +473,22 @@ export async function getLmbPlayState(
   permalink: number
 ): Promise<LmbPlayState | null> {
   try {
-    const response = await fetch(
-      `https://lmb.com.mx/juegos/api/jugadas?permalink=${permalink}`,
-      {
-        cache: "no-store",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
+    // Jugadas y datos del inning son independientes: consultarlos juntos
+    // evita esperar una segunda llamada antes de mostrar la situación.
+    const [response, gameInfo] = await Promise.all([
+      fetch(
+        `https://lmb.com.mx/juegos/api/jugadas?permalink=${permalink}`,
+        {
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        }
+      ),
+      getLmbGameInfo(permalink),
+    ]);
 
-  if (!response.ok) {
-  return null;
-}
+    if (!response.ok) return null;
 
-const data =
-  await response.json();
-
-const gameInfo =
-  await getLmbGameInfo(permalink);
+    const data = await response.json();
 
 const inningLines =
   Array.isArray(gameInfo?.lineScore)
@@ -656,6 +653,12 @@ const pitcherName =
       
      batterName,
 pitcherName,
+inning: typeof gameInfo?.inning?.number === "number"
+  ? gameInfo.inning.number
+  : undefined,
+inningState: typeof gameInfo?.inning?.part === "string"
+  ? gameInfo.inning.part
+  : undefined,
 inningLines,
 lineScoreTotals,
 plays: inningPlays,
