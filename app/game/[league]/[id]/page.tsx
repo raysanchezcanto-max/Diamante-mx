@@ -688,7 +688,9 @@ const time =
                 title={broadcast.note}
                 className="watchButton"
               >
-                Abrir {broadcast.name}
+                {broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
+                  ? `Ver transmisión · ${broadcast.name}`
+                  : `Consultar ${broadcast.name}`}
               </a>
             ) : (
               <span
