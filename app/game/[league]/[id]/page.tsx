@@ -219,7 +219,7 @@ const [playState, gameExtras, broadcasts] = await Promise.all([
     : getMlbPlayState(gameId),
   // No se consulta boxscore/estadísticas antes del primer lanzamiento.
   isLive || isFinal
-    ? getBaseballGameExtras(league, gameId)
+    ? getBaseballGameExtras(league, gameId, isLive)
     : Promise.resolve(null),
   broadcastsPromise,
 ]);
