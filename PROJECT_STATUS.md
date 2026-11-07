@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** transmisiones por partido siguen **ABIERTAS** para todas las temporadas, pero **ya se enlazaron los seis juegos verificados de la Serie del Rey LMB 2026 a sus páginas individuales oficiales LMB.TV** (sección **119**). En juegos FINAL con grabación verificada se muestra «REPETICIÓN OFICIAL / Partido completo». Para otras fechas, enlace de plataforma LMB.TV o URL /watch individual solo si la fuente LMB lo suministra; **NO existe todavía un descubridor automático universal de UUID**. LMP tiene YouTube de membresía confirmado (118), asignación canales por gamePk (117). Próximos: método verificable para enlaces futuros LMB.TV y revisión por juego de MLB. Diseño, traducciones y 10 s de refresco conservados.
+**Prioridad actual (7/nov/2026):** **enlaces LMB.TV automatizados de forma conservadora** por temporada en sección **120**: el catálogo público permite identificar una página individual `/watch/<uuid>` solo al coincidir visitante, local, día y hora con un único partido (tolerancia 45 min). Sin correspondencia unívoca, se mantiene el portal LMB.TV. Probado con los seis juegos de Serie del Rey 2026 y partido de Serie de Campeonato; las próximas temporadas dependen de que LMB.TV mantenga el catálogo y la estructura verificadas. La sección de transmisión se carga de forma independiente para no bloquear marcador. **Siguiente prioridad: auditar enlaces por partido de MLB**, conservar pendiente de YouTube/reproducción LMP (118), y validar partidos reales de 2027. Diseño, traducciones y refresco de 10 s sin cambios.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **119** (seis grabaciones LMB.TV de Serie del Rey 2026), luego 118/117/116 (LMP y auditoría de transmisiones), 115/114 (rendimiento) y 113/112 (playoffs). Próximo: localizar de forma segura UUID de partidos LMB futuros y probar enlaces MLB por juego. No inventar enlaces ni afirmar reproducción sin suscripción. Datos en vivo y diseño intactos.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** empezar por sección **120** (descubrimiento dinámico LMB.TV + carga independiente), seguir con 119/118/117/116 (histórico LMB, canales LMP, auditoría) y 115/114 (rendimiento). Próximo pendiente prioritario: **MLB — probar proveedores y enlaces por partido**, sin confundir portal con reproductor. Confirmar temporada 2027 solo cuando exista catálogo real. Datos, traducciones y 10 s de refresco intactos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1421,3 +1421,34 @@ Dominio completo de esas páginas: `https://www.lmb.tv`. El catálogo incluye ta
 - Se verificaron **seis URLs individuales existentes** en el catálogo oficial LMB.TV con sus respectivas fechas/identidades; el despliegue compiló `READY`. El buscador de páginas no pudo acceder a las rutas `https://diamante-mx.vercel.app/game/lmb/867481` y `.../867486` en esta sesión; por tanto **no afirmar prueba visual del bloque renderizado en producción**, aunque el despliegue sí está READY.
 - **Pendiente LMB futuro:** derivar una asociación estable entre `gamePk` y UUID a partir de metadatos oficiales verificables (fecha, clubes, número de juego, jornada), sin scraping ambiguo ni depender exclusivamente de la portada. No inventar UUID ni adjudicar una repetición/previa a un partido.
 - **Pendiente MLB:** auditar calendario de canales por partido, enlaces de operadores y disponibilidad real. **LMP:** validar video de membresía con cuenta real y posibles streams por juego; ya están implementados los canales según gamePk.
+
+## 120. LMB.TV — resolución automática de enlace por partido y carga no bloqueante (7/nov/2026)
+
+**Objetivo aprobado:** evitar tener que cargar a mano el UUID de cada video de LMB.TV en futuras temporadas, sin inventar enlaces, confundir dobles carteleras ni ralentizar el marcador. Ver secciones 119 y 116 para histórico y precauciones sobre derechos/suscripción.
+
+### Fuente y esquema investigados desde Vercel
+
+- El catálogo público `https://www.lmb.tv/results/2026/all` se puede consultar por HTTP desde funciones de Vercel: **HTTP 200, ~742,097 caracteres de HTML**, con una lista `<div class=item>` de partidos. Cada elemento usa dos `<img alt="Nombre del equipo">` (visitante/local), timestamp Unix `data-time-to-local` (segundos) y `<a href=/watch/UUID>`. En esta fecha el analizador recuperó **1,039 elementos** útiles; otros elementos (por definir, previas y postpartidos) se excluyen si no tienen ambos equipos, fecha o enlace válido. El catálogo puede cambiar en el futuro; esto no es una API pública formalmente documentada y **no garantiza cobertura absoluta**.
+- Nuevo `lib/lmbTvCatalog.ts`, commit `6e0ae77`: recibe temporada de la **fecha real del partido** y consulta `/results/YYYY/all`; usa `React.cache` por render más revalidación HTTP 300 s (año actual) o 6 h (histórico), `AbortSignal.timeout(6500)`, y no consume video ni credenciales. Solo acepta URLs `https://www.lmb.tv/watch/<uuid>` originadas en el catálogo.
+- `findLmbTvGamePage(context)` compara **visitante exacto, local exacto, mismo día en America/Mexico_City** y **desfase absoluto de hora ≤45 min**. Normaliza acentos y variación `del/de` en nombres. Si hay **cero o dos o más** videos compatibles, fecha u hora inválida, catálogo inaccesible, formato cambiado o liga no identificada, devuelve `null`; **nunca elige por nombre de equipos solamente**. La comprobación horaria separa juegos de dobles carteleras y evita videos ambiguos de reanudaciones.
+- `lib/broadcasts.ts`, commit `4d1a86a`: consulta canales publicados por LMB para el gameId y, si no hay enlace histórico (seis de 2026) ni enlace individual desde su feed, obtiene la página única del catálogo usando `context.startTime/away/home`. Prioridad: **histórico 2026 verificado → enlace /watch informado directamente por LMB → coincidencia automática estricta → portal general LMB.TV**. En páginas de juegos finalizados, si existe URL /watch única, el rótulo `REPETICIÓN OFICIAL / Partido completo` permite consultar la grabación; no garantiza reproducción por suscripción ni derechos.
+
+### Validación realizada (datos reales)
+
+- Ruta temporal `/api/lmb-catalog-diag` consultó el catálogo desde **la propia infraestructura Vercel** y comparó los datos **reales de `getGameDetails("LMB", gamePk)`** contra la nueva función de búsqueda. Resultado: **6/6** correspondencias correctas para la Serie del Rey 2026 (`867486, 867487, 867488, 867489, 867490, 867481`), con los **mismos UUID que la tabla histórica verificada** en sección 119; dos clubes y horas correctamente identificados.
+- Prueba adicional con un partido **fuera de la final**, `/game/lmb/867483`: producción HTTP 200, HTML contiene `REPETICIÓN OFICIAL` y `https://www.lmb.tv/watch/d8def219-3eb5-403a-ad4d-05ccbf2d3442`, URL oficial cuya página se tituló «Serie de Campeonato Zona Sur - Tabasco visita Puebla J5». Por tanto el mecanismo no depende de los seis UUID codificados del archivo histórico.
+- **No se comprobó un partido real 2027** porque aún no hay catálogo `/results/2027/all` disponible; el sistema dará prioridad al portal general hasta que la plataforma lo publique. No hay garantía de que un partido pendiente de transmisión esté en la lista de resultados en tiempo real.
+- La ruta temporal de diagnóstico se **eliminó** tras las pruebas (commit `dce0cdf`); no debe reintroducirse en producción salvo pruebas controladas.
+
+### Salvaguarda de rendimiento para detalles
+
+- Componentes nuevos `components/GameBroadcasts.tsx` y cambio en `app/game/[league]/[id]/page.tsx`, commits `b53bc69` y `efdd6e0`: `getGameBroadcasts(...)` inicia en paralelo, pero **ya no se espera en el Promise.all principal** que necesita el marcador, bases, lanzadores y estadísticas. Se muestra dentro de `<Suspense>` con placeholder «Consultando canales oficiales…» para partidos no finales; la sección llega cuando la fuente termina. En FINAL LMB solo aparece si existe URL del partido; otros FINAL sin video confirmado conservan ausencia de sección. El diseño y los rótulos anteriores se conservaron.
+- Verificación Vercel producción: último commit funcional `efdd6e0` **READY**; las páginas `/game/lmb/867483` y `/game/lmb/867481` devolvieron **HTTP 200** e incluyeron enlaces correctos y bloque de repetición. No se midió una reducción porcentual de latencia; la separación evita bloquear el render principal por catálogo.
+- No se modificó el refresco de 10 s, el feed de jugadas, estadísticas, datos LMP/MLB o la lógica de playoffs.
+
+### Pendientes
+
+1. **MLB:** verificar proveedor de cada juego y destino a plataforma o video individual; mejorar enlaces sin suponer derechos ni reproducibilidad. Ya están etiquetas `Consultar` para portales.
+2. **LMB próxima temporada:** revisar cuando exista calendario/stream oficial 2027 y comprobar fixtures con doble cartelera, hora cambiada, suspendido, reanudación, juegos del mismo club en misma fecha. Si hay ambigüedad, fallback es correcto.
+3. **LMP:** el canal de membresía por ID ya abre la puerta correcta; falta validar accesibilidad con cuenta/partido real y asignación dinámica por día.
+4. **Pruebas móviles:** comprobar visualmente el placeholder de transmisión y el bloque final con pantallas reales.
