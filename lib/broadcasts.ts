@@ -24,12 +24,16 @@ export type BroadcastGameContext = {
 
 const MLB_API = "https://statsapi.mlb.com/api/v1";
 const LMP_OFFICIAL_SITE = "https://www.lmp.mx/";
+// Enlace estable por ID de canal, publicado por la propia LMP y en la
+// descripción de vídeos de la temporada 2026-27. NO es un vídeo individual.
+const LMP_YOUTUBE_MEMBERSHIP = "https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/join";
 const LMB_TV = "https://www.lmb.tv/";
 
 function canonicalProviderUrl(name: string, league: LeagueCode): string | undefined {
   const n = name.toLowerCase();
   if (league === "LMP") {
-    // El identificador exacto del canal oficial YouTube no está verificado.
+    // El feed no identifica el vídeo del partido; la membresía oficial
+    // se presenta por separado, nunca como enlace directo al juego.
     if (n.includes("youtube")) return undefined;
     if (n.includes("mlb.tv")) return "https://www.mlb.com/live-stream-games/lmp/2026-schedule";
     // TV channels can change their schedule: don't link to a random broadcaster.
@@ -199,8 +203,9 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
   const year = start.getMonth() <= 2 ? season - 1 : season;
   const known: Broadcast[] = [
-    { name: "YouTube LMP · Membresía", type: "Streaming",
-      note: "La liga anuncia transmisiones en YouTube, pero no tenemos un enlace del canal verificado; opción deshabilitada." },
+    { name: "YouTube LMP · Membresía oficial", type: "Streaming",
+      url: LMP_YOUTUBE_MEMBERSHIP,
+      note: "Acceso al canal de membresía identificado por la LMP para 2026-27. Requiere cuenta y membresía; no es enlace directo a un partido ni garantiza reproducción." },
     { name: "LMP · Consultar canales oficiales", type: "Streaming", url: LMP_OFFICIAL_SITE,
       note: "Abre la web oficial LMP para consultar opciones; no reproduce directamente un partido." },
     { name: "Calendario LMP en MLB.TV", type: "Streaming",
