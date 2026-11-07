@@ -139,8 +139,9 @@ const lmbPreviousChampion = lmbData ? lmbData[6] : null;
 const lmpChampion = lmpData ? lmpData[6] : null;
 const lmpCurrentSeason = lmpData ? lmpData[7] : null;
 
-// No consultar ni mostrar playoffs prematuros en temporada regular.
-// La fuente puede publicar encuentros con equipos "To Be Determined".
+// Consultar playoffs de la temporada LMP vigente sin una fecha fija.
+// getLmpPostseason descarta equipos por definir y devuelve null hasta
+// que existan cruces oficiales con ambos participantes confirmados.
 const mexicoDay = new Intl.DateTimeFormat("sv-SE", {
   timeZone: "America/Mexico_City",
   year: "numeric",
@@ -148,9 +149,7 @@ const mexicoDay = new Intl.DateTimeFormat("sv-SE", {
   day: "2-digit",
 }).format(new Date());
 const lmpPostseason =
-  selectedLeague === "LMP" &&
-  lmpCurrentSeason !== null &&
-  mexicoDay >= `${lmpCurrentSeason}-12-30`
+  selectedLeague === "LMP" && lmpCurrentSeason !== null
     ? await getLmpPostseason(lmpCurrentSeason)
     : null;
 
