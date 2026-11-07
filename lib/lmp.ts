@@ -203,7 +203,9 @@ async function attachLmpFirstPitchRecorded(
 /*
   JUEGOS DE HOY
 */
-export async function getLmpGames(): Promise<Game[]> {
+export async function getLmpGames(
+  nextGamesRequest?: Promise<Game[]>
+): Promise<Game[]> {
   try {
     const date = mexicoDate();
 
@@ -334,6 +336,15 @@ rescheduleDate:
 return await attachLmpFirstPitchRecorded(gamesForToday);
 }
 
+
+    /*
+      Si la portada ya inició la consulta de próximos partidos,
+      reutilizarla en lugar de solicitar de nuevo los mismos 60 días.
+      Conservar el fallback propio para otros consumidores.
+    */
+    if (nextGamesRequest) {
+      return await nextGamesRequest;
+    }
 
     /*
       Si hoy no hay juegos, buscamos
