@@ -1,5 +1,8 @@
-// Temporary diagnostic for public LMB.TV catalog structure.
-// Remove this route once we finish validating a safe game-to-video matcher.
+// Temporary read-only QA for publicly listed LMB.TV results.
+// Remove this endpoint after validating the matcher.
+import { parseLmbTvResultCatalog, findLmbTvGamePage } from "@/lib/lmbTvCatalog";
+import { getGameDetails } from "@/lib/gameDetails";
+
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
@@ -10,25 +13,24 @@ export async function GET() {
       signal: AbortSignal.timeout(12000),
       headers: { Accept: "text/html" },
     });
+    if (!response.ok) return Response.json({ status: response.status });
     const html = await response.text();
-    const ids = [
-      "8990fc5b-6a79-4519-a38f-9a00e2988109",
-      "1f867e78-4968-4764-9c88-1bb0d2170978",
-    ];
-    const examples = ids.map(id => {
-      const index = html.indexOf(id);
-      return {
-        id, index,
-        snippet: index < 0 ? "" : html.slice(Math.max(0, index - 1050), index + 650),
-      };
-    });
+    const entries = parseLmbTvResultCatalog(html);
+    const gameIds = [867486, 867481];
+
+    const games = await Promise.all(gameIds.map(async id => {
+      const g = await getGameDetails("LMB", id);
+      const matched = g ? await findLmbTvGamePage(g) : null;
+      return { id, startTime: g?.startTime, away: g?.away, home: g?.home, matched };
+    }));
+
     return Response.json({
       status: response.status,
-      bytes: html.length,
-      hasWatch: html.includes("/watch/"),
-      totalWatchMentions: html.match(/\/watch\/[0-9a-f-]{36}/g)?.length ?? 0,
-      firstChars: html.slice(0, 450),
-      examples,
+      size: html.length,
+      entries: entries.length,
+      j1: entries.find(e => e.url.endsWith("/8990fc5b-6a79-4519-a38f-9a00e2988109")),
+      j6: entries.find(e => e.url.endsWith("/1f867e78-4968-4764-9c88-1bb0d2170978")),
+      games,
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     return Response.json({ error: String(error) }, { status: 502 });
