@@ -92,15 +92,21 @@ const lmbData =
       ] as const)
     : null;
 
+// Compartir la solicitud de próximos juegos con la jornada LMP cuando
+// hoy no hay actividad: no descargar dos veces el calendario de 60 días.
+const lmpNextGamesRequest = selectedLeague === "LMP"
+  ? getNextGames("LMP")
+  : null;
+
 // LMP: evitar cargas secuenciales (actividad, jornada, posiciones, líderes,
 // próximas fechas y resultados). Los datos se solicitan en paralelo.
 const lmpData = selectedLeague === "LMP"
   ? await Promise.all([
       getSourceActivity("LMP"),
-      getLmpGames(),
+      getLmpGames(lmpNextGamesRequest ?? undefined),
       getLmpStandings(),
       getLmpLeaders(),
-      getNextGames("LMP"),
+      lmpNextGamesRequest!,
       getRecentGames("LMP"),
       getLmpChampion(),
       getLmpSeasonYear(),
