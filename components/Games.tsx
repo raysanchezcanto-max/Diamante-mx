@@ -17,6 +17,10 @@ import type { LmpChampion } from "@/lib/lmpChampion";
 import type { LmbPostseason } from "@/lib/lmbPostseason";
 import LmbSerieDelReyDetails from "@/components/LmbSerieDelReyDetails";
 import LmbPostseasonCard from "@/components/LmbPostseasonCard";
+import type { LmpPostseason } from "@/lib/lmpPostseason";
+import type { LmpFinalDetails } from "@/lib/lmpFinalDetails";
+import LmpPostseasonCard from "@/components/LmpPostseasonCard";
+import LmpSerieFinalDetails from "@/components/LmpSerieFinalDetails";
 
 import {
   getTeamLogo,
@@ -683,6 +687,8 @@ export default function Games({
   lmbPostseason = null,
   lmbSeasonScheduled = false,
   lmpChampion = null,
+  lmpPostseason = null,
+  lmpFinalDetails = null,
   mlbChampion = null,
   mlbWorldSeries = null,
   mlbPostseason = null,
@@ -703,6 +709,8 @@ export default function Games({
   lmbPostseason?: LmbPostseason | null;
   lmbSeasonScheduled?: boolean;
 lmpChampion?: LmpChampion | null;
+lmpPostseason?: LmpPostseason | null;
+lmpFinalDetails?: LmpFinalDetails | null;
 mlbChampion?: {
   year: number;
   champion: string;
@@ -1880,6 +1888,10 @@ const hasAnyGames =
   (
     league === "MLB" &&
     Boolean(mlbWorldSeries?.champion)
+  ) ||
+  (
+    league === "LMP" &&
+    Boolean(lmpChampion)
   )
 ) && (
 
@@ -1980,6 +1992,12 @@ const hasAnyGames =
       />
     </details>
   )}
+  {league === "LMP" && lmpFinalDetails && (
+    <details className="mlbWorldSeriesDetails lmpSerieFinalDetails">
+      <summary>Ver detalle de la Serie Final</summary>
+      <LmpSerieFinalDetails details={lmpFinalDetails} />
+    </details>
+  )}
   {league === "LMB" && lmbFinalSeries && (
     <details className="mlbWorldSeriesDetails lmbSerieDelReyDetails">
       <summary>Ver detalle de la Serie del Rey</summary>
@@ -2028,6 +2046,12 @@ const hasAnyGames =
   )}
       {league === "LMB" && lmbPostseason && (
         <LmbPostseasonCard postseason={lmbPostseason} />
+      )}
+      {league === "LMP" && lmpPostseason && (
+        <LmpPostseasonCard
+          postseason={lmpPostseason}
+          mode={lmpChampion ? "history" : "active"}
+        />
       )}
     </>
   );

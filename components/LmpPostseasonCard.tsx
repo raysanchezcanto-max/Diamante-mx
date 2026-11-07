@@ -10,11 +10,9 @@ import {
 
 function SeriesCard({ series }: { series: LmpPlayoffSeries }) {
   const active = series.games.find(game => game.status === "Live");
-  const next = series.winnerId
-    ? null
-    : series.games.find(game => game.status === "Preview");
-  const lastCompleted = [...series.games].reverse().find(game => game.status === "Final");
-  const activeGame = active ?? next;
+  const upcoming = series.winnerId ? null :
+    series.games.find(game => game.status === "Preview");
+  const activeGame = active ?? upcoming;
 
   function displayDate(value: string) {
     if (!value || Number.isNaN(Date.parse(value))) return null;
@@ -27,20 +25,24 @@ function SeriesCard({ series }: { series: LmpPlayoffSeries }) {
     }).format(new Date(value));
   }
 
-  return (
-    <div className="mlbPostseasonSeriesCard lmpPostseasonSeriesCard">
-      <div className="mlbPostseasonSeriesTop">
-        <strong>{LMP_PLAYOFF_PHASE_LABEL[series.phase]}</strong>
-        <span>AL MEJOR DE 7</span>
-      </div>
+  const winningTeam = series.winnerId === series.teamA.id
+    ? series.teamA
+    : series.winnerId === series.teamB.id
+      ? series.teamB
+      : null;
 
+  return (
+    <div className="mlbPostseasonSeriesCard mlbPostseasonSeriesCardCompact lmpPostseasonSeriesCard">
       <div className="mlbPostseasonSeriesTeams">
         {[series.teamA, series.teamB].map(team => {
           const logo = getTeamLogo("LMP", team.id, team.name);
           const winner = team.id === series.winnerId;
+          const loser = Boolean(series.winnerId) && !winner;
           return (
             <div
-              className={`mlbPostseasonSeriesTeam ${winner ? "lmpPostseasonSeriesWinner" : ""}`}
+              className={`mlbPostseasonSeriesTeam ${winner
+                ? "mlbPostseasonSeriesTeamWinner"
+                : loser ? "mlbPostseasonSeriesTeamLoser" : ""}`}
               key={team.id}
             >
               <div>
@@ -56,31 +58,26 @@ function SeriesCard({ series }: { series: LmpPlayoffSeries }) {
       </div>
 
       <div className="mlbPostseasonSeriesStatus lmpPostseasonSeriesStatus">
-        {series.winnerId ? (
-          <strong>CLASIFICADO · {getTeamDisplayName(
-            "LMP",
-            series.winnerId === series.teamA.id ? series.teamA.name : series.teamB.name
-          )}</strong>
+        {winningTeam ? (
+          <strong>GANÓ LA SERIE · {getTeamDisplayName("LMP", winningTeam.name)}</strong>
         ) : active ? (
           <span className="lmpPostseasonLive">
             <span className="livePulseDot" aria-hidden="true" />
-            EN VIVO {active.gameNumber ? `· JUEGO ${active.gameNumber}` : ""}
+            EN VIVO{active.gameNumber ? ` · JUEGO ${active.gameNumber}` : ""}
           </span>
-        ) : next ? (
-          <span>PRÓXIMO {next.gameNumber ? `· JUEGO ${next.gameNumber}` : ""}</span>
+        ) : upcoming ? (
+          <span>PRÓXIMO{upcoming.gameNumber ? ` · JUEGO ${upcoming.gameNumber}` : ""}</span>
         ) : (
           <span>SERIE EN DISPUTA</span>
         )}
-        {activeGame ? (
+        {activeGame && (
           <Link href={`/game/lmp/${activeGame.id}`}>
-            {activeGame.status === "Live" ? "VER JUEGO" :
+            {active ? "VER JUEGO" :
               !activeGame.startTimeTBD && displayDate(activeGame.date)
                 ? displayDate(activeGame.date)
-                : "VER JUEGO"}
+                : "HORA POR CONFIRMAR"}
           </Link>
-        ) : lastCompleted ? (
-          <Link href={`/game/lmp/${lastCompleted.id}`}>ÚLTIMO JUEGO</Link>
-        ) : null}
+        )}
       </div>
     </div>
   );
@@ -109,15 +106,39 @@ function Round({
 
 export default function LmpPostseasonCard({
   postseason,
+  mode = "active",
 }: {
   postseason: LmpPostseason;
+  mode?: "active" | "history";
 }) {
   if (!postseason.series.length) return null;
 
-  const current = postseason.currentPhase;
-  const earlier = LMP_PLAYOFF_PHASES.filter(phase =>
-    phase !== current &&
-    postseason.series.some(item => item.phase === phase)
+  const hasPhase = (phase: LmpPostseasonPhase) =>
+    postseason.series.some(item => item.phase === phase);
+
+  // Solo el historial terminado se presenta bajo el campeón: la Serie Final
+  // está en "Ver detalle de la Serie Final", no se repite otra vez.
+  if (mode === "history") {
+    const past: LmpPostseasonPhase[] = (["L", "D"] as const).filter(hasPhase);
+    if (!past.length) return null;
+    return (
+      <section className="section mlbPostseasonHistorySection lmpPostseasonSection" aria-label="Camino a la Serie Final">
+        <details className="mlbPostseasonHistory lmpPostseasonHistory">
+          <summary>Camino a la Serie Final</summary>
+          <div className="mlbPostseasonHistoryContent">
+            {past.map(phase => <Round key={phase} postseason={postseason} phase={phase} />)}
+          </div>
+        </details>
+      </section>
+    );
+  }
+
+  // En fases activas, mostrar la ronda actual y conservar el estado en vivo.
+  // Si la Serie Final acaba de concluir, mostrarla hasta que aparezca el campeón.
+  const current: LmpPostseasonPhase = postseason.currentPhase ??
+    (hasPhase("W") ? "W" : hasPhase("L") ? "L" : "D");
+  const earlier: LmpPostseasonPhase[] = (["L", "D"] as const).filter(
+    phase => phase !== current && hasPhase(phase)
   );
 
   return (
@@ -127,26 +148,16 @@ export default function LmpPostseasonCard({
           <span className="eyebrow">
             PLAYOFFS · LMP {postseason.season}–{String(postseason.season + 1).slice(-2)}
           </span>
-          <h2>Camino a la Serie Final</h2>
+          <h2>{current === "W" ? "Serie Final" : "Camino a la Serie Final"}</h2>
         </div>
-        <p>Series a ganar cuatro partidos · Información oficial LMP</p>
+        <p>Resultados y partidos en tiempo real · Fuente oficial</p>
       </div>
-
-      {current ? (
-        <Round postseason={postseason} phase={current} />
-      ) : (
-        <p className="lmpPostseasonCompleted">
-          Postemporada finalizada · Consulta el recorrido completo.
-        </p>
-      )}
-
+      {hasPhase(current) && <Round postseason={postseason} phase={current} />}
       {earlier.length > 0 && (
         <details className="mlbPostseasonHistory lmpPostseasonHistory">
-          <summary>Ver el camino completo</summary>
+          <summary>Camino a la Serie Final</summary>
           <div className="mlbPostseasonHistoryContent">
-            {LMP_PLAYOFF_PHASES.filter(phase =>
-              earlier.includes(phase)
-            ).map(phase => (
+            {earlier.map(phase => (
               <Round key={phase} postseason={postseason} phase={phase} />
             ))}
           </div>

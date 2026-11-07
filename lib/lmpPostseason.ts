@@ -3,6 +3,8 @@
  * L (semifinales) y W (Serie Final), con parejas y marcadores reales.
  * Se descartan por completo placeholders "To Be Determined": no suponer
  * participantes, fechas confirmadas, series ni ventajas deportivas.
+ * Buscar desde finales de diciembre: algunas series comienzan antes del
+ * 1 de enero; la portada controla por separado cuándo hacer la consulta.
  */
 const MLB_API = "https://statsapi.mlb.com/api/v1";
 const SPORT_ID = 17;
@@ -193,7 +195,7 @@ export async function getLmpPostseason(
 
   try {
     const response = await fetch(
-      `${MLB_API}/schedule?sportId=${SPORT_ID}&leagueId=${LEAGUE_ID}&season=${season}&startDate=${season + 1}-01-01&endDate=${season + 1}-02-10`,
+      `${MLB_API}/schedule?sportId=${SPORT_ID}&leagueId=${LEAGUE_ID}&season=${season}&startDate=${season}-12-28&endDate=${season + 1}-02-10`,
       {
         next: { revalidate: 300 },
         headers: { Accept: "application/json" },

@@ -5300,3 +5300,34 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     margin-top: 10px;
   }
 }
+
+
+/* Playoffs LMP: mismos criterios cromáticos y tarjetas compactas MLB/LMB.
+   Nunca usar lima para el nombre del ganador; solo el marcador ganador. */
+.lmpPostseasonSeriesCard {
+  background: rgba(0, 0, 0, .13);
+}
+.lmpPostseasonSeriesCard .mlbPostseasonSeriesTeams { gap: 9px; }
+.lmpPostseasonSeriesStatus {
+  min-height: 0;
+  margin-top: 10px;
+  padding-top: 9px;
+  font-weight: 750;
+  color: rgba(235, 243, 240, .76);
+}
+.lmpPostseasonSeriesStatus > strong { font-size: 9px; font-weight: 750; }
+.lmpPostseasonSeriesStatus a {
+  color: rgba(235, 243, 240, .82);
+  text-decoration: none;
+}
+.lmpPostseasonSeriesStatus a:hover { text-decoration: underline; }
+.lmpPostseasonHistory .mlbPostseasonHistoryContent { margin-top: 12px; }
+.lmpPostseasonHistory .lmpPostseasonRound:first-child { margin-top: 0; }
+#juegos .lmpPostseasonSection { margin-top: 6px; }
+#juegos .lmpPostseasonHistory { margin-top: 0; }
+
+/* Fotografías LMP: fallback neutral si no existe retrato oficial. */
+.lmpWsPlayerPlaceholder {
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.085);
+}

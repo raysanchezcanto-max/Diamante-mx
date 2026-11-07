@@ -6,7 +6,7 @@ import {
 } from "@/lib/mlbWorldSeries";
 import { getLmpChampion } from "@/lib/lmpChampion";
 import { getLmpPostseason } from "@/lib/lmpPostseason";
-import LmpPostseasonCard from "@/components/LmpPostseasonCard";
+import { getLmpFinalDetails } from "@/lib/lmpFinalDetails";
 import { getLmbPostseason } from "@/lib/lmbPostseason";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
@@ -151,6 +151,16 @@ const lmpPostseason =
   mexicoDay >= `${lmpCurrentSeason}-12-30`
     ? await getLmpPostseason(lmpCurrentSeason)
     : null;
+
+// Consultar boxscores de la Serie Final únicamente si hay campeón oficial.
+// En temporada regular o con cruces TBD no se descargan estos detalles.
+const lmpCompletedFinal =
+  selectedLeague === "LMP" && lmpChampion && lmpPostseason
+    ? lmpPostseason.series.find(serie => serie.phase === "W" && serie.winnerId !== null) ?? null
+    : null;
+const lmpFinalDetails = lmpCompletedFinal
+  ? await getLmpFinalDetails(lmpCompletedFinal)
+  : null;
 
 // Historial oficial LMB 2026: evita confundirlo con cruces de 2027.
 const lmbHistoricalSeason =
@@ -583,6 +593,8 @@ const daysUntilLmp =
   lmbPostseason={lmbPostseason}
    lmbSeasonScheduled={Boolean(lmbNextSeasonStart)}
    lmpChampion={lmpChampion}
+  lmpPostseason={lmpPostseason}
+  lmpFinalDetails={lmpFinalDetails}
   mlbChampion={mlbChampionResolved}
    mlbWorldSeries={mlbWorldSeries}
    mlbPostseason={mlbPostseason}
@@ -591,9 +603,6 @@ const daysUntilLmp =
   league={selectedLeague}
 />
 </div>
-      {selectedLeague === "LMP" && lmpPostseason && (
-        <LmpPostseasonCard postseason={lmpPostseason} />
-      )}
       {showLmbSeasonNotice && (
   <div className="seasonNotice">
     <div>
