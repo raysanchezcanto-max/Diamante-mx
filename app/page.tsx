@@ -92,6 +92,13 @@ const lmbData =
       ] as const)
     : null;
 
+// Iniciar la postemporada LMP junto a las consultas principales, en vez de
+// esperar hasta que todas terminen. La temporada se resuelve una sola vez
+// por render y el servicio sigue descartando cruces no confirmados.
+const lmpPostseasonRequest = selectedLeague === "LMP"
+  ? getLmpSeasonYear().then(season => getLmpPostseason(season))
+  : null;
+
 // Compartir la solicitud de próximos juegos con la jornada LMP cuando
 // hoy no hay actividad: no descargar dos veces el calendario de 60 días.
 const lmpNextGamesRequest = selectedLeague === "LMP"
@@ -163,10 +170,9 @@ const mexicoDay = new Intl.DateTimeFormat("sv-SE", {
   month: "2-digit",
   day: "2-digit",
 }).format(new Date());
-const lmpPostseason =
-  selectedLeague === "LMP" && lmpCurrentSeason !== null
-    ? await getLmpPostseason(lmpCurrentSeason)
-    : null;
+const lmpPostseason = lmpPostseasonRequest
+  ? await lmpPostseasonRequest
+  : null;
 
 // Consultar boxscores de la Serie Final únicamente si hay campeón oficial.
 // En temporada regular o con cruces TBD no se descargan estos detalles.
