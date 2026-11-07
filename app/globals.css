@@ -5182,19 +5182,30 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
   color: var(--muted, #a9b5b2); margin: 10px 0 9px;
 }
-.lmbPostseasonSeriesCard { background: rgba(16, 32, 26, .9); }
-.lmbPostseasonSeriesWinner > strong,
-.lmbPostseasonSeriesWinner > div > span { color: #c7fa4a; }
-.lmbPostseasonSeriesStatus { flex-wrap: wrap; gap: 7px; }
-.lmbPostseasonSeriesStatus a {
-  color: #c7fa4a; font-weight: 700; text-decoration: none;
+/* El mismo tratamiento compacto de MLB: solo el marcador ganador es lima.
+   La ronda y Zona Norte/Sur ya están rotuladas arriba de las tarjetas. */
+.lmbPostseasonSeriesCard { background: rgba(0, 0, 0, .13); }
+.lmbPostseasonSeriesCard .mlbPostseasonSeriesTeams { gap: 9px; }
+.lmbPostseasonSeriesStatus {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+  color: rgba(235, 243, 240, .76);
 }
-.lmbPostseasonSeriesStatus a:hover { text-decoration: underline; }
+.lmbPostseasonSeriesStatus > strong {
+  font-size: 9px;
+  font-weight: 750;
+}
 .lmbPostseasonBestLoser {
-  margin: 8px 0 0; color: var(--muted, #a9b5b2);
-  font-size: 11px; line-height: 1.5;
+  margin: 8px 0 0;
+  color: rgba(215, 224, 220, .62);
+  font-size: 10px;
+  line-height: 1.5;
 }
-.lmbPostseasonBestLoser > span { color: #c7fa4a; font-weight: 700; }
+.lmbPostseasonBestLoser > span {
+  color: inherit;
+  font-weight: 700;
+}
 .lmbPostseasonHistory { margin-top: 18px; }
 .lmbPostseasonHistory .lmbPostseasonRound + .lmbPostseasonRound { margin-top: 24px; }
 .lmbPostseasonNoLogo { display: inline-block; width: 28px; height: 28px; }
@@ -5263,4 +5274,29 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .lmbWsPlayerPlaceholder {
   background: rgba(255, 255, 255, .055);
   border: 1px solid rgba(255, 255, 255, .085);
+}
+
+/* Series de Campeonato como en MLB: dos enfrentamientos en la misma fila
+   (Zona Norte y Zona Sur), cada zona rotulada fuera de su tarjeta. */
+.lmbPostseasonChampionshipColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.lmbPostseasonChampionshipColumns .lmbPostseasonGrid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.lmbPostseasonChampionshipColumns .lmbPostseasonZone {
+  min-width: 0;
+}
+.lmbPostseasonChampionshipColumns .lmbPostseasonZone + .lmbPostseasonZone {
+  margin-top: 0;
+}
+@media (max-width: 760px) {
+  .lmbPostseasonChampionshipColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lmbPostseasonChampionshipColumns .lmbPostseasonZone + .lmbPostseasonZone {
+    margin-top: 10px;
+  }
 }

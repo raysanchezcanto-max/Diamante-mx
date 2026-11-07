@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getTeamLogo, getTeamDisplayName } from "@/lib/teamLogos";
 import {
   type LmbPostseason,
@@ -11,16 +10,12 @@ function SeriesCard({ series }: { series: LmbPlayoffSeries }) {
   const winner = series.teams.find(team => team.code === series.winnerCode);
   return (
     <div className="mlbPostseasonSeriesCard mlbPostseasonSeriesCardCompact lmbPostseasonSeriesCard">
-      <div className="mlbPostseasonSeriesTop">
-        <strong>{series.zone === "General" ? "Serie del Rey" : `Zona ${series.zone}`}</strong>
-        <span>AL MEJOR DE 7</span>
-      </div>
       <div className="mlbPostseasonSeriesTeams">
         {series.teams.map(team => {
           const logo = getTeamLogo("LMB", 0, team.name);
           return (
             <div
-              className={`mlbPostseasonSeriesTeam ${series.winnerCode === team.code ? "lmbPostseasonSeriesWinner" : ""}`}
+              className={`mlbPostseasonSeriesTeam ${series.winnerCode === team.code ? "mlbPostseasonSeriesTeamWinner" : "mlbPostseasonSeriesTeamLoser"}`}
               key={team.code}
             >
               <div>
@@ -39,9 +34,6 @@ function SeriesCard({ series }: { series: LmbPlayoffSeries }) {
           {series.round === "rey" ? "CAMPEÓN" : "GANÓ LA SERIE"}
           {winner ? ` · ${getTeamDisplayName("LMB", winner.name)}` : ""}
         </strong>
-        <Link href={`/game/lmb/${series.lastGameId}`}>
-          JUEGO DECISIVO
-        </Link>
       </div>
       {series.bestLoserCode && (
         <p className="lmbPostseasonBestLoser">
@@ -65,20 +57,19 @@ function Round({
 }) {
   const series = postseason.series.filter(item => item.round === round);
   if (!series.length) return null;
-  const zones: ("Norte" | "Sur" | "General")[] = round === "rey"
-    ? ["General"]
-    : ["Norte", "Sur"];
+  const zones = (["Norte", "Sur"] as const)
+    .map(zone => ({ zone, matches: series.filter(item => item.zone === zone) }))
+    .filter(group => group.matches.length > 0);
+
   return (
     <div className="lmbPostseasonRound">
       <div className="mlbPostseasonHistoryPhaseHeader">
         <span>{LMB_PLAYOFF_ROUND_LABELS[round]}</span>
       </div>
-      {zones.map(zone => {
-        const matches = series.filter(item => item.zone === zone);
-        if (!matches.length) return null;
-        return (
+      <div className={round === "championship" ? "lmbPostseasonChampionshipColumns" : "lmbPostseasonZoneRows"}>
+        {zones.map(({ zone, matches }) => (
           <div className="lmbPostseasonZone" key={zone}>
-            {zone !== "General" && <h3>Zona {zone}</h3>}
+            <h3>Zona {zone}</h3>
             <div className="mlbPostseasonGrid lmbPostseasonGrid">
               {matches.map(item => (
                 <SeriesCard
@@ -88,8 +79,8 @@ function Round({
               ))}
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 }
