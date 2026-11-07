@@ -92,7 +92,10 @@ export async function getLmpSeasonYear():
           Array.isArray(
             record?.teamRecords
           ) &&
-          record.teamRecords.length > 0
+          record.teamRecords.some(
+            (team: any) =>
+              Number(team?.wins ?? 0) + Number(team?.losses ?? 0) > 0
+          )
       );
 
     return hasCurrentSeasonData
