@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getTeamDisplayName, getTeamLogo } from "@/lib/teamLogos";
 import { LMB_SERIE_DEL_REY_2026_STATS } from "@/lib/lmbSerieDelReyStats";
@@ -11,17 +11,32 @@ import type {
 
 type Tab = "games" | "hitting" | "pitching";
 
-// Igual que MLB: mostrar foto cuando existe y un círculo discreto si falta.
+// Retrato oficial LMB primero: varios lanzadores de la Serie del Rey no
+// tienen headshot MLB /67/current pero sí /headshot/milb/current.
+// Preservar el estilo visual MLB, con respaldo limpio cuando ninguna fuente existe.
 function PlayerPhoto({ id, name }: { id: number; name: string }) {
-  const [missing, setMissing] = useState(false);
-  if (missing) return <span className="mlbWsPlayerPhoto lmbWsPlayerPlaceholder" aria-hidden="true" />;
+  const [sourceIndex, setSourceIndex] = useState(0);
+
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [id]);
+
+  const sources = [
+    `https://img.mlbstatic.com/mlb-photos/image/upload/c_fill,g_auto/w_180/v1/people/${id}/headshot/milb/current`,
+    `https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${id}/headshot/67/current`,
+  ];
+
+  if (sourceIndex >= sources.length) {
+    return <span className="mlbWsPlayerPhoto lmbWsPlayerPlaceholder" aria-label={`Sin foto disponible de ${name}`} />;
+  }
   return (
     <img
+      key={`${id}-${sourceIndex}`}
       className="mlbWsPlayerPhoto"
-      src={`https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${id}/headshot/67/current`}
+      src={sources[sourceIndex]}
       alt={name}
       loading="lazy"
-      onError={() => setMissing(true)}
+      onError={() => setSourceIndex(index => Math.min(index + 1, sources.length))}
     />
   );
 }
@@ -148,7 +163,6 @@ export default function LmbSerieDelReyDetails({
                     <Decision label="SALVAMENTO" pitcher={game.save} slot="save" />
                   </div>
                 )}
-                <div className="mlbWsGameLinkHint">VER DETALLE DEL JUEGO ›</div>
               </Link>
             );
           })}
