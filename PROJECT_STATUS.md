@@ -1,22 +1,22 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 6 de noviembre de 2026
+**Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (6/nov/2026):** automatización de playoffs LMB 2027+ conectada al calendario oficial StatsAPI y a las mismas tarjetas compactas aprobadas (sección 113), con consulta de apertura reparada (sportId=23), distinción entre rondas activas e historial y generación automática del detalle de la Serie del Rey por temporada. **Pendiente: validar con juegos reales 2027 cuando se publiquen**; la fuente oficial actualmente devuelve cero partidos de playoffs 2027. La regresión histórica 2026 reproduce 13 series, 72 juegos y los dos mejores perdedores. MLB/LMP sin modificaciones. Leer secciones 113–105 antes de retomar.
+**Prioridad actual (7/nov/2026):** estabilidad y rendimiento de las tres ligas, especialmente LMP en temporada y detalle EN VIVO. Navegación interna optimizada, UI móvil afinada, consultas de LMP compartidas y feed EN VIVO compartido MLB/LMP. Traducciones automáticas DeepL conservadas: LMP espera máxima 4 s; MLB vuelve a su espera previa sin límite explícito. **Pendiente:** validación con juegos en vivo reales y medición objetiva de latencias; ver sección 114. Playoffs LMB 2027+ implementados, pero requieren validación real cuando el calendario oficial tenga partidos (sección 113).
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (6/nov/2026):** leer primero la sección 113 (playoffs LMB automáticos) y luego 112–105. LMB: archivo 2026 histórico intacto; desde 2027 la fuente oficial genera rondas F/D/L/W, los avances reales y finales con sus estadísticas. No mostrar TBD ni reutilizar campeones o estadísticas 2026 en 2027. Apertura temporada LMB requiere sportId=23 (corregido HTTP 400). Fuente 2027 aún sin encuentros de playoffs; requiere validar cuando se jueguen. LMP ya homologada en sección 112. No reabrir diseños aprobados.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero la sección **114** (navegación, rendimiento, feed compartido y traducción); luego 113 (LMB playoffs automáticos), 112 (LMP playoffs), 105 (auditoría base). Mantener diseño/espaciados aprobados y refresco de 10 s con partidos HOY/EN VIVO; no declarar probada una traducción o situación de juego sin observar un encuentro real. LMB 2027+ aguarda publicación de calendario y partidos oficiales para validar automatización; no inventar datos.
 
-### Lectura rápida vigente — auditoría 105
+### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
 - **LMP temporada regular:** implementada y con pruebas visuales aportadas (incluidas entradas extras, salvamentos, dobles carteleras, pospuestos y marcadores). Las secciones 101–104 registran el cierre de refresco, pestañas obsoletas y etiquetas EN VIVO/ALTA/BAJA.
 - **Compartido entre MLB/LMB/LMP:** tarjetas, estados base, detalles, línea de juego, bases, bolas/strikes/outs, estadísticas FINAL y decisiones de lanzadores. Los feeds y algunas reglas de visualización son específicos por liga.
-- **Refresco actualizado (sección 107):** LMP y LMB ya recuperan vistas antiguas y ajustan intervalos según estado; MLB conserva su refresco anterior. Historial de relevos y helper de transición ALTA/BAJA siguen específicos de LMP.
-- **Playoffs LMP:** consulta por temporada y fase (secciones 106 y 112), tarjetas compactas + Serie Final bajo campeón; no hay encuentros por definir en la UI. **LMB:** calendario/campeón dinámicos, pero recorrido de playoffs archivado solo 2026 (secciones 107–111); para 2027 aún faltan adaptadores por fase y detalle automático de final. No rehacer módulos ya presentes.
-- **Fuente de verdad:** sección **105** y código `main` de GitHub; la sección 4 y pendientes anteriores se mantienen **solo como historial**.
+- **Refresco actual (sección 114):** portada `AutoRefresh` cada **10 s** cuando hay estados Live/Preview (o Serie Mundial activa) y 60 s inactiva; detalles no finales también se refrescan a 10 s si Live/Preview. `refreshOnFocus` recupera vistas caducadas; `LiveGamePanel` borra conteos/bases/jugadas en transición Middle/End. Historial de relevos permanece específico de LMP.
+- **Playoffs LMP:** consulta por temporada y fase (secciones 106 y 112), tarjetas compactas + Serie Final bajo campeón, sin cruces TBD. **LMB:** desde la sección 113 ya están implementados adaptador dinámico F/D/L/W y detalle de Serie del Rey para 2027+; probado con regresión 2026, **no** con juegos reales 2027. No reabrir diseño ya aprobado.
+- **Fuente de verdad:** sección **114** y código `main` de GitHub; consultar 113/112/105 para playoffs y antecedentes. Las secciones 1–111 antiguas registran decisiones históricas y pueden contener pendientes ya resueltos.
 
 ## 1. Acuerdos permanentes
 
@@ -44,6 +44,9 @@
 | `lib/sourceActivity.ts` | Comprobación de respuesta con juegos en el calendario del día |
 | `app/game/[league]/[id]/page.tsx` | Detalle de encuentro, integración de datos en vivo |
 | `components/LiveGamePanel.tsx` | Bases, B/S/O, pitcher, bateador, jugadas |
+| `lib/sharedLiveFeed.ts` | Feed MLB/LMP en vivo único por render React (no-store), compartido entre `mlbLive` y `baseballGameExtras` |
+| `lib/translateBaseball.ts` | DeepL EN→ES con caché de textos y fallback; límite 4 s exclusivo de LMP, MLB sin límite explícito |
+| `components/LeagueTabs.tsx` | Navegación interna de ligas mediante `next/link`, sin precarga de destinos |
 
 ## 3. MLB — estado de referencia
 
@@ -1270,3 +1273,39 @@
 - **Bug detectado y reparado en apertura automática:** getLmbNextSeasonStart() en lib/lmbLive.ts llamaba la StatsAPI sin sportId, provocando HTTP 400. Se añadió sportId=23: calendario regular 2026 devuelve HTTP 200 con 969 juegos del 16 de abril al 6 de agosto; 2027 devuelve HTTP 200 pero cero partidos mientras la liga no publique el calendario. No inventar fecha de apertura.
 - **Pruebas técnicas y visuales:** git diff --check, TypeScript y build Next correctos. Regresión contra calendario oficial de 2026: 13 series, 72 juegos, dos mejores perdedores correctos. Los seis partidos de la final recuperan 6 decisiones ganador/perdedor, 3 salvamentos, 26 bateadores, 27 lanzadores y enlaces correctos; 12 tarjetas históricas. Fixture con Serie del Rey activa: en navegadores de 390 y 1280 px aparece EN VIVO · JUEGO 6 con enlace al partido y 12 tarjetas históricas en desplegable, sin rótulos duplicados ni scroll horizontal. Portada del 6 nov 2026: Toros, 12 tarjetas, seis detalles, pestañas PARTIDOS/BATEO/PITCHEO, separación 18 px; MLB y LMP sin errores ni desbordamientos.
 - **Límite y siguiente comprobación:** la API aún devuelve CERO partidos de playoffs LMB 2027 (6/nov/2026). La implementación está validada con los datos reales de 2026 y fixtures de estados activos, NO con juegos futuros no disputados. Cuando comience 2027 revisar formato de competencia, fechas, clasificación mejor perdedor y transición de campeón. Si cambian reglas o API habrá que adaptar el sistema. La automatización evita carga manual mientras la fuente conserve el formato verificado.
+
+## 114. Rendimiento, navegación, móvil y traducción — cierre de cambios del 7/nov/2026
+
+### A. Diseño y navegación aprobados por la usuaria
+
+- **Franja de clubes LMB/LMP:** en `app/globals.css` se redujo el logo un ~8% únicamente en la franja de equipos y se compactó la altura interna; se conserva la escala óptica individual de cada club LMB (`--lmb-logo-scale`) y se dejan intactas MLB y Caribe, las tarjetas, fichas y otros escudos. Commit `02a9984`, READY. La usuaria confirmó expresamente que el aspecto ahora se ve mucho mejor.
+- **Celulares:** `.gamesGrid` utiliza `minmax(min(100%, 250px), 1fr)` para evitar que una tarjeta desborde en viewports estrechos, commit `150101e`. Los nombres extensos de jugadores/equipos en `components/LiveGamePanel.tsx` pueden partirse en varias líneas (`952a846`); `components/BaseballGameExtras.tsx` y CSS muestran «DESLIZA PARA VER MÁS» solo en móvil sobre tablas horizontalmente deslizables (`85e86f4`, `5471047`). READY. QA físico móvil pendiente.
+- **Cambio entre ligas:** `components/LeagueTabs.tsx` migró de enlaces `<a>` a `next/link` con `prefetch={false}`, manteniendo destinos, logos, títulos y estilos (`d45dd83`). El enlace «Volver a [liga]» del detalle hace lo mismo (`501addb`). READY. La usuaria confirmó que la navegación se siente más fluida.
+
+### B. Refresco y estado de juego
+
+- Ajustes previos de refresco (antes de esta sección): portada: **10 s** si hay Live o Preview / Serie Mundial activa, **60 s** en reposo; detalle no final: **10 s** si Live o Preview, **60 s** si otro estado; recuperación al enfocar. La periodicidad del navegador no garantiza latencia real idéntica en red; puede depender del proveedor.
+- `components/LiveGamePanel.tsx` limpia las bases, bolas, strikes, outs y jugadas antiguas en las transiciones **Middle/End** para no atribuir una situación vieja a la entrada nueva (`ae8864b`). `lib/lmbLive.ts` consulta en paralelo jugadas e información de inning (`a072bb5`). La excepción «HORA POR CONFIRMAR» de la apertura 13/oct/2026 se restringió a LMP, no MLB/LMB (`384e122`). Cambios READY. Confirmar en juego real transición alta/baja, relevos y día cruzado.
+
+### C. Carga de LMP
+
+- En `app/page.tsx`, consultas de actividad, jornada, standings, líderes, próximos, recientes y campeón siguen en **paralelo**. Durante días sin juegos, `getLmpGames` reutiliza la misma promesa `getNextGames("LMP")` ya iniciada por la portada, evitando duplicar la descarga futura (`30c6308`, `8b963ee`).
+- `lib/lmp.ts` envuelve `getLmpSeasonYear` en `React.cache`: temporada compartida **solo dentro del render/request**, sin mantener un año antiguo entre solicitudes (`bd381fb`).
+- La consulta `getLmpPostseason` comienza en paralelo con las llamadas principales en vez de esperar su resolución; utiliza el mismo cálculo de temporada (`33b0f60`). No modifica las reglas de clasificación ni los cruces de playoffs. READY.
+
+### D. Detalles EN VIVO: feed y traducción
+
+- Nuevo `lib/sharedLiveFeed.ts` (`e34b7fa`) expone `getSharedLiveFeed(gameId)` con `React.cache` **solo por render** y `fetch({cache:"no-store", signal: AbortSignal.timeout(8000)})`. Tanto `lib/mlbLive.ts` como `lib/baseballGameExtras.ts` lo usan para **MLB/LMP EN VIVO** (commits `c616f0a`, `eee1491`, `4afedb4`). Panel de situación y boxscore/line score comparten un snapshot oficial en la misma carga; las consultas de juegos FINAL mantienen su revalidación anterior. La fuente LMB conserva su ruta propia.
+- En `lib/mlbLive.ts`, la traducción de la jugada actual y el historial de la entrada se inicia en paralelo con `Promise.all`, y un `Map` de promesas impide traducir dos veces un texto idéntico dentro de esa ejecución. Esto **no elimina** DeepL; `translateBaseballText` sigue usando `DEEPL_AUTH_KEY`, caché de texto, `source_lang:EN`, `target_lang:ES` y normalización de términos beisboleros. Ante error/timeout sin caché, devuelve original; `translateMlbDescription` sirve de alternativa parcial, **no** de traducción completa garantizada.
+- **Regresión reparada el 7/nov:** commit `c616f0a` introdujo por descuido el límite `4000` para MLB además de LMP. Se corrigió en `14bb4be`: LMP conserva `4000 ms`, MLB vuelve a `undefined` (sin timeout explícito de DeepL), como antes de la optimización. Esto prioriza calidad/fidelidad de MLB, pero **MLB todavía puede esperar** si el proveedor responde lentamente; no afirmar que tiene límite de 4 s. La traducción automática sigue dependiendo de disponibilidad/configuración de DeepL.
+- **Importante:** Vercel READY certifica compilación y despliegue, no calidad real de las traducciones o latencia de feeds. Verificar durante juego real: descripción actual y jugadas del inning en español para MLB/LMP, fallback si DeepL falla, bases/conteos/inning coherentes, fotos/etiquetas de pitchers y estados sin refrescar manualmente.
+
+### E. Siguientes pasos que no deben darse por completados
+
+1. **Pruebas en vivo de LMP:** comparar marcador/situación con feed oficial durante transiciones, corredores, cambios de lanzador, entradas extras y cruce de medianoche; observar traducciones completas de jugadas reales.
+2. **Medición de rendimiento:** obtener métricas de navegación y respuesta antes/después con mismas condiciones y revisar Vercel; las optimizaciones evitan trabajo duplicado, pero **no hay porcentajes de mejora medidos**. Evitar afirmar cifras.
+3. **Verificación visual móvil:** comprobar pantallas reales angostas y tablas; escritorio y franjas de escudos aprobados por la usuaria, pero no hay nueva prueba E2E de todos los tamaños tras estos commits.
+4. **Temporadas futuras:** LMB 2027+ calendario/playoffs dinámicos de sección 113 esperando partidos oficiales; LMP playoffs 2026–27 de sección 112 esperando juegos reales. Nada de hardcodear campeones, cruces, fechas ni estadísticas.
+
+**Nota de publicación:** todos los commits funcionales descritos antes del arreglo de traducción ya se confirmaron `READY` en Vercel. Para el último commit `14bb4be` y este cambio documental, comprobar el estado de despliegue más reciente por SHA; no darlo por publicado solo por la escritura de GitHub.
+
