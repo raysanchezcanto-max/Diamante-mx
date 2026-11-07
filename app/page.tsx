@@ -120,15 +120,21 @@ const lmpData = selectedLeague === "LMP"
     ] as const)
   : null;
 
+// MLB comparte la misma consulta de próximos encuentros con el fallback
+// de las tarjetas principales cuando no hay juegos en la fecha actual.
+const mlbNextGamesRequest = selectedLeague === "MLB"
+  ? getNextGames("MLB")
+  : null;
+
 // MLB: solicitar también próximas fechas y resultados recientes en paralelo.
 // Las tres ligas cargan ahora los bloques principales simultáneamente.
 const mlbData = selectedLeague === "MLB"
   ? await Promise.all([
       getSourceActivity("MLB"),
-      getGames(),
+      getGames(mlbNextGamesRequest ?? undefined),
       getStandings(),
       getLeaders(),
-      getNextGames("MLB"),
+      mlbNextGamesRequest!,
       getRecentGames("MLB"),
     ] as const)
   : null;
