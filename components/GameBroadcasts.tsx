@@ -44,9 +44,11 @@ export default async function GameBroadcasts({
                 >
                   {isFinal
                     ? `Consultar grabación · ${broadcast.name}`
-                    : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
-                      ? `Ver transmisión · ${broadcast.name}`
-                      : `Consultar ${broadcast.name}`}
+                    : broadcast.verifiedGamePage
+                      ? `Abrir video oficial · ${broadcast.name}`
+                      : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
+                        ? `Ver transmisión · ${broadcast.name}`
+                        : `Consultar ${broadcast.name}`}
                 </a>
               ) : (
                 <span
