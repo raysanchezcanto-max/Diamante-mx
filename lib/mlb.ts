@@ -176,7 +176,9 @@ async function attachFirstPitchRecorded(
   );
 }
 
-export async function getGames(): Promise<Game[]> {
+export async function getGames(
+  nextGamesRequest?: Promise<Game[]>
+): Promise<Game[]> {
   try {
     const date = mexicoDate();
 
@@ -303,6 +305,12 @@ gamesInSeries:
           g.gameDate,
       }));
       return await attachFirstPitchRecorded(gamesForToday);
+    }
+
+    // La portada ya solicita próximos juegos en paralelo; si no hay
+    // juegos hoy, reutilizar esa misma promesa y evitar otra descarga.
+    if (nextGamesRequest) {
+      return await nextGamesRequest;
     }
 
     /*
