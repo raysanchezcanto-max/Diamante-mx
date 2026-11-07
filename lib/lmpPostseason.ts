@@ -195,7 +195,7 @@ export async function getLmpPostseason(
 
   try {
     const response = await fetch(
-      `${MLB_API}/schedule?sportId=${SPORT_ID}&leagueId=${LEAGUE_ID}&season=${season}&startDate=${season}-12-28&endDate=${season + 1}-02-10`,
+      `${MLB_API}/schedule?sportId=${SPORT_ID}&leagueId=${LEAGUE_ID}&season=${season}&startDate=${season}-10-01&endDate=${season + 1}-03-01`,
       {
         next: { revalidate: 300 },
         headers: { Accept: "application/json" },
