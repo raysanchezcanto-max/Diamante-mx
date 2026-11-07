@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** estabilidad y rendimiento de las tres ligas, especialmente LMP en temporada y detalle EN VIVO. Navegación interna optimizada, UI móvil afinada, consultas de LMP compartidas y feed EN VIVO compartido MLB/LMP. Traducciones automáticas DeepL conservadas: LMP espera máxima 4 s; MLB vuelve a su espera previa sin límite explícito. **Pendiente:** validación con juegos en vivo reales y medición objetiva de latencias; ver sección 114. Playoffs LMB 2027+ implementados, pero requieren validación real cuando el calendario oficial tenga partidos (sección 113).
+**Prioridad actual (7/nov/2026):** paridad de experiencia y rendimiento entre **MLB, LMB y LMP**, sin homogeneizar incorrectamente sus APIs; ver sección **115**. Navegación/móvil/refresco de partidos activos compartidos; LMP y MLB reutilizan próximos encuentros cuando no hay juegos hoy; LMB comparte calendario y detalle de juego dentro del render. Feed MLB/LMP compartido en detalle; LMB conserva su proveedor oficial. Traducciones DeepL sin nuevos cambios respecto a sección 114 (MLB sin límite explícito, LMP máximo 4 s). **Pendiente:** medir latencia, pruebas reales EN VIVO y evaluar Serie del Caribe por separado. Playoffs LMB 2027+ requieren validación con partidos oficiales.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero la sección **114** (navegación, rendimiento, feed compartido y traducción); luego 113 (LMB playoffs automáticos), 112 (LMP playoffs), 105 (auditoría base). Mantener diseño/espaciados aprobados y refresco de 10 s con partidos HOY/EN VIVO; no declarar probada una traducción o situación de juego sin observar un encuentro real. LMB 2027+ aguarda publicación de calendario y partidos oficiales para validar automatización; no inventar datos.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** comenzar por sección **115** (homologación de rendimiento MLB/LMB/LMP), seguir con 114 (navegación/traducción/feed), 113 (LMB playoffs), 112 (LMP playoffs), 105 (base). Conservar diseños, refresco de 10 s en ligas principales y separación de proveedores; Caribe usa una cadencia independiente. Verificar estados y datos con partidos reales antes de declararlos validados. LMB 2027+ espera nuevos encuentros oficiales.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -16,7 +16,7 @@
 - **Compartido entre MLB/LMB/LMP:** tarjetas, estados base, detalles, línea de juego, bases, bolas/strikes/outs, estadísticas FINAL y decisiones de lanzadores. Los feeds y algunas reglas de visualización son específicos por liga.
 - **Refresco actual (sección 114):** portada `AutoRefresh` cada **10 s** cuando hay estados Live/Preview (o Serie Mundial activa) y 60 s inactiva; detalles no finales también se refrescan a 10 s si Live/Preview. `refreshOnFocus` recupera vistas caducadas; `LiveGamePanel` borra conteos/bases/jugadas en transición Middle/End. Historial de relevos permanece específico de LMP.
 - **Playoffs LMP:** consulta por temporada y fase (secciones 106 y 112), tarjetas compactas + Serie Final bajo campeón, sin cruces TBD. **LMB:** desde la sección 113 ya están implementados adaptador dinámico F/D/L/W y detalle de Serie del Rey para 2027+; probado con regresión 2026, **no** con juegos reales 2027. No reabrir diseño ya aprobado.
-- **Fuente de verdad:** sección **114** y código `main` de GitHub; consultar 113/112/105 para playoffs y antecedentes. Las secciones 1–111 antiguas registran decisiones históricas y pueden contener pendientes ya resueltos.
+- **Fuente de verdad:** sección **115** y código `main` de GitHub; consultar 114/113/112/105 para rendimiento, playoffs y antecedentes. Las secciones previas pueden contener pendientes históricos resueltos.
 
 ## 1. Acuerdos permanentes
 
@@ -1308,4 +1308,28 @@
 4. **Temporadas futuras:** LMB 2027+ calendario/playoffs dinámicos de sección 113 esperando partidos oficiales; LMP playoffs 2026–27 de sección 112 esperando juegos reales. Nada de hardcodear campeones, cruces, fechas ni estadísticas.
 
 **Nota de publicación:** todos los commits funcionales descritos antes del arreglo de traducción ya se confirmaron `READY` en Vercel. Para el último commit `14bb4be` y este cambio documental, comprobar el estado de despliegue más reciente por SHA; no darlo por publicado solo por la escritura de GitHub.
+
+## 115. Homologación de rendimiento MLB / LMB / LMP — 7/nov/2026
+
+**Motivo:** la usuaria confirmó la mejora de fluidez al cambiar de liga y pidió verificar que las optimizaciones de rendimiento (sin traducción) también cubrieran las demás ligas. Se auditó la portada, los detalles, fuentes y componentes comunes en `main`.
+
+### Lo que ya es compartido entre las tres ligas
+
+- `components/LeagueTabs.tsx`: pestañas internas con `next/link` y `prefetch={false}`; la usuaria confirmó navegación más fluida. `app/game/[league]/[id]/page.tsx` vuelve mediante enlace interno. La lógica de refresco `AutoRefresh` de portada y detalles usa **10 s** para Live/Preview y **60 s** sin actividad (detalle FINAL no hace polling); navegación en segundo plano y enfoque siguen las reglas vigentes de cada pantalla.
+- `app/globals.css`, `components/Games.tsx`, `components/LiveGamePanel.tsx` y `components/BaseballGameExtras.tsx`: tarjetas, diseño móvil, visualización de situación/estadísticas, aviso de deslizamiento y limpieza de bases/conteos en transición compartidos. LMB/LMP conservan ajustes ópticos propios sin alterar el diseño MLB.
+- Portada: `Promise.all` inicia las consultas de jornada, posiciones, líderes, próximos, recientes y actividad en paralelo. No implica que los tiempos de cada proveedor sean idénticos.
+- Detalles MLB/LMP EN VIVO: `lib/sharedLiveFeed.ts` evita repetir el mismo snapshot v1.1 entre `getMlbPlayState` y `getBaseballGameExtras`, con `React.cache` por render y petición HTTP `no-store`. La fuente LMB es diferente y no debe sustituirse por el mismo feed sin validar sus campos.
+
+### Mejoras nuevas para completar la paridad
+
+1. **LMB: deduplicación por render**, commit `a7fe806`, Vercel **READY**. En `lib/lmbLive.ts`, `getLmbGameInfo(permalink)` se comparte vía `React.cache` entre encabezado (`getGameDetails`), situación (`getLmbPlayState`) y boxscore (`getBaseballGameExtras`), en lugar de solicitudes independientes al mismo endpoint oficial. `getLmbCalendar(offsetDays)` aplica el mismo principio entre jornada, resultados recientes y transmisiones. **`cache: "no-store"` se conserva** en hoy/ayer y detalles; no hay caché de estado en vivo entre renders. Las consultas del calendario lejano mantienen sus TTL anteriores. No se cambió la fuente de los partidos ni sus datos.
+2. **MLB: reutilización de próximos encuentros en días sin jornada**, commits `eb631c0` y `f578d8f`, Vercel **READY**. `getGames(nextGamesRequest?)` permite compartir la promesa `getNextGames("MLB")` iniciada en `app/page.tsx`; si hay juegos hoy conserva su procesamiento y validación de primer lanzamiento. Es el mismo enfoque de LMP (`getLmpGames` con `getNextGames("LMP")`), sin cambiar el calendario ni el resultado esperado para próximas fechas.
+3. **LMP:** ya tenía reutilización de próximos encuentros (`8b963ee`), cálculo único de temporada por render (`bd381fb`) y consulta temprana de playoffs (`33b0f60`). No hubo que alterar su fuente en esta revisión.
+
+### Excepciones intencionales y validación pendiente
+
+- **LMB** usa `lmb.com.mx/juegos/api/detail`, `/jugadas` y `/calendar`; MLB/LMP usan StatsAPI para la mayoría de datos. La paridad deseada es comportamiento/eficiencia, **no copiar adaptadores de proveedor indiscriminadamente**. `Games.tsx` conserva una diferencia de precarga de enlaces (`prefetch={league !== "LMP"}`), que no se cambió para no modificar la experiencia de apertura sin medirla.
+- **Serie del Caribe** conserva página y proveedor de torneo propios. Su `AutoRefresh` actual es **15 s cuando hay juego Live/Warmup, 60 s en otras fases activas** y la fuente tiene sus propios tiempos de revalidación; **no** afirmar que quedó homologada a 10 s ni que comparte todos los datos de las ligas regulares. Evaluarla como una siguiente fase por separado.
+- **Estado verificado:** Vercel READY para commits nuevos y código compatible con compilación de producción. **Sin prueba E2E nueva en celular ni partido real en vivo** después de esta actualización; no afirmar porcentajes de rendimiento sin medición. Próximas validaciones: cambios de inning y relevos MLB/LMB/LMP, prefetch/latencia por liga, datos cruzando medianoche y pantalla móvil.
+- La traducción no fue modificada por esta sección; sigue documentada en la sección 114.
 
