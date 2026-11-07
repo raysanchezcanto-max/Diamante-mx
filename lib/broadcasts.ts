@@ -165,13 +165,29 @@ async function lmpGameChannels(gameId: number, context: BroadcastGameContext): P
     // Solo permitir URL si conocemos la plataforma: el feed identifica
     // la señal, pero no certifica que cualquier enlace sea el video.
     const url = canonicalProviderUrl(name, "LMP");
+    // Numeración publicada por LMP para los canales MEGA. Al no existir un
+    // reproductor público verificable, mostrar la señal/canal en lugar
+    // de inventar un botón que no lleva al juego.
+    const megaChannelNumber: Record<string, number> = {
+      "tvc deportes": 315,
+      "tvc deportes 2": 316,
+      "mega sports": 317,
+      "megasports": 317,
+      "mega sports 2": 318,
+      "megasports 2": 318,
+      "mega sports 3": 319,
+      "megasports 3": 319,
+    };
+    const channel = megaChannelNumber[normalize(name)];
     return [{
-      name,
+      name: channel ? `${name} · MEGA ${channel}` : name,
       type: url ? "Streaming" : "TV",
       url,
       note: url
         ? "Abre el calendario/portal del proveedor, no el video individual."
-        : "Canal confirmado en el scoreboard LMP para este juego; sin enlace público individual verificado.",
+        : channel
+          ? `Señal de TV de paga, canal MEGA ${channel} según la guía oficial LMP. Puede variar por localidad o paquete; no hay video web verificado.`
+          : "Canal anunciado para este juego; sin enlace público individual verificado.",
     }];
   });
   return unique(result);
