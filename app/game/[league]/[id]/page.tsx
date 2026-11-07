@@ -371,9 +371,9 @@ const time =
     <main className="gamePage">
    <AutoRefresh
   enabled={!isFinal}
-  intervalMs={league === "LMP" || league === "LMB" ? (isLive ? 12000 : 15000) : 15000}
-  refreshOnFocus={league === "LMP" || league === "LMB"}
-  snapshotAt={league === "LMP" || league === "LMB" ? Date.now() : undefined}
+  intervalMs={isLive || game.status === "Preview" ? 10000 : 60000}
+  refreshOnFocus
+  snapshotAt={Date.now()}
 />
       <a
         className="gameBack"
