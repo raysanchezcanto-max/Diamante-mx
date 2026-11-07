@@ -169,7 +169,16 @@ const lmpFinalDetails = lmpCompletedFinal
 // sin reutilizar equipos, ganadores ni estadísticas de 2026.
 const [lmbCalendarYear, lmbCalendarMonth] = mexicoDay
   .split("-").map(Number);
-const lmbPlayoffSeason = lmbCalendarMonth >= 8
+// Conservar el archivo de la temporada anterior hasta el primer juego
+// oficial de temporada regular. No cambiar de temporada por un mes fijo.
+const lmbCurrentSeasonOpening =
+  selectedLeague === "LMB" && lmbCalendarYear >= 2027
+    ? await getLmbNextSeasonStart(lmbCalendarYear)
+    : null;
+const lmbSeasonHasStarted = lmbCurrentSeasonOpening
+  ? Date.now() >= lmbCurrentSeasonOpening.getTime()
+  : lmbCalendarMonth >= 8; // Respaldo cuando no hay calendario oficial.
+const lmbPlayoffSeason = lmbSeasonHasStarted
   ? lmbCalendarYear
   : lmbCalendarYear - 1;
 const lmbPostseason = selectedLeague !== "LMB"
