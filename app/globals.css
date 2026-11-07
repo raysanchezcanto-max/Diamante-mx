@@ -3902,8 +3902,14 @@ mlbWorldSeriesNextOnlyCompact strong {
  .baseballExtrasPanel { padding:17px 12px; }
 }
 
-/* Estadísticas alineadas por disciplina: BATEO con BATEO / PITCHEO con PITCHEO */
+/* Las tablas se desplazan horizontalmente en móvil: indicarlo al usuario.
+   En escritorio el aviso permanece oculto. */
 .baseballExtrasSwipe { display: none; }
+@media (max-width: 760px) {
+  .baseballExtrasSwipe { display: block; }
+}
+
+/* Estadísticas alineadas por disciplina: BATEO con BATEO / PITCHEO con PITCHEO */
 .baseballExtrasStatSection { margin-top: 24px; }
 .baseballExtrasStatSection + .baseballExtrasStatSection {
   margin-top: 30px;
