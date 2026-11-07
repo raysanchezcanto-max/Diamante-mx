@@ -1,3 +1,4 @@
+import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import { getLmbOfficialBroadcasts } from "./lmbLive";
 import type { LeagueCode } from "./teamLogos";
 
@@ -125,54 +126,58 @@ function mexicanDate(iso: string): string | undefined {
   return `${value("year")}/${value("month")}/${value("day")}`;
 }
 
-async function lmpGameChannels(context: BroadcastGameContext): Promise<Broadcast[]> {
+async function lmpGameChannels(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
   const date = context.startTime ? mexicanDate(context.startTime) : undefined;
-  if (!date || (!context.awayId && !context.away) || (!context.homeId && !context.home)) return [];
-  try {
-    const response = await fetch(`https://api.lmp.mx/3.0.0/scoreboard/${date}`, {
-      next: { revalidate: 300 }, headers: { Accept: "application/json" },
-    });
-    if (!response.ok) return [];
-    const json = await response.json();
-    const games: Record<string, unknown>[] = [];
-    const visited = new WeakSet<object>();
-    const walk = (item: unknown): void => {
-      if (!item || typeof item !== "object" || visited.has(item)) return;
-      visited.add(item);
-      if (Array.isArray(item)) { item.forEach(walk); return; }
-      const obj = item as Record<string, unknown>;
-      if (obj.awayTeamID != null || obj.awayTeamId != null || obj.awayTeam != null) games.push(obj);
-      Object.values(obj).forEach(walk);
-    };
-    walk(json);
-    const matching = games.find(g => {
-      const awayId = Number(g.awayTeamID ?? g.awayTeamId);
-      const homeId = Number(g.homeTeamID ?? g.homeTeamId);
-      const byId = !!context.awayId && !!context.homeId &&
-        awayId === context.awayId && homeId === context.homeId;
-      const byName = [g.awayTeam, g.awayTeamShort].some(n => isNameMatch(n, context.away)) &&
-        [g.homeTeam, g.homeTeamShort].some(n => isNameMatch(n, context.home));
-      return byId || byName;
-    });
-    if (!matching) return [];
-    const raw: unknown[] = [];
-    if (Array.isArray(matching.tvChannels)) raw.push(...matching.tvChannels);
-    if (Array.isArray(matching.channels)) raw.push(...matching.channels);
-    const result = raw.flatMap((entry): Broadcast[] => {
-      if (!entry || typeof entry !== "object") return [];
-      const item = entry as Record<string, unknown>;
-      const name = String(item.title ?? item.name ?? "").trim();
-      if (!name) return [];
-      const url = canonicalProviderUrl(name, "LMP");
-      return [{ name, type: url ? "Streaming" : "TV", url,
-        note: url ? "Abre el portal oficial del proveedor, no un video individual." : "Señal informada para este partido; sin enlace público verificado.",
-      }];
-    });
-    return unique(result);
-  } catch { return []; }
+  if (!date || !Number.isSafeInteger(gameId) || gameId <= 0) return [];
+
+  // Coincidir por el gamePk exacto (boxScore) y, cuando hay IDs,
+  // comprobar también ambos equipos. Comparar solo nombres puede
+  // confundir los canales de una doble cartelera del mismo día.
+  const games = await getLmpScoreboard(date);
+  const matching = games.find(game => {
+    if (Number(game.boxScore) !== gameId) return false;
+
+    const awayId = Number(game.awayTeamId ?? game.awayTeamID);
+    const homeId = Number(game.homeTeamId ?? game.homeTeamID);
+    if (context.awayId && Number.isFinite(awayId) && awayId > 0 &&
+        awayId !== context.awayId) return false;
+    if (context.homeId && Number.isFinite(homeId) && homeId > 0 &&
+        homeId !== context.homeId) return false;
+
+    return true;
+  });
+  if (!matching) return [];
+
+  const raw: unknown[] = [];
+  if (Array.isArray(matching.tvChannels)) raw.push(...matching.tvChannels);
+  if (Array.isArray(matching.channels)) raw.push(...matching.channels);
+
+  const result = raw.flatMap((entry): Broadcast[] => {
+    const name = (typeof entry === "string"
+      ? entry
+      : entry && typeof entry === "object"
+        ? String((entry as Record<string, unknown>).title ??
+          (entry as Record<string, unknown>).name ??
+          (entry as Record<string, unknown>).channelName ?? "")
+        : "").trim();
+    if (!name) return [];
+
+    // Solo permitir URL si conocemos la plataforma: el feed identifica
+    // la señal, pero no certifica que cualquier enlace sea el video.
+    const url = canonicalProviderUrl(name, "LMP");
+    return [{
+      name,
+      type: url ? "Streaming" : "TV",
+      url,
+      note: url
+        ? "Abre el calendario/portal del proveedor, no el video individual."
+        : "Canal confirmado en el scoreboard LMP para este juego; sin enlace público individual verificado.",
+    }];
+  });
+  return unique(result);
 }
 
-async function getLmpBroadcasts(context: BroadcastGameContext): Promise<Broadcast[]> {
+async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
   // Los botones LMP conocidos abren información oficial, no streams inventados.
   const start = context.startTime ? new Date(context.startTime) : new Date();
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
@@ -186,7 +191,7 @@ async function getLmpBroadcasts(context: BroadcastGameContext): Promise<Broadcas
       url: `https://www.mlb.com/live-stream-games/lmp/${year}-schedule`,
       note: "Calendario oficial de LMP en MLB.TV; requiere suscripción y no abre directamente el reproductor." },
   ];
-  const selected = await lmpGameChannels(context);
+  const selected = await lmpGameChannels(gameId, context);
   const extra = selected.filter(item => !item.name.toLowerCase().includes("youtube") && !item.name.toLowerCase().includes("mlb.tv"));
   return [...known, ...extra];
 }
@@ -213,7 +218,7 @@ export async function getGameBroadcasts(
   league: LeagueCode, gameId: number, context: BroadcastGameContext = {}
 ): Promise<Broadcast[]> {
   if (league === "MLB") return getMlbBroadcasts(gameId);
-  if (league === "LMP") return getLmpBroadcasts(context);
+  if (league === "LMP") return getLmpBroadcasts(gameId, context);
   if (league === "LMB") return getLmbBroadcasts(gameId);
   return [];
 }
