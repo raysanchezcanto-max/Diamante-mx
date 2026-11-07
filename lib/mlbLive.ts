@@ -1,4 +1,5 @@
 import { translateBaseballText } from "@/lib/translateBaseball";
+import { getSharedLiveFeed } from "@/lib/sharedLiveFeed";
 import { getLmpPitchingChanges, type LmpPitchingChange } from "@/lib/lmpPitchingChanges";
 export type MlbPlayState = {
   first: number;
@@ -343,18 +344,8 @@ export async function getMlbPlayState(
   league: "MLB" | "LMP" = "MLB"
 ): Promise<MlbPlayState | null> {
   try {
-    const response = await fetch(
-      `https://statsapi.mlb.com/api/v1.1/game/${gameId}/feed/live`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = await response.json();
+    const data = await getSharedLiveFeed(gameId);
+    if (!data) return null;
 
     const currentPlay =
       data?.liveData?.plays?.currentPlay;
@@ -412,18 +403,23 @@ const description =
   currentPlay?.result?.description ||
   lastCompletedPlay?.result?.description ||
   "";
-   const automaticDescription =
-  await translateBaseballText(
-    description,
-    league === "LMP" ? 4000 : undefined
-  );
+    // No bloquear los conteos mientras se traduce el historial del inning.
+    // Deduplicar textos dentro del mismo render y acotar la espera externa.
+    const translationRequests = new Map<string, Promise<string>>();
+    const translatePlay = (text: string): Promise<string> => {
+      const original = text.trim();
+      const existing = translationRequests.get(original);
+      if (existing) return existing;
 
-const finalDescription =
-  automaticDescription !== description
-    ? automaticDescription
-    : translateMlbDescription(
-        description
+      const request = translateBaseballText(original, 4000).then(
+        translated => translated !== original
+          ? translated
+          : translateMlbDescription(original)
       );
+      translationRequests.set(original, request);
+      return request;
+    };
+    const finalDescriptionPromise = translatePlay(description);
 
     const linescore =
       data?.liveData?.linescore;
@@ -512,29 +508,12 @@ const rawInningPlays =
       item?.result?.description
   );
 
-const plays =
-  await Promise.all(
-    rawInningPlays.map(
-      async (item: any) => {
-        const original =
-          String(
-            item.result.description
-          ).trim();
-
-        const automatic =
-          await translateBaseballText(
-            original,
-            league === "LMP" ? 4000 : undefined
-          );
-
-        return automatic !== original
-          ? automatic
-          : translateMlbDescription(
-              original
-            );
-      }
-    )
-  );
+const plays = await Promise.all(
+  rawInningPlays.map((item: any) =>
+    translatePlay(String(item.result.description))
+  )
+);
+const finalDescription = await finalDescriptionPromise;
     // La LMP reutiliza el mismo feed para relevos: sin petición adicional.
     const pitchingChanges =
       league === "LMP" ? getLmpPitchingChanges(allPlays) : undefined;
