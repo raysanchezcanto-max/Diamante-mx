@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getBaseballGameExtras } from "@/lib/baseballGameExtras";
 import { BaseballLineScoreCard, BaseballPitchingDecisions, BaseballPlayerStats } from "@/components/BaseballGameExtras";
 import { getMlbPlayState } from "@/lib/mlbLive";
@@ -375,12 +376,13 @@ const time =
   refreshOnFocus
   snapshotAt={Date.now()}
 />
-      <a
+      <Link
         className="gameBack"
         href={`/?league=${league.toLowerCase()}`}
+        prefetch={false}
       >
         ← Volver a {league}
-      </a>
+      </Link>
 
       <section className="gameHero">
        
