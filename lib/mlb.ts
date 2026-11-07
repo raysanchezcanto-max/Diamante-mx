@@ -100,9 +100,9 @@ function seasonYear() {
   );
 }
 
-async function mlbFetch(path: string) {
+async function mlbFetch(path: string, revalidate = 60) {
   const res = await fetch(`${MLB_API}${path}`, {
-    next: { revalidate: 60 },
+    next: { revalidate },
     headers: {
       Accept: "application/json",
     },
@@ -132,7 +132,7 @@ async function attachFirstPitchRecorded(
         const response = await fetch(
           `${MLB_API}/game/${game.id}/playByPlay`,
           {
-            next: { revalidate: 15 },
+            next: { revalidate: 10 },
           }
         );
 
@@ -189,7 +189,8 @@ const yesterday = mexicoDate(
 );
 
 const todayData = await mlbFetch(
-  `/schedule?sportId=1&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`
+  `/schedule?sportId=1&startDate=${yesterday}&endDate=${date}&hydrate=linescore,probablePitcher`,
+  10
 );
 
 const todayGames =
