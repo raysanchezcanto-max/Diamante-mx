@@ -125,6 +125,7 @@ function TeamStatsTable({
         {kind === "batting" ? "BATEO" : "PITCHEO"}
       </h4>
       <h3>{name}</h3>
+      <p className="baseballExtrasSwipe">DESLIZA PARA VER MÁS →</p>
       <div
         className="baseballExtrasScroll"
         role="region"
