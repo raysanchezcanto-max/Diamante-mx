@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **enlaces LMB.TV automatizados de forma conservadora** por temporada en sección **120**: el catálogo público permite identificar una página individual `/watch/<uuid>` solo al coincidir visitante, local, día y hora con un único partido (tolerancia 45 min). Sin correspondencia unívoca, se mantiene el portal LMB.TV. Probado con los seis juegos de Serie del Rey 2026 y partido de Serie de Campeonato; las próximas temporadas dependen de que LMB.TV mantenga el catálogo y la estructura verificadas. La sección de transmisión se carga de forma independiente para no bloquear marcador. **Siguiente prioridad: auditar enlaces por partido de MLB**, conservar pendiente de YouTube/reproducción LMP (118), y validar partidos reales de 2027. Diseño, traducciones y refresco de 10 s sin cambios.
+**Prioridad actual (7/nov/2026):** **transmisiones LMP comprobadas con juegos de la jornada de hoy (sección 121)**. Los detalles de LMP identifican correctamente canales por gamePk y conservan botones de portal LMP, YouTube membresía y calendario MLB.TV; **NO** existe todavía un buscador general automático de URL individual como LMB.TV. Prueba piloto J1 Venados–Mayos, gamePk 850466: página oficial de video MLB.com identificada, implementada y comprobada en producción sin afectar juego 2 (850474). Reproducción efectiva y derechos no verificables sin cuenta. LMB.TV conserva resolución por catálogo único de sección 120. **Próximo:** investigar descubrimiento automático verificable de páginas de video LMP, probar usuarios abonados, después auditar proveedores MLB. Diseño/estadísticas/refresco/traducción intactos.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** empezar por sección **120** (descubrimiento dinámico LMB.TV + carga independiente), seguir con 119/118/117/116 (histórico LMB, canales LMP, auditoría) y 115/114 (rendimiento). Próximo pendiente prioritario: **MLB — probar proveedores y enlaces por partido**, sin confundir portal con reproductor. Confirmar temporada 2027 solo cuando exista catálogo real. Datos, traducciones y 10 s de refresco intactos.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero sección **121** (pruebas LMP y enlace directo piloto), después 120 (LMB.TV automático), 119–116 (transmisiones y auditoría), 115/114 (rendimiento). Próximo: comprobar si MLB.com o YouTube LMP ofrecen índice fiable de páginas individuales por gamePk para automatizar **LMP**; no extrapolar un video a otro juego ni doble cartelera. MLB proveedores aún pendientes. Liga LMB.TV 2027 sujeta a catálogo real. Datos/traducciones/refresco intactos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1452,3 +1452,23 @@ Dominio completo de esas páginas: `https://www.lmb.tv`. El catálogo incluye ta
 2. **LMB próxima temporada:** revisar cuando exista calendario/stream oficial 2027 y comprobar fixtures con doble cartelera, hora cambiada, suspendido, reanudación, juegos del mismo club en misma fecha. Si hay ambigüedad, fallback es correcto.
 3. **LMP:** el canal de membresía por ID ya abre la puerta correcta; falta validar accesibilidad con cuenta/partido real y asignación dinámica por día.
 4. **Pruebas móviles:** comprobar visualmente el placeholder de transmisión y el bloque final con pantallas reales.
+
+## 121. Pruebas reales «Dónde ver» LMP — 7/nov/2026 (durante jornada activa)
+
+**Pregunta:** ¿está implementado para LMP el mismo enlace individual automático que LMB.TV, y podemos probarlo durante la jornada activa? **Respuesta:** el módulo «Dónde ver» de LMP ya estaba implementado con canales por gamePk, pero **el descubrimiento automático de enlaces de video individuales NO**. Esta revisión validó canales reales y añadió **una prueba piloto individual para un único partido** sin fingir automatización.
+
+### QA público de producción y fuentes
+
+- Se leyó `https://diamante-mx.vercel.app/?league=lmp` durante el 7/nov/2026: portada HTTP 200, J1 Venados–Mayos `/game/lmp/850466` mostraba «EN VIVO · ALTA 7», marcador Venados 1–0 Mayos en el instante de consulta. J2 `850474` seguía programado; la portada distinguía las dos tarjetas.
+- Detalles HTTP **200** de seis juegos de la jornada: `850466` Venados–Mayos J1, `850474` J2, `850456` Naranjeros–Algodoneros J1, `850455` Águilas–Cañeros, `850465` Jaguares–Tomateros, `850463` Charros–Yaquis. Confirmados rótulos específicos **TVC Deportes MEGA 315**, **Mega Sports 3 MEGA 319**, **Mega Sports MEGA 317**, **Mega Sports 2 MEGA 318**, **TVC Deportes 2 MEGA 316** según juego, coherentes con el rol oficial del día en `https://www.lmp.mx/`. En los seis se vieron los accesos «Consultar YouTube LMP · Membresía oficial», «Consultar LMP · Consultar canales oficiales», «Consultar Calendario LMP en MLB.TV». Son portales/calendarios, no streaming individual garantizado.
+- URL oficial de juego individual encontrada con búsqueda pública y publicada por MLB.com ese mismo **7/nov/2026**: `https://www.mlb.com/es/video/lmp-live-1-venados-vs-navojoa-251314` encabezado «EN VIVO: Venados vs. Mayos», título con `lmp-live-1` que identifica Juego 1. MLB.com lo publica como página de video de la LMP y la fuente está verificada como página auténtica; **no se comprobó la reproducción con suscripción, DRM, región o cuenta**.
+- Prueba piloto en `lib/broadcasts.ts`: `LMP_VERIFIED_VIDEO_PAGES[850466]` con URL **literal** del video y verificación de fecha `2026/11/07`; `getLmpBroadcasts` agrega `verifiedGamePage:true` SOLO para gamePk 850466. Sin derivar URLs de slugs, equipos o fechas para otros partidos. Commit `7af18e5`.
+- `components/GameBroadcasts.tsx`: `verifiedGamePage` presenta el texto «Abrir video oficial · Video oficial del partido · MLB.com», diferenciándolo de calendarios generales sin prometer playback. Commit `bc2e02e`; Vercel producción **READY**.
+- QA de producción tras despliegue: `/game/lmp/850466` respondió 200 e incluyó exactamente `https://www.mlb.com/es/video/lmp-live-1-venados-vs-navojoa-251314`. J2 `/game/lmp/850474` y `/game/lmp/850455` respondieron 200 **sin** ese enlace individual. Canal por partido, portales y calendarios conservados en los tres detalles. No afectó MLB/LMB, ni estadística, ni traducción, ni estado de juego.
+
+### Límites y continuación
+
+1. **LMP no tiene descubridor universal:** no afirmar que todos los juegos en vivo ya pueden ir al video directo. La única página individual asociada automáticamente por coincidencia exacta de ID es esta excepción histórica del 7/nov; otras páginas siguen mostrando plataformas y TV.
+2. Investigar **fuente oficial de páginas de video** (catálogo de MLB.com o canales oficiales YouTube) con gamePk, fecha, visitantes/locales y número de juego verificables; distinguir `EN VIVO`, repetición y resumen, y prevenir confusiones en doble cartelera. Si no hay metadatos estables, ofrecer solo calendario, canal y membresía.
+3. No se probó capacidad de reproducción o derechos en una cuenta real. Probar en móvil/desktop del usuario con suscripción cuando pueda, incluyendo acceso al canal de YouTube.
+4. Queda abierta revisión de proveedores de MLB y pruebas de temporada LMB.TV 2027. Ninguna de esas fuentes se modificó.
