@@ -113,14 +113,12 @@ const displayInning =
   typeof inning === "number"
     ? inning + 1
     : inning;
-// En LMP, Middle/End indican una transición, no un turno activo.
+// En todas las ligas Middle/End son transiciones entre mitades,
+// no turnos activos. Nunca reutilizar bases, conteo, outs ni jugadas
+// de la mitad que terminó. LMP conserva su rótulo propio de inning.
 const isInningTransition =
-  lmpMode &&
-  (normalizedInningState === "middle" ||
-    normalizedInningState === "end");
-// En transición, mantener visible el ÚLTIMO turno confirmado.
- // Mostrar de nuevo el diamante y el conteo, pero sin reutilizar outs,
- // bases o jugadas del turno que ya concluyó.
+  normalizedInningState === "middle" ||
+  normalizedInningState === "end";
 const inningLabel = lmpMode
   ? getLmpInningLabel(inningState, inning)
   : `${formattedInningState} ${displayInning ?? ""}`.trim();
