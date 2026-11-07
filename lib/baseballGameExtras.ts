@@ -1,3 +1,4 @@
+import { getSharedLiveFeed } from "@/lib/sharedLiveFeed";
 import "server-only";
 import { getLmbGameInfo } from "@/lib/lmbLive";
 import type { LeagueCode } from "@/lib/teamLogos";
@@ -154,6 +155,7 @@ export function baseballExtrasFromFeed(data: any): BaseballGameExtras {
 export async function getBaseballGameExtras(
   league: LeagueCode,
   gameId: number,
+  live = false,
 ): Promise<BaseballGameExtras | null> {
   if (!Number.isSafeInteger(gameId) || gameId <= 0) return null;
   if (league === "LMB") {
@@ -222,6 +224,12 @@ export async function getBaseballGameExtras(
     } catch {
       return fallback;
     }
+  }
+  // En vivo, reutilizar el mismo snapshot sin caché que lee la situación.
+  // Para partidos FINAL, mantener la consulta con revalidación existente.
+  if (live && (league === "MLB" || league === "LMP")) {
+    const data = await getSharedLiveFeed(gameId);
+    return data ? baseballExtrasFromFeed(data) : null;
   }
   try {
     const response = await fetch(
