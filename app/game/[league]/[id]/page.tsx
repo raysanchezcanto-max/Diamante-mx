@@ -224,6 +224,15 @@ const [playState, gameExtras, broadcasts] = await Promise.all([
   broadcastsPromise,
 ]);
 
+// Mostrar repetición únicamente si LMB.TV identifica el video de ese
+// partido; nunca sustituirlo por el catálogo general en un juego FINAL.
+const visibleBroadcasts = isFinal
+  ? broadcasts.filter(item =>
+      league === "LMB" &&
+      /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")
+    )
+  : broadcasts;
+
 // Los estados MLB/LMB comparten un tipo con LMP; validar el campo exclusivo.
 const lmpPitchingChanges =
   league === "LMP" &&
@@ -668,17 +677,17 @@ const time =
           </div>
         </div>
         
-{!isFinal && (
+{(!isFinal || visibleBroadcasts.length > 0) && (
   <section className="broadcastSection">
     <div className="broadcastHeader">
-      <span className="eyebrow">TRANSMISIÓN</span>
-      <h2>Dónde ver</h2>
+      <span className="eyebrow">{isFinal ? "REPETICIÓN OFICIAL" : "TRANSMISIÓN"}</span>
+      <h2>{isFinal ? "Partido completo" : "Dónde ver"}</h2>
     </div>
 
-    {broadcasts.length ? (
+    {visibleBroadcasts.length ? (
       <>
         <div className="broadcastLinks">
-          {broadcasts.map((broadcast, index) => (
+          {visibleBroadcasts.map((broadcast, index) => (
             broadcast.url ? (
               <a
                 key={`${broadcast.name}-${index}`}
@@ -688,9 +697,11 @@ const time =
                 title={broadcast.note}
                 className="watchButton"
               >
-                {broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
-                  ? `Ver transmisión · ${broadcast.name}`
-                  : `Consultar ${broadcast.name}`}
+                {isFinal
+                  ? `Consultar grabación · ${broadcast.name}`
+                  : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
+                    ? `Ver transmisión · ${broadcast.name}`
+                    : `Consultar ${broadcast.name}`}
               </a>
             ) : (
               <span
@@ -704,8 +715,9 @@ const time =
           ))}
         </div>
         <p className="broadcastDisclaimer">
-          Los botones abren el canal o calendario oficial indicado, no siempre el
-          reproductor del partido. Disponibilidad según programación, región y suscripción.
+          {isFinal
+            ? "Página del partido completo en LMB.TV. La reproducción puede requerir suscripción y depende de derechos regionales."
+            : "Los botones abren el canal o calendario oficial indicado, no siempre el reproductor del partido. Disponibilidad según programación, región y suscripción."}
         </p>
       </>
     ) : (
