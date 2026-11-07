@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **transmisiones por partido MLB/LMB/LMP siguen ABIERTAS**, pero el acceso al canal de membresía YouTube LMP por ID estable ya está publicado y documentado en la **sección 118** (commit `6142b9b`, READY). El enlace abre la membresía del canal oficial, NO el video de un juego. Se mantienen la asignación LMP por gamePk exacto y canales MEGA de sección 117. Siguiente implementación: buscar relación única `gameId` LMB ↔ URL `/watch/<uuid>` de LMB.TV y después validar proveedores MLB por partido; verificar con partidos reales y sin enlaces inventados.
+**Prioridad actual (7/nov/2026):** transmisiones por partido siguen **ABIERTAS** para todas las temporadas, pero **ya se enlazaron los seis juegos verificados de la Serie del Rey LMB 2026 a sus páginas individuales oficiales LMB.TV** (sección **119**). En juegos FINAL con grabación verificada se muestra «REPETICIÓN OFICIAL / Partido completo». Para otras fechas, enlace de plataforma LMB.TV o URL /watch individual solo si la fuente LMB lo suministra; **NO existe todavía un descubridor automático universal de UUID**. LMP tiene YouTube de membresía confirmado (118), asignación canales por gamePk (117). Próximos: método verificable para enlaces futuros LMB.TV y revisión por juego de MLB. Diseño, traducciones y 10 s de refresco conservados.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **118** (YouTube LMP confirmado por ID y publicado), luego 117/116 (canales y transmisiones), 115/114 (rendimiento) y 113/112 (playoffs). Próximo: LMB.TV, enlazar partidos solo si hay coincidencia exacta; después MLB. No confundir enlace a membresía/calendario con stream directo. Datos en vivo 10 s y diseños aprobados intactos.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **119** (seis grabaciones LMB.TV de Serie del Rey 2026), luego 118/117/116 (LMP y auditoría de transmisiones), 115/114 (rendimiento) y 113/112 (playoffs). Próximo: localizar de forma segura UUID de partidos LMB futuros y probar enlaces MLB por juego. No inventar enlaces ni afirmar reproducción sin suscripción. Datos en vivo y diseño intactos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1390,3 +1390,34 @@
 - **MLB.TV LMP** conserva `/live-stream-games/lmp/2026-schedule` según año del encuentro (calendario oficial, acceso según suscripción); **LMP web** conserva `https://www.lmp.mx/` como información oficial; **MEGA/TVC** conserva números de canal sin URL de video no verificada. No se alteran MLB, LMB, traducciones, refresco ni datos de partidos.
 - **Verificación restante:** comprobar en navegador del usuario que YouTube resuelve en ese canal/membresía con su región/cuenta, y durante un partido real si existe publicación de video directo para ese juego. Si no, conservar el acceso a la membresía etiquetado como «Consultar». La revisión de enlaces individuales de las tres ligas **sigue ABIERTA**.
 - **Siguiente fase:** catálogo **LMB.TV**: investigar identificadores y metadatos para relacionar `/game/lmb/{gameId}` con URLs reales `https://www.lmb.tv/watch/{uuid}` por equipos, fecha y número de juego; no enlazar una doble cartelera o un resumen por error. Posteriormente verificar por partido MLB/operador.
+
+## 119. LMB.TV — enlaces individuales verificados de Serie del Rey 2026 (7/nov/2026)
+
+**Resultado:** primer grupo de enlaces directos a páginas individuales de partido **publicado** en Diamante MX. No confundirlo con cobertura automática de 2027+ ni garantía de reproducción por derechos de suscripción.
+
+### Evidencia oficial y correspondencia exacta
+
+El catálogo oficial de `https://www.lmb.tv/results/2026/all` contiene enlaces `/watch/{uuid}`; se abrió cada página y se contrastaron **número de juego, fecha, visitante/local** con los `gamePk` del histórico `lib/lmbPostseason.ts`:
+
+| J | gamePk | Fecha | Visitante en local | Página individual LMB.TV |
+|---|---|---|---|---|
+| 1 | 867486 | 2026-09-08 | Tabasco en Tijuana | `/watch/8990fc5b-6a79-4519-a38f-9a00e2988109` |
+| 2 | 867487 | 2026-09-09 | Tabasco en Tijuana | `/watch/06a64ece-5dac-4b40-85b0-8338924b3db9` |
+| 3 | 867488 | 2026-09-11 | Tijuana en Tabasco | `/watch/993a4858-0c97-4d5f-953b-24cd1b801199` |
+| 4 | 867489 | 2026-09-12 | Tijuana en Tabasco | `/watch/7aba42eb-c6d0-482c-92e8-1bc7032c5698` |
+| 5 | 867490 | 2026-09-13 | Tijuana en Tabasco | `/watch/d21cfa26-2270-4b67-beb9-85d920b5910f` |
+| 6 | 867481 | 2026-09-15 | Tabasco en Tijuana | `/watch/1f867e78-4968-4764-9c88-1bb0d2170978` |
+
+Dominio completo de esas páginas: `https://www.lmb.tv`. El catálogo incluye también videos de *pre-game*, *post-game* y *highlights*; no atribuir esas piezas a juegos completos. Las seis páginas listadas llevan título «Serie del Rey» y partido J1–J6, no resumen.
+
+### Cambios de código y alcance
+
+- `lib/broadcasts.ts`, commit `611bcfa` Vercel READY: tabla **solo histórica 2026** `LMB_2026_VERIFIED_FULL_GAMES`, indexada por `gamePk` y con UUID de página corroborado. Para esos seis IDs `getLmbBroadcasts` prioriza `Partido completo · LMB.TV` frente al enlace general. En partidos futuros no se genera UUID; si `getLmbOfficialBroadcasts` publica URL `https://www.lmb.tv/watch/{uuid}` válida, el componente la respeta y prioriza. Si no la hay, conserva `https://www.lmb.tv/`. No mezclar señales genéricas con enlaces de video.
+- `app/game/[league]/[id]/page.tsx`, commit `39ce23f` Vercel READY: juegos LMB FINAL muestran bloque `REPETICIÓN OFICIAL / Partido completo` **solo** cuando `broadcasts` tiene un `/watch/{uuid}` de LMB.TV. Se mantiene `TRANSMISIÓN / Dónde ver` en partidos no FINAL. Los botones de replay se etiquetan `Consultar grabación`; se indica suscripción/derechos regionales. Otros finales MLB/LMP permanecen sin bloque de «Dónde ver».
+- No se cambió `getGameDetails`, códigos de resultados, estadística, pitchers, horarios, traducción ni refresco. No se alteraron rótulos de fases/postemporada ni el diseño de tarjetas.
+
+### QA y pendientes
+
+- Se verificaron **seis URLs individuales existentes** en el catálogo oficial LMB.TV con sus respectivas fechas/identidades; el despliegue compiló `READY`. El buscador de páginas no pudo acceder a las rutas `https://diamante-mx.vercel.app/game/lmb/867481` y `.../867486` en esta sesión; por tanto **no afirmar prueba visual del bloque renderizado en producción**, aunque el despliegue sí está READY.
+- **Pendiente LMB futuro:** derivar una asociación estable entre `gamePk` y UUID a partir de metadatos oficiales verificables (fecha, clubes, número de juego, jornada), sin scraping ambiguo ni depender exclusivamente de la portada. No inventar UUID ni adjudicar una repetición/previa a un partido.
+- **Pendiente MLB:** auditar calendario de canales por partido, enlaces de operadores y disponibilidad real. **LMP:** validar video de membresía con cuenta real y posibles streams por juego; ya están implementados los canales según gamePk.
