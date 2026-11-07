@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **transmisiones MLB/LMB/LMP: pendiente de enlaces por partido ABIERTO**. Ver sección **117** (primer arreglo LMP: gamePk exacto, doble cartelera, canal MEGA 315–319 y etiquetas «Consultar»); sección 116 contiene auditoría y criterios de cierre. Ya no se vinculan canales LMP a juegos solo por equipos; YouTube sigue sin URL verificada, MLB.TV sigue siendo calendario LMP, no video individual. LMB.TV requiere mapeo seguro a /watch/uuid; MLB requiere revisar proveedores/juegos. Diseño, refresco y traducciones de secciones 114/115 conservados.
+**Prioridad actual (7/nov/2026):** **transmisiones por partido MLB/LMB/LMP siguen ABIERTAS**, pero el acceso al canal de membresía YouTube LMP por ID estable ya está publicado y documentado en la **sección 118** (commit `6142b9b`, READY). El enlace abre la membresía del canal oficial, NO el video de un juego. Se mantienen la asignación LMP por gamePk exacto y canales MEGA de sección 117. Siguiente implementación: buscar relación única `gameId` LMB ↔ URL `/watch/<uuid>` de LMB.TV y después validar proveedores MLB por partido; verificar con partidos reales y sin enlaces inventados.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** comenzar por **117** (primer cierre técnico LMP de canales, pendientes de destino verificado), luego **116** (auditoría), 115/114 (rendimiento y traducciones) y 113/112 (playoffs). Mantener datos reales, 10 s de refresco y no interpretar un portal general como video del partido. La verificación de stream por partido sigue pendiente.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **118** (YouTube LMP confirmado por ID y publicado), luego 117/116 (canales y transmisiones), 115/114 (rendimiento) y 113/112 (playoffs). Próximo: LMB.TV, enlazar partidos solo si hay coincidencia exacta; después MLB. No confundir enlace a membresía/calendario con stream directo. Datos en vivo 10 s y diseños aprobados intactos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1381,3 +1381,12 @@
 5. **Plataformas generales**: sin un enlace directo confirmado, conservar `Consultar` y la advertencia, sin prometer playback. La compilación READY **no prueba** los enlaces o derechos de cada partido.
 
 **Estado final:** implementación de prevención de cruces y etiquetas publicada; revisión de disponibilidad/enlaces directos de todas las ligas aún pendiente. Para el último commit `4a6b638` y este documento comprobar Vercel READY antes de declararlo publicado.
+
+## 118. YouTube LMP 2026–27 — canal de membresía por ID estable (7/nov/2026)
+
+- **Problema histórico:** los handles YouTube `@LigaArcoMX` y `@lmp_beisbol` antes probados por la usuaria abrieron canales erróneos; por eso `lib/broadcasts.ts` dejó «YouTube LMP · Membresía» sin URL. Este problema no se resuelve copiando otro handle sin verificar.
+- **Identificación contrastada:** el portal oficial LMP publicó el **ID estable `UCdW_4rN3OarOoawQ4Er-ZXw`** en el enlace a su membresía en `https://www.lmp.mx/serie-del-caribe/videos/OUj3pC-yvIM` (referencia histórica), y las descripciones de videos de la **temporada 2026–27**, asociadas al canal oficial «Liga Mexicana del Pacífico Banamex» (`@lmpbanamex`), publican la misma URL `https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/join`. La página de canal por ID fue reconocida como «Liga ARCO Mexicana del Pacífico» en YouTube. Esto fundamenta un **destino del canal correcto**, distinto de los antiguos handles. No se verificó el flujo de pago, el inicio de sesión ni la reproducción de encuentros individuales.
+- **Cambio en `lib/broadcasts.ts`, commit `6142b9b` (Vercel producción READY):** constante `LMP_YOUTUBE_MEMBERSHIP` usa el ID estable y agrega URL al bloque conocido «YouTube LMP · Membresía oficial». El botón externo ya dice `Consultar YouTube LMP · Membresía oficial` por la mejora compartida de sección 117. `note` advierte expresamente que se requiere cuenta/membresía y que **no** es un stream directo garantizado. La función `canonicalProviderUrl` sigue sin asociar un URL de video a cada entrada «YouTube» del scoreboard, para evitar simular un directo no confirmado.
+- **MLB.TV LMP** conserva `/live-stream-games/lmp/2026-schedule` según año del encuentro (calendario oficial, acceso según suscripción); **LMP web** conserva `https://www.lmp.mx/` como información oficial; **MEGA/TVC** conserva números de canal sin URL de video no verificada. No se alteran MLB, LMB, traducciones, refresco ni datos de partidos.
+- **Verificación restante:** comprobar en navegador del usuario que YouTube resuelve en ese canal/membresía con su región/cuenta, y durante un partido real si existe publicación de video directo para ese juego. Si no, conservar el acceso a la membresía etiquetado como «Consultar». La revisión de enlaces individuales de las tres ligas **sigue ABIERTA**.
+- **Siguiente fase:** catálogo **LMB.TV**: investigar identificadores y metadatos para relacionar `/game/lmb/{gameId}` con URLs reales `https://www.lmb.tv/watch/{uuid}` por equipos, fecha y número de juego; no enlazar una doble cartelera o un resumen por error. Posteriormente verificar por partido MLB/operador.
