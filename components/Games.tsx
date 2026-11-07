@@ -17,6 +17,7 @@ import type { LmpChampion } from "@/lib/lmpChampion";
 import type { LmbPostseason } from "@/lib/lmbPostseason";
 import LmbSerieDelReyDetails from "@/components/LmbSerieDelReyDetails";
 import LmbPostseasonCard from "@/components/LmbPostseasonCard";
+import type { LmbFinalDetails } from "@/lib/lmbFinalDetails";
 import type { LmpPostseason } from "@/lib/lmpPostseason";
 import type { LmpFinalDetails } from "@/lib/lmpFinalDetails";
 import LmpPostseasonCard from "@/components/LmpPostseasonCard";
@@ -685,6 +686,7 @@ export default function Games({
   recentGames = [],
   lmbChampion = null,
   lmbPostseason = null,
+  lmbFinalDetails = null,
   lmbSeasonScheduled = false,
   lmpChampion = null,
   lmpPostseason = null,
@@ -707,6 +709,7 @@ export default function Games({
   year: number;
 } | null;
   lmbPostseason?: LmbPostseason | null;
+  lmbFinalDetails?: LmbFinalDetails | null;
   lmbSeasonScheduled?: boolean;
 lmpChampion?: LmpChampion | null;
 lmpPostseason?: LmpPostseason | null;
@@ -770,8 +773,10 @@ const championLogo =
     : null;
 const lmbFinalSeries =
   league === "LMB" && lmbPostseason
-    ? lmbPostseason.series.find(series =>
-        series.round === "rey" && (series.games?.length ?? 0) > 0
+    ? lmbFinalDetails?.series ??
+      lmbPostseason.series.find(series =>
+        series.round === "rey" && Boolean(series.winnerCode) &&
+        (series.games?.length ?? 0) > 0
       ) ?? null
     : null;
 const championTitle =
@@ -1892,6 +1897,12 @@ const hasAnyGames =
   (
     league === "LMP" &&
     Boolean(lmpChampion)
+  ) ||
+  (
+    league === "LMB" &&
+    Boolean(lmbChampion) &&
+    Boolean(lmbFinalSeries) &&
+    (lmbPostseason?.season ?? 0) >= 2027
   )
 ) && (
 
@@ -2001,7 +2012,11 @@ const hasAnyGames =
   {league === "LMB" && lmbFinalSeries && (
     <details className="mlbWorldSeriesDetails lmbSerieDelReyDetails">
       <summary>Ver detalle de la Serie del Rey</summary>
-      <LmbSerieDelReyDetails series={lmbFinalSeries} />
+      <LmbSerieDelReyDetails
+        series={lmbFinalSeries}
+        stats={lmbPostseason?.season === 2026
+          ? undefined : (lmbFinalDetails?.stats ?? null)}
+      />
     </details>
   )}
   </div>
@@ -2045,7 +2060,11 @@ const hasAnyGames =
     />
   )}
       {league === "LMB" && lmbPostseason && (
-        <LmbPostseasonCard postseason={lmbPostseason} />
+        <LmbPostseasonCard
+          postseason={lmbPostseason}
+          mode={lmbPostseason.season <= 2026 || Boolean(lmbFinalSeries)
+            ? "history" : "active"}
+        />
       )}
       {league === "LMP" && lmpPostseason && (
         <LmpPostseasonCard

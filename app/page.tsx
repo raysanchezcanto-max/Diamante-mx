@@ -8,6 +8,8 @@ import { getLmpChampion } from "@/lib/lmpChampion";
 import { getLmpPostseason } from "@/lib/lmpPostseason";
 import { getLmpFinalDetails } from "@/lib/lmpFinalDetails";
 import { getLmbPostseason } from "@/lib/lmbPostseason";
+import { getLmbPostseasonDynamic } from "@/lib/lmbPostseasonDynamic";
+import { getLmbFinalDetails } from "@/lib/lmbFinalDetails";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
@@ -133,7 +135,7 @@ const recentGames = lmbData
     ? lmpData[5]
     : await getRecentGames(selectedLeague);
 
-const lmbChampion = lmbData ? lmbData[6] : null;
+const lmbPreviousChampion = lmbData ? lmbData[6] : null;
 const lmpChampion = lmpData ? lmpData[6] : null;
 const lmpCurrentSeason = lmpData ? lmpData[7] : null;
 
@@ -162,16 +164,52 @@ const lmpFinalDetails = lmpCompletedFinal
   ? await getLmpFinalDetails(lmpCompletedFinal)
   : null;
 
-// Historial oficial LMB 2026: evita confundirlo con cruces de 2027.
-const lmbHistoricalSeason =
-  selectedLeague === "LMB" &&
-  mexicoDay >= "2026-09-16" &&
-  mexicoDay < "2027-08-08"
-    ? lmbChampion?.year ?? 2026
-    : lmbChampion?.year ?? null;
-const lmbPostseason = lmbHistoricalSeason !== null
-  ? getLmbPostseason(lmbHistoricalSeason)
-  : null;
+// Archivo histórico 2026 hasta que inicie la nueva postemporada.
+// A partir de 2027 la fuente oficial crea F/D/L/W por temporada,
+// sin reutilizar equipos, ganadores ni estadísticas de 2026.
+const [lmbCalendarYear, lmbCalendarMonth] = mexicoDay
+  .split("-").map(Number);
+const lmbPlayoffSeason = lmbCalendarMonth >= 8
+  ? lmbCalendarYear
+  : lmbCalendarYear - 1;
+const lmbPostseason = selectedLeague !== "LMB"
+  ? null
+  : lmbPlayoffSeason <= 2026
+    ? getLmbPostseason(lmbPlayoffSeason)
+    : await getLmbPostseasonDynamic(lmbPlayoffSeason);
+
+// La consulta antigua del campeón observa una temporada anterior antes
+// de septiembre. Para 2027+ manda el ganador confirmado de W, jamás el
+// campeón del año previo mientras se disputa la temporada nueva.
+const lmbCompletedRey =
+  lmbPostseason?.series.find(series =>
+    series.round === "rey" && Boolean(series.winnerCode)
+  ) ?? null;
+const lmbChampion =
+  selectedLeague !== "LMB" ? null :
+  lmbPlayoffSeason <= 2026 ? lmbPreviousChampion :
+  lmbCompletedRey
+    ? (() => {
+        const winner = lmbCompletedRey.teams.find(t =>
+          t.code === lmbCompletedRey.winnerCode
+        );
+        const runnerUp = lmbCompletedRey.teams.find(t =>
+          t.code !== lmbCompletedRey.winnerCode
+        );
+        if (!winner || !runnerUp) return null;
+        return {
+          year:lmbPostseason!.season,
+          champion:winner.name,
+          runnerUp:runnerUp.name,
+          championWins:winner.wins,
+          runnerUpWins:runnerUp.wins,
+        };
+      })()
+    : null;
+const lmbFinalDetails =
+  lmbPlayoffSeason >= 2027 && lmbCompletedRey
+    ? await getLmbFinalDetails(lmbCompletedRey)
+    : null;
 
 const lmpNextSeasonYear =
   lmpCurrentSeason !== null
@@ -591,6 +629,7 @@ const daysUntilLmp =
   recentGames={recentGames}
   lmbChampion={lmbChampion}
   lmbPostseason={lmbPostseason}
+  lmbFinalDetails={lmbFinalDetails}
    lmbSeasonScheduled={Boolean(lmbNextSeasonStart)}
    lmpChampion={lmpChampion}
   lmpPostseason={lmpPostseason}

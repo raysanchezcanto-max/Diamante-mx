@@ -201,7 +201,7 @@ export async function getLmbNextSeasonStart(
 ): Promise<Date | null> {
   try {
     const response = await fetch(
-      `https://statsapi.mlb.com/api/v1/schedule?leagueId=125&season=${seasonYear}&gameTypes=R`,
+      `https://statsapi.mlb.com/api/v1/schedule?sportId=23&leagueId=125&season=${seasonYear}&gameTypes=R`,
       {
         next: { revalidate: 3600 },
         headers: {

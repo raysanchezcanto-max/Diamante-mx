@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getTeamDisplayName, getTeamLogo } from "@/lib/teamLogos";
 import { LMB_SERIE_DEL_REY_2026_STATS } from "@/lib/lmbSerieDelReyStats";
+import type { LmbSerieDelReyStats } from "@/lib/lmbSerieDelReyStats";
 import type {
   LmbPlayoffSeries,
   LmbSerieDelReyPitcherDecision,
@@ -78,14 +79,18 @@ function Decision({
   );
 }
 
-/** Réplica de presentación MLB: partidos, bateo y pitcheo con datos 2026 oficiales. */
+/** Estilo MLB; usa la foto oficial y estadísticas SOLO de la Serie del Rey
+ * correspondiente. El archivo 2026 se conserva como respaldo histórico. */
 export default function LmbSerieDelReyDetails({
   series,
+  stats,
 }: {
   series: LmbPlayoffSeries;
+  stats?: LmbSerieDelReyStats | null;
 }) {
   const [tab, setTab] = useState<Tab>("games");
   const games = series.games ?? [];
+  const seriesStats = stats === undefined ? LMB_SERIE_DEL_REY_2026_STATS : stats;
   if (!games.length) return null;
 
   const teams = new Map(series.teams.map(team => [team.code, team.name]));
@@ -97,7 +102,7 @@ export default function LmbSerieDelReyDetails({
           ["games", "PARTIDOS"],
           ["hitting", "BATEO"],
           ["pitching", "PITCHEO"],
-        ] as const).map(([value, label]) => (
+        ] as const).filter(([value]) => value === "games" || Boolean(seriesStats)).map(([value, label]) => (
           <button
             key={value}
             type="button"
@@ -169,7 +174,7 @@ export default function LmbSerieDelReyDetails({
         </div>
       )}
 
-      {tab === "hitting" && (
+      {tab === "hitting" && seriesStats && (
         <>
           <div className="mlbWsSwipeHint" aria-hidden="true">
             DESLIZA PARA VER MÁS <span>→</span>
@@ -178,7 +183,7 @@ export default function LmbSerieDelReyDetails({
             <div className="mlbWsStatsHeader mlbWsHittingRow">
               <span>JUGADOR</span><span>EQUIPO</span><span>AVG</span><span>HR</span><span>H</span><span>RBI</span>
             </div>
-            {LMB_SERIE_DEL_REY_2026_STATS.hitting.map(player => (
+            {seriesStats.hitting.map(player => (
               <div className="mlbWsStatsRow mlbWsHittingRow" key={player.id}>
                 <div className="mlbWsPlayerCell">
                   <PlayerPhoto id={player.id} name={player.name} />
@@ -195,7 +200,7 @@ export default function LmbSerieDelReyDetails({
         </>
       )}
 
-      {tab === "pitching" && (
+      {tab === "pitching" && seriesStats && (
         <>
           <div className="mlbWsSwipeHint" aria-hidden="true">
             DESLIZA PARA VER MÁS <span>→</span>
@@ -204,7 +209,7 @@ export default function LmbSerieDelReyDetails({
             <div className="mlbWsStatsHeader mlbWsPitchingRow">
               <span>PITCHER</span><span>EQUIPO</span><span>W-L</span><span>ERA</span><span>SO</span><span>IP</span><span>SV</span>
             </div>
-            {LMB_SERIE_DEL_REY_2026_STATS.pitching.map(player => (
+            {seriesStats.pitching.map(player => (
               <div className="mlbWsStatsRow mlbWsPitchingRow" key={player.id}>
                 <div className="mlbWsPlayerCell">
                   <PlayerPhoto id={player.id} name={player.name} />

@@ -5331,3 +5331,20 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   background: rgba(255,255,255,.055);
   border: 1px solid rgba(255,255,255,.085);
 }
+
+
+/* Playoffs LMB futuros: conservar el estilo compacto de los históricos,
+   indicando estados live y el próximo partido sin falsear ganadores. */
+.lmbPostseasonLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ff596d;
+  font-weight: 800;
+}
+.lmbPostseasonSeriesStatus > a {
+  color: rgba(235, 243, 240, .82);
+  font-weight: 750;
+  text-decoration: none;
+}
+.lmbPostseasonSeriesStatus > a:hover { text-decoration: underline; }

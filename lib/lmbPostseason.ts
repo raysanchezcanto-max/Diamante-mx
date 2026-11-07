@@ -8,13 +8,15 @@
  */
 export type LmbPlayoffRound = "first" | "zone" | "championship" | "rey";
 export type LmbPlayoffZone = "Norte" | "Sur" | "General";
-export type LmbPlayoffTeam = { code: string; name: string; wins: number };
+export type LmbPlayoffTeam = { code: string; name: string; wins: number; id?: number };
 export type LmbSerieDelReyPitcherDecision = { id: number; name: string };
 export type LmbSerieDelReyGame = {
   id: number;
   date: string; // Fecha local México, extraída del calendario oficial
   awayCode: string;
   homeCode: string;
+  awayId?: number;
+  homeId?: number;
   awayRuns: number;
   homeRuns: number;
   winner?: LmbSerieDelReyPitcherDecision;
@@ -30,6 +32,13 @@ export type LmbPlayoffSeries = {
   lastGameId: number;
   gameIds: number[];
   games?: LmbSerieDelReyGame[];
+  timeline?: Array<{
+    id: number;
+    date: string;
+    status: "Preview" | "Live" | "Final" | "Postponed";
+    gameNumber: number | null;
+    startTimeTBD: boolean;
+  }>;
 };
 export type LmbPostseason = { season: number; series: LmbPlayoffSeries[] };
 
