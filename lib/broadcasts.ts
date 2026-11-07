@@ -29,6 +29,19 @@ const LMP_OFFICIAL_SITE = "https://www.lmp.mx/";
 const LMP_YOUTUBE_MEMBERSHIP = "https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/join";
 const LMB_TV = "https://www.lmb.tv/";
 
+// Serie del Rey 2026: correspondencia contrastada con el calendario
+// histórico oficial de cada gamePk (fecha/equipos/J1-J6) y las páginas
+// individuales publicadas por LMB.TV. Archivo histórico, NO regla para
+// inventar IDs de video de temporadas futuras.
+const LMB_2026_VERIFIED_FULL_GAMES: Readonly<Record<number, string>> = {
+  867486: "https://www.lmb.tv/watch/8990fc5b-6a79-4519-a38f-9a00e2988109", // 08-sep J1
+  867487: "https://www.lmb.tv/watch/06a64ece-5dac-4b40-85b0-8338924b3db9", // 09-sep J2
+  867488: "https://www.lmb.tv/watch/993a4858-0c97-4d5f-953b-24cd1b801199", // 11-sep J3
+  867489: "https://www.lmb.tv/watch/7aba42eb-c6d0-482c-92e8-1bc7032c5698", // 12-sep J4
+  867490: "https://www.lmb.tv/watch/d21cfa26-2270-4b67-beb9-85d920b5910f", // 13-sep J5
+  867481: "https://www.lmb.tv/watch/1f867e78-4968-4764-9c88-1bb0d2170978", // 15-sep J6
+};
+
 function canonicalProviderUrl(name: string, league: LeagueCode): string | undefined {
   const n = name.toLowerCase();
   if (league === "LMP") {
@@ -218,12 +231,32 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
 }
 
 async function getLmbBroadcasts(gameId: number): Promise<Broadcast[]> {
+  const archiveUrl = LMB_2026_VERIFIED_FULL_GAMES[gameId];
+  const archive: Broadcast | null = archiveUrl ? {
+    name: "Partido completo · LMB.TV",
+    type: "Streaming",
+    url: archiveUrl,
+    note: "Página individual verificada del juego de la Serie del Rey 2026 en LMB.TV. La reproducción puede requerir suscripción y depende de derechos regionales.",
+  } : null;
   const main: Broadcast = {
     name: "LMB.TV · Plataforma oficial", type: "Streaming", url: LMB_TV,
     note: "Portal oficial de partidos LMB. Selecciona el juego en el catálogo; puede requerir suscripción.",
   };
+
   try {
     const channels = await getLmbOfficialBroadcasts(gameId);
+    // Un enlace oficial /watch/ publicado por la liga tiene prioridad sobre
+    // su portada general; jamás inferir un UUID a partir del gamePk.
+    const direct = channels.flatMap((channel): Broadcast[] => {
+      const url = safeLmbMediaUrl(channel.url);
+      if (!url || !/^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(url)) return [];
+      return [{
+        name: `Partido en LMB.TV · ${channel.name}`,
+        type: "Streaming",
+        url,
+        note: "Enlace individual publicado por LMB para este encuentro. La reproducción depende de disponibilidad y suscripción.",
+      }];
+    });
     const other = channels.filter(channel => !/lmb.tv|jonr[oó]n/i.test(channel.name))
       .map((channel): Broadcast => ({
         name: channel.name,
@@ -231,8 +264,13 @@ async function getLmbBroadcasts(gameId: number): Promise<Broadcast[]> {
         url: safeLmbMediaUrl(channel.url) ?? canonicalProviderUrl(channel.name, "LMB"),
         note: "Canal informado por LMB; puede no haber enlace directo para este encuentro.",
       }));
-    return unique([main, ...other]);
-  } catch { return [main]; }
+    return unique([
+      ...(archive ? [archive] : direct.length ? direct : [main]),
+      ...other,
+    ]);
+  } catch {
+    return archive ? [archive] : [main];
+  }
 }
 
 export async function getGameBroadcasts(
