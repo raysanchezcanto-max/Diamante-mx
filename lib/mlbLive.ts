@@ -411,7 +411,12 @@ const description =
       const existing = translationRequests.get(original);
       if (existing) return existing;
 
-      const request = translateBaseballText(original, 4000).then(
+      // LMP conserva su límite de 4 s; MLB mantiene la espera original
+      // para evitar perder traducciones legítimas de respuestas lentas.
+      const request = translateBaseballText(
+        original,
+        league === "LMP" ? 4000 : undefined
+      ).then(
         translated => translated !== original
           ? translated
           : translateMlbDescription(original)
