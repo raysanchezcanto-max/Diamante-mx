@@ -8,7 +8,6 @@ import { getLmpChampion } from "@/lib/lmpChampion";
 import { getLmpPostseason } from "@/lib/lmpPostseason";
 import LmpPostseasonCard from "@/components/LmpPostseasonCard";
 import { getLmbPostseason } from "@/lib/lmbPostseason";
-import LmbPostseasonCard from "@/components/LmbPostseasonCard";
 import { getMlbNextSeasonStart } from "@/lib/mlbNextSeason";
 import { getMlbChampion } from "@/lib/mlbChampion";
 import { getLmbNextSeasonStart } from "@/lib/lmbLive";
@@ -594,9 +593,6 @@ const daysUntilLmp =
 </div>
       {selectedLeague === "LMP" && lmpPostseason && (
         <LmpPostseasonCard postseason={lmpPostseason} />
-      )}
-      {selectedLeague === "LMB" && lmbPostseason && (
-        <LmbPostseasonCard postseason={lmbPostseason} />
       )}
       {showLmbSeasonNotice && (
   <div className="seasonNotice">

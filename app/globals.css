@@ -5250,3 +5250,17 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
     gap: 6px;
   }
 }
+
+
+/* Igualar la distancia del Camino a la Serie del Rey con la de MLB:
+   ambos bloques viven dentro de #juegos y usan el mismo padding de sección. */
+#juegos .lmbPostseasonSection {
+  margin-top: 6px;
+}
+#juegos .lmbPostseasonHistory {
+  margin-top: 0;
+}
+.lmbWsPlayerPlaceholder {
+  background: rgba(255, 255, 255, .055);
+  border: 1px solid rgba(255, 255, 255, .085);
+}

@@ -9,6 +9,7 @@
 export type LmbPlayoffRound = "first" | "zone" | "championship" | "rey";
 export type LmbPlayoffZone = "Norte" | "Sur" | "General";
 export type LmbPlayoffTeam = { code: string; name: string; wins: number };
+export type LmbSerieDelReyPitcherDecision = { id: number; name: string };
 export type LmbSerieDelReyGame = {
   id: number;
   date: string; // Fecha local México, extraída del calendario oficial
@@ -16,6 +17,9 @@ export type LmbSerieDelReyGame = {
   homeCode: string;
   awayRuns: number;
   homeRuns: number;
+  winner?: LmbSerieDelReyPitcherDecision;
+  loser?: LmbSerieDelReyPitcherDecision;
+  save?: LmbSerieDelReyPitcherDecision;
 };
 export type LmbPlayoffSeries = {
   round: LmbPlayoffRound;
@@ -388,12 +392,12 @@ const LMB_PLAYOFF_2026: LmbPostseason = {
     ],
     // Serie del Rey 2026: seis resultados oficiales (LMB API calendar).
     "games": [
-      { "id": 867486, "date": "2026-09-08", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 7, "homeRuns": 1 },
-      { "id": 867487, "date": "2026-09-09", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 2, "homeRuns": 13 },
-      { "id": 867488, "date": "2026-09-11", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 2, "homeRuns": 0 },
-      { "id": 867489, "date": "2026-09-12", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 1, "homeRuns": 9 },
-      { "id": 867490, "date": "2026-09-13", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 6, "homeRuns": 5 },
-      { "id": 867481, "date": "2026-09-15", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 0, "homeRuns": 2 }
+      { "id": 867486, "date": "2026-09-08", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 7, "homeRuns": 1, "winner": {"id": 677369, "name": "Austin Warner"}, "loser": {"id": 681979, "name": "Daniel Martinez"} },
+      { "id": 867487, "date": "2026-09-09", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 2, "homeRuns": 13, "winner": {"id": 658431, "name": "Adonis Medina"}, "loser": {"id": 656889, "name": "Jeremy Rhoades"} },
+      { "id": 867488, "date": "2026-09-11", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 2, "homeRuns": 0, "winner": {"id": 547862, "name": "David Reyes"}, "loser": {"id": 657122, "name": "Ronnie Williams"}, "save": {"id": 676969, "name": "Brett de Geus"} },
+      { "id": 867489, "date": "2026-09-12", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 1, "homeRuns": 9, "winner": {"id": 547176, "name": "Daniel Camarena"}, "loser": {"id": 659418, "name": "Noah Skirrow"} },
+      { "id": 867490, "date": "2026-09-13", "awayCode": "TIJ", "homeCode": "TAB", "awayRuns": 6, "homeRuns": 5, "winner": {"id": 641995, "name": "Roel Ramírez"}, "loser": {"id": 677868, "name": "Francis Peguero"}, "save": {"id": 676969, "name": "Brett de Geus"} },
+      { "id": 867481, "date": "2026-09-15", "awayCode": "TAB", "homeCode": "TIJ", "awayRuns": 0, "homeRuns": 2, "winner": {"id": 658431, "name": "Adonis Medina"}, "loser": {"id": 656889, "name": "Jeremy Rhoades"}, "save": {"id": 676969, "name": "Brett de Geus"} }
     ]
   }
 ]

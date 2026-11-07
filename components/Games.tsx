@@ -16,6 +16,7 @@ import { getLmpInningLabel } from "@/lib/lmpInningLabel";
 import type { LmpChampion } from "@/lib/lmpChampion";
 import type { LmbPostseason } from "@/lib/lmbPostseason";
 import LmbSerieDelReyDetails from "@/components/LmbSerieDelReyDetails";
+import LmbPostseasonCard from "@/components/LmbPostseasonCard";
 
 import {
   getTeamLogo,
@@ -2025,6 +2026,9 @@ const hasAnyGames =
       mode="history"
     />
   )}
+      {league === "LMB" && lmbPostseason && (
+        <LmbPostseasonCard postseason={lmbPostseason} />
+      )}
     </>
   );
 }

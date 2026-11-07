@@ -1,0 +1,661 @@
+/**
+ * Estadísticas agregadas SOLO de los seis juegos de la Serie del Rey 2026,
+ * verificadas desde StatsAPI gamePk de LMB (no estadísticas de toda temporada).
+ * Los datos son históricos: no usar para 2027 ni inventar figuras.
+ */
+export type LmbSerieDelReyHitter = {
+  id: number; name: string; team: string; teamCode: string;
+  atBats: number; hits: number; homeRuns: number; rbi: number; runs: number;
+  avg: string;
+};
+export type LmbSerieDelReyPitcher = {
+  id: number; name: string; team: string; teamCode: string;
+  strikeOuts: number; wins: number; losses: number; saves: number;
+  inningsPitched: string; era: string;
+};
+export type LmbSerieDelReyStats = {
+  hitting: LmbSerieDelReyHitter[];
+  pitching: LmbSerieDelReyPitcher[];
+};
+export const LMB_SERIE_DEL_REY_2026_STATS: LmbSerieDelReyStats = {
+  "hitting": [
+    {
+      "id": 665455,
+      "name": "Isaac Rodriguez",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 19,
+      "hits": 8,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 2,
+      "avg": ".421"
+    },
+    {
+      "id": 690414,
+      "name": "Calvin Estrada",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 21,
+      "hits": 7,
+      "homeRuns": 1,
+      "rbi": 4,
+      "runs": 4,
+      "avg": ".333"
+    },
+    {
+      "id": 541650,
+      "name": "Hernán Pérez",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 22,
+      "hits": 7,
+      "homeRuns": 1,
+      "rbi": 5,
+      "runs": 2,
+      "avg": ".318"
+    },
+    {
+      "id": 666695,
+      "name": "Jonathan Guzmán",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 18,
+      "hits": 6,
+      "homeRuns": 1,
+      "rbi": 2,
+      "runs": 5,
+      "avg": ".333"
+    },
+    {
+      "id": 457759,
+      "name": "Justin Turner",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 23,
+      "hits": 6,
+      "homeRuns": 1,
+      "rbi": 1,
+      "runs": 2,
+      "avg": ".261"
+    },
+    {
+      "id": 660757,
+      "name": "Oscar Gonzalez",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 23,
+      "hits": 6,
+      "homeRuns": 0,
+      "rbi": 2,
+      "runs": 2,
+      "avg": ".261"
+    },
+    {
+      "id": 665482,
+      "name": "Gilberto Celestino",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 24,
+      "hits": 5,
+      "homeRuns": 0,
+      "rbi": 3,
+      "runs": 2,
+      "avg": ".208"
+    },
+    {
+      "id": 516809,
+      "name": "Junior Lake",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 17,
+      "hits": 4,
+      "homeRuns": 2,
+      "rbi": 4,
+      "runs": 4,
+      "avg": ".235"
+    },
+    {
+      "id": 662962,
+      "name": "Jasson Atondo",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 20,
+      "hits": 4,
+      "homeRuns": 1,
+      "rbi": 4,
+      "runs": 2,
+      "avg": ".200"
+    },
+    {
+      "id": 542513,
+      "name": "Tomás Telis",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 18,
+      "hits": 4,
+      "homeRuns": 1,
+      "rbi": 4,
+      "runs": 2,
+      "avg": ".222"
+    },
+    {
+      "id": 689161,
+      "name": "Carlos Arellano",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 19,
+      "hits": 4,
+      "homeRuns": 0,
+      "rbi": 1,
+      "runs": 3,
+      "avg": ".211"
+    },
+    {
+      "id": 595943,
+      "name": "Phillip Evans",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 16,
+      "hits": 4,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 4,
+      "avg": ".250"
+    },
+    {
+      "id": 678499,
+      "name": "Randy Romero",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 17,
+      "hits": 4,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 1,
+      "avg": ".235"
+    },
+    {
+      "id": 666179,
+      "name": "Seth Beer",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 21,
+      "hits": 4,
+      "homeRuns": 0,
+      "rbi": 1,
+      "runs": 3,
+      "avg": ".190"
+    },
+    {
+      "id": 614173,
+      "name": "Franchy Cordero",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 22,
+      "hits": 3,
+      "homeRuns": 1,
+      "rbi": 4,
+      "runs": 1,
+      "avg": ".136"
+    },
+    {
+      "id": 593523,
+      "name": "Marco Hernández",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 22,
+      "hits": 3,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 2,
+      "avg": ".136"
+    },
+    {
+      "id": 608422,
+      "name": "José Godoy",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 15,
+      "hits": 2,
+      "homeRuns": 1,
+      "rbi": 3,
+      "runs": 3,
+      "avg": ".133"
+    },
+    {
+      "id": 527038,
+      "name": "Wilmer Flores",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 11,
+      "hits": 2,
+      "homeRuns": 1,
+      "rbi": 1,
+      "runs": 1,
+      "avg": ".182"
+    },
+    {
+      "id": 642736,
+      "name": "Domingo Leyba",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 9,
+      "hits": 2,
+      "homeRuns": 0,
+      "rbi": 2,
+      "runs": 1,
+      "avg": ".222"
+    },
+    {
+      "id": 640447,
+      "name": "Phillip Ervin",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 11,
+      "hits": 2,
+      "homeRuns": 0,
+      "rbi": 1,
+      "runs": 1,
+      "avg": ".182"
+    },
+    {
+      "id": 587275,
+      "name": "Alan Espinoza",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 2,
+      "hits": 0,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 0,
+      "avg": ".000"
+    },
+    {
+      "id": 455378,
+      "name": "Ali Solis",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 1,
+      "hits": 0,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 0,
+      "avg": ".000"
+    },
+    {
+      "id": 613546,
+      "name": "Angelo Castellano",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 1,
+      "hits": 0,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 1,
+      "avg": ".000"
+    },
+    {
+      "id": 616404,
+      "name": "Edson Garcia",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 1,
+      "hits": 0,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 0,
+      "avg": ".000"
+    },
+    {
+      "id": 546366,
+      "name": "Francisco Lugo",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "atBats": 1,
+      "hits": 0,
+      "homeRuns": 0,
+      "rbi": 0,
+      "runs": 0,
+      "avg": ".000"
+    },
+    {
+      "id": 670768,
+      "name": "Luis González",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "atBats": 5,
+      "hits": 0,
+      "homeRuns": 0,
+      "rbi": 1,
+      "runs": 0,
+      "avg": ".000"
+    }
+  ],
+  "pitching": [
+    {
+      "id": 656889,
+      "name": "Jeremy Rhoades",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 9,
+      "wins": 0,
+      "losses": 2,
+      "saves": 0,
+      "inningsPitched": "9.2",
+      "era": "6.52"
+    },
+    {
+      "id": 657122,
+      "name": "Ronnie Williams",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 9,
+      "wins": 0,
+      "losses": 1,
+      "saves": 0,
+      "inningsPitched": "6.0",
+      "era": "1.50"
+    },
+    {
+      "id": 658431,
+      "name": "Adonis Medina",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 8,
+      "wins": 2,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "10.0",
+      "era": "0.90"
+    },
+    {
+      "id": 641995,
+      "name": "Roel Ramírez",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 7,
+      "wins": 1,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "4.0",
+      "era": "0.00"
+    },
+    {
+      "id": 677369,
+      "name": "Austin Warner",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 5,
+      "wins": 1,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "9.0",
+      "era": "4.00"
+    },
+    {
+      "id": 547176,
+      "name": "Daniel Camarena",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 5,
+      "wins": 1,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "7.0",
+      "era": "1.29"
+    },
+    {
+      "id": 640470,
+      "name": "Adbert Alzolay",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 5,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "4.1",
+      "era": "0.00"
+    },
+    {
+      "id": 681979,
+      "name": "Daniel Martinez",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 5,
+      "wins": 0,
+      "losses": 1,
+      "saves": 0,
+      "inningsPitched": "5.2",
+      "era": "9.53"
+    },
+    {
+      "id": 547862,
+      "name": "David Reyes",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 4,
+      "wins": 1,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "5.0",
+      "era": "0.00"
+    },
+    {
+      "id": 622772,
+      "name": "Jimmy Cordero",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 4,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "2.0",
+      "era": "0.00"
+    },
+    {
+      "id": 676969,
+      "name": "Brett de Geus",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 3,
+      "wins": 0,
+      "losses": 0,
+      "saves": 3,
+      "inningsPitched": "4.0",
+      "era": "0.00"
+    },
+    {
+      "id": 608167,
+      "name": "Jonathan Aro",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 3,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "3.2",
+      "era": "7.36"
+    },
+    {
+      "id": 663535,
+      "name": "Juan Hillman",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 3,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "4.0",
+      "era": "2.25"
+    },
+    {
+      "id": 621399,
+      "name": "Brady Feigl",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 2,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "1.1",
+      "era": "20.25"
+    },
+    {
+      "id": 677076,
+      "name": "Clayton Andrews",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 2,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "2.1",
+      "era": "0.00"
+    },
+    {
+      "id": 477569,
+      "name": "Fernando Salas",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 2,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "3.0",
+      "era": "6.00"
+    },
+    {
+      "id": 643518,
+      "name": "Jose Samayoa",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 2,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "3.0",
+      "era": "6.00"
+    },
+    {
+      "id": 700071,
+      "name": "Alexandro Tovalin",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 1,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "2.2",
+      "era": "0.00"
+    },
+    {
+      "id": 681007,
+      "name": "Jack Cushing",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 1,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "1.0",
+      "era": "27.00"
+    },
+    {
+      "id": 656839,
+      "name": "Jorge Perez",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 1,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "4.2",
+      "era": "1.93"
+    },
+    {
+      "id": 616405,
+      "name": "Mario Meza",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 1,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "1.2",
+      "era": "0.00"
+    },
+    {
+      "id": 659418,
+      "name": "Noah Skirrow",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 1,
+      "wins": 0,
+      "losses": 1,
+      "saves": 0,
+      "inningsPitched": "0.2",
+      "era": "54.00"
+    },
+    {
+      "id": 670154,
+      "name": "Nolan Blackwood",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 1,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "4.2",
+      "era": "0.00"
+    },
+    {
+      "id": 570664,
+      "name": "Carlos Vazquez",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 0,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "0.0",
+      "era": "-.--"
+    },
+    {
+      "id": 544836,
+      "name": "Enny Romero",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 0,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "2.2",
+      "era": "6.75"
+    },
+    {
+      "id": 677868,
+      "name": "Francis Peguero",
+      "team": "Olmecas de Tabasco",
+      "teamCode": "TAB",
+      "strikeOuts": 0,
+      "wins": 0,
+      "losses": 1,
+      "saves": 0,
+      "inningsPitched": "1.2",
+      "era": "5.40"
+    },
+    {
+      "id": 622766,
+      "name": "Miguel Díaz",
+      "team": "Toros de Tijuana",
+      "teamCode": "TIJ",
+      "strikeOuts": 0,
+      "wins": 0,
+      "losses": 0,
+      "saves": 0,
+      "inningsPitched": "1.1",
+      "era": "0.00"
+    }
+  ]
+};
