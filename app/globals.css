@@ -4384,6 +4384,23 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .teamExplorer--lmb .teamLogoRail img[src*="rieleros-aguascalientes.png"] {
   filter: brightness(1.4) saturate(1.08);
 }
+
+/* Navegación más compacta: MLB queda como referencia visual.
+   Reducir solo la franja LMB/LMP sin alterar logos de partidos,
+   pestañas de ligas ni las escalas ópticas individuales de LMB. */
+.teamExplorer--lmb .teamLogoTrack,
+.teamExplorer--lmp .teamLogoTrack {
+  padding-top: 8px;
+  padding-bottom: 9px;
+}
+.teamExplorer--lmb .teamLogoRail .teamLogoTrack .teamLogoChoice img {
+  transform: scale(var(--lmb-logo-scale, 1)) scale(.92);
+}
+.teamExplorer--lmp .teamLogoRail .teamLogoTrack .teamLogoChoice img {
+  transform: scale(.92);
+  transform-origin: center;
+}
+
 /* Ficha extendida de Algodoneros (LMB): estilos encapsulados.
    La navegación principal y las tarjetas de partidos no se alteran. */
 .clubProfile{min-height:100vh;background:#07120e;color:var(--text);}
