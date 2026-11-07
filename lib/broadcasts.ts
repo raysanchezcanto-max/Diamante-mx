@@ -1,5 +1,6 @@
 import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import { getLmbOfficialBroadcasts } from "./lmbLive";
+import { findLmbTvGamePage } from "./lmbTvCatalog";
 import type { LeagueCode } from "./teamLogos";
 
 /**
@@ -230,7 +231,7 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   return [...known, ...extra];
 }
 
-async function getLmbBroadcasts(gameId: number): Promise<Broadcast[]> {
+async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
   const archiveUrl = LMB_2026_VERIFIED_FULL_GAMES[gameId];
   const archive: Broadcast | null = archiveUrl ? {
     name: "Partido completo · LMB.TV",
@@ -243,34 +244,45 @@ async function getLmbBroadcasts(gameId: number): Promise<Broadcast[]> {
     note: "Portal oficial de partidos LMB. Selecciona el juego en el catálogo; puede requerir suscripción.",
   };
 
-  try {
-    const channels = await getLmbOfficialBroadcasts(gameId);
-    // Un enlace oficial /watch/ publicado por la liga tiene prioridad sobre
-    // su portada general; jamás inferir un UUID a partir del gamePk.
-    const direct = channels.flatMap((channel): Broadcast[] => {
-      const url = safeLmbMediaUrl(channel.url);
-      if (!url || !/^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(url)) return [];
-      return [{
-        name: `Partido en LMB.TV · ${channel.name}`,
-        type: "Streaming",
-        url,
-        note: "Enlace individual publicado por LMB para este encuentro. La reproducción depende de disponibilidad y suscripción.",
-      }];
-    });
-    const other = channels.filter(channel => !/lmb.tv|jonr[oó]n/i.test(channel.name))
-      .map((channel): Broadcast => ({
-        name: channel.name,
-        type: "TV",
-        url: safeLmbMediaUrl(channel.url) ?? canonicalProviderUrl(channel.name, "LMB"),
-        note: "Canal informado por LMB; puede no haber enlace directo para este encuentro.",
-      }));
-    return unique([
-      ...(archive ? [archive] : direct.length ? direct : [main]),
-      ...other,
-    ]);
-  } catch {
-    return archive ? [archive] : [main];
-  }
+  // Para juegos sin enlace histórico, buscar la página del encuentro en
+  // el catálogo público LMB.TV. Se requiere coincidencia ÚNICA de equipos,
+  // fecha y hora; si el feed cambió, los dobles juegos son ambiguos o la
+  // plataforma no publicó el partido, mantener el portal oficial.
+  const [channels, catalogUrl] = await Promise.all([
+    getLmbOfficialBroadcasts(gameId),
+    archiveUrl ? Promise.resolve(null) : findLmbTvGamePage(context),
+  ]);
+
+  const direct = channels.flatMap((channel): Broadcast[] => {
+    const url = safeLmbMediaUrl(channel.url);
+    if (!url || !/^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(url)) return [];
+    return [{
+      name: `Partido en LMB.TV · ${channel.name}`,
+      type: "Streaming",
+      url,
+      note: "Enlace individual publicado por LMB para este encuentro. La reproducción depende de disponibilidad y suscripción.",
+    }];
+  });
+
+  const catalog: Broadcast | null = catalogUrl ? {
+    name: "Partido identificado · LMB.TV",
+    type: "Streaming",
+    url: catalogUrl,
+    note: "Página del encuentro encontrada en el catálogo público de LMB.TV por equipos, fecha y hora. La disponibilidad del video depende de la plataforma y suscripción.",
+  } : null;
+
+  const other = channels.filter(channel => !/lmb.tv|jonr[oó]n/i.test(channel.name))
+    .map((channel): Broadcast => ({
+      name: channel.name,
+      type: "TV",
+      url: safeLmbMediaUrl(channel.url) ?? canonicalProviderUrl(channel.name, "LMB"),
+      note: "Canal informado por LMB; puede no haber enlace directo para este encuentro.",
+    }));
+
+  return unique([
+    ...(archive ? [archive] : direct.length ? direct : catalog ? [catalog] : [main]),
+    ...other,
+  ]);
 }
 
 export async function getGameBroadcasts(
@@ -278,6 +290,6 @@ export async function getGameBroadcasts(
 ): Promise<Broadcast[]> {
   if (league === "MLB") return getMlbBroadcasts(gameId);
   if (league === "LMP") return getLmpBroadcasts(gameId, context);
-  if (league === "LMB") return getLmbBroadcasts(gameId);
+  if (league === "LMB") return getLmbBroadcasts(gameId, context);
   return [];
 }
