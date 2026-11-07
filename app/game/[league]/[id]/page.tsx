@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import GameBroadcasts from "@/components/GameBroadcasts";
 import { getBaseballGameExtras } from "@/lib/baseballGameExtras";
 import { BaseballLineScoreCard, BaseballPitchingDecisions, BaseballPlayerStats } from "@/components/BaseballGameExtras";
 import { getMlbPlayState } from "@/lib/mlbLive";
@@ -212,7 +214,7 @@ const isLive =
   !specialStatus;
 
 
-const [playState, gameExtras, broadcasts] = await Promise.all([
+const [playState, gameExtras] = await Promise.all([
   !isLive ? Promise.resolve(null)
     : league === "LMB" ? getLmbPlayState(gameId)
     : league === "LMP" ? getLmpPlayState(gameId)
@@ -221,17 +223,7 @@ const [playState, gameExtras, broadcasts] = await Promise.all([
   isLive || isFinal
     ? getBaseballGameExtras(league, gameId, isLive)
     : Promise.resolve(null),
-  broadcastsPromise,
 ]);
-
-// Mostrar repetición únicamente si LMB.TV identifica el video de ese
-// partido; nunca sustituirlo por el catálogo general en un juego FINAL.
-const visibleBroadcasts = isFinal
-  ? broadcasts.filter(item =>
-      league === "LMB" &&
-      /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")
-    )
-  : broadcasts;
 
 // Los estados MLB/LMB comparten un tipo con LMP; validar el campo exclusivo.
 const lmpPitchingChanges =
@@ -677,54 +669,21 @@ const time =
           </div>
         </div>
         
-{(!isFinal || visibleBroadcasts.length > 0) && (
+<Suspense fallback={isFinal ? null : (
   <section className="broadcastSection">
     <div className="broadcastHeader">
-      <span className="eyebrow">{isFinal ? "REPETICIÓN OFICIAL" : "TRANSMISIÓN"}</span>
-      <h2>{isFinal ? "Partido completo" : "Dónde ver"}</h2>
+      <span className="eyebrow">TRANSMISIÓN</span>
+      <h2>Dónde ver</h2>
     </div>
-
-    {visibleBroadcasts.length ? (
-      <>
-        <div className="broadcastLinks">
-          {visibleBroadcasts.map((broadcast, index) => (
-            broadcast.url ? (
-              <a
-                key={`${broadcast.name}-${index}`}
-                href={broadcast.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={broadcast.note}
-                className="watchButton"
-              >
-                {isFinal
-                  ? `Consultar grabación · ${broadcast.name}`
-                  : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
-                    ? `Ver transmisión · ${broadcast.name}`
-                    : `Consultar ${broadcast.name}`}
-              </a>
-            ) : (
-              <span
-                key={`${broadcast.name}-${index}`}
-                title={broadcast.note}
-                className="watchButtonDisabled"
-              >
-                {broadcast.name} · Sin enlace verificado
-              </span>
-            )
-          ))}
-        </div>
-        <p className="broadcastDisclaimer">
-          {isFinal
-            ? "Página del partido completo en LMB.TV. La reproducción puede requerir suscripción y depende de derechos regionales."
-            : "Los botones abren el canal o calendario oficial indicado, no siempre el reproductor del partido. Disponibilidad según programación, región y suscripción."}
-        </p>
-      </>
-    ) : (
-      <div className="broadcastEmpty">Transmisión del partido por confirmar</div>
-    )}
+    <div className="broadcastEmpty">Consultando canales oficiales…</div>
   </section>
-)}
+)}>
+  <GameBroadcasts
+    league={league}
+    isFinal={isFinal}
+    broadcastsPromise={broadcastsPromise}
+  />
+</Suspense>
 
       </section>
       {/* Pizarra por entradas durante el juego y al finalizar. */}
