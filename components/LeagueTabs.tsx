@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type LeagueTabsProps = {
   activeLeague: "MLB" | "LMB" | "LMP" | "CARIBE";
 };
@@ -16,9 +18,10 @@ export default function LeagueTabs({ activeLeague }: LeagueTabsProps) {
         {LEAGUES.map((league) => {
           const active = activeLeague === league.code;
           return (
-            <a
+            <Link
               key={league.code}
               href={league.href}
+              prefetch={false}
               className={active ? "tab active" : "tab"}
               aria-label={`Ir a ${league.label}`}
               aria-current={active ? "page" : undefined}
@@ -33,7 +36,7 @@ export default function LeagueTabs({ activeLeague }: LeagueTabsProps) {
                 height={46}
               />
               <span className="leagueName">{league.visibleName}</span>
-            </a>
+            </Link>
           );
         })}
       </div>
