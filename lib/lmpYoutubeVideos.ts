@@ -211,7 +211,9 @@ const channelVideos = cache(async (tab: "streams" | "videos", search?: string): 
     : `${CHANNEL}/${tab}`;
   try {
     const response = await fetch(url, {
-      next: { revalidate: search ? 3600 : 600 },
+      // Matches the 5-minute FINAL-page cadence. Public channel HTML is
+      // cached across requests; do not refetch the same list per viewer.
+      next: { revalidate: 300 },
       signal: AbortSignal.timeout(7500),
       headers: { Accept: "text/html" },
     });
@@ -265,7 +267,7 @@ async function validatedReplay(video: ChannelVideo, context: LmpYoutubeGameConte
   const url = `https://www.youtube.com/watch?v=${video.id}`;
   try {
     const response = await fetch(url, {
-      next: { revalidate: 900 },
+      next: { revalidate: 300 },
       signal: AbortSignal.timeout(7000),
       headers: { Accept: "text/html" },
     });
