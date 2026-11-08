@@ -2,7 +2,7 @@ import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import { getLmbOfficialBroadcasts } from "./lmbLive";
 import { findLmbTvGamePage } from "./lmbTvCatalog";
 import { verifyLmbTvGamePage } from "./lmbReplayAvailability";
-import { getVerifiedLmpGameVideo, lmpOfficialVideosSearchUrl } from "./lmpVideoLinks";
+import { getVerifiedLmpGameVideo } from "./lmpVideoLinks";
 import { getMlbGameVideoCollection, mlbTvArchiveDayUrl } from "./mlbPostgame";
 import type { LeagueCode } from "./teamLogos";
 
@@ -347,25 +347,31 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   const start = context.startTime ? new Date(context.startTime) : new Date();
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
   const year = start.getMonth() <= 2 ? season - 1 : season;
-  const gameSearchUrl = lmpOfficialVideosSearchUrl(gameId);
-  const gameVideos: Broadcast[] = gameSearchUrl ? [{
-    name: "Videos de este juego · MLB.com",
-    type: "Streaming",
-    url: gameSearchUrl,
-    gameVideoSearch: true,
-    postgameKind: "gameVideos",
-    note: "Búsqueda oficial filtrada por el ID exacto del partido. Puede contener clips o no tener resultados; no es una repetición completa ni un reproductor garantizado.",
-  }] : [];
-
-  // Los juegos FINAL pueden consultar clips, pero no debemos anunciar
-  // una repetición íntegra ni consultar canales que ya no transmiten.
-  if (context.isFinal) return gameVideos;
-
-  // El botón directo se muestra solo si MLB.com sigue respondiendo HTTP 200
-  // y la página contiene la etiqueta gamepk exacta de este encuentro.
+  // MLB Film Room accepts the gamePk filter but can show ZERO results for
+  // LMP (verified by actual browser screenshot, gamePk 850466). Do not
+  // generate links to that empty search for any game.
+  //
+  // A known individual video page can still be offered if MLB.com currently
+  // serves HTTP 200 and tags the EXACT gamePk. This is a video page, NOT
+  // confirmation of full-game replay playback.
   const gameVideoPromise = getVerifiedLmpGameVideo(gameId, context.startTime
     ? mexicanDate(context.startTime)
     : undefined);
+
+  // On FINAL, never show the live-membership, schedule, or TV channels as
+  // though they offered a replay. Show only a genuinely verified page;
+  // otherwise the UI will clearly say there is no confirmed video.
+  if (context.isFinal) {
+    const page = await gameVideoPromise;
+    return page ? [{
+      name: "Video oficial del partido · MLB.com",
+      type: "Streaming",
+      url: page,
+      verifiedGamePage: true,
+      postgameKind: "gameVideos",
+      note: "Página individual oficial identificada con el gamePk exacto y disponible al consultar. No se ha comprobado que permita reproducir el partido completo.",
+    }] : [];
+  }
   const known: Broadcast[] = [
     { name: "YouTube LMP · Membresía oficial", type: "Streaming",
       url: LMP_YOUTUBE_MEMBERSHIP,
@@ -391,7 +397,7 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
     !item.name.toLowerCase().includes("youtube") &&
     !item.name.toLowerCase().includes("mlb.tv")
   );
-  return [...verified, ...gameVideos, ...known, ...extra];
+  return [...verified, ...known, ...extra];
 }
 
 async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
