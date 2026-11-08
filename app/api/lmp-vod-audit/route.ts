@@ -1,20 +1,25 @@
-// Temporary QA against the official LMP YouTube replay resolver.
-// This endpoint is removed after tests.
-import { findLmpYoutubeReplay, findLmpYoutubeHighlight } from "@/lib/lmpYoutubeVideos";
-export const runtime="nodejs";export const dynamic="force-dynamic";
+// Temporary diagnostic for older official YouTube archived video. Delete after QA.
+export const dynamic="force-dynamic";export const runtime="nodejs";
 export async function GET(){
- const fixtures=[
-  {id:850456,name:"Naranjeros Algodoneros J1",context:{startTime:"2026-11-08T00:00:00Z",away:"Naranjeros de Hermosillo",home:"Algodoneros de Guasave",gameNumber:1,doubleHeader:"Y"}},
-  {id:850479,name:"Naranjeros Algodoneros J2",context:{startTime:"2026-11-08T02:16:00Z",away:"Naranjeros de Hermosillo",home:"Algodoneros de Guasave",gameNumber:2,doubleHeader:"Y"}},
-  {id:850466,name:"Venados Mayos J1",context:{startTime:"2026-11-07T22:00:00Z",away:"Venados de Mazatlan",home:"Mayos de Navojoa",gameNumber:1,doubleHeader:"Y"}},
-  {id:850474,name:"Venados Mayos J2",context:{startTime:"2026-11-07T23:05:00Z",away:"Venados de Mazatlan",home:"Mayos de Navojoa",gameNumber:2,doubleHeader:"Y"}},
-  {id:123456,name:"Cañeros Yaquis Oct25 search fallback",context:{startTime:"2026-10-26T01:00:00Z",away:"Cañeros de Los Mochis",home:"Yaquis de Ciudad Obregon",gameNumber:1,doubleHeader:"N"}},
-  {id:123457,name:"Mismatched day must not show Oct25",context:{startTime:"2026-10-27T01:00:00Z",away:"Cañeros de Los Mochis",home:"Yaquis de Ciudad Obregon",gameNumber:1,doubleHeader:"N"}},
-  {id:850456,name:"Wrong game number must not misassign",context:{startTime:"2026-11-08T00:00:00Z",away:"Naranjeros de Hermosillo",home:"Algodoneros de Guasave",gameNumber:3,doubleHeader:"Y"}},
+ const q="Cañeros Yaquis 25 octubre 2026", id="9L-prlH7Tqo";
+ const urls=[
+  ["search","https://www.youtube.com/@lmpbanamex/search?query="+encodeURIComponent(q)],
+  ["watch","https://www.youtube.com/watch?v="+id],
  ];
- const results=await Promise.all(fixtures.map(async x=>{
-  const [replay,highlight]=await Promise.all([findLmpYoutubeReplay(x.id,x.context),findLmpYoutubeHighlight(x.context)]);
-  return{name:x.name,id:x.id,replay,highlight};
+ const res=await Promise.all(urls.map(async([name,url])=>{
+  try{
+   const r=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(9000),headers:{Accept:"text/html"}});
+   const html=await r.text();
+   const mark=name==="watch"?"var ytInitialPlayerResponse = ":"var ytInitialData = ";
+   const a=html.indexOf(mark),start=html.indexOf("{",a+mark.length),end=html.indexOf(";</script>",start);
+   let data:unknown=null;
+   if(a>=0&&start>=0&&end>=0){try{data=JSON.parse(html.slice(start,end))}catch{}}
+   const p=data as {videoDetails?:Record<string,unknown>;playabilityStatus?:Record<string,unknown>;microformat?:{playerMicroformatRenderer?:Record<string,unknown>}}|null;
+   return {name,http:r.status,bytes:html.length,hasId:html.includes(id),marker:a,parsed:!!data,
+    videoDetails:p?.videoDetails,playability:p?.playabilityStatus,microformat:p?.microformat?.playerMicroformatRenderer,
+    hasTitle:html.includes("Cañeros de los Mochis vs Yaquis de Ciudad Obregon | 25 de octubre de 2026"),
+    matchAround:html.slice(Math.max(0,html.indexOf(id)-150),html.indexOf(id)+300)};
+  }catch(e){return {name,error:String(e)}}
  }));
- return Response.json({results},{headers:{"Cache-Control":"no-store"}});
+ return Response.json({res},{headers:{"Cache-Control":"no-store"}});
 }
