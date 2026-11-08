@@ -2,13 +2,13 @@
 
 **Última revisión:** 8 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (8/nov/2026):** **sección 130: auditoría de producción con siete juegos LMP FINAL del 7/nov**: tres resúmenes detectados sin IDs prefijados, y tres enlaces MLB.com obsoletos (HTTP 404) retirados. Naranjeros J1/J2 conserva archivo largo de YouTube con etiqueta membresía. Dos juegos PREVIEW del 8/nov siguen sin postpartido; MLB/LMB sin regresiones. Código funcional b49ae344 READY. Ver sección 130.
+**Prioridad actual (8/nov/2026):** **sección 131 completada: refresco automático de videos durante el postpartido de LMP**, cada 5 min durante las 24 h posteriores a la última jugada oficial cuando está registrada. Si la fuente no permite medir el final, se usa un plazo conservador y limitado de 30 h desde el inicio programado. El caché de las pestañas y búsqueda YouTube también es de 300 s. Regresión 21/21 y QA en producción confirmada. El resto de ligas no cambia. **Siguiente (132):** verificar los cinco juegos del 8/nov tras pasar a FINAL y los resúmenes/replays nuevos, sin asumir disponibilidad o acceso efectivo con membresía.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (8/nov/2026):** sección **130** verificada. **Próximo (131):** revisar cinco juegos del 8/nov al pasar a FINAL: 850461, 850460, 850459, 850458, 850462. Validar YouTube oficial sin IDs precargados, ausencia correcta de archivos y playback solo con cuenta autorizada. No reabrir cambios anteriores.
+> **REANUDACIÓN INMEDIATA (8/nov/2026):** sección **131** lista y publicada, con QA en producción de LMP 850455, 850456 (FINAL y refresco 300000 ms), 850461 (PREVIEW 10000 ms), LMB 867481 y MLB 849805 (FINAL histórico sin refresco adicional). **Siguiente (132):** revisar 850461, 850460, 850459, 850458, 850462 cuando FINAL y YouTube publique videos. Confirmar actualización de botones, hora de cruce de medianoche, calidad de enlaces y no falsas repeticiones; no es necesario reinstalar ni cargar IDs manualmente para funcionar.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1766,3 +1766,35 @@ El HTML público de YouTube se consultó desde Vercel y se leyó el JSON editori
 - StatsAPI indicó cinco partidos SCHEDULED del 8/nov: 850461, 850460, 850459, 850458, 850462. Las fichas consultadas 850461 y 850460 respondieron HTTP 200 y TRANSMISIÓN, sin falsa tarjeta FINAL ni postpartido.
 - LMB /game/lmb/867481 conservó REPETICIÓN OFICIAL; MLB /game/mlb/849805 conservó ARCHIVOS Y VIDEOS. Total de **11 fichas HTTP 200 comprobadas en producción**: siete LMP FINAL, dos LMP PREVIEW, una LMB, una MLB.
 - Pendiente de sección 131: revisar los cinco juegos auténticos del 8/nov después de finalizar y comprobar detección sin IDs manuales, comportamiento tras medianoche, catálogo YouTube, duración del video y playback con membresía autorizada. No llamar repetición completa a un clip corto ni confundir existencia HTTP 200 con derecho efectivo a verlo.
+
+## 131. LMP — refresco automático post-FINAL para recibir resúmenes y repeticiones tardías (8/nov/2026)
+
+**Problema resuelto:** la página de detalle desactivaba AutoRefresh cuando el encuentro marcaba FINAL, mientras la liga podía publicar el resumen o el archivo de YouTube minutos después. Aunque el visitante dejase abierta la ficha, el botón no aparecía sin actualizar manualmente. Además, la caché YouTube era de 600 s en el listado, 3600 s en búsqueda y 900 s en reproductor, más extensa que la cadencia de cinco minutos propuesta.
+
+### Cambios funcionales
+
+- Nuevo módulo `lib/lmpPostgameRefresh.ts`: `getLmpPostgameRefreshUntil` devuelve un plazo solo si la liga es LMP, el estado es FINAL y la fecha de inicio es válida, anterior a la consulta y está dentro de la ventana reciente. Preferencia: `lastPlayEndedAt + 24h`, siempre que sea un tiempo válido entre inicio y hasta 18 h después, y no futuro. Fallback acotado: `startTime + 6h + 24h` (30 h desde el inicio programado) cuando no se dispone de última jugada. **No afirmar precisión de 24 h tras final si se usa el fallback**.
+- `lib/gameDetails.ts`: al leer el feed oficial LMP FINAL, expone `lastPlayEndedAt` usando el `about.endTime` verificable de la última jugada con timestamp; no se inventa una hora de fin. No se añade este dato a MLB ni LMB.
+- `app/game/[league]/[id]/page.tsx`: LMP FINAL dentro de su plazo mantiene `AutoRefresh enabled` con `intervalMs=300000` (5 minutos), `stopAt` calculado y actualización al volver el foco a la pestaña. PREVIEW/EN VIVO conservan 10000 ms y otros estados su comportamiento anterior. MLB/LMB FINAL e históricos no adquieren refresco posterior.
+- `components/AutoRefresh.tsx`: acepta propiedad `stopAt` y comprueba contra la hora **en el cliente** antes de llamar `router.refresh()`. Aunque la pestaña se mantenga abierta más de 24 h, no se producen solicitudes periódicas pasada la fecha límite; la visibilidad de pestaña ya impedía consultas en segundo plano.
+- `lib/lmpYoutubeVideos.ts`: la caché por URL del canal oficial /videos, /streams, búsqueda y comprobación del player se ajusta a 300 s. Los nuevos resúmenes y retransmisiones que cumplan verificaciones pueden agregarse al resultado en el siguiente refresco; **la publicación por YouTube, indexado, revalidación y acceso efectivo siguen siendo externos y no hay promesa de aparición en menos de cinco minutos**. El render sigue usando Suspense para no retrasar el marcador.
+- Nuevo `scripts/lmp-postgame-regression.cjs` y script npm `test:lmp-postgame` integrado en `npm run build` junto a `test:lmp-youtube`. La regresión pasó **21 comprobaciones**: ventana y límite exactos, cruce de medianoche, caducidad aun con la pestaña abierta, fallback acotado, fechas inválidas, ausencia de fecha, juegos antiguos, no activar LMB/MLB/PREVIEW, conexión de UI y caché. Vercel **READY** con Next.js y TypeScript compilados sin errores al commit `1b3c3e2`.
+- Commits: `1346b965` (helper), `085fccee` (última jugada), `ce4d3daf` (stopAt cliente), `7e4454aa` (página), `50578944` (caché), `ead02282` (pruebas), `1b3c3e21` (integración al build).
+
+### Smoke test real en producción
+
+Se consultaron rutas de la versión nueva de diamante-mx.vercel.app y el feed oficial de LMP para `850455`:
+
+| Ruta | Estado y refresco serializado en React Server Components | Resultado |
+|---|---|---|
+| /game/lmp/850455 | FINAL, enabled true, intervalMs 300000, stopAt 1794196446738 | Resumen oficial continúa visible. El feed registra último out en `2026-11-08T03:54:06.738Z`, y stopAt corresponde exactamente a 24 h después |
+| /game/lmp/850456 | FINAL, enabled true, intervalMs 300000, stopAt 1794189883007 | Repetición con membresía y resumen continúan visibles |
+| /game/lmp/850461 | PREVIEW, enabled true, intervalMs 10000, stopAt undefined | No aparece falso botón de repetición |
+| /game/lmb/867481 | FINAL, enabled false, stopAt undefined | LMB.TV replay existente intacto |
+| /game/mlb/849805 | FINAL, enabled false, stopAt undefined | MLB archivo existente intacto |
+
+Todas las rutas probadas respondieron HTTP 200. **Se verificó el HTML inicial con props del componente, NO se dejó un navegador con la ficha abierta 24 h para observar el paso exacto en tiempo real**. Ese vencimiento está cubierto por prueba de regresión y guardia de cliente. No se comprobó playback con membresía.
+
+### Próximo paso: sección 132
+
+Revisar la jornada del **8/nov/2026** (`850461`, `850460`, `850459`, `850458`, `850462`) cuando esté FINAL y aparezcan videos en el canal oficial. Confirmar que los resúmenes se agregan automáticamente sin IDs predefinidos y los archivos largos solo salen si son del juego correcto. Verificar con navegador que un enlace publicado después puede incorporarse mediante el refresco sin F5; con una cuenta autorizada, comprobar reproducción de contenido exclusivo. Mantener lógica de doble cartelera, estados, MLB y LMB.
