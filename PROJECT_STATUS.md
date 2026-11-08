@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **transmisiones LMP comprobadas con juegos de la jornada de hoy (sección 121)**. Los detalles de LMP identifican correctamente canales por gamePk y conservan botones de portal LMP, YouTube membresía y calendario MLB.TV; **NO** existe todavía un buscador general automático de URL individual como LMB.TV. Prueba piloto J1 Venados–Mayos, gamePk 850466: página oficial de video MLB.com identificada, implementada y comprobada en producción sin afectar juego 2 (850474). Reproducción efectiva y derechos no verificables sin cuenta. LMB.TV conserva resolución por catálogo único de sección 120. **Próximo:** investigar descubrimiento automático verificable de páginas de video LMP, probar usuarios abonados, después auditar proveedores MLB. Diseño/estadísticas/refresco/traducción intactos.
+**Prioridad actual (7/nov/2026):** **videos oficiales LMP por gamePk, sección 122**. Cada detalle no FINAL de LMP ofrece ahora una **búsqueda de videos MLB.com filtrada por gamePk exacto**, sin deducir URLs de reproductor. Tres enlaces piloto de video conocidos (Venados–Mayos 850466; Naranjeros–Algodoneros 850456; Jaguares–Tomateros 850465) se revalidan contra HTTP 200 y etiqueta `gamepk-X` antes de mostrar botón directo; el enlace antiguo Venados devolvió HTTP 404 desde Vercel, por lo que ya no se debe presentar si está retirado. La búsqueda filtrada no asegura resultados ni stream. Aún NO hay descubridor universal de video directo para LMP ni prueba de acceso con suscripción. LMB.TV automatizado y sin cambios (120). Próxima prioridad: encontrar índice oficial de videos LMP confiable, validar FINALS/repeticiones y auditar proveedores MLB. Refresco/diseño/estadísticas/traducciones intactos.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero sección **121** (pruebas LMP y enlace directo piloto), después 120 (LMB.TV automático), 119–116 (transmisiones y auditoría), 115/114 (rendimiento). Próximo: comprobar si MLB.com o YouTube LMP ofrecen índice fiable de páginas individuales por gamePk para automatizar **LMP**; no extrapolar un video a otro juego ni doble cartelera. MLB proveedores aún pendientes. Liga LMB.TV 2027 sujeta a catálogo real. Datos/traducciones/refresco intactos.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero sección **122** (búsqueda oficial de videos LMP filtrada por gamePk + URLs directas verificadas en runtime, NO descubridor universal), luego 121/120/119 y 118–116. Próximo: investigar una fuente oficial que devuelva automáticamente los videos LMP por gamePk, comprobar las páginas durante PARTIDO EN VIVO y tras FINAL y su disponibilidad con cuenta; después continuar proveedores MLB. Evitar enlace roto o contenido de otra doble cartelera. Datos/estadísticas/traducción/refresco intactos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1472,3 +1472,34 @@ Dominio completo de esas páginas: `https://www.lmb.tv`. El catálogo incluye ta
 2. Investigar **fuente oficial de páginas de video** (catálogo de MLB.com o canales oficiales YouTube) con gamePk, fecha, visitantes/locales y número de juego verificables; distinguir `EN VIVO`, repetición y resumen, y prevenir confusiones en doble cartelera. Si no hay metadatos estables, ofrecer solo calendario, canal y membresía.
 3. No se probó capacidad de reproducción o derechos en una cuenta real. Probar en móvil/desktop del usuario con suscripción cuando pueda, incluyendo acceso al canal de YouTube.
 4. Queda abierta revisión de proveedores de MLB y pruebas de temporada LMB.TV 2027. Ninguna de esas fuentes se modificó.
+
+## 122. LMP — filtro oficial de videos por gamePk y prevención de enlaces caducados (7/nov/2026)
+
+**Origen:** usuario pide pasar del primer enlace manual individual LMP a una solución más automática y segura, como LMB.TV. El objetivo de un enlace directo por partido **sigue parcialmente pendiente**; este cambio automatiza la **búsqueda específica del partido** y valida las URLs directas conocidas.
+
+### Fuente investigada: MLB.com y sus límites
+
+- La página individual de video MLB.com `https://www.mlb.com/es/video/lmp-live-1-naranjeros-vs-algodoneros-251315` respondió HTTP **200** desde Vercel y contiene literalmente el enlace «Más De Este Juego» con `ContentTags = ["gamepk-850456"] Order by Timestamp DESC`. La página `https://www.mlb.com/es/video/lmp-live-jaguares-vs-tomateros-251316` respondió HTTP **200** y contiene `gamepk-850465`. Esto confirma una etiqueta editorial **exacta de partido**, que no confunde juegos con los mismos clubes.
+- Las páginas de búsqueda `https://www.mlb.com/es/video/?q=ContentTags%20%3D%20%5B%22gamepk-850456%22%5D%20Order%20by%20Timestamp%20DESC` y equivalentes para `850466`, `850465` y `850474` devolvieron HTTP **200**; el estado editorial `queryInfo(...)` señaló `valid: true` para el filtro. **Pero la respuesta HTML server-side no incluía los videos resultantes**. Esto puede requerir JavaScript en navegador; no se ha verificado que el buscador entregue clips visibles ni que una búsqueda implique reproducción.
+- El endpoint `https://statsapi.mlb.com/api/v1/game/{gamePk}/content` devolvió HTTP 200 para `850466` y `850456` pero **sin** videos en `highlights.live.items` ni identificadores de la transmisión en vivo. No sirve como fuente comprobada para construir enlaces individuales LMP.
+- Una página previamente publicada y comprobada, `https://www.mlb.com/es/video/lmp-live-1-venados-vs-navojoa-251314` (gamePk `850466`), comenzó a devolver HTTP **404 desde el servidor Vercel** en una comprobación posterior. Por eso una URL antes correcta no puede seguir ofreciéndose sin revalidación.
+
+### Implementación segura
+
+- Nuevo `lib/lmpVideoLinks.ts`, commit `de67665`: `lmpOfficialVideosSearchUrl(gameId)` genera solo una URL **oficial de búsqueda filtrada por etiqueta de partido**, nunca deduce slug de video. `getVerifiedLmpGameVideo(gameId,mexicoGameDate)` conserva solo tres URLs concretas previamente identificadas (`850466`, `850456`, `850465` con fecha 7/nov/2026). Antes de mostrar una página individual hace GET HTTP con revalidación 180 s, límite 5 s, exige contenido HTML, sitio MLB.com, título editorial «EN VIVO» y etiqueta `gamepk-X` del juego solicitado. Ante 404, timeout, redirección desconocida o discrepancia devuelve `null`. React.cache comparte el resultado solo por render. Esto **no es un descubridor directo universal**; URLs adicionales exigen evidencia externa o un índice oficial verificable.
+- `lib/broadcasts.ts`, commit `5a36e2d`: elimina el enlace piloto fijo sin comprobación; calcula `getVerifiedLmpGameVideo` en paralelo con `lmpGameChannels` y ofrece primero «Video oficial del partido · MLB.com» **solo** si sigue válido, luego «Videos de este juego · MLB.com» como búsqueda oficial y por último YouTube LMP membresía, portal LMP, calendario MLB.TV y canal MEGA publicado. La URL de búsqueda se presenta con `Consultar` y su nota advierte que pueden no existir resultados, transmisión o repetición. Jamás atribuir un video de J1 a J2.
+- `components/GameBroadcasts.tsx` conserva el rótulo `Abrir video oficial` solo para `verifiedGamePage`; las búsquedas y calendarios se etiquetan `Consultar`. El componente continúa en `Suspense` fuera del render bloqueante del marcador y de las estadísticas.
+- Ruta de inspección temporal `app/api/lmp-video-diag/route.ts`: se utilizó para revisar la metadata pública de videos y las consultas oficiales, se detectó y corrigió una falla TS7006 aislada en el diagnóstico (commit `6e3856c`, luego Vercel READY), y se **eliminó** una vez terminado el análisis (commit `42e2b38`). No forma parte permanente de producto.
+
+### Prueba en despliegue (7/nov/2026)
+
+- Vercel reportó **READY** para commit funcional `5a36e2d`. Los detalles de `850456` y `850465` devolvieron HTTP 200 e incluyeron tanto la dirección específica de video como la búsqueda filtrada y accesos generales. `850474` (J2 Venados–Mayos) incluyó solo su **propio** filtro `gamepk-850474`, NO el video `850466` del J1. `850455` también recibió su filtro individual. Así se preserva la separación entre dobles carteleras.
+- `850466` ya aparecía FINAL durante las verificaciones posteriores. En detalle FINAL, **la sección «Dónde ver» de LMP sigue oculta por el diseño vigente**, por lo que no se ha habilitado una opción que prometa repetición completa. Debe verificarse primero el tipo de video disponible tras finalizar.
+- **No** se probó la reproducción con usuario abonado, DRM, derechos de retransmisión, la presencia real de resultados en la página de búsqueda cargada en un navegador interactivo, ni nuevas temporadas. Un resultado READY solo verifica compilación y publicación.
+
+### Próxima tarea
+
+1. Buscar **índice/API editorial pública estable de MLB.com o liga** que devuelva páginas de video con `gamepk-...` y tipo (transmisión completa/replay/clip) con enlace canonical verificable, no lista de contenidos arbitrarios.
+2. Probar enlaces de LMP con una cuenta autorizada en vivo y tras FINAL; sólo entonces habilitar «Repetición» para videos completos. Los enlaces de búsqueda no se venden como reproducción directa.
+3. Validar la nueva opción de búsqueda en navegador real móvil y escritorio (la metadata `valid:true` no prueba resultados). Si el buscador no produce contenido, retirar ese botón y mantener solo canales oficiales.
+4. Continuar auditoría de plataformas MLB; LMB.TV conserva su descubridor de sección 120.
