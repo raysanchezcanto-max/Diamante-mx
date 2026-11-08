@@ -58,7 +58,9 @@ export default async function GameBroadcasts({
                 >
                   {broadcast.postgameKind === "fullReplay" && isFinal
                     ? league === "LMP"
-                      ? "Ver repetición oficial · YouTube LMP (membresía)"
+                      ? broadcast.archiveAccessUnverified
+                        ? "Consultar transmisión archivada · YouTube LMP"
+                        : "Ver repetición oficial · YouTube LMP (membresía)"
                       : `Consultar repetición · ${broadcast.name}`
                     : broadcast.postgameKind === "archiveLookup" && isFinal
                       ? league === "LMP"
@@ -91,7 +93,7 @@ export default async function GameBroadcasts({
             {isFinal
               ? hasReplay
                 ? league === "LMP"
-                  ? "Transmisión archivada del canal oficial de YouTube de LMP, identificada por fecha, equipos y juego. Requiere membresía; la reproducción depende de la cuenta y la región."
+                  ? "Archivo de la transmisión del canal oficial LMP, identificado por fecha, equipos y juego. Generalmente requiere membresía; el acceso puede variar y algunas páginas no permiten verificar la reproducción automáticamente."
                   : "Página individual del partido completo identificada en LMB.TV. La reproducción puede requerir suscripción y depende de los derechos regionales."
                 : hasArchive
                   ? league === "LMP"
