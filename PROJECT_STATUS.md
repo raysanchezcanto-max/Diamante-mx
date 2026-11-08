@@ -1,14 +1,14 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 7 de noviembre de 2026
+**Última revisión:** 8 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **sección 127: detección automática de emisión archivada LMP en MLB.TV, sin enlaces engañosos**. Se consulta la StatsAPI por `gamePk` y fecha/hora exactas, y solo si la señal TV MLB.TV marca simultáneamente `MEDIA_ARCHIVE` y `availableForStreaming=true` aparece «Consultar archivo LMP en MLB.TV» (abre **calendario oficial de la temporada**, NO reproductor). Cuatro partidos reales del 7/nov/2026, incluidos Venados–Mayos J1 `850466` y J2 `850474`, devuelven `MEDIA_OFF`, por lo que siguen sin botón de archivo; en FINAL sin video confirmado conserva el aviso sin enlace. LMP Film Room por gamePk continúa **retirado** (126). MLB y LMB siguen intactos (125). Pendiente: fuente individual de grabación completa de LMP y prueba con cuenta real; no afirmar reproducción automática ni acceso regional.
+**Prioridad actual (8/nov/2026):** **sección 128: archivos y resúmenes oficiales YouTube LMP enlazados automáticamente**. Fuente pública confirmada: canal oficial `UCdW_4rN3OarOoawQ4Er-ZXw`, pestañas `/streams` (transmisiones de duración larga) y `/videos` (resúmenes). Por fecha/equipos/J1-J2 se identifican grabaciones largas y se valida además el canal y finalización de la emisión en metadatos de YouTube. **Naranjeros–Algodoneros 7/nov J1 850456 y J2 850479: botones «Ver repetición oficial · YouTube LMP (membresía)» a dos videos de 2h21/2h25**, confirmados como members-only, sin probar playback con cuenta. **Venados–Mayos J1 850466/J2 850474: sin replay largo confirmado, pero ya muestran resúmenes oficiales correctos**; no buscar en Film Room vacío. Se agregaron búsqueda histórica conservadora y IDs confirmados para preservar los cuatro videos de doble cartelera. MLB y LMB intactos; última QA funcional READY y regresión 200. Sigue pendiente comprobación de playback como miembro, videos no indexados por YouTube o cambios en estructura de su HTML.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **127** (MLB.TV LMP señal MEDIA_ARCHIVE validada por gamePk y fecha; como portal, no reproducción individual), luego 126 (botón vacío Film Room eliminado), 125 (postpartido MLB/LMB), 124 (proveedores MLB), 120 (LMB.TV). Siguiente: descubrir y validar **enlace directo oficial de repetición completa de LMP** cuando el proveedor lo publique; los archivos restringidos pueden exigir cuenta. No integrar plataformas de terceros cuya autorización no esté confirmada, no reintroducir enlaces Film Room sin resultados. Diseño, marcadores, estadísticas y refresco intactos.
+> **REANUDACIÓN INMEDIATA (8/nov/2026):** comenzar por **128** (LMP YouTube: streaming archivado member-only verificado por fecha/equipos/J1-J2; resúmenes separados; búsqueda histórica cauta), luego 127 (MLB.TV archivo condicionado), 126 (Film Room vacío eliminado), 125 (postpartidos MLB/LMB), 124 (proveedores MLB), 120 (LMB.TV). Próximo: probar con membresía real reproducción de Naranjeros J1/J2, validar fuentes YouTube del 8/nov y si ofrecen archivos una vez FINAL, mantener vínculo mientras exista; fallback YouTube HTML no es API oficial estable, no prometer cobertura universal. Mantener datos, traducción, diseño, pitchers y 10s de refresco.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1670,3 +1670,49 @@ En `lib/broadcasts.ts` se añadió el campo `postgameKind` con tres posibilidade
 - Código funcional `763a8e0` y UI `4f8b296` compilaron **READY** en Vercel. Las páginas `/game/lmp/850466` y `/game/lmp/850474` respondieron HTTP 200: **sin botón de archivo/repetición** y mensaje de no disponibilidad, como indica la fuente. `/game/lmb/867481` conserva `REPETICIÓN OFICIAL`; `/game/mlb/849805` conserva `ARCHIVOS Y VIDEOS`. Confirmar también READY para el commit de documentación más reciente.
 - **No se ha observado todavía un LMP `MEDIA_ARCHIVE` positivo**, por lo que la rama positiva es una implementación condicional basada en metadatos, **no una verificación E2E de reproducción**. No afirmar «LMP repeticiones disponibles automáticamente en todas las jornadas». Falta comprobar un archivo real, su navegación y reproducción con cuenta autorizada.
 - Próximo paso: encontrar de forma verificable las **URLs individuales de grabaciones completas de LMP** (YouTube de membresía y/o MLB.TV), respetando derechos y doble cartelera. La marca `MEDIA_ARCHIVE` solo habilita *consulta de catálogo*, no un botón `Ver repetición`.
+
+## 128. LMP — repetición completa oficial de YouTube por partido + resúmenes diferenciados (8/nov/2026)
+
+**Hallazgo importante:** el canal oficial LMP Banamex, ID `UCdW_4rN3OarOoawQ4Er-ZXw` (ya confirmado por LMP en sección 118), tiene **dos catálogos distintos accesibles públicamente**:
+- `https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/streams`: videos de transmisiones largas, a veces **exclusivos para miembros** aunque se vean los títulos/duraciones.
+- `https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/videos`: resúmenes públicos de 5–15 min y otras jugadas. No usar uno de estos clips como «partido completo».
+
+El HTML público de YouTube se consultó desde Vercel y se leyó el JSON editorial `ytInitialData`: ID `contentId`, título, duración visible y pertenencia al canal. Para videos de archivo se consultó además `ytInitialPlayerResponse`: `videoDetails.channelId`, duración, `isLiveContent`, `liveBroadcastDetails.endTimestamp`, `playabilityStatus` y `reason`. Este es HTML público de una plataforma externa, **no API formal estable**: si cambia el formato el detector devuelve `null` y no inventa enlaces.
+
+### Ejemplo real y verificaciones del 7/nov/2026
+
+| LMP gamePk | Encuentro | Tipo | URL oficial | Evidencia |
+|---|---|---|---|---|
+| `850456` | Naranjeros–Algodoneros J1 | Transmisión archivada | `https://www.youtube.com/watch?v=oPAPcWxbVNM` | `lengthSeconds=8480` (~2h21), `isLiveContent=true`, `endTimestamp` presente, canal exacto, `UNPLAYABLE` exclusivamente porque **«Join this channel ... members-only content»** |
+| `850479` | Naranjeros–Algodoneros J2 | Transmisión archivada | `https://www.youtube.com/watch?v=UnPc8ktTsq8` | `lengthSeconds=8740` (~2h25), fin de emisión confirmado, mismo canal, membresía requerida, **J2 diferente de J1** |
+| `850466` | Venados–Mayos J1 | Solo resumen encontrado | `https://www.youtube.com/watch?v=QbObuwwo8Z4` | `HIGHLIGHTS`, 449 segundos, fecha/equipos/`Game 1` exactos; NO se localizó archivo largo en el listado oficial |
+| `850474` | Venados–Mayos J2 | Solo resumen encontrado | `https://www.youtube.com/watch?v=7BKLu_JEVRs` | `HIGHLIGHTS`, 567 segundos, `Game 2` exacto; NO asignar video J1 |
+| `850456` / `850479` | Naranjeros J1/J2 | Resúmenes adicionales | `https://www.youtube.com/watch?v=54B29JD_lGo` / `https://www.youtube.com/watch?v=3HX6hEqbdto` | Videos separados de ~9m40 y ~7m03 y **NO** confundidos con archivo completo |
+
+**No se reprodujo** el contenido con credenciales de membresía. Las páginas individuales son reales, tituladas con el juego exacto, tienen 2h+ y finalización de emisión; la disponibilidad efectiva para un usuario depende de la membresía de YouTube y sus derechos regionales.
+
+### Nuevos componentes y reglas seguras
+
+- `lib/lmpYoutubeVideos.ts`, commits `34774af`, `0959052`, `0706802`, `9be30cd`: resuelve videos por **club visitante y local reconocibles**, **fecha del inicio en zona `America/Mexico_City`**, y **`gameNumber` 1/2 cuando `doubleHeader=Y/S`**. Para doble cartelera exige explícitamente «JUEGO 1/2» o «Game 1/2» en el título. Si hay cero o múltiples candidatos, se abstiene de asignar.
+- Para replay completo requiere vídeo de al menos **60 min** en la pestaña `/streams`, fuera de categorías resumen/entrevista. En el caso normal también confirma YouTube watch HTTP 200, `channelId` de LMP, título, `lengthSeconds`, `isLiveContent`, `endTimestamp` y estados `OK` o `UNPLAYABLE` **exclusivamente por membresía**. El resultado se clasifica `postgameKind="fullReplay"`.
+- Para highlights requiere etiqueta `RESUMEN`/`HIGHLIGHTS`/`SUMMARY`, duración 1–45 min, misma fecha/equipos/número de juego. Se clasifica `postgameKind="gameVideos"`; **jamás como partido completo**.
+- Se usa `React.cache` y caché Next HTTP 10 min del listado YouTube, 15 min para la página individual y máximo ~7s de espera por fuente, en panel `Suspense` separado de la información del juego. Si falla YouTube, mantener fallback de disponibilidad sin enlaces imaginados.
+- Dos videos largos y los cuatro highlights de las dobles carteleras del 7/nov fueron guardados como **IDs explícitos confirmados** dentro del módulo, para que no desaparezcan del buscador solo por salir de la primera página de YouTube. Se comprueban contra contexto de juego antes de asociar.
+- El buscador público del canal para videos antiguos se usa como alternativa conservadora cuando no están en la pestaña inicial. Se probó Cañeros–Yaquis del **25/oct/2026**, `https://www.youtube.com/watch?v=9L-prlH7Tqo`, duración editorial **2h48**: YouTube reconoció ese video en el canal y con fecha/equipos correctos, pero el GET del player devolvió `LOGIN_REQUIRED` por desafío antibot. En ese caso se expone **solo «Consultar transmisión archivada · YouTube LMP»**, con `archiveAccessUnverified=true`, sin afirmar acceso/playback; si no coinciden club y fecha, nunca se asocia. La prueba usó un fixture de contexto y no acredita la ficha real de ese antiguo `gamePk`. La búsqueda del canal es difusa; **la coincidencia exacta siempre manda**.
+- `lib/broadcasts.ts`, commits `8523976`, `442d81c`, `80f6cb0`: en LMP FINAL consulta en paralelo YouTube replay, highlight, archivo MLB.TV (sección 127) y páginas individuales MLB.com (sección 126), priorizando **repetición oficial** y después **resumen**. El botón MLB Film Room vacío **NO regresó**.
+- `app/game/[league]/[id]/page.tsx`, commit `faaaf42`: el módulo recibe `game.gameNumber` y `game.doubleHeader`, en vez de inferir J1/J2 por orden de tarjetas.
+- `components/GameBroadcasts.tsx`, commits `062d25b` y `302ec6a`: muestra **«REPETICIÓN OFICIAL / Partido completo»** en LMP únicamente para enlace de video de `youtube.com/watch?v=... ` (ID válido) identificado y verificado; indica **membresía**. Si YouTube bloquea la verificación antibot pero el índice oficial presenta video largo exacto, el texto es **«Consultar transmisión archivada»** (no asegurar playback). Resúmenes: «Ver resumen oficial · YouTube LMP». Si no existe alguno, conserva el aviso honesto de sección 126. No altera la variante LMB o MLB.
+
+### QA de integración y regresión
+
+- Vercel compila **READY** para último cambio funcional `6ebba34`; el endpoint temporal `/api/lmp-vod-audit`, utilizado para inspeccionar el HTML de YouTube y probar dobles carteleras, fue **eliminado**. Las versiones intermedias con un diagnóstico temporal desactualizado fallaron en compilación, pero el endpoint se eliminó y el build final fue READY.
+- **HTTP 200 en producción** para `/game/lmp/850456` y `850479`: el primero contiene exclusivamente su `oPAP...` de 2h21 y resumen J1; el segundo `UnPc...` de 2h25 y resumen J2. Ambos muestran rótulo **REPETICIÓN OFICIAL** y miembro.
+- **HTTP 200 en producción** para `/game/lmp/850466` y `850474`: los botones de repetición NO aparecen; solo sus respectivos enlaces YouTube de **resumen**. Esta es la mejora directa al screenshot del usuario que mostraba un buscador vacío de MLB Film Room.
+- **Sin regresiones:** `/game/lmb/867481` sigue mostrando repetición `lmb.tv/watch/...` y `/game/mlb/849805` conserva `ARCHIVOS Y VIDEOS` con día específico y Film Room para MLB.
+- Se verificó que si `gameNumber=3` o fecha errónea en una doble cartelera, el resolvedor devuelve `null`; no cruza J1/J2.
+
+### Límites / próximo paso
+
+1. YouTube/MLB.TV puede requerir **cuenta y membresía**, georrestricción o cambiar sus rutas. La comprobación HTTP + título + duración prueba **la existencia de página de transmisión larga**, no que una cuenta específica pueda reproducirla.
+2. No todas las transmisiones LMP están visibles en `/streams`, incluso si existe la membresía. Las páginas viejas dependen de búsqueda del canal con metadatos públicos; **no garantizar cobertura universal** ni asociar videos cuando no haya correspondencia unívoca.
+3. **Prueba siguiente con usuario autorizado:** abrir Juego 1 y Juego 2 de Naranjeros–Algodoneros con membresía oficial y confirmar que realmente funcionan como repetición, en navegador y móvil. Revisar después los partidos FINAL de **8/nov/2026** para validar detección automática sin ID preestablecido y asegurar estado tras medianoche.
