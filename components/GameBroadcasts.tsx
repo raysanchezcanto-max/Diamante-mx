@@ -15,8 +15,9 @@ export default async function GameBroadcasts({
   const broadcasts = await broadcastsPromise;
   const visibleBroadcasts = isFinal
     ? broadcasts.filter(item =>
-        league === "LMB" &&
-        /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")
+        (league === "LMB" &&
+          /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")) ||
+        (league === "LMP" && item.gameVideoSearch === true)
       )
     : broadcasts;
 
@@ -25,8 +26,8 @@ export default async function GameBroadcasts({
   return (
     <section className="broadcastSection">
       <div className="broadcastHeader">
-        <span className="eyebrow">{isFinal ? "REPETICIÓN OFICIAL" : "TRANSMISIÓN"}</span>
-        <h2>{isFinal ? "Partido completo" : "Dónde ver"}</h2>
+        <span className="eyebrow">{isFinal ? league === "LMP" ? "VIDEOS DEL PARTIDO" : "REPETICIÓN OFICIAL" : "TRANSMISIÓN"}</span>
+        <h2>{isFinal ? league === "LMP" ? "Buscar videos" : "Partido completo" : "Dónde ver"}</h2>
       </div>
 
       {visibleBroadcasts.length > 0 ? (
@@ -42,13 +43,15 @@ export default async function GameBroadcasts({
                   title={broadcast.note}
                   className="watchButton"
                 >
-                  {isFinal
-                    ? `Consultar grabación · ${broadcast.name}`
-                    : broadcast.verifiedGamePage
-                      ? `Abrir video oficial · ${broadcast.name}`
-                      : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
-                        ? `Ver transmisión · ${broadcast.name}`
-                        : `Consultar ${broadcast.name}`}
+                  {broadcast.gameVideoSearch
+                    ? "Buscar videos de este juego en MLB.com"
+                    : isFinal
+                      ? `Consultar grabación · ${broadcast.name}`
+                      : broadcast.verifiedGamePage
+                        ? `Abrir video oficial · ${broadcast.name}`
+                        : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
+                          ? `Ver transmisión · ${broadcast.name}`
+                          : `Consultar ${broadcast.name}`}
                 </a>
               ) : (
                 <span
@@ -63,7 +66,9 @@ export default async function GameBroadcasts({
           </div>
           <p className="broadcastDisclaimer">
             {isFinal
-              ? "Página del partido completo en LMB.TV. La reproducción puede requerir suscripción y depende de derechos regionales."
+              ? league === "LMP"
+                ? "Busca videos asociados a este partido por su ID oficial. Puede haber jugadas, resúmenes o ningún resultado; no implica repetición completa disponible."
+                : "Página del partido completo en LMB.TV. La reproducción puede requerir suscripción y depende de derechos regionales."
               : "Los botones abren el canal o calendario oficial indicado, no siempre el reproductor del partido. Disponibilidad según programación, región y suscripción."}
           </p>
         </>
