@@ -1,24 +1,57 @@
-// Temporary read-only LMP public catalog QA. Delete after verification.
-export const runtime="nodejs";
-export const dynamic="force-dynamic";
+// Temporary read-only verification of official LMP channel metadata.
+// Remove this diagnostic once production lookup is validated.
+export const runtime="nodejs";export const dynamic="force-dynamic";
+type R={title?:string;videoId?:string;duration?:string;kind?:string;badges?:unknown};
+function parseInitialData(html:string): unknown {
+ for(const prefix of ["var ytInitialData = ","window[\"ytInitialData\"] = ","ytInitialData = "]) {
+  const a=html.indexOf(prefix);
+  if(a<0)continue;
+  const start=html.indexOf("{",a+prefix.length);
+  const end=html.indexOf(";</script>",start);
+  if(start<0||end<0||end-start>2_000_000)continue;
+  try{return JSON.parse(html.slice(start,end));}catch{}
+ }
+ return null;
+}
+function extract(data:unknown):R[] {
+ const list:R[]=[];
+ const seen=new Set<string>();
+ const visit=(v:unknown,depth:number)=>{
+  if(depth>45||!v||typeof v!=="object")return;
+  if(Array.isArray(v)){for(const x of v)visit(x,depth+1);return}
+  const ob=v as Record<string,unknown>;
+  const videoRenderer=ob.videoRenderer as Record<string,unknown>|undefined;
+  const lockup=ob.lockupViewModel as Record<string,unknown>|undefined;
+  if(videoRenderer&&typeof videoRenderer.videoId==="string"){
+   const title=videoRenderer.title as {runs?:Array<{text?:string}>}|undefined;
+   const duration=videoRenderer.lengthText as {simpleText?:string}|undefined;
+   if(!seen.has(videoRenderer.videoId)){seen.add(videoRenderer.videoId);list.push({kind:"videoRenderer",videoId:videoRenderer.videoId,title:title?.runs?.map(x=>x.text||"").join(""),duration:duration?.simpleText})}
+  }
+  if(lockup){
+   const id=lockup.contentId;
+   const metadata=lockup.metadata as Record<string,unknown>|undefined;
+   const vm=metadata?.lockupMetadataViewModel as Record<string,unknown>|undefined;
+   const name=(vm?.title as Record<string,unknown>|undefined)?.content;
+   const img=lockup.contentImage as Record<string,unknown>|undefined;
+   const overlay=img?.collectionThumbnailViewModel as Record<string,unknown>|undefined;
+   if(typeof id==="string"&&!seen.has(id)){seen.add(id);list.push({kind:"lockup",videoId:id,title:typeof name==="string"?name:undefined,duration:JSON.stringify(overlay||{}).match(/\d+:\d+(?::\d+)?/)?.[0]})}
+  }
+  for(const val of Object.values(ob))visit(val,depth+1);
+ };
+ visit(data,0);return list;
+}
 async function probe(name:string,url:string){
-  try {
-    const r=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(9000),headers:{Accept:"text/html"}});
-    const html=await r.text();
-    const needles=["7 de noviembre de 2026","7 de Noviembre de 2026","2026-11-07","850466","VENADOS","Venados","Mayos","Juego completo","RESUMEN","/videos/","youtube.com/watch","watch?v=","UCdW_4rN3OarOoawQ4Er-ZXw","videoRenderer","videoId","members-only"];
-    const hits=Object.fromEntries(needles.map(k=>[k,html.toLowerCase().indexOf(k.toLowerCase())]).filter(x=>Number(x[1])>=0));
-    const videoPaths=[...new Set([...html.matchAll(/(?:href=|https?:\/\/www\.lmp\.mx)(?:"|')?\/?videos\/([A-Za-z0-9_-]{8,15})/g)].map(m=>m[1]))].slice(0,20);
-    const ytIds=[...new Set([...html.matchAll(/(?:v=|embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/g)].map(m=>m[1]))].slice(0,20);
-    const snippet=Object.fromEntries(["850466","Venados","Mayos","resumen","juego completo"].map(k=>[k,html.slice(Math.max(0,html.toLowerCase().indexOf(k.toLowerCase())-80),html.toLowerCase().indexOf(k.toLowerCase())+240)]).filter(([,v])=>!!v&&!String(v).includes("<!DOCTYPE html>")));
-    return{name,http:r.status,bytes:html.length,finalUrl:r.url,title:html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.slice(0,130),hits,videoPaths,ytIds,snippet,first:html.slice(0,150)};
-  }catch(e){return{name,error:String(e)}}
+ try{
+  const res=await fetch(url,{next:{revalidate:30},signal:AbortSignal.timeout(9000),headers:{Accept:"text/html"}});
+  const html=await res.text();
+  const start=html.indexOf("var ytInitialData = ");
+  const data=parseInitialData(html);
+  const vids=extract(data);
+  const relevant=vids.filter(x=>/7 de noviembre|november 7|venados|mayos|juego completo|partido completo|juego [12]/i.test(x.title||""));
+  return{name,http:res.status,bytes:html.length,initialMarker:start,parsed:!!data,totalVideos:vids.length,relevant:relevant.slice(0,40),top:vids.slice(0,25),htmlNearGame:html.slice(Math.max(0,html.indexOf("HIGHLIGHTS | Venados")-400),html.indexOf("HIGHLIGHTS | Venados")+300)};
+ }catch(e){return{name,error:String(e)}}
 }
-export async function GET(){
- const urls:[string,string][]=[
- ["lmp-videos","https://www.lmp.mx/videos"],
- ["lmp-youtube","https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/videos"],
- ["lmp-youtube-handle","https://www.youtube.com/@lmpbanamex/videos"],
- ["lmp-tv-old","https://tv.lmp.mx/"],
- ];
- return Response.json({results:await Promise.all(urls.map(([name,url])=>probe(name,url)))},{headers:{"Cache-Control":"no-store"}});
-}
+export async function GET(){return Response.json({res:await Promise.all([
+ probe("videos","https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/videos"),
+ probe("streams","https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/streams")
+ ])},{headers:{"Cache-Control":"no-store"}})}
