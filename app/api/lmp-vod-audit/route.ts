@@ -1,57 +1,49 @@
-// Temporary read-only verification of official LMP channel metadata.
-// Remove this diagnostic once production lookup is validated.
+// Temporary public YouTube page inspection. Remove after QA.
 export const runtime="nodejs";export const dynamic="force-dynamic";
-type R={title?:string;videoId?:string;duration?:string;kind?:string;badges?:unknown};
-function parseInitialData(html:string): unknown {
- for(const prefix of ["var ytInitialData = ","window[\"ytInitialData\"] = ","ytInitialData = "]) {
-  const a=html.indexOf(prefix);
-  if(a<0)continue;
-  const start=html.indexOf("{",a+prefix.length);
-  const end=html.indexOf(";</script>",start);
-  if(start<0||end<0||end-start>2_000_000)continue;
-  try{return JSON.parse(html.slice(start,end));}catch{}
- }
- return null;
+function dataFor(html:string,prefix:string):unknown {
+ const a=html.indexOf(prefix);if(a<0)return null;
+ const start=html.indexOf("{",a+prefix.length),end=html.indexOf(";</script>",start);
+ if(start<0||end<0||end-start>2_000_000)return null;
+ try{return JSON.parse(html.slice(start,end))}catch{return null}
 }
-function extract(data:unknown):R[] {
- const list:R[]=[];
- const seen=new Set<string>();
- const visit=(v:unknown,depth:number)=>{
-  if(depth>45||!v||typeof v!=="object")return;
-  if(Array.isArray(v)){for(const x of v)visit(x,depth+1);return}
-  const ob=v as Record<string,unknown>;
-  const videoRenderer=ob.videoRenderer as Record<string,unknown>|undefined;
-  const lockup=ob.lockupViewModel as Record<string,unknown>|undefined;
-  if(videoRenderer&&typeof videoRenderer.videoId==="string"){
-   const title=videoRenderer.title as {runs?:Array<{text?:string}>}|undefined;
-   const duration=videoRenderer.lengthText as {simpleText?:string}|undefined;
-   if(!seen.has(videoRenderer.videoId)){seen.add(videoRenderer.videoId);list.push({kind:"videoRenderer",videoId:videoRenderer.videoId,title:title?.runs?.map(x=>x.text||"").join(""),duration:duration?.simpleText})}
-  }
-  if(lockup){
-   const id=lockup.contentId;
-   const metadata=lockup.metadata as Record<string,unknown>|undefined;
-   const vm=metadata?.lockupMetadataViewModel as Record<string,unknown>|undefined;
-   const name=(vm?.title as Record<string,unknown>|undefined)?.content;
-   const img=lockup.contentImage as Record<string,unknown>|undefined;
-   const overlay=img?.collectionThumbnailViewModel as Record<string,unknown>|undefined;
-   if(typeof id==="string"&&!seen.has(id)){seen.add(id);list.push({kind:"lockup",videoId:id,title:typeof name==="string"?name:undefined,duration:JSON.stringify(overlay||{}).match(/\d+:\d+(?::\d+)?/)?.[0]})}
-  }
-  for(const val of Object.values(ob))visit(val,depth+1);
- };
- visit(data,0);return list;
-}
-async function probe(name:string,url:string){
+async function video(videoId:string) {
+ const url=`https://www.youtube.com/watch?v=${videoId}`;
  try{
-  const res=await fetch(url,{next:{revalidate:30},signal:AbortSignal.timeout(9000),headers:{Accept:"text/html"}});
+  const res=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(9000),headers:{Accept:"text/html"}});
   const html=await res.text();
-  const start=html.indexOf("var ytInitialData = ");
-  const data=parseInitialData(html);
-  const vids=extract(data);
-  const relevant=vids.filter(x=>/7 de noviembre|november 7|venados|mayos|juego completo|partido completo|juego [12]/i.test(x.title||""));
-  return{name,http:res.status,bytes:html.length,initialMarker:start,parsed:!!data,totalVideos:vids.length,relevant:relevant.slice(0,40),top:vids.slice(0,25),htmlNearGame:html.slice(Math.max(0,html.indexOf("HIGHLIGHTS | Venados")-400),html.indexOf("HIGHLIGHTS | Venados")+300)};
- }catch(e){return{name,error:String(e)}}
+  const data=dataFor(html,"var ytInitialPlayerResponse = ") ??
+    dataFor(html,"ytInitialPlayerResponse = ");
+  const p=data as {videoDetails?:Record<string,unknown>;playabilityStatus?:Record<string,unknown>;microformat?:{playerMicroformatRenderer?:Record<string,unknown>}}|null;
+  const meta=p?.microformat?.playerMicroformatRenderer;
+  return {id:videoId,http:res.status,bytes:html.length,hasPlayer:!!p,
+    details:{title:p?.videoDetails?.title,author:p?.videoDetails?.author,channelId:p?.videoDetails?.channelId,lengthSeconds:p?.videoDetails?.lengthSeconds,isLiveContent:p?.videoDetails?.isLiveContent,isPrivate:p?.videoDetails?.isPrivate},
+    playability:{status:p?.playabilityStatus?.status,reason:p?.playabilityStatus?.reason,playableInEmbed:p?.playabilityStatus?.playableInEmbed},
+    microformat:{isFamilySafe:meta?.isFamilySafe,publishDate:meta?.publishDate,uploadDate:meta?.uploadDate,liveBroadcastDetails:meta?.liveBroadcastDetails},
+    titleMeta:html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.slice(0,160),
+    playerMarker:html.indexOf("ytInitialPlayerResponse"),
+    snippet:html.slice(Math.max(0,html.indexOf('"lengthSeconds"')-120),html.indexOf('"lengthSeconds"')+170)};
+ }catch(e){return{id:videoId,error:String(e)}}
 }
-export async function GET(){return Response.json({res:await Promise.all([
- probe("videos","https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/videos"),
- probe("streams","https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/streams")
- ])},{headers:{"Cache-Control":"no-store"}})}
+async function streamCard(){
+ try{
+  const r=await fetch("https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/streams",{cache:"no-store",signal:AbortSignal.timeout(8000)});
+  const html=await r.text();
+  const raw=dataFor(html,"var ytInitialData = ");
+  const cards:Array<Record<string,unknown>>=[];
+  const visit=(v:unknown,depth:number)=>{
+   if(depth>45||v===null||typeof v!=="object")return;
+   if(Array.isArray(v)){for(const a of v)visit(a,depth+1);return}
+   const o=v as Record<string,unknown>;
+   if(o.lockupViewModel&&typeof o.lockupViewModel==="object"){
+    const lock=o.lockupViewModel as Record<string,unknown>;
+    if(["UnPc8ktTsq8","oPAPcWxbVNM","uaEjVDAelFg"].includes(String(lock.contentId??"")))cards.push(lock);
+   }
+   for(const x of Object.values(o))visit(x,depth+1);
+  };visit(raw,0);
+  return cards.map(v=>({id:v.contentId,payload:JSON.stringify(v).slice(0,3500)}));
+ }catch(e){return {error:String(e)}}
+}
+export async function GET(){
+ const [videos,streamCards]=await Promise.all([Promise.all(["UnPc8ktTsq8","oPAPcWxbVNM","QbObuwwo8Z4"].map(video)),streamCard()]);
+ return Response.json({videos,streamCards},{headers:{"Cache-Control":"no-store"}});
+}
