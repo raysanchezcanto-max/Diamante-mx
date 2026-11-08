@@ -39,6 +39,15 @@ type ChannelVideo = {
   officialUploader?: boolean;
 };
 
+const KNOWN_HIGHLIGHT_IDS: Readonly<Record<number, { id: string; day: string; number: number; away: string; home: string; seconds: number; title: string }>> = {
+  // Individually confirmed on the LMP's official YouTube /videos page.
+  // These remain findable when newer uploads push them off the first page.
+  850456: { id: "54B29JD_lGo", day: "2026-11-07", number: 1, away: "naranjeros", home: "algodoneros", seconds: 580, title: "HIGHLIGHTS | Naranjeros de Hermosillo vs Algodoneros de Guasave | November 07, 2026 | Game 1" },
+  850479: { id: "3HX6hEqbdto", day: "2026-11-07", number: 2, away: "naranjeros", home: "algodoneros", seconds: 423, title: "RESUMEN | Naranjeros de Hermosillo vs Algodoneros de Guasave | 07 de Noviembre 2026 | Juego 2" },
+  850466: { id: "QbObuwwo8Z4", day: "2026-11-07", number: 1, away: "venados", home: "mayos", seconds: 449, title: "HIGHLIGHTS | Venados de Mazatlán vs. Mayos de Navojoa | November 07, 2026 | Game 1" },
+  850474: { id: "7BKLu_JEVRs", day: "2026-11-07", number: 2, away: "venados", home: "mayos", seconds: 567, title: "HIGHLIGHTS | Venados de Mazatlán vs. Mayos de Navojoa | November 7, 2026 | Game 2" },
+};
+
 const KNOWN_ARCHIVE_IDS: Readonly<Record<number, { id: string; day: string; number: number; away: string; home: string }>> = {
   // Each URL was validated against YouTube's own player metadata:
   // exact team pairing, 2026-11-07, 2h+ length, completed stream,
@@ -317,13 +326,30 @@ export const findLmpYoutubeReplay = cache(async (
 
 /** Resúmenes oficiales identificados en la pestaña Videos, NO juegos completos. */
 export const findLmpYoutubeHighlight = cache(async (
+  gamePk: number,
   context: LmpYoutubeGameContext,
 ): Promise<LmpYoutubeVideo | null> => {
-  const listed = chooseUnique(await channelVideos("videos"), context, "highlight");
-  if (!listed) return null;
-  return {
-    url: `https://www.youtube.com/watch?v=${listed.id}`,
-    title: listed.title,
-    durationSeconds: listed.durationSeconds,
-  };
+  const known = KNOWN_HIGHLIGHT_IDS[gamePk];
+  if (known && known.day === mexicoDay(context.startTime) &&
+      known.away === teamKey(context.away ?? "") &&
+      known.home === teamKey(context.home ?? "") &&
+      context.doubleHeader === "Y" && context.gameNumber === known.number &&
+      matchesGame(known.title, context)) {
+    return {
+      url: `https://www.youtube.com/watch?v=${known.id}`,
+      title: known.title,
+      durationSeconds: known.seconds,
+    };
+  }
+
+  let selected = chooseUnique(await channelVideos("videos"), context, "highlight");
+  if (!selected) {
+    const query = searchTerms(context);
+    if (query) selected = chooseUnique(await channelVideos("videos", query), context, "highlight");
+  }
+  return selected ? {
+    url: `https://www.youtube.com/watch?v=${selected.id}`,
+    title: selected.title,
+    durationSeconds: selected.durationSeconds,
+  } : null;
 });
