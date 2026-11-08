@@ -2,20 +2,11 @@ import { cache } from "react";
 
 // Only links whose MLB.com video pages explicitly tag the exact LMP gamePk.
 // Never construct a video slug from teams or assume a live stream exists.
-const VERIFIED_PAGES: Readonly<Record<number, { date: string; url: string }>> = {
-  850466: {
-    date: "2026/11/07",
-    url: "https://www.mlb.com/es/video/lmp-live-1-venados-vs-navojoa-251314",
-  },
-  850456: {
-    date: "2026/11/07",
-    url: "https://www.mlb.com/es/video/lmp-live-1-naranjeros-vs-algodoneros-251315",
-  },
-  850465: {
-    date: "2026/11/07",
-    url: "https://www.mlb.com/es/video/lmp-live-jaguares-vs-tomateros-251316",
-  },
-};
+// Historical candidates for 2026-11-07 (850466, 850456, 850465) were
+// withdrawn after all three official MLB.com pages returned HTTP 404 on
+// 2026-11-08. Keep this map empty until a NEW direct page is confirmed.
+// An archived slug must never be offered from a previously cached HTTP 200.
+const VERIFIED_PAGES: Readonly<Record<number, { date: string; url: string }>> = {};
 
 // The gamePk Film Room search is intentionally disabled for LMP:
 // a valid query can render zero results (confirmed in a real browser).
@@ -35,7 +26,7 @@ export const getVerifiedLmpGameVideo = cache(async (
 
   try {
     const response = await fetch(candidate.url, {
-      next: { revalidate: 180 },
+      cache: "no-store",
       signal: AbortSignal.timeout(5000),
       headers: { Accept: "text/html" },
     });
