@@ -44,6 +44,8 @@ export type GameDetails = {
   homeStarterReplaced?: boolean;
 
   startTime: string;
+  /** Last recorded LMP play end; not an inferred final whistle. */
+  lastPlayEndedAt?: string;
   
   startTimeTBD?: boolean;
 
@@ -724,6 +726,18 @@ const firstPitchRecorded =
       
       startTime:
         gameData?.datetime?.dateTime ?? "",
+
+      // Record an actual play timestamp only for FINAL LMP games. A missing
+      // or invalid value is handled by the bounded fallback in the UI.
+      lastPlayEndedAt:
+        league === "LMP" &&
+        gameData?.status?.abstractGameState === "Final"
+          ? [...lmpPlays].reverse().find(
+              (play: any) =>
+                typeof play?.about?.endTime === "string" &&
+                Number.isFinite(Date.parse(play.about.endTime))
+            )?.about?.endTime
+          : undefined,
 
       startTimeTBD:
         typeof gameData?.status?.startTimeTBD === "boolean"
