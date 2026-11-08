@@ -352,7 +352,7 @@ export const findLmpYoutubeHighlight = cache(async (
   if (known && known.day === mexicoDay(context.startTime) &&
       known.away === teamKey(context.away ?? "") &&
       known.home === teamKey(context.home ?? "") &&
-      context.doubleHeader === "Y" && context.gameNumber === known.number &&
+      (context.doubleHeader === "Y" || context.doubleHeader === "S") && context.gameNumber === known.number &&
       matchesGame(known.title, context)) {
     return {
       url: `https://www.youtube.com/watch?v=${known.id}`,
