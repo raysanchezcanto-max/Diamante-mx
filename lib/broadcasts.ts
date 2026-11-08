@@ -372,7 +372,7 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
       gameVideoPromise,
       getLmpMlbTvArchiveCatalog(gameId, context.startTime),
       findLmpYoutubeReplay(gameId, context),
-      findLmpYoutubeHighlight(context),
+      findLmpYoutubeHighlight(gameId, context),
     ]);
     const fullReplay: Broadcast[] = replay ? [{
       name: "Repetición oficial · YouTube LMP",
