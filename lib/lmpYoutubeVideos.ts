@@ -199,7 +199,14 @@ function searchTerms(context: LmpYoutubeGameContext): string | null {
   if (!date || !away || !home) return null;
   const [y, m, d] = date.split("-");
   const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-  return `${away} ${home} ${Number(d)} ${months[Number(m) - 1]} ${y}`;
+  // YouTube's channel search is not accent-insensitive: an older archive
+  // appeared for "Cañeros Yaquis ..." but not for "caneros yaquis ...".
+  const display: Record<string, string> = {
+    aguilas: "Águilas", algodoneros: "Algodoneros", caneros: "Cañeros",
+    charros: "Charros", jaguares: "Jaguares", mayos: "Mayos",
+    naranjeros: "Naranjeros", tomateros: "Tomateros", venados: "Venados", yaquis: "Yaquis",
+  };
+  return `${display[away]} ${display[home]} ${Number(d)} ${months[Number(m) - 1]} ${y}`;
 }
 
 async function validatedReplay(video: ChannelVideo, context: LmpYoutubeGameContext): Promise<LmpYoutubeVideo | null> {
