@@ -61,6 +61,7 @@ function canonicalProviderUrl(name: string, league: LeagueCode): string | undefi
     if (n.includes("lmb.tv") || n.includes("jonron")) return LMB_TV;
     return undefined;
   }
+  if (n.includes("mlb network")) return "https://www.mlb.com/network";
   if (n.includes("mlb.tv")) return "https://www.mlb.com/live-stream-games";
   if (n.includes("apple tv")) return "https://tv.apple.com/";
   if (n.includes("espn")) return "https://www.espn.com/watch/";
@@ -118,6 +119,7 @@ async function getMlbBroadcasts(gameId: number, context: BroadcastGameContext): 
     const games: Array<{
       gamePk?: number;
       gameDate?: string;
+      status?: { detailedState?: string; abstractGameState?: string };
       broadcasts?: unknown[];
     }> = Array.isArray(json?.dates)
       ? json.dates.flatMap((date: { games?: unknown }) =>
@@ -144,6 +146,12 @@ async function getMlbBroadcasts(gameId: number, context: BroadcastGameContext): 
         ? exactGamePk[0]
         : null;
     if (!selected) return [calendar];
+
+    // A postponed or canceled date can retain obsolete TV listings.
+    // Do not send fans to a channel for a game that is not taking place.
+    if (/postponed|cancelled|canceled|suspended/i.test(selected.status?.detailedState ?? "")) {
+      return [calendar];
+    }
 
     const raw = Array.isArray(selected.broadcasts) ? selected.broadcasts : [];
     const byName = new Map<string, {
