@@ -1,38 +1,20 @@
-// Temporary read-only YouTube channel-search audit. Delete after QA.
+// Temporary QA against the official LMP YouTube replay resolver.
+// This endpoint is removed after tests.
+import { findLmpYoutubeReplay, findLmpYoutubeHighlight } from "@/lib/lmpYoutubeVideos";
 export const runtime="nodejs";export const dynamic="force-dynamic";
-function parse(html:string):unknown{
- const mark="var ytInitialData = ";const a=html.indexOf(mark);
- if(a<0)return null;const start=html.indexOf("{",a+mark.length),end=html.indexOf(";</script>",start);
- if(start<0||end<0||end-start>2_000_000)return null;
- try{return JSON.parse(html.slice(start,end))}catch{return null}
+export async function GET(){
+ const fixtures=[
+  {id:850456,name:"Naranjeros Algodoneros J1",context:{startTime:"2026-11-08T00:00:00Z",away:"Naranjeros de Hermosillo",home:"Algodoneros de Guasave",gameNumber:1,doubleHeader:"Y"}},
+  {id:850479,name:"Naranjeros Algodoneros J2",context:{startTime:"2026-11-08T02:16:00Z",away:"Naranjeros de Hermosillo",home:"Algodoneros de Guasave",gameNumber:2,doubleHeader:"Y"}},
+  {id:850466,name:"Venados Mayos J1",context:{startTime:"2026-11-07T22:00:00Z",away:"Venados de Mazatlan",home:"Mayos de Navojoa",gameNumber:1,doubleHeader:"Y"}},
+  {id:850474,name:"Venados Mayos J2",context:{startTime:"2026-11-07T23:05:00Z",away:"Venados de Mazatlan",home:"Mayos de Navojoa",gameNumber:2,doubleHeader:"Y"}},
+  {id:123456,name:"Cañeros Yaquis Oct25 search fallback",context:{startTime:"2026-10-26T01:00:00Z",away:"Cañeros de Los Mochis",home:"Yaquis de Ciudad Obregon",gameNumber:1,doubleHeader:"N"}},
+  {id:123457,name:"Mismatched day must not show Oct25",context:{startTime:"2026-10-27T01:00:00Z",away:"Cañeros de Los Mochis",home:"Yaquis de Ciudad Obregon",gameNumber:1,doubleHeader:"N"}},
+  {id:850456,name:"Wrong game number must not misassign",context:{startTime:"2026-11-08T00:00:00Z",away:"Naranjeros de Hermosillo",home:"Algodoneros de Guasave",gameNumber:3,doubleHeader:"Y"}},
+ ];
+ const results=await Promise.all(fixtures.map(async x=>{
+  const [replay,highlight]=await Promise.all([findLmpYoutubeReplay(x.id,x.context),findLmpYoutubeHighlight(x.context)]);
+  return{name:x.name,id:x.id,replay,highlight};
+ }));
+ return Response.json({results},{headers:{"Cache-Control":"no-store"}});
 }
-async function probe(query:string){
- try{
-  const url="https://www.youtube.com/@lmpbanamex/search?query="+encodeURIComponent(query);
-  const res=await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(8500),headers:{Accept:"text/html"}});
-  const html=await res.text();const data=parse(html);
-  const found:Array<{id:string;title:string;duration?:string}>=[];
-  const seen=new Set<string>();
-  const visit=(v:unknown,depth:number)=>{
-   if(depth>45||!v||typeof v!=="object")return;
-   if(Array.isArray(v)){for(const t of v)visit(t,depth+1);return}
-   const o=v as Record<string,unknown>,lock=o.lockupViewModel as Record<string,unknown>|undefined,vr=o.videoRenderer as Record<string,unknown>|undefined;
-   if(lock&&typeof lock.contentId==="string"&&!seen.has(lock.contentId)){
-    seen.add(lock.contentId);
-    const meta=(lock.metadata as Record<string,unknown>|undefined)?.lockupMetadataViewModel as Record<string,unknown>|undefined;
-    const title=(meta?.title as Record<string,unknown>|undefined)?.content;
-    const overlays=((((lock.contentImage as Record<string,unknown>|undefined)?.thumbnailViewModel as Record<string,unknown>|undefined)?.overlays)??[]) as Array<Record<string,unknown>>;
-    const duration=overlays.map(t=>((t.thumbnailBottomOverlayViewModel as {badges?:Array<{thumbnailBadgeViewModel?:{text?:string}}>}|undefined)?.badges??[]).map(b=>b.thumbnailBadgeViewModel?.text??"").join("")).find(Boolean);
-    found.push({id:lock.contentId,title:String(title??""),duration});
-   }
-   if(vr&&typeof vr.videoId==="string"&&!seen.has(vr.videoId)){
-     seen.add(vr.videoId);const title=(vr.title as {runs?:Array<{text?:string}>}|undefined)?.runs?.map(x=>x.text??"").join("");
-     found.push({id:vr.videoId,title:title??"",duration:((vr.lengthText as Record<string,unknown>|undefined)?.simpleText as string|undefined)});
-   }
-   for(const value of Object.values(o))visit(value,depth+1);
-  };
-  visit(data,0);
-  return{query,http:res.status,bytes:html.length,found:found.slice(0,20),relevant:found.filter(t=>/venados|mayos|naranjeros|algodoneros|cañeros|yaquis/i.test(t.title)).slice(0,20)};
- }catch(e){return{query,error:String(e)}}
-}
-export async function GET(){return Response.json({results:await Promise.all(["Naranjeros Algodoneros 7 Noviembre 2026","Venados Mayos November 7 2026","Cañeros Yaquis 25 octubre 2026"].map(probe))},{headers:{"Cache-Control":"no-store"}})}
