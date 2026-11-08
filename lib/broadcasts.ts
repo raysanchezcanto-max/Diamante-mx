@@ -1,6 +1,7 @@
 import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import { getLmbOfficialBroadcasts } from "./lmbLive";
 import { findLmbTvGamePage } from "./lmbTvCatalog";
+import { getVerifiedLmpGameVideo, lmpOfficialVideosSearchUrl } from "./lmpVideoLinks";
 import type { LeagueCode } from "./teamLogos";
 
 /**
@@ -30,13 +31,6 @@ const LMP_OFFICIAL_SITE = "https://www.lmp.mx/";
 // descripción de vídeos de la temporada 2026-27. NO es un vídeo individual.
 const LMP_YOUTUBE_MEMBERSHIP = "https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/join";
 const LMB_TV = "https://www.lmb.tv/";
-
-// Prueba piloto puntual: página oficial de video publicada por MLB.com
-// para el Juego 1 Venados–Mayos del 7/nov/2026. No es un patrón
-// generable para otros juegos ni garantiza acceso al reproductor.
-const LMP_VERIFIED_VIDEO_PAGES: Readonly<Record<number, string>> = {
-  850466: "https://www.mlb.com/es/video/lmp-live-1-venados-vs-navojoa-251314",
-};
 
 // Serie del Rey 2026: correspondencia contrastada con el calendario
 // histórico oficial de cada gamePk (fecha/equipos/J1-J6) y las páginas
@@ -224,17 +218,12 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   const start = context.startTime ? new Date(context.startTime) : new Date();
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
   const year = start.getMonth() <= 2 ? season - 1 : season;
-  // Una dirección de video solo aparece para su gamePk y fecha verificados.
-  const gameVideo = mexicanDate(context.startTime ?? "") === "2026/11/07"
-    ? LMP_VERIFIED_VIDEO_PAGES[gameId]
-    : undefined;
-  const verified: Broadcast[] = gameVideo ? [{
-    name: "Video oficial del partido · MLB.com",
-    type: "Streaming",
-    url: gameVideo,
-    verifiedGamePage: true,
-    note: "Página individual de video publicada por MLB.com para este partido; el acceso a la reproducción depende de derechos, región y servicio. No es una URL deducida.",
-  }] : [];
+  // El botón directo se muestra solo si MLB.com sigue respondiendo HTTP 200
+  // y la página contiene la etiqueta gamepk exacta de este encuentro.
+  const gameVideoPromise = getVerifiedLmpGameVideo(gameId, context.startTime
+    ? mexicanDate(context.startTime)
+    : undefined);
+  const gameSearchUrl = lmpOfficialVideosSearchUrl(gameId);
   const known: Broadcast[] = [
     { name: "YouTube LMP · Membresía oficial", type: "Streaming",
       url: LMP_YOUTUBE_MEMBERSHIP,
@@ -245,9 +234,30 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
       url: `https://www.mlb.com/live-stream-games/lmp/${year}-schedule`,
       note: "Calendario oficial de LMP en MLB.TV; requiere suscripción y no abre directamente el reproductor." },
   ];
-  const selected = await lmpGameChannels(gameId, context);
-  const extra = selected.filter(item => !item.name.toLowerCase().includes("youtube") && !item.name.toLowerCase().includes("mlb.tv"));
-  return [...verified, ...known, ...extra];
+  const [selected, gameVideo] = await Promise.all([
+    lmpGameChannels(gameId, context),
+    gameVideoPromise,
+  ]);
+  const verified: Broadcast[] = gameVideo ? [{
+    name: "Video oficial del partido · MLB.com",
+    type: "Streaming",
+    url: gameVideo,
+    verifiedGamePage: true,
+    note: "Página de video de MLB.com confirmada para este gamePk. La reproducción puede exigir suscripción o estar restringida por región; no se garantiza video EN VIVO.",
+  }] : [];
+  // Enlace automático al filtro gamePk publicado por MLB.com, no al video:
+  // puede haber highlights, un directo, repeticiones o incluso cero resultados.
+  const gameVideos: Broadcast[] = gameSearchUrl ? [{
+    name: "Videos de este juego · MLB.com",
+    type: "Streaming",
+    url: gameSearchUrl,
+    note: "Búsqueda oficial filtrada por ID exacto del juego (gamePk). Puede no haber video disponible; este enlace NO abre un reproductor individual.",
+  }] : [];
+  const extra = selected.filter(item =>
+    !item.name.toLowerCase().includes("youtube") &&
+    !item.name.toLowerCase().includes("mlb.tv")
+  );
+  return [...verified, ...gameVideos, ...known, ...extra];
 }
 
 async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
