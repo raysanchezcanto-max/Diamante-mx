@@ -17,15 +17,9 @@ const VERIFIED_PAGES: Readonly<Record<number, { date: string; url: string }>> = 
   },
 };
 
-/**
- * MLB.com itself uses this gamePk filter in "Más De Este Juego".
- * This URL is a SEARCH, not a verified video or player.
- */
-export function lmpOfficialVideosSearchUrl(gameId: number): string | null {
-  if (!Number.isSafeInteger(gameId) || gameId <= 0) return null;
-  const query = `ContentTags = ["gamepk-${gameId}"] Order by Timestamp DESC`;
-  return `https://www.mlb.com/es/video/?q=${encodeURIComponent(query)}`;
-}
+// The gamePk Film Room search is intentionally disabled for LMP:
+// a valid query can render zero results (confirmed in a real browser).
+// Only independently verified exact-game video pages are surfaced.
 
 /**
  * A previously published MLB video can disappear or return 404. Check that
