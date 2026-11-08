@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **auditoría y corrección de transmisiones MLB — sección 124**. El adaptador ahora coteja el gamePk y la fecha/hora exacta de inicio para evitar canales de jornadas pospuestas, deduplica señales TV (sin radios), diferencia emisión nacional/regional y usa portales vigentes de FOX One, NBC/Peacock, ESPN, Apple TV y MLB Network. Se comprobó por StatsAPI y regresión con juegos de abril, julio y Serie Mundial 2026, incluido un gamePk con dos fechas. Un canal sin URL corroborada queda sin enlace y se ofrece solo el calendario MLB.TV como alternativa informativa. **Pendientes:** prueba visual con MLB 2027 EN VIVO, existencia de URLs de video individuales y derechos/región/abono; verificar en navegador el buscador LMP FINAL (sección 123). LMB.TV automática sección 120, LMP membresía/controles intactos. No se cambió diseño, traducción, estadísticas ni refresco.
+**Prioridad actual (7/nov/2026):** **REPETICIONES / ARCHIVOS / VIDEOS alineados en las 3 ligas — sección 125**. LMB FINAL solo muestra repetición completa con URL `/watch/<uuid>` de LMB.TV y verificando además HTTP 200 + landing page de partido cada 15 min; MLB FINAL usa metadata StatsAPI `MEDIA_ARCHIVE` de emisión TV y enlace a **MLB.TV en fecha exacta** (es catálogo por día, NO video directo), y enlaces validados por gamePk a MLB Film Room para resúmenes; LMP FINAL tiene búsqueda exacta de videos sin promesa de replay. Distintas categorías con títulos honestos y diseño compartido; no se alteraron marcadores, traducción ni refresco. **Falta**: descubrir video completo directo MLB/LMP, validación con cuenta/región y QA de partidos 2027. Consultar 125 → 124 → 123 → 120. Vercel código READY.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** comenzar por **124** (MLB transmisiones por fecha exacta, deduplicación y destinos de plataformas), luego 123/122 (LMP videos por gamePk), 120/119 (LMB.TV), 118–116 (auditoría). Siguiente fase: **pruebas reales de enlaces de MLB y LMP en navegador con suscripción/ubicación**, comprobación de videos individuales y E2E con MLB 2027. No confundir portal de proveedor con video directo ni asignar canales de un juego pospuesto. Conservar diseño, marcadores, estados y 10 s de refresco.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **125** (UI compartida de postpartido y verificación de páginas LMB, archivos MLB.TV por fecha, Film Room), luego 124 (transmisiones MLB), 123/122 (LMP), 120/119 (LMB). **Siguiente fase:** verificar en navegador con cuenta real las grabaciones completas, investigar catálogo LMP con gamePk y probar la temporada 2027 cuando empiece. No presentar archivo por fecha como un video directo, ni resúmenes como repetición completa. Diseño, marcadores, traducciones y refresco intactos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1574,3 +1574,46 @@ Se verificó también `getGameDetails("MLB",824766)`: devolvió `startTime=2026-
 2. Al **07/nov/2026 la temporada MLB ya terminó**, de modo que las pruebas son contra **partidos reales históricos de 2026**, no transmisiones EN VIVO. Validar de nuevo en 2027 cuando existan fechas y feeds confirmados, incluyendo reprogramaciones, dobles carteleras y exclusividades.
 3. Verificar destinos de otras redes regionales/por equipo cuando se identifique una página oficial verificable, manteniendo canal **sin URL** en ausencia de evidencia; MLB.TV actúa solo como calendario y sujeto a derechos.
 4. LMP mantiene pendientes la verificación en navegador real del buscador por gamePk y la disponibilidad de grabaciones completas; LMB.TV requiere QA con juegos 2027 en vivo. Ningún resultado de esta auditoría demuestra reproducción real con una cuenta suscrita.
+
+## 125. Repeticiones: distinguir partidos completos, archivos y videos en MLB/LMB/LMP (7/nov/2026)
+
+**Objetivo solicitado:** tras estado FINAL, conservar la acción de repetición **solo si la página está disponible y corresponde al juego**, con lógica consistente en las tres ligas, sin confundir clips con grabaciones completas. Se conserva el diseño acordado de la tarjeta y la actualización de marcadores.
+
+### Clasificación explícita
+
+En `lib/broadcasts.ts` se añadió el campo `postgameKind` con tres posibilidades:
+- `fullReplay`: **enlace individual a una página de partido completo**. Se usa para URL oficial de LMB.TV `/watch/<uuid>` identificada previamente por `gamePk` o equipos/fecha/hora, y verificada con servidor.
+- `archiveLookup`: **consulta de catálogo de archivo** en MLB.TV, filtrado por **fecha exacta**, solo cuando StatsAPI contiene una señal TV de ese encuentro con `availableForStreaming=true` y `mediaState.mediaStateCode="MEDIA_ARCHIVE"`. Es **entrada al Media Center**, no reproductor de un partido ni garantía de disponibilidad para todas las cuentas o países.
+- `gameVideos`: **resúmenes, jugadas o búsqueda editorial**. En MLB se usa la página de Film Room por `gamePk`; en LMP, el buscador oficial de MLB.com con etiqueta `gamepk-X`. Nunca equivale a replay completo garantizado.
+- Un partido en vivo o previo sigue utilizando `TRANSMISIÓN / Dónde ver` con las fuentes de su liga; la clasificación nueva solo cambia la presentación y búsqueda de FINAL.
+
+### MLB finalizado: Media Center por día + Film Room por juego
+
+- Nuevo `lib/mlbPostgame.ts`, commit `c9eeead`: `mlbTvArchiveDayUrl(startTime)` construye la **ruta oficial de fecha**, por ejemplo `https://www.mlb.com/live-stream-games/2026/10/23`, usando la fecha del partido en `America/New_York`, **no** un slug o reproductor adivinado. Las páginas de Media Center por día existen oficialmente. MLB.TV informa que los archivos aparecen aproximadamente **90 minutos después de finalizar** y que hay exclusividades, territorialidad y suscripción.
+- `getMlbGameVideoCollection(gamePk)` valida con HTTP 200, HTML, URL exacta y metadatos `Game Video Highlights` / Film Room la página `https://www.mlb.com/video/game/{gamePk}`. Si no está publicada o ha desaparecido, devuelve `null` y **no muestra ese botón**. Es un centro de videos de ese juego, **no el juego íntegro**.
+- En `getMlbBroadcasts`, con `context.isFinal`, se reusa la respuesta `/schedule?gamePk=...&hydrate=broadcasts` previamente validada en 124, y se chequea `MEDIA_ARCHIVE` antes de ofrecer el archivo del día; separadamente se valida la página individual de Film Room. No se inventa enlace para una repetición completa. En `EN VIVO` la asignación de canales nacionales/regionales de sección 124 permanece intacta.
+- Pruebas en producción HTTP 200: `/game/mlb/849805` (Serie Mundial 2026 J1) ofrece `https://www.mlb.com/live-stream-games/2026/10/23` y `https://www.mlb.com/video/game/849805`; `/game/mlb/824766` (Rays–Red Sox reprogramado) ofrece archivo **17/jul/2026**, y `/game/mlb/823440` archivo **16/jul/2026**. Los enlaces Film Room correspondientes son por `gamePk` exacto y fueron cotejados con MLB.com.
+
+### LMB finalizado: comprobación de vigencia del video
+
+- Nuevo `lib/lmbReplayAvailability.ts`, commit `681857b`: verifica solo `https://www.lmb.tv/watch/<uuid>` (UUID completo), HTTP 200, Content-Type HTML, host y ruta oficial y encabezados de una página individual de LMB.TV. Se revalida cada **900 s (15 min)** y dispone de timeout de **5 s** y React.cache de solicitud. No intenta entrar al reproductor ni saltarse registro/suscripción.
+- `lib/broadcasts.ts`, commit `a13d969`: cuando `context.isFinal=true`, verifica la URL individual candidata (histórico, feed o catálogo dinámico); **si ha sido retirada, oculta el botón de repetición**. No oculta estadísticas, marcadores ni afecta EN VIVO. Un HTTP 200 prueba existencia de la landing page, **NO** que el usuario pueda reproducir con su cuenta.
+- QA del sitio público: `/game/lmb/867481` (Serie del Rey J6, LMB.TV informa duración **3h12m**) y `/game/lmb/867483` (Serie de Campeonato, Tabasco–Puebla J5) permanecen HTTP 200, mostrando URL oficial `/watch/` y rótulo `REPETICIÓN OFICIAL`. No se forzaron enlaces de juegos sin página individual.
+
+### LMP finalizado: sin simulación de replay completo
+
+- Conserva `gameVideoSearch` y añade `postgameKind="gameVideos"` con enlace a búsqueda oficial MLB.com filtrada por gamePk. El encabezado comunica `VIDEOS DEL PARTIDO`, nunca `REPETICIÓN OFICIAL`; la búsqueda puede mostrar clips o cero resultados. **No** se ha identificado un índice oficial estable de grabaciones completas LMP que garantice acceso individual.
+- QA HTTP 200 de `/game/lmp/850466` y `/game/lmp/850474` (juegos del 7/nov), cada uno conserva su filtro de ID propio, sin cruzar los juegos de una doble cartelera. La verificación con una cuenta de YouTube LMP o MLB.TV continúa pendiente.
+
+### Presentación común y pruebas de regresión
+
+- `components/GameBroadcasts.tsx`, commit `ed5b1fc`: misma sección visual de postpartido para las tres ligas, con encabezados y etiquetas diferenciados: `REPETICIÓN OFICIAL / Partido completo` (LMB, si verificada), `ARCHIVOS Y VIDEOS / Archivo y resúmenes` (MLB si hay archivo), `VIDEOS DEL PARTIDO` (LMP o cuando solo existen clips). Acciones `Consultar repetición`, `Consultar archivo del partido en MLB.TV`, `Videos y resumen oficial del partido`, `Buscar videos de este juego` de acuerdo con su tipo; avisos explícitos de derechos y disponibilidad. El componente se mantiene en `Suspense` para evitar bloquear el marcador.
+- `lib/broadcasts.ts`, commit `8f89bc5`: asigna `postgameKind` a enlaces existentes y crea categorías del juego MLB. Ningún refactor del diseño del resto de tarjetas.
+- El despliegue funcional de `ed5b1fc` y luego `a13d969` fue **READY**. Pruebas públicas con HTTP 200 y enlaces correctos en **siete** páginas: MLB `849805`, `824766`, `823440`; LMB `867481`, `867483`; LMP `850466`, `850474`. El postpartido no se muestra como directo cuando ya terminó.
+- **Pendiente crítico:** probar en sesión real abonada el clic y playback de MLB.TV, LMB.TV y YouTube LMP, restricciones regionales y nuevas temporadas. Validar Film Room y acceso completo al video conforme los proveedores publiquen metadatos. No afirmar que las repeticiones completas están implementadas de forma universal en MLB/LMP.
+
+### Próxima fase
+
+1. Investigar una fuente estable y autorizada que entregue **URL individual de archivo completo por gamePk** de MLB y LMP, sin inferir URLs privadas de reproducción. Si solo existe catálogo de día o búsqueda, conservar etiqueta honesta.
+2. Validar LMP (temporada activa) en navegador real al pasar de EN VIVO a FINAL con video completo disponible y/o membresía, sin usar resúmenes como prueba. La próxima temporada MLB/LMB deberá pasar QA con juegos reales, reprogramaciones y doble cartelera.
+3. Confirmar en móvil/desktop que las tres variantes de postpartido ocupan el espacio correctamente. Mantener diseño consistente; evitar botones de repetición sin página válida.
