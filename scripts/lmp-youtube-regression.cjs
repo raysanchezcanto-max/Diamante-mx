@@ -5,13 +5,7 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const vm = require("node:vm");
-const tsImport = require("typescript");
-const ts = tsImport.default ?? tsImport;
-if (typeof ts.transpileModule !== "function") {
-  throw new Error("TypeScript transpileModule is unavailable in this build environment");
-}
-
+const { stripTypeScriptTypes } = require("node:module");
 const CHANNEL = "UCdW_4rN3OarOoawQ4Er-ZXw";
 const full = [
   { id: "AaBbCcDd001", title: "Águilas de Mexicali vs Cañeros de Los Mochis | 8 nov 2026", duration: "2:10:00" },
@@ -74,26 +68,22 @@ async function fakeFetch(address) {
 }
 
 const source = fs.readFileSync(path.join(__dirname, "..", "lib", "lmpYoutubeVideos.ts"), "utf8");
-const compiled = ts.transpileModule(source, {
-  compilerOptions: { module: 1, target: 9 }, // TypeScript numeric enums: CommonJS, ES2022
-}).outputText;
-const shim = { exports: {} };
-vm.runInNewContext(compiled, {
-  module: shim, exports: shim.exports, fetch: fakeFetch,
-  require: name => {
-    if (name === "react") return { cache: fn => fn };
-    throw new Error("Unexpected dependency in offline QA: " + name);
-  },
-  Date, Intl, AbortSignal, URL, console,
-}, { filename: "lmpYoutubeVideos.ts" });
+const standalone = source.replace(
+  'import { cache } from "react";',
+  "const cache = (fn) => fn;",
+);
+if (standalone === source) throw new Error("LMP resolver import changed; update offline QA");
+const compiled = stripTypeScriptTypes(standalone, { mode: "strip" });
+globalThis.fetch = fakeFetch;
 
-const { findLmpYoutubeReplay: replay, findLmpYoutubeHighlight: highlight } = shim.exports;
 const start = "2026-11-09T00:00:00Z"; // 8 Nov in America/Mexico_City
 const context = (away, home, opts = {}) => ({
   startTime: start, away, home, gameNumber: 1, doubleHeader: "N", ...opts,
 });
 
 async function run() {
+  const resolver = await import("data:text/javascript;charset=utf-8," + encodeURIComponent(compiled));
+  const { findLmpYoutubeReplay: replay, findLmpYoutubeHighlight: highlight } = resolver;
   const normal = context("Águilas de Mexicali", "Cañeros de Los Mochis");
   const newReplay = await replay(999901, normal);
   assert.equal(newReplay?.url, "https://www.youtube.com/watch?v=AaBbCcDd001");
