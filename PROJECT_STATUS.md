@@ -1798,3 +1798,11 @@ Todas las rutas probadas respondieron HTTP 200. **Se verificó el HTML inicial c
 ### Próximo paso: sección 132
 
 Revisar la jornada del **8/nov/2026** (`850461`, `850460`, `850459`, `850458`, `850462`) cuando esté FINAL y aparezcan videos en el canal oficial. Confirmar que los resúmenes se agregan automáticamente sin IDs predefinidos y los archivos largos solo salen si son del juego correcto. Verificar con navegador que un enlace publicado después puede incorporarse mediante el refresco sin F5; con una cuenta autorizada, comprobar reproducción de contenido exclusivo. Mantener lógica de doble cartelera, estados, MLB y LMB.
+
+### Ajuste visual móvil — Situación del juego (8/nov/2026)
+
+- A petición del usuario, al ver la captura vertical del panel `SITUACIÓN DEL JUEGO` se corrigió el aspecto descentrado de `BAJA / ALTA`, `BATEANDO`, `AL BAT` y `LANZANDO` para pantallas de hasta **650 px**.
+- En `components/LiveGamePanel.tsx` se sustituyeron los estilos inline de alineación derecha por las clases `liveGameInningBlock`, `liveGameBattingTeam`, `liveGameAtBat` y `liveGamePitching` para permitir una regla responsive real. Los nombres largos pueden ocupar varias líneas sin provocar desbordamiento.
+- En `app/globals.css` se añadieron reglas móviles que apilan el encabezado y centran el bloque de inning completo a todo el ancho de la tarjeta. `SITUACIÓN DEL JUEGO` permanece arriba a la izquierda; escritorio conserva el alineado derecho original de los datos. No se modifica el modo de calentamiento ni la lógica de jugadas, bases, conteos o pitchers.
+- Commits `45f84922` (componente) y `5e6beb6b` (CSS). El commit CSS llegó a producción **Vercel READY** con Next.js/TypeScript compilados y 21 pruebas de regresión postgame superadas. Pendiente opcional: inspección visual directa del usuario en teléfono durante el siguiente juego EN VIVO.
+- La sección **132** sigue reservada para validar la publicación tardía de videos de la jornada del 8/nov.
