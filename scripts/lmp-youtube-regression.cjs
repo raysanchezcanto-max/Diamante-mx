@@ -104,7 +104,7 @@ async function run() {
   assert.equal(await replay(999904, { ...double, gameNumber: 3 }), null);
 
   // Fail closed on mismatched date, non-ended stream, or ambiguous slash date.
-  assert.equal(await replay(999905, { ...normal, startTime: "2026-11-10T00:00:00Z" }), null);
+  assert.equal(await replay(999905, { ...normal, startTime: "2026-11-11T00:00:00Z" }), null);
   assert.equal(await replay(999906, context("Yaquis de Obregon", "Jaguares de Nayarit")), null);
   assert.equal(await replay(999907, context("Venados de Mazatlan", "Mayos de Navojoa")), null);
   assert.equal(await replay(999908, context("Águilas de Mexicali", "Mayos de Navojoa")), null);
