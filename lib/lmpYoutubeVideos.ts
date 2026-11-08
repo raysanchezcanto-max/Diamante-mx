@@ -109,7 +109,7 @@ function titleDay(title: string): string | null {
 }
 
 function gameNumberInTitle(title: string): number | null {
-  const match = normalized(title).match(/(?:juego|game|j|g)\\s*(\d+)\b/);
+  const match = normalized(title).match(/\b(?:juego|game|j|g)\s*(\d+)\b/);
   return match ? Number(match[1]) : null;
 }
 
