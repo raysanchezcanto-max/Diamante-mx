@@ -2,6 +2,7 @@ import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import { getLmbOfficialBroadcasts } from "./lmbLive";
 import { findLmbTvGamePage } from "./lmbTvCatalog";
 import { getVerifiedLmpGameVideo, lmpOfficialVideosSearchUrl } from "./lmpVideoLinks";
+import { getMlbGameVideoCollection, mlbTvArchiveDayUrl } from "./mlbPostgame";
 import type { LeagueCode } from "./teamLogos";
 
 /**
@@ -16,6 +17,8 @@ export type Broadcast = {
   note?: string;
   verifiedGamePage?: boolean;
   gameVideoSearch?: boolean;
+  /** Full replay link, date-specific archive lookup, or clips/search. */
+  postgameKind?: "fullReplay" | "archiveLookup" | "gameVideos";
 };
 
 export type BroadcastGameContext = {
@@ -162,6 +165,37 @@ async function getMlbBroadcasts(gameId: number, context: BroadcastGameContext): 
     }
 
     const raw = Array.isArray(selected.broadcasts) ? selected.broadcasts : [];
+
+    // MLB.TV uses a date-specific Media Center to browse game archives.
+    // MEDIA_ARCHIVE means a broadcast is catalogued as archived;
+    // it does NOT prove that this visitor can watch it in their region.
+    if (context.isFinal) {
+      const archived = raw.some(item => {
+        if (!item || typeof item !== "object") return false;
+        const b = item as Record<string, unknown>;
+        const state = b.mediaState as Record<string, unknown> | undefined;
+        return String(b.type ?? "").toUpperCase() === "TV" &&
+          b.availableForStreaming === true &&
+          state?.mediaStateCode === "MEDIA_ARCHIVE";
+      });
+      const archiveUrl = archived ? mlbTvArchiveDayUrl(selected.gameDate) : null;
+      const clipsUrl = await getMlbGameVideoCollection(gameId);
+      const archiveLinks: Broadcast[] = archiveUrl ? [{
+        name: "Archivo por fecha · MLB.TV",
+        type: "Streaming",
+        url: archiveUrl,
+        postgameKind: "archiveLookup",
+        note: "El calendario oficial identifica una emisión archivada. Abre el día exacto en MLB.TV para localizar el partido, no un reproductor directo. Requiere suscripción y puede tener restricciones geográficas.",
+      }] : [];
+      const videoLinks: Broadcast[] = clipsUrl ? [{
+        name: "Resumen y jugadas · MLB Film Room",
+        type: "Streaming",
+        url: clipsUrl,
+        postgameKind: "gameVideos",
+        note: "Colección oficial de videos del juego identificada por gamePk. Puede incluir resúmenes y jugadas; no es una repetición íntegra.",
+      }] : [];
+      return [...archiveLinks, ...videoLinks];
+    }
     const byName = new Map<string, {
       name: string;
       isNational: boolean;
@@ -318,6 +352,7 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
     type: "Streaming",
     url: gameSearchUrl,
     gameVideoSearch: true,
+    postgameKind: "gameVideos",
     note: "Búsqueda oficial filtrada por el ID exacto del partido. Puede contener clips o no tener resultados; no es una repetición completa ni un reproductor garantizado.",
   }] : [];
 
@@ -364,6 +399,7 @@ async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): 
     name: "Partido completo · LMB.TV",
     type: "Streaming",
     url: archiveUrl,
+    postgameKind: "fullReplay",
     note: "Página individual verificada del juego de la Serie del Rey 2026 en LMB.TV. La reproducción puede requerir suscripción y depende de derechos regionales.",
   } : null;
   const main: Broadcast = {
@@ -387,6 +423,7 @@ async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): 
       name: `Partido en LMB.TV · ${channel.name}`,
       type: "Streaming",
       url,
+      postgameKind: "fullReplay",
       note: "Enlace individual publicado por LMB para este encuentro. La reproducción depende de disponibilidad y suscripción.",
     }];
   });
@@ -395,6 +432,7 @@ async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): 
     name: "Partido identificado · LMB.TV",
     type: "Streaming",
     url: catalogUrl,
+    postgameKind: "fullReplay",
     note: "Página del encuentro encontrada en el catálogo público de LMB.TV por equipos, fecha y hora. La disponibilidad del video depende de la plataforma y suscripción.",
   } : null;
 
