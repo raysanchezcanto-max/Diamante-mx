@@ -162,14 +162,6 @@ export default async function GamePage({
   if (!game) {
     notFound();
   }
-const broadcastsPromise = getGameBroadcasts(league, gameId, {
-  startTime: game.startTime,
-  awayId: game.awayId,
-  homeId: game.homeId,
-  away: game.away,
-  home: game.home,
-});
-
   const awayDisplayName = getTeamDisplayName(league, game.away);
   const homeDisplayName = getTeamDisplayName(league, game.home);
 
@@ -196,6 +188,15 @@ const specialStatus = getGameSpecialStatus(
 const isFinal =
   game.status === "Final" &&
   !specialStatus;
+
+const broadcastsPromise = getGameBroadcasts(league, gameId, {
+  startTime: game.startTime,
+  awayId: game.awayId,
+  homeId: game.homeId,
+  away: game.away,
+  home: game.home,
+  isFinal,
+});
 
 
 const isLmpWarmup =
