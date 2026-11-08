@@ -4,6 +4,7 @@ import { findLmbTvGamePage } from "./lmbTvCatalog";
 import { verifyLmbTvGamePage } from "./lmbReplayAvailability";
 import { getVerifiedLmpGameVideo } from "./lmpVideoLinks";
 import { getLmpMlbTvArchiveCatalog } from "./lmpArchive";
+import { findLmpYoutubeReplay, findLmpYoutubeHighlight } from "./lmpYoutubeVideos";
 import { getMlbGameVideoCollection, mlbTvArchiveDayUrl } from "./mlbPostgame";
 import type { LeagueCode } from "./teamLogos";
 
@@ -30,6 +31,8 @@ export type BroadcastGameContext = {
   away?: string;
   home?: string;
   isFinal?: boolean;
+  gameNumber?: number;
+  doubleHeader?: string;
 };
 
 const MLB_API = "https://statsapi.mlb.com/api/v1";
@@ -364,10 +367,28 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   // exact gamePk/date reports MEDIA_ARCHIVE + availableForStreaming.
   // It remains a SEASON CALENDAR, not a video or a full replay button.
   if (context.isFinal) {
-    const [page, archiveCatalog] = await Promise.all([
+    const [page, archiveCatalog, replay, highlight] = await Promise.all([
       gameVideoPromise,
       getLmpMlbTvArchiveCatalog(gameId, context.startTime),
+      findLmpYoutubeReplay(gameId, context),
+      findLmpYoutubeHighlight(context),
     ]);
+    const fullReplay: Broadcast[] = replay ? [{
+      name: "Repetición oficial · YouTube LMP",
+      type: "Streaming",
+      url: replay.url,
+      verifiedGamePage: true,
+      postgameKind: "fullReplay",
+      note: `Transmisión archivada del canal oficial LMP (${Math.round(replay.durationSeconds / 60)} min). ${replay.membersOnly ? "Requiere membresía de YouTube para reproducirla." : "La reproducción depende de permisos y región."} Identificada por equipos, fecha y número de juego.`,
+    }] : [];
+    const highlights: Broadcast[] = highlight ? [{
+      name: "Resumen oficial · YouTube LMP",
+      type: "Streaming",
+      url: highlight.url,
+      verifiedGamePage: true,
+      postgameKind: "gameVideos",
+      note: `Resumen del canal oficial LMP (${Math.round(highlight.durationSeconds / 60)} min). No es el partido completo. Fecha, equipos y número de juego verificados.`,
+    }] : [];
     const archived: Broadcast[] = archiveCatalog ? [{
       name: "Archivo de LMP · MLB.TV",
       type: "Streaming",
@@ -383,7 +404,7 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
       postgameKind: "gameVideos",
       note: "Página individual identificada con el gamePk exacto y disponible al consultar. No se ha confirmado que incluya la repetición completa ni que sea reproducible.",
     }] : [];
-    return [...archived, ...individual];
+    return [...fullReplay, ...archived, ...highlights, ...individual];
   }
   const known: Broadcast[] = [
     { name: "YouTube LMP · Membresía oficial", type: "Streaming",
