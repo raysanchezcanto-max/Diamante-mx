@@ -22,6 +22,8 @@ export default async function GameBroadcasts({
           /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")) ||
         (league === "LMP" &&
           ((item.verifiedGamePage === true && item.postgameKind === "gameVideos") ||
+           (item.verifiedGamePage === true && item.postgameKind === "fullReplay" &&
+             /^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/.test(item.url ?? "")) ||
            (item.postgameKind === "archiveLookup" && !!item.url))) ||
         (league === "MLB" && (item.postgameKind === "archiveLookup" ||
           item.postgameKind === "gameVideos") && !!item.url)
@@ -55,13 +57,19 @@ export default async function GameBroadcasts({
                   className="watchButton"
                 >
                   {broadcast.postgameKind === "fullReplay" && isFinal
-                    ? `Consultar repetición · ${broadcast.name}`
+                    ? league === "LMP"
+                      ? "Ver repetición oficial · YouTube LMP (membresía)"
+                      : `Consultar repetición · ${broadcast.name}`
                     : broadcast.postgameKind === "archiveLookup" && isFinal
                       ? league === "LMP"
                         ? "Consultar archivo LMP en MLB.TV"
                         : "Consultar archivo del partido en MLB.TV"
                       : broadcast.postgameKind === "gameVideos" || broadcast.gameVideoSearch
-                        ? league === "MLB" ? "Videos y resumen oficial del partido" : "Consultar video oficial de este partido"
+                        ? league === "MLB"
+                          ? "Videos y resumen oficial del partido"
+                          : broadcast.name.startsWith("Resumen oficial")
+                            ? "Ver resumen oficial · YouTube LMP"
+                            : "Consultar video oficial de este partido"
                         : broadcast.verifiedGamePage
                           ? `Abrir video oficial · ${broadcast.name}`
                           : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
@@ -82,7 +90,9 @@ export default async function GameBroadcasts({
           <p className="broadcastDisclaimer">
             {isFinal
               ? hasReplay
-                ? "Página individual del partido completo identificada en LMB.TV. La reproducción puede requerir suscripción y depende de los derechos regionales."
+                ? league === "LMP"
+                  ? "Transmisión archivada del canal oficial de YouTube de LMP, identificada por fecha, equipos y juego. Requiere membresía; la reproducción depende de la cuenta y la región."
+                  : "Página individual del partido completo identificada en LMB.TV. La reproducción puede requerir suscripción y depende de los derechos regionales."
                 : hasArchive
                   ? league === "LMP"
                     ? "MLB.TV marca una emisión archivada para este juego. El enlace abre el calendario de LMP, no el reproductor individual. Comprueba derechos y suscripción; no se garantiza poder ver la repetición."
