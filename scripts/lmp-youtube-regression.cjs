@@ -103,6 +103,6 @@ async function run() {
   assert.equal(await replay(999907, context("Venados de Mazatlan", "Mayos de Navojoa")), null);
   assert.equal(await replay(999908, context("Águilas de Mexicali", "Mayos de Navojoa")), null);
 
-  console.log("LMP YouTube offline QA: 9 assertions passed (unmapped games, date, J1/J2, no false replays).");
+  console.log("LMP YouTube offline QA: 10 assertions passed (unmapped games, date, J1/J2, no false replays).");
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });
