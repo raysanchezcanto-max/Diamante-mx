@@ -1,6 +1,7 @@
 import { getLmpScoreboard } from "@/lib/lmpScoreboard";
 import { getLmbOfficialBroadcasts } from "./lmbLive";
 import { findLmbTvGamePage } from "./lmbTvCatalog";
+import { verifyLmbTvGamePage } from "./lmbReplayAvailability";
 import { getVerifiedLmpGameVideo, lmpOfficialVideosSearchUrl } from "./lmpVideoLinks";
 import { getMlbGameVideoCollection, mlbTvArchiveDayUrl } from "./mlbPostgame";
 import type { LeagueCode } from "./teamLogos";
@@ -444,10 +445,16 @@ async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): 
       note: "Canal informado por LMB; puede no haber enlace directo para este encuentro.",
     }));
 
-  return unique([
-    ...(archive ? [archive] : direct.length ? direct : catalog ? [catalog] : [main]),
-    ...other,
-  ]);
+  const candidatePages = archive ? [archive] : direct.length ? direct : catalog ? [catalog] : [];
+  if (context.isFinal) {
+    // A page can disappear after being published. Suppress stale replay
+    // buttons rather than linking to a deleted video or an error page.
+    const checks = await Promise.all(candidatePages.map(async item =>
+      item.url && await verifyLmbTvGamePage(item.url) ? item : null
+    ));
+    return unique([...checks.filter((item): item is Broadcast => item !== null), ...other]);
+  }
+  return unique([...(candidatePages.length ? candidatePages : [main]), ...other]);
 }
 
 export async function getGameBroadcasts(
