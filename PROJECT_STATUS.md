@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **REPETICIONES / ARCHIVOS / VIDEOS alineados en las 3 ligas — sección 125**. LMB FINAL solo muestra repetición completa con URL `/watch/<uuid>` de LMB.TV y verificando además HTTP 200 + landing page de partido cada 15 min; MLB FINAL usa metadata StatsAPI `MEDIA_ARCHIVE` de emisión TV y enlace a **MLB.TV en fecha exacta** (es catálogo por día, NO video directo), y enlaces validados por gamePk a MLB Film Room para resúmenes; LMP FINAL tiene búsqueda exacta de videos sin promesa de replay. Distintas categorías con títulos honestos y diseño compartido; no se alteraron marcadores, traducción ni refresco. **Falta**: descubrir video completo directo MLB/LMP, validación con cuenta/región y QA de partidos 2027. Consultar 125 → 124 → 123 → 120. Vercel código READY.
+**Prioridad actual (7/nov/2026):** **sección 126: corrección de búsquedas LMP sin resultados.** Captura real del usuario: juego FINAL Venados–Mayos J1 `850466`, botón «Buscar videos ... MLB.com» abría Film Room y mostraba «Aparentemente no hay resultados». **Retiramos por completo ese filtro `gamepk-X` de LMP**, aun cuando la web devuelva HTTP 200 o `queryInfo.valid=true`. En LMP FINAL se muestra **solo video INDIVIDUAL si su URL MLB.com sigue existiendo y etiqueta el gamePk exacto**; sin ello, la tarjeta comunica «No hay una repetición completa ni un video individual verificado ...» **sin enlace inútil**. LMP EN VIVO conserva canales, membresía y páginas individuales verificadas; no da resultados falsos. Comprobados J1/J2 por separado en Vercel READY. LMB replays validados y MLB archivos/Film Room sin cambios (125). **Pendiente real:** encontrar índice de grabaciones completas LMP y validar playback con cuenta; no afirmar que un buscador o un enlace LIVE garantiza repetición.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **125** (UI compartida de postpartido y verificación de páginas LMB, archivos MLB.TV por fecha, Film Room), luego 124 (transmisiones MLB), 123/122 (LMP), 120/119 (LMB). **Siguiente fase:** verificar en navegador con cuenta real las grabaciones completas, investigar catálogo LMP con gamePk y probar la temporada 2027 cuando empiece. No presentar archivo por fecha como un video directo, ni resúmenes como repetición completa. Diseño, marcadores, traducciones y refresco intactos.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero **126** (corrección del botón vacío LMP mediante evidencia de usuario; NO volver a generar Film Room por gamePk para LMP), luego 125 (postpartidos tres ligas), 124 (MLB transmisiones), 123/122 (histórico de LMP, parcialmente supersedido), 120 (LMB.TV). Próximo: identificar solo grabaciones completas LMP con metadatos fiables del proveedor y acceso real; actualizar el botón únicamente si existe video individual verificable. Las tarjetas MLB y LMB ya siguen su lógica propia. Conservar resultados, diseño, traducción y refresco.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1617,3 +1617,30 @@ En `lib/broadcasts.ts` se añadió el campo `postgameKind` con tres posibilidade
 1. Investigar una fuente estable y autorizada que entregue **URL individual de archivo completo por gamePk** de MLB y LMP, sin inferir URLs privadas de reproducción. Si solo existe catálogo de día o búsqueda, conservar etiqueta honesta.
 2. Validar LMP (temporada activa) en navegador real al pasar de EN VIVO a FINAL con video completo disponible y/o membresía, sin usar resúmenes como prueba. La próxima temporada MLB/LMB deberá pasar QA con juegos reales, reprogramaciones y doble cartelera.
 3. Confirmar en móvil/desktop que las tres variantes de postpartido ocupan el espacio correctamente. Mantener diseño consistente; evitar botones de repetición sin página válida.
+
+## 126. LMP FINAL — se elimina búsqueda vacía de MLB Film Room (7/nov/2026)
+
+**Origen: prueba real en navegador de la usuaria.** Capturas del encuentro **Venados de Mazatlán 1–0 Mayos de Navojoa, Juego 1** (`/game/lmp/850466`, `gamePk 850466`, 7/nov/2026) mostraron que el botón **«Buscar videos de este juego en MLB.com»** enviaba a `https://www.mlb.com/es/video/?q=ContentTags...` y Film Room respondía **«Aparentemente no hay resultados para tu búsqueda»**.
+
+**Diagnóstico:** la respuesta HTTP 200 y `queryInfo.valid=true` de la URL de Film Room solamente prueban que acepta la sintaxis, **NO que tenga videos indexados**. Por eso los datos de las secciones 122/123/125 respecto a «búsqueda LMP útil por gamePk» quedan **SUPERSEDIDOS por esta sección 126**. No sugerir el mismo filtro como solución para futuros partidos.
+
+### Cambios de código publicados
+
+- `lib/broadcasts.ts`, commit `934388f`: se retira la generación de `lmpOfficialVideosSearchUrl(gameId)` tanto en FINAL como en partidos activos. LMP FINAL solo consulta `getVerifiedLmpGameVideo(gamePk, fecha)`, que usa una **lista reducida de URLs individuales conocidas**, GET HTTP con timeout/revalidate, título de video y etiqueta **gamePk exacta**. Si la URL no responde (como el enlace de Venados–Mayos J1 que desde el servidor llegó a devolver 404), retorna `[]`, sin crear enlaces alternativos falsos. Si una página oficial individual sí existe, se etiqueta `postgameKind="gameVideos"` y `verifiedGamePage=true`: **«Consultar video oficial de este partido»**, NO «repetición completa», dado que reproducción íntegra y derechos no están verificados.
+- `components/GameBroadcasts.tsx`, commit `4cf53b7`: en LMP FINAL **sin video individual confirmado**, conserva el espacio informativo en el detalle con `VIDEOS DEL PARTIDO` y **«No hay una repetición completa ni un video individual verificado para este partido por ahora.»**, **sin botón**. Con URL individual comprobada presenta «Consultar video oficial de este partido». LMB/MLB conservan exactamente la clasificación postpartido de sección 125.
+- `lib/lmpVideoLinks.ts`, commit `52f57ae`: se elimina la función que generaba enlaces vacíos de Film Room y se deja comentario de por qué no se debe usar su filtro para LMP.
+
+### QA de producción
+
+- Vercel `52f57ae` **READY**, alias `https://diamante-mx.vercel.app`.
+- `/game/lmp/850466` J1 y `/game/lmp/850474` J2: **HTTP 200**, encabezado `VIDEOS DEL PARTIDO`, mensaje de no disponibilidad, **sin ningún botón de búsqueda ni video incorrecto**. Identificadores correctamente separados, sin cruces.
+- `/game/lmp/850456`: HTTP 200, página de video individual verificada de Naranjeros–Algodoneros aún accesible en la prueba; se muestra **«Consultar video oficial de este partido»**, no como replay completo.
+- `/game/lmp/850465` y `/game/lmp/850455` seguían activos al probar y conservaron `TRANSMISIÓN`, sin el filtro vacío de Film Room.
+- Imágenes entregadas por la usuaria son la evidencia directa de que el buscador no entrega contenido. Las páginas de video `/es/video/lmp-live-1-venados-vs-navojoa-251314` y `lmp-live-2-venados-vs-navojoa-251318` aparecen en índice de buscador pero **retornaron 404 al abrir**: nunca tratarlas como replay válido.
+- **Sin cambios** al marcador, lanzadores, línea de juego, datos en vivo ni diseño general.
+
+### Pendiente genuino
+
+1. Conseguir una fuente oficial que enumere **videos completos de LMP con ID de juego, duración y disponibilidad de la grabación**, para crear enlaces de repetición individual solo tras validación. Las páginas «EN VIVO» no prueban replay.
+2. Verificación de reproducción con membresía de YouTube LMP o MLB.TV y derechos geográficos; no simular acceso ni romper paywall.
+3. Futuras LMP FINAL sin URL individual confirmada deben **seguir sin botón** hasta que haya evidencia; el aviso de no disponibilidad es correcto.
