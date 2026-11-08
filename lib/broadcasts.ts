@@ -64,12 +64,12 @@ function canonicalProviderUrl(name: string, league: LeagueCode): string | undefi
   if (n.includes("mlb.tv")) return "https://www.mlb.com/live-stream-games";
   if (n.includes("apple tv")) return "https://tv.apple.com/";
   if (n.includes("espn")) return "https://www.espn.com/watch/";
-  if (n.includes("fox")) return "https://www.foxsports.com/live";
+  if (n.includes("fox") || n.includes("fs1") || n.includes("fs2")) return "https://www.fox.com/mlb";
   if (n.includes("vix")) return "https://vix.com/";
   if (n.includes("netflix")) return "https://www.netflix.com/";
-  if (n.includes("peacock")) return "https://www.peacocktv.com/";
+  if (n.includes("peacock") || n.includes("nbc")) return "https://www.peacocktv.com/sports/mlb";
   if (n.includes("roku")) return "https://therokuchannel.roku.com/";
-  if (n.includes("tbs")) return "https://www.tbs.com/watchtbs";
+  if (n.includes("tbs") || n.includes("tnt sports")) return "https://www.hbomax.com/";
   return undefined;
 }
 
@@ -94,38 +94,114 @@ function unique(items: Broadcast[]): Broadcast[] {
   return Array.from(new Map(items.map(item => [item.name.trim().toLowerCase(), item])).values());
 }
 
-async function getMlbBroadcasts(gameId: number): Promise<Broadcast[]> {
-  try {
-    const response = await fetch(
-      `${MLB_API}/schedule?gamePk=${gameId}&sportId=1&hydrate=broadcasts`,
-      { next: { revalidate: 300 } }
-    );
-    if (!response.ok) return [];
-    const json = await response.json();
-    const networks: unknown[] = json?.dates?.[0]?.games?.[0]?.broadcasts ?? [];
-    if (!Array.isArray(networks)) return [];
-    const listed = networks.flatMap((item): Broadcast[] => {
-      if (!item || typeof item !== "object") return [];
-      const obj = item as Record<string, unknown>;
-      const name = typeof obj.name === "string" ? obj.name.trim() : "";
-      if (!name) return [];
-      const t = String(obj.type ?? "").toLowerCase();
-      if (t.includes("radio") || t === "am" || t === "fm" || /\d+\s*(am|fm)\b/i.test(name)) return [];
-      const url = canonicalProviderUrl(name, "MLB");
-      return [{
-        name, type: "TV", url,
-        note: url ? "Abre la plataforma del proveedor; la disponibilidad del juego depende de sus derechos y tu región." : "Canal identificado; sin enlace individual confirmado.",
-      }];
-    });
-    if (listed.length) return unique(listed);
-  } catch { /* Keep the official general calendar fallback. */ }
-  return [{
-    name: "Calendario MLB.TV",
+// MLB StatsAPI can return the SAME gamePk on its originally scheduled date
+// AND on a later rescheduled date. Select by the official game start instant,
+// not dates[0].games[0], or we can show the wrong broadcast for postponements.
+async function getMlbBroadcasts(gameId: number, context: BroadcastGameContext): Promise<Broadcast[]> {
+  const calendar: Broadcast = {
+    name: "Consultar disponibilidad · MLB.TV",
     type: "Streaming",
     url: "https://www.mlb.com/live-stream-games",
     fallback: true,
-    note: "Consulta la disponibilidad del partido en el calendario oficial; no es un enlace directo al video.",
-  }];
+    note: "Calendario oficial MLB.TV. No es un video individual: hay exclusividades, restricciones regionales y requisitos de suscripción.",
+  };
+
+  if (!Number.isSafeInteger(gameId) || gameId <= 0) return [calendar];
+
+  try {
+    const response = await fetch(
+      `${MLB_API}/schedule?gamePk=${gameId}&sportId=1&hydrate=broadcasts`,
+      { next: { revalidate: 300 }, signal: AbortSignal.timeout(8000) }
+    );
+    if (!response.ok) return [calendar];
+    const json = await response.json();
+    const games: Array<{
+      gamePk?: number;
+      gameDate?: string;
+      broadcasts?: unknown[];
+    }> = Array.isArray(json?.dates)
+      ? json.dates.flatMap((date: { games?: unknown }) =>
+          Array.isArray(date.games) ? date.games : []
+        )
+      : [];
+
+    const exactGamePk = games.filter(item => Number(item?.gamePk) === gameId);
+    if (!exactGamePk.length) return [calendar];
+
+    const requestedTime = Date.parse(context.startTime ?? "");
+    const exactDates = Number.isFinite(requestedTime)
+      ? exactGamePk.filter(game =>
+          typeof game.gameDate === "string" &&
+          Number.isFinite(Date.parse(game.gameDate)) &&
+          Math.abs(Date.parse(game.gameDate) - requestedTime) <= 60_000
+        )
+      : [];
+
+    // No guess across different date entries for a reprogrammed game.
+    const selected = exactDates.length === 1
+      ? exactDates[0]
+      : !Number.isFinite(requestedTime) && exactGamePk.length === 1
+        ? exactGamePk[0]
+        : null;
+    if (!selected) return [calendar];
+
+    const raw = Array.isArray(selected.broadcasts) ? selected.broadcasts : [];
+    const byName = new Map<string, {
+      name: string;
+      isNational: boolean;
+      availableForStreaming: boolean;
+      homeAway?: string;
+      language?: string;
+    }>();
+
+    for (const item of raw) {
+      if (!item || typeof item !== "object") continue;
+      const obj = item as Record<string, unknown>;
+      // StatsAPI's "AM" / "FM" radio signals are NOT TV, even if
+      // their call sign contains a known network's name (e.g., ESPN).
+      if (String(obj.type ?? "").toUpperCase() !== "TV") continue;
+
+      const name = typeof obj.name === "string" ? obj.name.trim() : "";
+      if (!name) continue;
+
+      const key = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      const current = byName.get(key);
+      const candidate = {
+        name,
+        isNational: obj.isNational === true,
+        availableForStreaming: obj.availableForStreaming === true,
+        homeAway: typeof obj.homeAway === "string" ? obj.homeAway : undefined,
+        language: typeof obj.language === "string" ? obj.language : undefined,
+      };
+      // Different home/away feeds frequently report the same provider.
+      // Prefer the feed explicitly streamable in the source metadata.
+      if (!current || (!current.availableForStreaming && candidate.availableForStreaming)) {
+        byName.set(key, candidate);
+      }
+    }
+
+    const signals: Broadcast[] = [...byName.values()].map(signal => {
+      const url = canonicalProviderUrl(signal.name, "MLB");
+      const coverage = signal.isNational ? "nacional" : "regional";
+      return {
+        name: signal.name,
+        type: "TV",
+        url,
+        note: url
+          ? `Señal ${coverage} anunciada para este partido. Abre la plataforma oficial del proveedor, no su video individual. Verificar ubicación, derechos y suscripción.`
+          : `Señal ${coverage} anunciada para este partido. No se ha verificado un portal de video de ese proveedor; consulta el calendario MLB.TV como opción informativa.`,
+      };
+    });
+
+    // When every TV channel is unknown, give a truthful way to check
+    // MLB.TV availability instead of leaving only disabled pills.
+    return signals.length > 0
+      ? signals.some(signal => !!signal.url) ? signals : [...signals, calendar]
+      : [calendar];
+  } catch {
+    return [calendar];
+  }
 }
 
 function normalize(value: unknown): string {
@@ -323,7 +399,7 @@ async function getLmbBroadcasts(gameId: number, context: BroadcastGameContext): 
 export async function getGameBroadcasts(
   league: LeagueCode, gameId: number, context: BroadcastGameContext = {}
 ): Promise<Broadcast[]> {
-  if (league === "MLB") return getMlbBroadcasts(gameId);
+  if (league === "MLB") return getMlbBroadcasts(gameId, context);
   if (league === "LMP") return getLmpBroadcasts(gameId, context);
   if (league === "LMB") return getLmbBroadcasts(gameId, context);
   return [];
