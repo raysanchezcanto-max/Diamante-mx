@@ -3,12 +3,18 @@ import { cache } from "react";
 const OFFICIAL_CHANNEL_ID = "UCdW_4rN3OarOoawQ4Er-ZXw";
 const CHANNEL = `https://www.youtube.com/channel/${OFFICIAL_CHANNEL_ID}`;
 const MONTHS: Record<string, number> = {
-  enero: 1, january: 1, febrero: 2, february: 2,
-  marzo: 3, march: 3, abril: 4, april: 4,
-  mayo: 5, may: 5, junio: 6, june: 6,
-  julio: 7, july: 7, agosto: 8, august: 8,
-  septiembre: 9, september: 9, octubre: 10, october: 10,
-  noviembre: 11, november: 11, diciembre: 12, december: 12,
+  enero: 1, ene: 1, january: 1, jan: 1,
+  febrero: 2, feb: 2, february: 2,
+  marzo: 3, mar: 3, march: 3,
+  abril: 4, abr: 4, april: 4, apr: 4,
+  mayo: 5, may: 5,
+  junio: 6, jun: 6, june: 6,
+  julio: 7, jul: 7, july: 7,
+  agosto: 8, ago: 8, august: 8, aug: 8,
+  septiembre: 9, setiembre: 9, sep: 9, sept: 9, september: 9,
+  octubre: 10, oct: 10, october: 10,
+  noviembre: 11, nov: 11, november: 11,
+  diciembre: 12, dic: 12, december: 12, dec: 12,
 };
 const TEAM_KEYS = [
   "aguilas", "algodoneros", "caneros", "charros", "jaguares",
@@ -80,17 +86,30 @@ function mexicoDay(iso: string | undefined): string | null {
 
 function titleDay(title: string): string | null {
   const text = normalized(title);
-  const spanish = text.match(/\b(\d{1,2})\s+(?:de\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(20\d{2})\b/);
-  const english = text.match(/\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2})\s+(20\d{2})\b/);
-  const year = spanish?.[3] ?? english?.[3];
-  const month = MONTHS[spanish?.[2] ?? english?.[1] ?? ""];
-  const day = Number(spanish?.[1] ?? english?.[2]);
-  if (!year || !month || !(day >= 1 && day <= 31)) return null;
-  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  // An explicit year-first date cannot be confused with US month/day dates.
+  // Abbreviated month names are common in new YouTube listings.
+  const iso = title.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+  const dayFirst = text.match(/\b(\d{1,2})\s+(?:de\s+)?([a-z]+)\s+(?:de\s+)?(20\d{2})\b/);
+  const monthFirst = text.match(/\b([a-z]+)\s+(\d{1,2})\s+(20\d{2})\b/);
+  const candidates = [
+    { year: iso?.[1], month: Number(iso?.[2]), day: Number(iso?.[3]) },
+    { year: dayFirst?.[3], month: MONTHS[dayFirst?.[2] ?? ""], day: Number(dayFirst?.[1]) },
+    { year: monthFirst?.[3], month: MONTHS[monthFirst?.[1] ?? ""], day: Number(monthFirst?.[2]) },
+  ];
+  for (const { year, month, day } of candidates) {
+    if (!year || !Number.isInteger(month) || month < 1 || month > 12 ||
+        !Number.isInteger(day) || day < 1) continue;
+    // Reject February 30, etc. Never match a fabricated date to a game.
+    const lastDay = new Date(Date.UTC(Number(year), month, 0)).getUTCDate();
+    if (day > lastDay) continue;
+    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  }
+  // Ambiguous 08/11/2026 could be Aug 11 or Nov 8: fail closed.
+  return null;
 }
 
 function gameNumberInTitle(title: string): number | null {
-  const match = normalized(title).match(/\b(?:juego|game)\s*(\d+)\b/);
+  const match = normalized(title).match(/(?:juego|game|j|g)\\s*(\d+)\b/);
   return match ? Number(match[1]) : null;
 }
 
@@ -311,7 +330,7 @@ export const findLmpYoutubeReplay = cache(async (
   const away = context.away ? teamKey(context.away) : null;
   const home = context.home ? teamKey(context.home) : null;
   if (known && known.day === day && known.away === away && known.home === home &&
-      context.gameNumber === known.number && context.doubleHeader === "Y") {
+      context.gameNumber === known.number && (context.doubleHeader === "Y" || context.doubleHeader === "S")) {
     return validatedReplay({ id: known.id, title: "", durationSeconds: 0 }, context);
   }
 
