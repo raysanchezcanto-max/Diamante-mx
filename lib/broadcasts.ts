@@ -19,6 +19,7 @@ export type Broadcast = {
   fallback?: boolean;
   note?: string;
   verifiedGamePage?: boolean;
+  archiveAccessUnverified?: boolean;
   gameVideoSearch?: boolean;
   /** Full replay link, date-specific archive lookup, or clips/search. */
   postgameKind?: "fullReplay" | "archiveLookup" | "gameVideos";
@@ -378,8 +379,9 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
       type: "Streaming",
       url: replay.url,
       verifiedGamePage: true,
+      archiveAccessUnverified: replay.accessUnverified === true,
       postgameKind: "fullReplay",
-      note: `Transmisión archivada del canal oficial LMP (${Math.round(replay.durationSeconds / 60)} min). ${replay.membersOnly ? "Requiere membresía de YouTube para reproducirla." : "La reproducción depende de permisos y región."} Identificada por equipos, fecha y número de juego.`,
+      note: `Transmisión archivada del canal oficial LMP (${Math.round(replay.durationSeconds / 60)} min). ${replay.accessUnverified ? "Encontrada en el índice oficial; YouTube solicitó verificación antibot y no se pudo probar su reproducción." : replay.membersOnly ? "Requiere membresía de YouTube para reproducirla." : "La reproducción depende de permisos y región."} Identificada por equipos, fecha y número de juego.`,
     }] : [];
     const highlights: Broadcast[] = highlight ? [{
       name: "Resumen oficial · YouTube LMP",
