@@ -2,13 +2,13 @@
 
 **Última revisión:** 8 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (8/nov/2026):** **sección 129: reforzar el reconocimiento automático de títulos YouTube LMP para partidos nuevos, con regresión local aislada de la red en cada build**. Fechas abreviadas español/inglés e ISO inequívoca, fecha válida, doble cartelera `Y/S` y `J1/J2`; no convertir fechas ambiguas numéricas en partidos ni mezclar highlights con transmisiones completas. Compilación funcional `f89c611` READY, y corrección posterior de rótulo de conteo `a263c6c`. **Pendiente real:** verificar con juegos FINAL nuevos del 8/nov y reproductor con membresía. Las pruebas con fixtures no certifican grabaciones ni playback reales. Véase sección 129, y 128 para casos del 7/nov.
+**Prioridad actual (8/nov/2026):** **sección 130: auditoría de producción con siete juegos LMP FINAL del 7/nov**: tres resúmenes detectados sin IDs prefijados, y tres enlaces MLB.com obsoletos (HTTP 404) retirados. Naranjeros J1/J2 conserva archivo largo de YouTube con etiqueta membresía. Dos juegos PREVIEW del 8/nov siguen sin postpartido; MLB/LMB sin regresiones. Código funcional b49ae344 READY. Ver sección 130.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (8/nov/2026):** sección **129** completó endurecimiento del detector y QA aislado. **Siguiente:** inspeccionar partidos FINAL posteriores al 7/nov sin `KNOWN_ARCHIVE_IDS` ni `KNOWN_HIGHLIGHT_IDS`, confirmar que aparecen enlaces oficiales exactos o que no se muestra botón cuando faltan; comprobar reproducción con cuenta autorizada, cruce de medianoche y móvil/escritorio. No repetir trabajo de secciones 120–128 ni confundir tests sintéticos con evidencia real.
+> **REANUDACIÓN INMEDIATA (8/nov/2026):** sección **130** verificada. **Próximo (131):** revisar cinco juegos del 8/nov al pasar a FINAL: 850461, 850460, 850459, 850458, 850462. Validar YouTube oficial sin IDs precargados, ausencia correcta de archivos y playback solo con cuenta autorizada. No reabrir cambios anteriores.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1736,3 +1736,33 @@ El HTML público de YouTube se consultó desde Vercel y se leyó el JSON editori
 3. La detección mediante HTML público de YouTube continúa siendo una integración de mejor esfuerzo (no API garantizada). Validar **playback real** de archivos restringidos con cuenta de miembro en escritorio y móvil; un video que aparece en el canal no garantiza que el usuario pueda verlo.
 4. Sin cambios en tarjetas de MLB/LMB, refresco, pitchers, información en vivo, marcadores, paneles de jugadas ni diseño aprobado. Mantener disponibilidad del componente en `Suspense` sin bloquear el partido.
 
+## 130. LMP — verificación con siete juegos reales y retirada de URLs MLB.com caducadas (8/nov/2026)
+
+**Objetivo:** ampliar QA sintético de la sección 129 a siete encuentros verdaderos del 7/nov. El scoreboard oficial LMP y StatsAPI (sportId 17, leagueId 132) devolvieron siete gamePks FINAL. Las siete fichas fueron inspeccionadas en producción HTTP 200 tras el cambio.
+
+### Juegos LMP verificados
+
+| gamePk | Equipos | YouTube oficial | Producción |
+|---|---|---|---|
+| 850455 | Águilas–Cañeros | Resumen 9:27, 9hJtBf081tk | FINAL, solo resumen |
+| 850465 | Jaguares–Tomateros | Resumen 17:09, TFYADK9D3Go | FINAL, solo resumen |
+| 850463 | Charros–Yaquis | Resumen 8:35, P5CrrYNJSuY | FINAL, solo resumen |
+| 850456 | Naranjeros–Algodoneros J1 | Archivo 2h21 oPAPcWxbVNM + resumen 54B29JD_lGo | FINAL, replay con membresía + resumen |
+| 850479 | Naranjeros–Algodoneros J2 | Archivo 2h25 UnPc8ktTsq8 + resumen 3HX6hEqbdto | FINAL, replay con membresía + resumen |
+| 850466 | Venados–Mayos J1 | Resumen 7:29 QbObuwwo8Z4 | FINAL, solo resumen |
+| 850474 | Venados–Mayos J2 | Resumen 9:27 7BKLu_JEVRs | FINAL, solo resumen |
+
+**Prueba de automatización real:** los tres gamePks 850455, 850465 y 850463 NO están en los mapas KNOWN_HIGHLIGHT_IDS ni KNOWN_ARCHIVE_IDS, pero el detector encontró su resumen mediante títulos y fechas, y las fichas mostraron el enlace correcto. Los videos y sus duraciones se comprobaron en el JSON editorial de la pestaña /videos del canal oficial UCdW_4rN3OarOoawQ4Er-ZXw. En /streams (17 elementos visibles) se hallaron los dos archivos Naranjeros J1/J2 ya conocidos, pero no un archivo largo para los otros encuentros en esa página: no inferir ausencia universal.
+
+### Hallazgo y corrección de enlaces rotos
+
+- La ficha 850465 además mostraba un enlace MLB.com del encuentro que devolvió HTTP 404. Se probaron las otras dos páginas históricas del módulo lib/lmpVideoLinks.ts (850466 y 850456): también devolvieron HTTP 404 y el título 404 This content is not currently available.
+- Commit funcional b49ae344: se retiraron las tres entradas caducadas del mapa VERIFIED_PAGES; la comprobación de URLs individuales futuras usa cache: no-store, para evitar un 200 obsoleto. No se inventó un enlace sustituto. El módulo sigue disponible para incorporar videos individuales si una fuente real vuelve a confirmarse.
+- QA después de Vercel READY: los antiguos enlaces MLB.com ya no aparecen en ninguna de las siete fichas; los siete resúmenes YouTube y las dos transmisiones largas de Naranjeros permanecen. No se tocó diseño, marcadores ni otras ligas.
+- Las páginas YouTube de los tres resúmenes nuevos respondieron HTTP 200 pero el player devolvió LOGIN_REQUIRED por desafío antibot. Se verificó pertenencia al canal y metadatos en /videos, no la reproducción individual con cuenta.
+
+### Regresión y jornada siguiente
+
+- StatsAPI indicó cinco partidos SCHEDULED del 8/nov: 850461, 850460, 850459, 850458, 850462. Las fichas consultadas 850461 y 850460 respondieron HTTP 200 y TRANSMISIÓN, sin falsa tarjeta FINAL ni postpartido.
+- LMB /game/lmb/867481 conservó REPETICIÓN OFICIAL; MLB /game/mlb/849805 conservó ARCHIVOS Y VIDEOS. Total de **11 fichas HTTP 200 comprobadas en producción**: siete LMP FINAL, dos LMP PREVIEW, una LMB, una MLB.
+- Pendiente de sección 131: revisar los cinco juegos auténticos del 8/nov después de finalizar y comprobar detección sin IDs manuales, comportamiento tras medianoche, catálogo YouTube, duración del video y playback con membresía autorizada. No llamar repetición completa a un clip corto ni confundir existencia HTTP 200 con derecho efectivo a verlo.
