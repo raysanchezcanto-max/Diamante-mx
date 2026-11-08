@@ -15,6 +15,7 @@ export type Broadcast = {
   fallback?: boolean;
   note?: string;
   verifiedGamePage?: boolean;
+  gameVideoSearch?: boolean;
 };
 
 export type BroadcastGameContext = {
@@ -23,6 +24,7 @@ export type BroadcastGameContext = {
   homeId?: number;
   away?: string;
   home?: string;
+  isFinal?: boolean;
 };
 
 const MLB_API = "https://statsapi.mlb.com/api/v1";
@@ -218,12 +220,24 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
   const start = context.startTime ? new Date(context.startTime) : new Date();
   const season = Number.isFinite(start.getTime()) ? start.getFullYear() : 2026;
   const year = start.getMonth() <= 2 ? season - 1 : season;
+  const gameSearchUrl = lmpOfficialVideosSearchUrl(gameId);
+  const gameVideos: Broadcast[] = gameSearchUrl ? [{
+    name: "Videos de este juego · MLB.com",
+    type: "Streaming",
+    url: gameSearchUrl,
+    gameVideoSearch: true,
+    note: "Búsqueda oficial filtrada por el ID exacto del partido. Puede contener clips o no tener resultados; no es una repetición completa ni un reproductor garantizado.",
+  }] : [];
+
+  // Los juegos FINAL pueden consultar clips, pero no debemos anunciar
+  // una repetición íntegra ni consultar canales que ya no transmiten.
+  if (context.isFinal) return gameVideos;
+
   // El botón directo se muestra solo si MLB.com sigue respondiendo HTTP 200
   // y la página contiene la etiqueta gamepk exacta de este encuentro.
   const gameVideoPromise = getVerifiedLmpGameVideo(gameId, context.startTime
     ? mexicanDate(context.startTime)
     : undefined);
-  const gameSearchUrl = lmpOfficialVideosSearchUrl(gameId);
   const known: Broadcast[] = [
     { name: "YouTube LMP · Membresía oficial", type: "Streaming",
       url: LMP_YOUTUBE_MEMBERSHIP,
@@ -244,14 +258,6 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
     url: gameVideo,
     verifiedGamePage: true,
     note: "Página de video de MLB.com confirmada para este gamePk. La reproducción puede exigir suscripción o estar restringida por región; no se garantiza video EN VIVO.",
-  }] : [];
-  // Enlace automático al filtro gamePk publicado por MLB.com, no al video:
-  // puede haber highlights, un directo, repeticiones o incluso cero resultados.
-  const gameVideos: Broadcast[] = gameSearchUrl ? [{
-    name: "Videos de este juego · MLB.com",
-    type: "Streaming",
-    url: gameSearchUrl,
-    note: "Búsqueda oficial filtrada por ID exacto del juego (gamePk). Puede no haber video disponible; este enlace NO abre un reproductor individual.",
   }] : [];
   const extra = selected.filter(item =>
     !item.name.toLowerCase().includes("youtube") &&
