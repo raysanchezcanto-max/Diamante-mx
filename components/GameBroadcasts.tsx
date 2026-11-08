@@ -20,8 +20,9 @@ export default async function GameBroadcasts({
     ? broadcasts.filter(item =>
         (league === "LMB" && item.postgameKind === "fullReplay" &&
           /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")) ||
-        (league === "LMP" && item.verifiedGamePage === true &&
-          item.postgameKind === "gameVideos") ||
+        (league === "LMP" &&
+          ((item.verifiedGamePage === true && item.postgameKind === "gameVideos") ||
+           (item.postgameKind === "archiveLookup" && !!item.url))) ||
         (league === "MLB" && (item.postgameKind === "archiveLookup" ||
           item.postgameKind === "gameVideos") && !!item.url)
       )
@@ -56,7 +57,9 @@ export default async function GameBroadcasts({
                   {broadcast.postgameKind === "fullReplay" && isFinal
                     ? `Consultar repetición · ${broadcast.name}`
                     : broadcast.postgameKind === "archiveLookup" && isFinal
-                      ? "Consultar archivo del partido en MLB.TV"
+                      ? league === "LMP"
+                        ? "Consultar archivo LMP en MLB.TV"
+                        : "Consultar archivo del partido en MLB.TV"
                       : broadcast.postgameKind === "gameVideos" || broadcast.gameVideoSearch
                         ? league === "MLB" ? "Videos y resumen oficial del partido" : "Consultar video oficial de este partido"
                         : broadcast.verifiedGamePage
@@ -81,7 +84,9 @@ export default async function GameBroadcasts({
               ? hasReplay
                 ? "Página individual del partido completo identificada en LMB.TV. La reproducción puede requerir suscripción y depende de los derechos regionales."
                 : hasArchive
-                  ? "MLB.TV informa que hay una emisión archivada: el botón abre el catálogo del día, no el reproductor individual. Verifica suscripción y restricciones regionales. Los videos y resúmenes se ofrecen por separado."
+                  ? league === "LMP"
+                    ? "MLB.TV marca una emisión archivada para este juego. El enlace abre el calendario de LMP, no el reproductor individual. Comprueba derechos y suscripción; no se garantiza poder ver la repetición."
+                    : "MLB.TV informa que hay una emisión archivada: el botón abre el catálogo del día, no el reproductor individual. Verifica suscripción y restricciones regionales. Los videos y resúmenes se ofrecen por separado."
                   : "Videos oficiales asociados al encuentro; pueden incluir jugadas, resúmenes o ningún resultado. No significa que esté disponible la repetición completa."
               : "Los botones abren el canal o calendario oficial indicado, no siempre el reproductor del partido. Disponibilidad según programación, región y suscripción."}
           </p>
