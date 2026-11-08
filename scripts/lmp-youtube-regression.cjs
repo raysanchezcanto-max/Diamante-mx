@@ -6,7 +6,11 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
-const ts = require("typescript");
+const tsImport = require("typescript");
+const ts = tsImport.default ?? tsImport;
+if (typeof ts.transpileModule !== "function") {
+  throw new Error("TypeScript transpileModule is unavailable in this build environment");
+}
 
 const CHANNEL = "UCdW_4rN3OarOoawQ4Er-ZXw";
 const full = [
@@ -71,7 +75,7 @@ async function fakeFetch(address) {
 
 const source = fs.readFileSync(path.join(__dirname, "..", "lib", "lmpYoutubeVideos.ts"), "utf8");
 const compiled = ts.transpileModule(source, {
-  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+  compilerOptions: { module: 1, target: 9 }, // TypeScript numeric enums: CommonJS, ES2022
 }).outputText;
 const shim = { exports: {} };
 vm.runInNewContext(compiled, {
