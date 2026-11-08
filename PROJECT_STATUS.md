@@ -2,13 +2,13 @@
 
 **Última revisión:** 7 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (7/nov/2026):** **LMP FINAL también ofrece búsqueda de videos por gamePk (sección 123)**, claramente diferenciada de las **repeticiones oficiales LMB.TV**. En un LMP FINAL únicamente se presenta «VIDEOS DEL PARTIDO / Buscar videos» con enlace al filtro MLB.com; no se promete grabación completa, resultados en la búsqueda ni acceso al reproductor. En EN VIVO/PRÓXIMO conserva canales, membresía y video individual cuando está verificado (sección 122). FINAL omite llamadas innecesarias a canales de televisión y páginas de directo. Pruebas HTTP 200 de 850466 y 850456 FINAL, 850474 activo, 867481 LMB FINAL; Vercel READY. **Siguiente: auditar destinos por partido de MLB y validar que la búsqueda LMP muestre resultados con navegador real.** Continúan pendientes el descubridor directo universal LMP y reproducción bajo suscripción. Datos, traducciones, diseño y refresco intactos.
+**Prioridad actual (7/nov/2026):** **auditoría y corrección de transmisiones MLB — sección 124**. El adaptador ahora coteja el gamePk y la fecha/hora exacta de inicio para evitar canales de jornadas pospuestas, deduplica señales TV (sin radios), diferencia emisión nacional/regional y usa portales vigentes de FOX One, NBC/Peacock, ESPN, Apple TV y MLB Network. Se comprobó por StatsAPI y regresión con juegos de abril, julio y Serie Mundial 2026, incluido un gamePk con dos fechas. Un canal sin URL corroborada queda sin enlace y se ofrece solo el calendario MLB.TV como alternativa informativa. **Pendientes:** prueba visual con MLB 2027 EN VIVO, existencia de URLs de video individuales y derechos/región/abono; verificar en navegador el buscador LMP FINAL (sección 123). LMB.TV automática sección 120, LMP membresía/controles intactos. No se cambió diseño, traducción, estadísticas ni refresco.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (7/nov/2026):** leer primero sección **123** (búsqueda de videos para LMP FINAL sin promesa de replay), luego 122 (filtro de video LMP y verificación de URL), 120 (catálogo LMB.TV), 119–116 (transmisiones). **Próxima prioridad: auditoría de señales y enlaces de MLB por juego**. Falta verificar visualmente resultados de búsqueda en MLB.com con navegador y usuario abonado. No inventar video completo ni confundir juegos 1/2; datos, traducción y refresco conservados.
+> **REANUDACIÓN INMEDIATA (7/nov/2026):** comenzar por **124** (MLB transmisiones por fecha exacta, deduplicación y destinos de plataformas), luego 123/122 (LMP videos por gamePk), 120/119 (LMB.TV), 118–116 (auditoría). Siguiente fase: **pruebas reales de enlaces de MLB y LMP en navegador con suscripción/ubicación**, comprobación de videos individuales y E2E con MLB 2027. No confundir portal de proveedor con video directo ni asignar canales de un juego pospuesto. Conservar diseño, marcadores, estados y 10 s de refresco.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -1529,3 +1529,47 @@ Dominio completo de esas páginas: `https://www.lmb.tv`. El catálogo incluye ta
 3. **LMB:** confirmar descubrimiento del catálogo 2027 cuando haya transmisiones futuras, sin pérdida de 10 s de actualización para el partido en vivo.
 
 **Estado:** mejora implementada y compilada; los enlaces directos automáticos de video completo LMP siguen pendientes por ausencia de una fuente confirmada.
+
+## 124. Auditoría de transmisiones MLB por partido — 7/nov/2026 (implementada)
+
+**Motivo:** tras cerrar avances de transmisiones LMP (121–123) y LMB.TV (119–120), verificar que cada botón «Dónde ver» de MLB corresponda al partido y a su cadena oficial, y no al proveedor de una fecha antigua o a un enlace de otra modalidad.
+
+### Investigación en fuente oficial
+
+Se consultó la StatsAPI `https://statsapi.mlb.com/api/v1/schedule?gamePk=...&sportId=1&hydrate=broadcasts`, y el calendario por fecha, desde Vercel; se inspeccionaron varias jornadas reales 2026:
+
+- **Problema descubierto:** `gamePk=824766` (Rays–Red Sox) aparece en `dates[]` **dos veces**, el **09/may/2026** con `status: Postponed`, `gameDate: 2026-05-09T20:10Z`, y el **17/jul/2026** con `status: Final`, `gameDate: 2026-07-17T17:35Z`. Ambas contienen `broadcasts` (Rays.TV y NESN). El código anterior leía `dates[0].games[0]`, susceptible de asignar la señal del día suspendido en vez de la fecha efectiva.
+- Un mismo proveedor puede aparecer **duplicado** como feed de local y visitante, con `availableForStreaming: true/false` y `mediaState` distintos. Ejemplos: `823440` Mets–Phillies `ESPN/ESPN App`, `822789` `Apple TV` y `849805` Serie Mundial `FOX / FOX ONE` (además de Fox Deportes / FOX ONE). No mostrar dos botones idénticos por mismo nombre de proveedor.
+- El array mezcla `type: TV`, `AM` y `FM`. Un radio podría llamarse ESPN, por lo que es indispensable filtrar **`type === "TV"`** antes de proponer un botón de video. La fuente incluye `isNational`, `homeAway`, `broadcastDate`, `availableForStreaming` y metadatos de medios; no atribuir permiso de streaming por `isNational` únicamente.
+- Fuentes externas corroboradas para destinos generales: MLB anuncios de derechos **2026–2028** con ESPN/NBC/Netflix y guía por equipo `https://www.mlb.com/news/how-to-watch-every-mlb-team-in-2026`; FOX One `https://www.fox.com/mlb` (MLB oficial en FOX One, georrestricciones); NBC/Peacock `https://www.peacocktv.com/sports/mlb`; MLB Network `https://www.mlb.com/network`; HBO Max ayuda oficial documenta cobertura TBS de 2026 `https://help.hbomax.com/us-en/Answer/detail/000002560`. **Son portales/calendarios informativos; no enlaces directos a reproductores específicos**, y pueden estar restringidos en México.
+
+### Implementación en GitHub
+
+- `lib/broadcasts.ts`, commit `6fa5e85`: `getMlbBroadcasts(gameId, context)` ahora explora todos los `dates[].games[]`, valida `gamePk` exacto y el inicio `game.gameDate` comparado con `context.startTime` (margen **60 segundos**). Si no se puede identificar de forma única el juego, no inventa canales; ofrece la búsqueda **«Consultar disponibilidad · MLB.TV»** con nota de derechos regionales y suscripción.
+- Solo se extraen canales de `type: TV`; para nombres duplicados se prefiere el feed que indique `availableForStreaming: true`, sin presentar ese campo como prueba de acceso universal. El `Broadcast.note` diferencia señal nacional o regional e indica que los portales no reproducen automáticamente el partido.
+- Se corrigieron destinos de proveedores reconocidos **FOX/FS1/FS2 → `https://www.fox.com/mlb`**, **NBC/Peacock → `https://www.peacocktv.com/sports/mlb`**, **TBS/TNT Sports → `https://www.hbomax.com/`**, **MLB Network → `https://www.mlb.com/network`**, manteniendo ESPN Watch, Apple TV, Netflix y otras plataformas existentes. No crear URL de video individual adivinando slug ni inferir derechos por país.
+- Commit `e0bcf89`: cuando el calendario seleccionado trae `status.detailedState` **Postponed/Cancelled/Suspended**, se suprimen botones de canales ya obsoletos, dejando solo consulta informativa a MLB.TV. No afectar fecha real del partido ya disputado.
+- La consulta sigue en `Suspense` por separado del marcador en `components/GameBroadcasts.tsx`; no se alteraron datos de juego, ESPN/FOX dentro de LMB/LMP, estado de tarjetas, refresh ni traducciones.
+
+### Pruebas de regresión ejecutadas
+
+La ruta temporal `/api/mlb-broadcast-audit` llamó al adaptador de producción con contexto de varios partidos y comparó resultados. Casos que pasaron:
+
+| gamePk | Contexto | Resultado adaptador |
+|---|---|---|
+| 824766 | 17/jul/2026 17:35Z, reprogramado y jugado | **Rays.TV + NESN**, MLB.TV informativo |
+| 824766 | 09/may/2026 20:10Z, fecha original POSPUESTO | **Solo MLB.TV informativo**, sin canales obsoletos |
+| 824766 | Fecha arbitraria no coincidente | Solo MLB.TV; nunca canales de otra fecha |
+| 823440 | 16/jul/2026 exclusivo ESPN | **Una** tarjeta `ESPN/ESPN App` → `https://www.espn.com/watch/` |
+| 822789 | 17/jul/2026 Apple TV | **Una** tarjeta `Apple TV` → `https://tv.apple.com/` |
+| 849805 | 23/oct/2026 Serie Mundial | `FOX / FOX ONE` y `Fox Deportes / FOX ONE` → `https://www.fox.com/mlb` |
+| 822758 | 03/abr/2026 señales regionales | SportsNet LA y Nationals.TV sin URL individual, **MLB.TV** como opción informativa |
+
+Se verificó también `getGameDetails("MLB",824766)`: devolvió `startTime=2026-07-17T17:35:00Z` y seleccionó Rays.TV/NESN correctamente. Los builds funcionales `6fa5e85` y `e0bcf89` fueron **READY** en Vercel. La ruta temporal se **eliminó** al terminar (commit `70b994c`). Confirmar el último despliegue de documentación con `READY` antes de dar por cerrado este ciclo.
+
+### Límites y próximos pasos
+
+1. **No hay video individual automático de MLB** implementado. Portales de ESPN, FOX One, NBC/Peacock, Apple TV y HBO Max pueden requerir cuenta, región y suscripción. Una cadena listada en la StatsAPI no implica que los usuarios en México puedan verla sin restricciones.
+2. Al **07/nov/2026 la temporada MLB ya terminó**, de modo que las pruebas son contra **partidos reales históricos de 2026**, no transmisiones EN VIVO. Validar de nuevo en 2027 cuando existan fechas y feeds confirmados, incluyendo reprogramaciones, dobles carteleras y exclusividades.
+3. Verificar destinos de otras redes regionales/por equipo cuando se identifique una página oficial verificable, manteniendo canal **sin URL** en ausencia de evidencia; MLB.TV actúa solo como calendario y sujeto a derechos.
+4. LMP mantiene pendientes la verificación en navegador real del buscador por gamePk y la disponibilidad de grabaciones completas; LMB.TV requiere QA con juegos 2027 en vivo. Ningún resultado de esta auditoría demuestra reproducción real con una cuenta suscrita.
