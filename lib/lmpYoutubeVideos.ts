@@ -1,0 +1,286 @@
+import { cache } from "react";
+
+const OFFICIAL_CHANNEL_ID = "UCdW_4rN3OarOoawQ4Er-ZXw";
+const CHANNEL = `https://www.youtube.com/channel/${OFFICIAL_CHANNEL_ID}`;
+const MONTHS: Record<string, number> = {
+  enero: 1, january: 1, febrero: 2, february: 2,
+  marzo: 3, march: 3, abril: 4, april: 4,
+  mayo: 5, may: 5, junio: 6, june: 6,
+  julio: 7, july: 7, agosto: 8, august: 8,
+  septiembre: 9, september: 9, octubre: 10, october: 10,
+  noviembre: 11, november: 11, diciembre: 12, december: 12,
+};
+const TEAM_KEYS = [
+  "aguilas", "algodoneros", "caneros", "charros", "jaguares",
+  "mayos", "naranjeros", "tomateros", "venados", "yaquis",
+];
+
+export type LmpYoutubeGameContext = {
+  startTime?: string;
+  away?: string;
+  home?: string;
+  gameNumber?: number;
+  doubleHeader?: string;
+};
+
+export type LmpYoutubeVideo = {
+  url: string;
+  title: string;
+  durationSeconds: number;
+  membersOnly?: boolean;
+};
+
+type ChannelVideo = {
+  id: string;
+  title: string;
+  durationSeconds: number;
+};
+
+const KNOWN_ARCHIVE_IDS: Readonly<Record<number, { id: string; day: string; number: number; away: string; home: string }>> = {
+  // Each URL was validated against YouTube's own player metadata:
+  // exact team pairing, 2026-11-07, 2h+ length, completed stream,
+  // official channel and explicit members-only gating.
+  850456: { id: "oPAPcWxbVNM", day: "2026-11-07", number: 1, away: "naranjeros", home: "algodoneros" },
+  850479: { id: "UnPc8ktTsq8", day: "2026-11-07", number: 2, away: "naranjeros", home: "algodoneros" },
+};
+
+function normalized(value: string): string {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function teamKey(value: string): string | null {
+  const name = normalized(value);
+  return TEAM_KEYS.find(team => new RegExp(`\\b${team}\\b`).test(name)) ?? null;
+}
+
+function mexicoDay(iso: string | undefined): string | null {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (!Number.isFinite(date.getTime())) return null;
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Mexico_City", year: "numeric", month: "2-digit", day: "2-digit",
+  }).formatToParts(date);
+  const read = (key: string) => parts.find(p => p.type === key)?.value;
+  const y = read("year"), m = read("month"), d = read("day");
+  return y && m && d ? `${y}-${m}-${d}` : null;
+}
+
+function titleDay(title: string): string | null {
+  const text = normalized(title);
+  const spanish = text.match(/\b(\d{1,2})\s+(?:de\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+(?:de\s+)?(20\d{2})\b/);
+  const english = text.match(/\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2})\s+(20\d{2})\b/);
+  const year = spanish?.[3] ?? english?.[3];
+  const month = MONTHS[spanish?.[2] ?? english?.[1] ?? ""];
+  const day = Number(spanish?.[1] ?? english?.[2]);
+  if (!year || !month || !(day >= 1 && day <= 31)) return null;
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function gameNumberInTitle(title: string): number | null {
+  const match = normalized(title).match(/\b(?:juego|game)\s*(\d+)\b/);
+  return match ? Number(match[1]) : null;
+}
+
+function matchesGame(title: string, context: LmpYoutubeGameContext): boolean {
+  const date = mexicoDay(context.startTime);
+  const away = context.away ? teamKey(context.away) : null;
+  const home = context.home ? teamKey(context.home) : null;
+  if (!date || !away || !home || away === home || titleDay(title) !== date) return false;
+  const text = normalized(title);
+  if (!new RegExp(`\\b${away}\\b`).test(text) ||
+      !new RegExp(`\\b${home}\\b`).test(text)) return false;
+
+  // A doubleheader must explicitly match J1/J2: never transfer replay
+  // metadata from the first game to the second.
+  const isDouble = context.doubleHeader === "Y" || context.doubleHeader === "S";
+  if (isDouble) {
+    if (context.gameNumber !== 1 && context.gameNumber !== 2) return false;
+    return gameNumberInTitle(title) === context.gameNumber;
+  }
+  return true;
+}
+
+function durationSeconds(value: string): number {
+  const parts = value.split(":").map(Number);
+  if (parts.length < 2 || parts.length > 3 || parts.some(p => !Number.isInteger(p) || p < 0)) return 0;
+  return parts.reduce((acc, current) => acc * 60 + current, 0);
+}
+
+function initialJson(html: string, marker: string): unknown {
+  const index = html.indexOf(marker);
+  if (index < 0) return null;
+  const start = html.indexOf("{", index + marker.length);
+  const end = html.indexOf(";</script>", start);
+  if (start < 0 || end < 0 || end - start > 2_000_000) return null;
+  try { return JSON.parse(html.slice(start, end)); } catch { return null; }
+}
+
+function collectChannelVideos(data: unknown): ChannelVideo[] {
+  const found: ChannelVideo[] = [];
+  const seen = new Set<string>();
+  let visited = 0;
+
+  const visit = (value: unknown, depth: number): void => {
+    if (!value || typeof value !== "object" || depth > 50 || ++visited > 45000) return;
+    if (Array.isArray(value)) {
+      for (const entry of value) visit(entry, depth + 1);
+      return;
+    }
+    const obj = value as Record<string, unknown>;
+    const lockup = obj.lockupViewModel as Record<string, unknown> | undefined;
+    if (lockup && typeof lockup.contentId === "string" &&
+        /^[A-Za-z0-9_-]{11}$/.test(lockup.contentId) &&
+        !seen.has(lockup.contentId)) {
+      const meta = (lockup.metadata as Record<string, unknown> | undefined)?.lockupMetadataViewModel as Record<string, unknown> | undefined;
+      const title = (meta?.title as Record<string, unknown> | undefined)?.content;
+      const overlays = ((
+        (lockup.contentImage as Record<string, unknown> | undefined)?.thumbnailViewModel as Record<string, unknown> | undefined
+      )?.overlays ?? []) as Array<Record<string, unknown>>;
+      const duration = overlays.flatMap(item => {
+        const bottom = item.thumbnailBottomOverlayViewModel as { badges?: Array<{ thumbnailBadgeViewModel?: { text?: string } }> } | undefined;
+        return (bottom?.badges ?? []).map(badge => badge.thumbnailBadgeViewModel?.text ?? "");
+      }).find(Boolean) ?? "";
+
+      if (typeof title === "string") {
+        seen.add(lockup.contentId);
+        found.push({ id: lockup.contentId, title, durationSeconds: durationSeconds(duration) });
+      }
+    }
+    for (const nested of Object.values(obj)) visit(nested, depth + 1);
+  };
+  visit(data, 0);
+  return found;
+}
+
+const channelVideos = cache(async (tab: "streams" | "videos", search?: string): Promise<ChannelVideo[]> => {
+  const url = search
+    ? `https://www.youtube.com/@lmpbanamex/search?query=${encodeURIComponent(search)}`
+    : `${CHANNEL}/${tab}`;
+  try {
+    const response = await fetch(url, {
+      next: { revalidate: search ? 3600 : 600 },
+      signal: AbortSignal.timeout(7500),
+      headers: { Accept: "text/html" },
+    });
+    if (!response.ok ||
+        !response.url.startsWith("https://www.youtube.com/") ||
+        !response.headers.get("content-type")?.includes("text/html")) return [];
+
+    const html = await response.text();
+    if (html.length > 2_500_000) return [];
+    return collectChannelVideos(initialJson(html, "var ytInitialData = "));
+  } catch {
+    return [];
+  }
+});
+
+function chooseUnique(
+  entries: ChannelVideo[],
+  context: LmpYoutubeGameContext,
+  kind: "replay" | "highlight",
+): ChannelVideo | null {
+  const matches = entries.filter(entry => {
+    if (!matchesGame(entry.title, context)) return false;
+    if (kind === "replay") {
+      return entry.durationSeconds >= 60 * 60 &&
+        !/\b(resumen|highlights|summary|clip|entrevista)\b/i.test(normalized(entry.title));
+    }
+    return entry.durationSeconds >= 60 && entry.durationSeconds <= 45 * 60 &&
+      /\b(resumen|highlights|summary)\b/i.test(normalized(entry.title));
+  });
+  return matches.length === 1 ? matches[0] : null;
+}
+
+function searchTerms(context: LmpYoutubeGameContext): string | null {
+  const date = mexicoDay(context.startTime);
+  const away = context.away ? teamKey(context.away) : null;
+  const home = context.home ? teamKey(context.home) : null;
+  if (!date || !away || !home) return null;
+  const [y, m, d] = date.split("-");
+  const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  return `${away} ${home} ${Number(d)} ${months[Number(m) - 1]} ${y}`;
+}
+
+async function validatedReplay(video: ChannelVideo, context: LmpYoutubeGameContext): Promise<LmpYoutubeVideo | null> {
+  const url = `https://www.youtube.com/watch?v=${video.id}`;
+  try {
+    const response = await fetch(url, {
+      next: { revalidate: 900 },
+      signal: AbortSignal.timeout(7000),
+      headers: { Accept: "text/html" },
+    });
+    if (!response.ok || !response.url.startsWith("https://www.youtube.com/")) return null;
+    const html = await response.text();
+    if (html.length > 2_500_000) return null;
+    const p = (
+      initialJson(html, "var ytInitialPlayerResponse = ") ??
+      initialJson(html, "ytInitialPlayerResponse = ")
+    ) as {
+      videoDetails?: { videoId?: string; title?: string; channelId?: string; lengthSeconds?: string; isLiveContent?: boolean };
+      playabilityStatus?: { status?: string; reason?: string };
+      microformat?: { playerMicroformatRenderer?: { liveBroadcastDetails?: { isLiveNow?: boolean; endTimestamp?: string } } };
+    } | null;
+
+    const details = p?.videoDetails;
+    const live = p?.microformat?.playerMicroformatRenderer?.liveBroadcastDetails;
+    if (!details || details.videoId !== video.id ||
+        details.channelId !== OFFICIAL_CHANNEL_ID ||
+        !details.title || !matchesGame(details.title, context) ||
+        details.isLiveContent !== true ||
+        !Number.isFinite(Number(details.lengthSeconds)) ||
+        Number(details.lengthSeconds) < 60 * 60 ||
+        !live?.endTimestamp || live.isLiveNow === true) return null;
+
+    const status = p?.playabilityStatus?.status;
+    const reason = p?.playabilityStatus?.reason ?? "";
+    const membersOnly = status === "UNPLAYABLE" && /join this channel|members.only|hazte miembro/i.test(reason);
+    if (status !== "OK" && !membersOnly) return null;
+
+    return { url, title: details.title, durationSeconds: Number(details.lengthSeconds), membersOnly };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Matches a recorded stream to a single LMP game by teams, Mexican date,
+ * doubleheader number, 60+ minute duration, ended live broadcast and
+ * official YouTube channel. Never identifies a short highlight as replay.
+ */
+export const findLmpYoutubeReplay = cache(async (
+  gamePk: number,
+  context: LmpYoutubeGameContext,
+): Promise<LmpYoutubeVideo | null> => {
+  if (!Number.isSafeInteger(gamePk) || gamePk <= 0) return null;
+
+  const known = KNOWN_ARCHIVE_IDS[gamePk];
+  const day = mexicoDay(context.startTime);
+  const away = context.away ? teamKey(context.away) : null;
+  const home = context.home ? teamKey(context.home) : null;
+  if (known && known.day === day && known.away === away && known.home === home &&
+      context.gameNumber === known.number && context.doubleHeader === "Y") {
+    return validatedReplay({ id: known.id, title: "", durationSeconds: 0 }, context);
+  }
+
+  const listed = chooseUnique(await channelVideos("streams"), context, "replay");
+  if (listed) return validatedReplay(listed, context);
+
+  const query = searchTerms(context);
+  if (!query) return null;
+  const searched = chooseUnique(await channelVideos("streams", query), context, "replay");
+  return searched ? validatedReplay(searched, context) : null;
+});
+
+/** Resúmenes oficiales identificados en la pestaña Videos, NO juegos completos. */
+export const findLmpYoutubeHighlight = cache(async (
+  context: LmpYoutubeGameContext,
+): Promise<LmpYoutubeVideo | null> => {
+  const listed = chooseUnique(await channelVideos("videos"), context, "highlight");
+  if (!listed) return null;
+  return {
+    url: `https://www.youtube.com/watch?v=${listed.id}`,
+    title: listed.title,
+    durationSeconds: listed.durationSeconds,
+  };
+});
