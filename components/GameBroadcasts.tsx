@@ -20,14 +20,14 @@ export default async function GameBroadcasts({
     ? broadcasts.filter(item =>
         (league === "LMB" && item.postgameKind === "fullReplay" &&
           /^https:\/\/(?:www\.)?lmb\.tv\/watch\/[0-9a-f-]{36}(?:[?#].*)?$/i.test(item.url ?? "")) ||
-        (league === "LMP" && item.gameVideoSearch === true &&
+        (league === "LMP" && item.verifiedGamePage === true &&
           item.postgameKind === "gameVideos") ||
         (league === "MLB" && (item.postgameKind === "archiveLookup" ||
           item.postgameKind === "gameVideos") && !!item.url)
       )
     : broadcasts;
 
-  if (isFinal && visibleBroadcasts.length === 0) return null;
+  if (isFinal && visibleBroadcasts.length === 0 && league !== "LMP") return null;
   const hasReplay = visibleBroadcasts.some(item => item.postgameKind === "fullReplay");
   const hasArchive = visibleBroadcasts.some(item => item.postgameKind === "archiveLookup");
 
@@ -58,7 +58,7 @@ export default async function GameBroadcasts({
                     : broadcast.postgameKind === "archiveLookup" && isFinal
                       ? "Consultar archivo del partido en MLB.TV"
                       : broadcast.postgameKind === "gameVideos" || broadcast.gameVideoSearch
-                        ? league === "MLB" ? "Videos y resumen oficial del partido" : "Buscar videos de este juego en MLB.com"
+                        ? league === "MLB" ? "Videos y resumen oficial del partido" : "Consultar video oficial de este partido"
                         : broadcast.verifiedGamePage
                           ? `Abrir video oficial · ${broadcast.name}`
                           : broadcast.url.includes("/watch/") || broadcast.url.includes("youtube.com/watch")
@@ -87,7 +87,11 @@ export default async function GameBroadcasts({
           </p>
         </>
       ) : (
-        <div className="broadcastEmpty">Transmisión del partido por confirmar</div>
+        <div className="broadcastEmpty">
+          {isFinal && league === "LMP"
+            ? "No hay una repetición completa ni un video individual verificado para este partido por ahora."
+            : "Transmisión del partido por confirmar"}
+        </div>
       )}
     </section>
   );
