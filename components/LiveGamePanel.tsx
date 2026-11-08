@@ -167,70 +167,25 @@ const battingTeam =
         </span>
 
   {inning && (
-  <div
-    className="liveGameInningBlock"
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "flex-end",
-      gap: "4px",
-      minWidth: 0,
-      maxWidth: "100%",
-    }}
-  >
+  <div className="liveGameInningBlock">
     <strong className="liveGameInning">
       {inningLabel ?? "EN VIVO"}
     </strong>
 
     {!isInningTransition && battingTeam && (
-      <span
-        className="liveGameBattingTeam"
-        style={{
-          display: "block",
-          fontSize: "11px",
-          fontWeight: 600,
-          color: "#8fa9a0",
-          letterSpacing: "0.04em",
-          whiteSpace: "normal",
-           overflowWrap: "anywhere",
-           textAlign: "right",
-        }}
-      >
+      <span className="liveGameBattingTeam">
         BATEANDO · {battingTeam}
       </span>
     )}
 
     {!isInningTransition && batterName && (
-      <span
-        style={{
-          display: "block",
-          marginTop: "2px",
-          fontSize: "11px",
-          fontWeight: 700,
-          color: "#e6efec",
-          letterSpacing: "0.03em",
-          whiteSpace: "normal",
-           overflowWrap: "anywhere",
-           textAlign: "right",
-        }}
-      >
+      <span className="liveGameAtBat">
         AL BAT · {batterName}
       </span>
     )}
 
     {!isInningTransition && pitcherName && (
-      <span
-        style={{
-          display: "block",
-          fontSize: "11px",
-          fontWeight: 600,
-          color: "#c7d3cf",
-          letterSpacing: "0.03em",
-          whiteSpace: "normal",
-           overflowWrap: "anywhere",
-           textAlign: "right",
-        }}
-      >
+      <span className="liveGamePitching">
         LANZANDO · {pitcherName}
         {typeof pitchCount === "number"
           ? ` · ${pitchCount} P`
