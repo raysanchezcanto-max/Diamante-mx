@@ -8,6 +8,8 @@ type AutoRefreshProps = {
   intervalMs?: number;
   refreshOnFocus?: boolean;
   snapshotAt?: number;
+  /** Stop periodic refreshes at an absolute time, even when tab stays open. */
+  stopAt?: number;
 };
 
 export default function AutoRefresh({
@@ -15,6 +17,7 @@ export default function AutoRefresh({
  intervalMs = 15000,
   refreshOnFocus = false,
   snapshotAt,
+  stopAt,
 }: AutoRefreshProps) {
   const router = useRouter();
 
@@ -30,6 +33,7 @@ export default function AutoRefresh({
     const refreshVisible = () => {
       if (document.visibilityState !== "visible") return;
       const now = Date.now();
+      if (typeof stopAt === "number" && now >= stopAt) return;
       if (now - lastRefresh < intervalMs) return;
       lastRefresh = now;
       router.refresh();
@@ -57,7 +61,7 @@ export default function AutoRefresh({
         document.removeEventListener("visibilitychange", refreshVisible);
       }
     };
-  }, [enabled, intervalMs, refreshOnFocus, router, snapshotAt]);
+  }, [enabled, intervalMs, refreshOnFocus, router, snapshotAt, stopAt]);
 
   return null;
 }
