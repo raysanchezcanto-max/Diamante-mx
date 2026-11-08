@@ -11,6 +11,7 @@ import LmpPitchingChanges from "@/components/LmpPitchingChanges";
 import GamePitcher from "@/components/GamePitcher";
 
 import AutoRefresh from "@/components/AutoRefresh";
+import { getLmpPostgameRefreshUntil, LMP_POSTGAME_REFRESH_MS } from "@/lib/lmpPostgameRefresh";
 import { getLmbPlayState } from "@/lib/lmbLive";
 import BaseDiamond from "@/components/BaseDiamond";
 import { getGameBroadcasts } from "@/lib/broadcasts";
@@ -372,13 +373,24 @@ const time =
       ? "HORA POR CONFIRMAR"
       : formatGameTime(game.startTime, league);
 
+// Refresh a recently finalized LMP game every five minutes so late
+// official replay/summary uploads appear without F5. Historical FINAL
+// pages, MLB and LMB do not acquire any extra postgame polling.
+const postgameRefreshUntil = getLmpPostgameRefreshUntil({
+  league,
+  isFinal,
+  startTime: game.startTime,
+  lastPlayEndedAt: game.lastPlayEndedAt,
+});
+
   return (
     <main className="gamePage">
    <AutoRefresh
-  enabled={!isFinal}
-  intervalMs={isLive || game.status === "Preview" ? 10000 : 60000}
+  enabled={!isFinal || postgameRefreshUntil !== undefined}
+  intervalMs={isFinal ? LMP_POSTGAME_REFRESH_MS : isLive || game.status === "Preview" ? 10000 : 60000}
   refreshOnFocus
   snapshotAt={Date.now()}
+  stopAt={postgameRefreshUntil}
 />
       <Link
         className="gameBack"
