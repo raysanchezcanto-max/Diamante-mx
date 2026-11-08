@@ -196,6 +196,8 @@ const broadcastsPromise = getGameBroadcasts(league, gameId, {
   away: game.away,
   home: game.home,
   isFinal,
+  gameNumber: game.gameNumber,
+  doubleHeader: game.doubleHeader,
 });
 
 
