@@ -729,16 +729,66 @@ max-width: 1152px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 3px;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  text-align: right;
+}
+
+.liveGameBattingTeam,
+.liveGameAtBat,
+.liveGamePitching {
+  display: block;
+  max-width: 100%;
+  font-size: 11px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: right;
 }
 
 .liveGameBattingTeam {
-  display: block;
-  font-size: 0.72rem;
   font-weight: 600;
-  color: #9fb8b1;
+  color: #8fa9a0;
+  letter-spacing: 0.04em;
+}
+
+.liveGameAtBat {
+  margin-top: 2px;
+  font-weight: 700;
+  color: #e6efec;
   letter-spacing: 0.03em;
-  white-space: nowrap;
+}
+
+.liveGamePitching {
+  font-weight: 600;
+  color: #c7d3cf;
+  letter-spacing: 0.03em;
+}
+
+/* En pantallas de teléfono, toda la información del turno queda
+   centrada en la tarjeta, incluso cuando un nombre ocupa dos líneas.
+   El título permanece arriba a la izquierda como en el diseño actual. */
+@media (max-width: 650px) {
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGamePanelHeader {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 14px;
+  }
+
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGameInningBlock {
+    align-items: center;
+    align-self: stretch;
+    width: 100%;
+    text-align: center;
+  }
+
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGameInning,
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGameBattingTeam,
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGameAtBat,
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGamePitching {
+    text-align: center;
+  }
 }
 /* =========================================
    LMB · TARJETA CAMPEÓN SERIE DEL REY
