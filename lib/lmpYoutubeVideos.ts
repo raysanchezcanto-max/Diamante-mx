@@ -28,12 +28,15 @@ export type LmpYoutubeVideo = {
   title: string;
   durationSeconds: number;
   membersOnly?: boolean;
+  /** Source is the verified official channel, but YouTube blocked metadata via bot challenge. */
+  accessUnverified?: boolean;
 };
 
 type ChannelVideo = {
   id: string;
   title: string;
   durationSeconds: number;
+  officialUploader?: boolean;
 };
 
 const KNOWN_ARCHIVE_IDS: Readonly<Record<number, { id: string; day: string; number: number; away: string; home: string }>> = {
@@ -144,7 +147,28 @@ function collectChannelVideos(data: unknown): ChannelVideo[] {
 
       if (typeof title === "string") {
         seen.add(lockup.contentId);
-        found.push({ id: lockup.contentId, title, durationSeconds: durationSeconds(duration) });
+        found.push({ id: lockup.contentId, title, durationSeconds: durationSeconds(duration), officialUploader: true });
+      }
+    }
+
+    // Channel search uses classic videoRenderer rather than the newer
+    // lockup cards. Accept it only if its uploader is the same league
+    // channel; the search is fuzzy and may include unrelated material.
+    const video = obj.videoRenderer as Record<string, unknown> | undefined;
+    if (video && typeof video.videoId === "string" &&
+        /^[A-Za-z0-9_-]{11}$/.test(video.videoId) &&
+        !seen.has(video.videoId)) {
+      const owner = video.ownerText as { runs?: Array<{ navigationEndpoint?: { browseEndpoint?: { browseId?: string } } }> } | undefined;
+      const byline = video.longBylineText as { runs?: Array<{ navigationEndpoint?: { browseEndpoint?: { browseId?: string } } }> } | undefined;
+      const ownerId = owner?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId ??
+        byline?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId;
+      if (ownerId === OFFICIAL_CHANNEL_ID) {
+        const title = (video.title as { runs?: Array<{ text?: string }> } | undefined)?.runs?.map(r => r.text ?? "").join("");
+        const duration = (video.lengthText as { simpleText?: string } | undefined)?.simpleText ?? "";
+        if (title) {
+          seen.add(video.videoId);
+          found.push({ id: video.videoId, title, durationSeconds: durationSeconds(duration), officialUploader: true });
+        }
       }
     }
     for (const nested of Object.values(obj)) visit(nested, depth + 1);
@@ -231,6 +255,18 @@ async function validatedReplay(video: ChannelVideo, context: LmpYoutubeGameConte
 
     const details = p?.videoDetails;
     const live = p?.microformat?.playerMicroformatRenderer?.liveBroadcastDetails;
+
+    // Some legitimate members-only archived streams return a YouTube bot
+    // challenge to server-side requests even though the league's official
+    // channel search lists the exact dated 2h+ video. Retain a "consult"
+    // link, but mark playback UNVERIFIED; do not claim it is watchable.
+    if (!details && video.officialUploader && video.durationSeconds >= 60 * 60 &&
+        matchesGame(video.title, context) &&
+        p?.playabilityStatus?.status === "LOGIN_REQUIRED" &&
+        /sign in to confirm you.re not a bot/i.test(p.playabilityStatus.reason ?? "") &&
+        html.includes(video.id)) {
+      return { url, title: video.title, durationSeconds: video.durationSeconds, accessUnverified: true };
+    }
     if (!details || details.videoId !== video.id ||
         details.channelId !== OFFICIAL_CHANNEL_ID ||
         !details.title || !matchesGame(details.title, context) ||
