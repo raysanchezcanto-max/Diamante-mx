@@ -3,6 +3,7 @@ import { getLmbOfficialBroadcasts } from "./lmbLive";
 import { findLmbTvGamePage } from "./lmbTvCatalog";
 import { verifyLmbTvGamePage } from "./lmbReplayAvailability";
 import { getVerifiedLmpGameVideo } from "./lmpVideoLinks";
+import { getLmpMlbTvArchiveCatalog } from "./lmpArchive";
 import { getMlbGameVideoCollection, mlbTvArchiveDayUrl } from "./mlbPostgame";
 import type { LeagueCode } from "./teamLogos";
 
@@ -358,19 +359,31 @@ async function getLmpBroadcasts(gameId: number, context: BroadcastGameContext): 
     ? mexicanDate(context.startTime)
     : undefined);
 
-  // On FINAL, never show the live-membership, schedule, or TV channels as
-  // though they offered a replay. Show only a genuinely verified page;
-  // otherwise the UI will clearly say there is no confirmed video.
+  // On FINAL, never present a generic membership as a verified replay.
+  // An MLB.TV archive lookup is offered only when the broadcast's
+  // exact gamePk/date reports MEDIA_ARCHIVE + availableForStreaming.
+  // It remains a SEASON CALENDAR, not a video or a full replay button.
   if (context.isFinal) {
-    const page = await gameVideoPromise;
-    return page ? [{
+    const [page, archiveCatalog] = await Promise.all([
+      gameVideoPromise,
+      getLmpMlbTvArchiveCatalog(gameId, context.startTime),
+    ]);
+    const archived: Broadcast[] = archiveCatalog ? [{
+      name: "Archivo de LMP · MLB.TV",
+      type: "Streaming",
+      url: archiveCatalog,
+      postgameKind: "archiveLookup",
+      note: "MLB.TV identifica una emisión archivada del gamePk exacto. El enlace abre el calendario de LMP para buscarla; puede requerir suscripción o no estar disponible en tu región. No es un reproductor directo.",
+    }] : [];
+    const individual: Broadcast[] = page ? [{
       name: "Video oficial del partido · MLB.com",
       type: "Streaming",
       url: page,
       verifiedGamePage: true,
       postgameKind: "gameVideos",
-      note: "Página individual oficial identificada con el gamePk exacto y disponible al consultar. No se ha comprobado que permita reproducir el partido completo.",
+      note: "Página individual identificada con el gamePk exacto y disponible al consultar. No se ha confirmado que incluya la repetición completa ni que sea reproducible.",
     }] : [];
+    return [...archived, ...individual];
   }
   const known: Broadcast[] = [
     { name: "YouTube LMP · Membresía oficial", type: "Streaming",
