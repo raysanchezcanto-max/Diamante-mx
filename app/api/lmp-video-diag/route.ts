@@ -18,7 +18,7 @@ async function probe(name: string, url: string) {
   }catch(error){return{name,error:String(error)}}
 }
 export async function GET() {
-  const q=id=>encodeURIComponent(`ContentTags = ["gamepk-${id}"] Order by Timestamp DESC`);
+  const q=(id: number)=>encodeURIComponent(`ContentTags = ["gamepk-${id}"] Order by Timestamp DESC`);
   const specs = [
     ["video-search-850456",`https://www.mlb.com/es/video/?q=${q(850456)}`],
     ["video-search-850466",`https://www.mlb.com/es/video/?q=${q(850466)}`],
