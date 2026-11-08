@@ -65,10 +65,18 @@ function canonicalProviderUrl(name: string, league: LeagueCode): string | undefi
   if (n.includes("mlb.tv")) return "https://www.mlb.com/live-stream-games";
   if (n.includes("apple tv")) return "https://tv.apple.com/";
   if (n.includes("espn")) return "https://www.espn.com/watch/";
-  if (n.includes("fox") || n.includes("fs1") || n.includes("fs2")) return "https://www.fox.com/mlb";
+  // National FOX/FOX One is not equivalent to every regional FOX affiliate.
+  // In particular, do not route FOX19/FOX5 local feeds to FOX One.
+  if (/\bfox one\b/.test(n) || /^(fox|fox deportes|fs1|fs2|fox sports 1|fox sports 2)$/.test(n.trim())) {
+    return "https://www.fox.com/mlb";
+  }
   if (n.includes("vix")) return "https://vix.com/";
   if (n.includes("netflix")) return "https://www.netflix.com/";
-  if (n.includes("peacock") || n.includes("nbc")) return "https://www.peacocktv.com/sports/mlb";
+  // Peacock carries national NBC MLB coverage, but NBCSP, NBCSCA,
+  // NBCS BA and other regional NBC channels are different providers.
+  if (n.includes("peacock") || /^(nbc|nbcsn|nbc sports network)$/.test(n.trim())) {
+    return "https://www.peacocktv.com/sports/mlb";
+  }
   if (n.includes("roku")) return "https://therokuchannel.roku.com/";
   if (n.includes("tbs") || n.includes("tnt sports")) return "https://www.hbomax.com/";
   return undefined;
