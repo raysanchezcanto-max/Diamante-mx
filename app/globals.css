@@ -765,15 +765,22 @@ max-width: 1152px;
   letter-spacing: 0.03em;
 }
 
-/* En pantallas de teléfono, toda la información del turno queda
-   centrada en la tarjeta, incluso cuando un nombre ocupa dos líneas.
-   El título permanece arriba a la izquierda como en el diseño actual. */
+/* En pantallas de teléfono, todo el encabezado de situación del
+   juego queda centrado, incluido el título. Los nombres largos pueden
+   ocupar varias líneas sin descentrar el bloque del inning. */
 @media (max-width: 650px) {
   .liveGamePanel:not(.liveGameWarmupPanel) .liveGamePanelHeader {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: flex-start;
+    text-align: center;
     gap: 14px;
+  }
+
+  .liveGamePanel:not(.liveGameWarmupPanel) .liveGamePanelHeader > .eyebrow {
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 
   .liveGamePanel:not(.liveGameWarmupPanel) .liveGameInningBlock {
