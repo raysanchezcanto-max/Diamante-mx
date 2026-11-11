@@ -92,7 +92,8 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         </aside>
         <div className="clubMainColumn">
           {topNews?<section className="clubFeature" aria-label="Noticia destacada de Algodoneros">
-            <div className="clubDirectoryHeroBadge">{logo?<img src={logo} width={140} height={140} alt=""/>:"⚾"}</div>
+            {topNews.image?<img src={topNews.image} className="clubFeatureImage" alt="" loading="lazy"/>:
+              <div className="clubDirectoryHeroBadge">{logo?<img src={logo} width={140} height={140} alt=""/>:"⚾"}</div>}
             <div className="clubFeatureShade"/>
             <div className="clubFeatureContent">
               <span className="clubKicker">NOTICIA DESTACADA · SITIO OFICIAL ALGODONEROS</span>
@@ -106,6 +107,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
             <p className="clubSmallNote">Publicaciones automáticas del sitio oficial, con actualización aproximada cada 15 minutos.</p>
             <div className="clubNewsGrid">
               {news.slice(1,5).map(story=><a className="clubNewsCard" href={story.url} key={story.url} target="_blank" rel="noopener noreferrer">
+                {story.image&&<img className="clubNewsThumb" src={story.image} alt="" loading="lazy"/>}
                 <span>{story.published.slice(0,10)||"Sitio oficial"}</span>
                 <strong>{story.title}</strong>
                 <small>Leer noticia ↗</small>
@@ -113,11 +115,20 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
             </div>
           </section>
           <section className="clubEditorialSection">
-            <div className="clubSectionTitle"><div><span className="clubKicker">COBERTURA AUDIOVISUAL · LMP</span><h2>Videos oficiales</h2></div></div>
-            <p className="clubSmallNote">Para evitar atribuir un video de otro club, mostramos el archivo oficial de la liga hasta verificar clips individuales de Algodoneros.</p>
-            <div className="clubDirectoryNotice">
-              <a href="https://www.youtube.com/@lmpbanamex/videos" target="_blank" rel="noopener noreferrer">Explorar videos del canal oficial LMP ↗</a>
+            <div className="clubSectionTitle"><div><span className="clubKicker">COBERTURA AUDIOVISUAL · LMP</span><h2>Videos oficiales de Algodoneros</h2></div></div>
+            <p className="clubSmallNote">Selección verificada de resúmenes del canal oficial de LMP. Estos clips corresponden a los juegos de Guasave del 7 de noviembre de 2026, no a transmisiones en vivo.</p>
+            <div className="clubVideoGrid">
+              {[
+                {id:"54B29JD_lGo",title:"Naranjeros vs. Algodoneros · Juego 1",date:"7 de noviembre de 2026"},
+                {id:"3HX6hEqbdto",title:"Naranjeros vs. Algodoneros · Juego 2",date:"7 de noviembre de 2026"}
+              ].map(video=><a key={video.id} href={"https://www.youtube.com/watch?v="+video.id} className="clubVideoCard" target="_blank" rel="noopener noreferrer">
+                <div className="clubVideoPoster clubVideoPoster--clip">
+                  <img src={"https://i.ytimg.com/vi/"+video.id+"/hqdefault.jpg"} alt="" className="clubVideoThumbnail" loading="lazy"/>
+                  <span aria-hidden="true">▶</span><small>RESUMEN OFICIAL</small>
+                </div><strong>{video.title}</strong><small>{video.date}</small>
+              </a>)}
             </div>
+            <a className="clubDirectorySource" href="https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/videos" target="_blank" rel="noopener noreferrer">Consultar canal oficial LMP ↗</a>
           </section>
         </div>
         <aside className="clubSideRight">
