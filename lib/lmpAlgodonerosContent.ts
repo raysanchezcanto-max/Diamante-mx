@@ -4,11 +4,11 @@ import { cache } from "react";
 // Datos de plantilla/posiciones: StatsAPI, liga 132, deporte 17, temporada 2026.
 // Noticias: WordPress REST del sitio oficial del equipo.
 const API = "https://statsapi.mlb.com/api/v1";
-const NEWS = "https://losalgodoneros.com/wp-json/wp/v2/posts?per_page=8&_fields=date,link,title,excerpt";
+const NEWS = "https://losalgodoneros.com/wp-json/wp/v2/posts?per_page=8&_embed=wp:featuredmedia";
 const TEAM_ID = 5482;
 const SEASON = 2026;
 
-export type LmpClubNews = { title: string; url: string; published: string; excerpt: string };
+export type LmpClubNews = { title: string; url: string; published: string; excerpt: string; image: string | null };
 export type LmpClubPlayer = { id: number; name: string; number: string; position: string; group: string; photo: string | null; bats: string; throws: string; birthDate: string };
 export type LmpClubRecord = { wins: number; losses: number; pct: string; standing: number };
 
@@ -39,7 +39,7 @@ async function officialJson<T>(url: string): Promise<T | null> {
   }
 }
 
-type WpPost = { title?: { rendered?: string }; excerpt?: { rendered?: string }; link?: string; date?: string };
+type WpPost = { title?: { rendered?: string }; excerpt?: { rendered?: string }; link?: string; date?: string; _embedded?: {"wp:featuredmedia"?: Array<{ source_url?: string; media_details?: {sizes?: Record<string, {source_url?: string}>} }> } };
 export const getAlgodonerosNews = cache(async (): Promise<LmpClubNews[]> => {
   const posts = await officialJson<WpPost[]>(NEWS);
   if (!Array.isArray(posts)) return [];
@@ -47,7 +47,12 @@ export const getAlgodonerosNews = cache(async (): Promise<LmpClubNews[]> => {
     const title = plainText(post.title?.rendered ?? "");
     const url = post.link ?? "";
     if (title.length < 8 || !url.startsWith("https://losalgodoneros.com/")) return [];
-    return [{title, url, published:post.date ?? "", excerpt:plainText(post.excerpt?.rendered ?? "").slice(0,220)}];
+    const media = post._embedded?.["wp:featuredmedia"]?.[0];
+    const photo = media?.media_details?.sizes?.medium_large?.source_url
+      ?? media?.media_details?.sizes?.medium?.source_url
+      ?? media?.source_url ?? "";
+    const image = /^https:\/\/losalgodoneros\.com\/wp-content\/uploads\//.test(photo) ? photo : null;
+    return [{title, url, published:post.date ?? "", excerpt:plainText(post.excerpt?.rendered ?? "").slice(0,220), image}];
   });
 });
 
