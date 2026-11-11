@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties } from "react";
 import { lmbClubHref } from "@/lib/lmbClubs";
+import { lmpClubHref } from "@/lib/lmpClubDirectory";
 import type { Game, Standing } from "@/lib/mlb";
 import {
   getTeamLogo,
@@ -167,8 +168,8 @@ export default function TeamLogoStrip({
           {teams.map(team=>{
             const profileUrl = league === "LMB"
               ? lmbClubHref(team.name)
-              : league === "LMP" && clean(team.name) === "algodoneros de guasave"
-                ? "/equipos/lmp/algodoneros"
+              : league === "LMP"
+                ? lmpClubHref(team.name)
                 : null;
             const logoStyle = league === "LMB"
               ? { "--lmb-logo-scale": LMB_LOGO_SCALE[clean(team.name)] ?? 1 } as CSSProperties
