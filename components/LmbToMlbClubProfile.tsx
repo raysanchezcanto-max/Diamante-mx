@@ -17,13 +17,7 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
         <div>
           <span className="clubKicker">{COPY.mlb.kicker}</span>
           <h2 id="clubToMlbTitle">{COPY.mlb.title(club.name)}</h2>
-          <p>
-            {hasPriorMlbDebut
-              ? "Presentamos las firmas posteriores al paso por el club y distinguimos a quienes ya habían debutado en MLB antes de jugar en LMB. Una nueva firma no constituye otro debut."
-              : <>El recorrido parte de {club.name} hacia organizaciones de MLB y sus
-                Ligas Menores, nunca al revés. Distinguimos las firmas de prospectos
-                de quienes efectivamente consiguieron debutar en Grandes Ligas.</>}
-          </p>
+          <p>{COPY.mlb.intro}</p>
         </div>
         <div className="clubBigLeaguesHeaderMark" aria-hidden="true">
           {logo?<img className="clubToMlbHeroLogo" src={logo} alt="" width={65} height={65}/>:
