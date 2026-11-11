@@ -23,6 +23,7 @@ export const CLUB_PROFILE_COPY = {
   },
   mlb: {
     kicker: "DEL BÉISBOL MEXICANO AL DIAMANTE INTERNACIONAL",
+    intro: "Distinguimos a quienes debutaron en MLB después de su paso por el club, a quienes ya tenían experiencia en Grandes Ligas y a los prospectos vinculados con sus organizaciones. Una firma o participación en Ligas Menores no garantiza un debut en MLB ni demuestra una transferencia directa.",
     title: (club: string) => "De " + club + " a Grandes Ligas",
     debutKicker: "LLEGARON A LA GRAN CARPA",
     debutTitle: "Debutaron en MLB después de su paso por el club",
