@@ -1847,3 +1847,14 @@ Revisar la jornada del **8/nov/2026** (`850461`, `850460`, `850459`, `850458`, `
 - **Commits de cambios:** `7ce0bcd` (LMP roster+calendario), `1f78f63` (MLB + Hall), `26297c8` (CSS), `f700cc4` (links MLB), `d21d5b4` (news fotos), `262be30` (videos + fotos en componentes).
 
 **Siguiente prioridad:** revisar impresión visual en móvil y la consistencia de todas las secciones con la ficha de Algodoneros LMB; incorporar cronología biográfica y videos/altas dinámicos por club si hay datos, y convertir plantilla LMP en arquitectura reutilizable antes de extender a nueve clubes. Permanecen pendientes LMB (Conspiradores MLB, miembros del Salón de la Fama por club) y QA tardía de videos LMP §132.
+
+### QA posterior a capturas — Algodoneros LMP (11/nov/2026)
+
+- **Alcance del pase:** comprobación de producción real en `diamante-mx.vercel.app` de las cinco vistas, recursos remotos, enlaces del calendario y fichas documentales; sin efectuar cambios de funcionalidad.
+- Las cinco rutas (resumen, plantilla, movimientos, grandes-ligas, historia) devuelven **HTTP 200**. El resumen muestra ocho próximos encuentros, noticia con imagen destacada, cuatro tarjetas con miniaturas y dos clips del equipo; la plantilla muestra 30 peloteros con retratos.
+- **30/30 fotos de LMP:** se consultaron individualmente los URL `images.cloudgfx.com/player/mugshot2` presentes en el HTML publicado. **30 HTTP 200** con `Content-Type: image/webp`; no hay fallos en la muestra completa.
+- **8/8 enlaces de calendario:** los ocho juegos /game/lmp/850445, 850447, 850441, 850427, 850434, 850416, 850415 y 850413 devuelven **HTTP 200**, sin inventar horarios y sin enlaces vacíos.
+- **Documentación MLB:** todos los enlaces a perfiles MLB y notas individuales del club probados devolvieron HTTP 200 sin redirección a índice de jugadores. Además, StatsAPI `/people?personIds=682183,656798,642758,477510` devuelve Drew Avans (debut 2025-05-27), Jacob Nix (2018-08-10), Domingo Acevedo (2021-06-21) y Noe Munoz (1995-04-30), respectivamente.
+- **Recursos adicionales:** imágenes recientes del WordPress oficial de Algodoneros y miniaturas de ambos videos publicadas y accesibles vía HTTP 200. No se comprobó reproducción dentro de YouTube con cuenta ni membresía.
+- **Limitación explícita:** no se completó prueba con navegador real a varios breakpoints (la sandbox actual no dispone de Playwright ni Chromium). Requiere prueba visual final en móvil y desktop; las respuestas HTTP **no** equivalen a QA visual. Pendientes editoriales: movimientos dinámicos, catálogo automatizado de videos LMP, biografías y Salón de la Fama exhaustivos.
+- **Decisión:** se mantiene a Algodoneros como ficha piloto validada en datos, navegación y recursos; antes de replicar a los otros nueve equipos, obtener validación visual del usuario y definir un componente parametrizable sin duplicación de código.
