@@ -5,6 +5,7 @@ import {CLUB_PROFILE_COPY as COPY} from "@/lib/clubProfileCopy";
 import {getTeamLogo} from "@/lib/teamLogos";
 import LmbClubTabs, {type LmbClubView} from "./LmbClubTabs";
 import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
+import LmpAguilasEditorialHistory from "./LmpAguilasEditorialHistory";
 
 type Props={club:LmpClubDefinition;view:LmbClubView;roster:LmpClubPlayer[];news:LmpClubNews[];record:LmpClubRecord|null;fixtures:AlgodonerosFixture[];mlbAlumni:LmpMlbAlumnus[];movements:LmpDirectoryMovement[]};
 const groups=["Lanzadores","Receptores","Jugadores del cuadro","Jardineros"];
@@ -127,7 +128,8 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    </section>}
 
    {view==="historia" && club.slug==="naranjeros" && <LmpNaranjerosEditorialHistory club={club}/>}
-   {view==="historia" && club.slug!=="naranjeros" && <section className="clubHistory clubDirectoryHistory">
+   {view==="historia" && club.slug==="aguilas" && <LmpAguilasEditorialHistory club={club}/>}
+   {view==="historia" && club.slug!=="naranjeros" && club.slug!=="aguilas" && <section className="clubHistory clubDirectoryHistory">
     <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span><h2>{COPY.history.title(club.name)}</h2>
      <p>El palmarés de {club.name}, sus primeras etapas documentadas y los campeonatos que forman parte de su trayectoria en el béisbol invernal mexicano.</p>
     </div>{logo&&<img src={logo} alt={"Escudo de "+club.name} width={98} height={98}/>}</header>
