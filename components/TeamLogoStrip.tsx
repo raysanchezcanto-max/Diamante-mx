@@ -165,7 +165,11 @@ export default function TeamLogoStrip({
       <div className="teamLogoRail" aria-label={league==="CARIBE"?"Participantes del Caribe":`Equipos de ${league}`}>
         <div className="teamLogoTrack">
           {teams.map(team=>{
-            const profileUrl = league === "LMB" ? lmbClubHref(team.name) : null;
+            const profileUrl = league === "LMB"
+              ? lmbClubHref(team.name)
+              : league === "LMP" && clean(team.name) === "algodoneros de guasave"
+                ? "/equipos/lmp/algodoneros"
+                : null;
             const logoStyle = league === "LMB"
               ? { "--lmb-logo-scale": LMB_LOGO_SCALE[clean(team.name)] ?? 1 } as CSSProperties
               : undefined;
