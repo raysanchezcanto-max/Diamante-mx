@@ -1,3 +1,4 @@
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import type {LmbClubRecord} from "@/lib/lmbClubs";
 import type {LmbClubOverview} from "@/lib/lmbClubContent";
 import {LMB_CHAMPIONSHIP_SOURCE,lmbClubChampionships} from "@/lib/lmbClubHistory";
@@ -25,7 +26,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    <header className="clubHistoryHeading">
     <div>
      <span className="clubKicker">HISTORIA · LIGA MEXICANA DE BEISBOL</span>
-     <h2 id="clubGeneralHistoryTitle">La historia de {club.name}</h2>
+     <h2 id="clubGeneralHistoryTitle">{COPY.history.title(club.name)}</h2>
      <p>{editorial?.intro??
        "Los capítulos que definieron el legado del club en la Liga Mexicana de Beisbol: sus campeonatos, las fechas históricas documentadas y su sede actual. Las biografías se incorporarán únicamente al corroborar sus fuentes."}</p>
     </div>
@@ -49,7 +50,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    </div>
 
    <div className="clubHistorySectionHead">
-    <div><span className="clubKicker">EL PALMARÉS</span><h3>{years.length?"Campeonatos de Liga Mexicana":"La búsqueda de la primera estrella"}</h3></div>
+    <div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{years.length?COPY.history.recordTitle("Liga Mexicana"):"La búsqueda de la primera estrella"}</h3></div>
     <span className="clubHistoryNote">Títulos de LMB hasta 2026</span>
    </div>
    {years.length?(
@@ -58,9 +59,9 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
       {(years.length>1?[years[0],years[years.length-1]]:[years[0]]).map((year,i)=>(
        <article className="clubHistoryChampionCard" key={year}>
         <span className="clubHistoryStar" aria-hidden="true">★</span>
-        <span className="clubHistoryChampLabel">{i===0?"PRIMERA CORONA":"CORONA MÁS RECIENTE"} · LMB</span>
+        <span className="clubHistoryChampLabel">{i===0?COPY.history.firstCrown:COPY.history.recentCrown} · LMB</span>
         <strong>{year}</strong>
-        <h4>{i===0?"La primera gloria":"La conquista más reciente"}</h4>
+        <h4>{i===0?COPY.history.firstGlory:COPY.history.mostRecentGlory}</h4>
         <p>{club.name} forma parte del historial de campeones de la liga en {year}.</p>
         <a href={LMB_CHAMPIONSHIP_SOURCE} target="_blank" rel="noopener noreferrer">Consultar palmarés ↗</a>
        </article>
@@ -75,7 +76,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    )}
 
    <div className="clubHistorySectionHead">
-    <div><span className="clubKicker">MOMENTOS QUE DEFINIERON AL CLUB</span><h3>Línea del tiempo</h3></div>
+    <div><span className="clubKicker">{COPY.history.timelineKicker}</span><h3>{COPY.history.timelineTitle}</h3></div>
    </div>
    {timeline.length?(
     <>
@@ -97,11 +98,11 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    )}
 
    <div className="clubHistorySectionHead">
-    <div><span className="clubKicker">NOMBRES QUE DEJARON HUELLA</span><h3>Figuras históricas del club</h3></div>
+    <div><span className="clubKicker">{COPY.history.figuresKicker}</span><h3>{COPY.history.figuresTitle}</h3></div>
    </div>
    {editorial?.legends.length?(
     <>
-     <p className="clubHistoryIntro">Selección de jugadores, mánagers y personalidades documentadas en las fuentes del club. No es un ranking absoluto.</p>
+     <p className="clubHistoryIntro">{COPY.history.figuresNote}</p>
      <div className="clubHistoryLegends">
       {editorial.legends.map(legend=>(
        <article className="clubHistoryLegend" key={legend.name}>
@@ -126,10 +127,10 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    <section className="clubHistoryHall" aria-labelledby="clubHistoricHallTitle">
     <div className="clubHistoryHallHeader">
      <div>
-      <span className="clubKicker">RECONOCIMIENTO OFICIAL</span>
-      <h3 id="clubHistoricHallTitle">Inmortales vinculados al club</h3>
+      <span className="clubKicker">{COPY.history.hallKicker}</span>
+      <h3 id="clubHistoricHallTitle">{COPY.history.hallTitle}</h3>
       <p>{editorial?.immortals.length?
-       "Personajes que tuvieron un vínculo documentado con este equipo y fueron entronizados en el Salón de la Fama del Beisbol Mexicano.":
+       COPY.history.hallNote:
        "La relación de inmortales con este club se verificará antes de mostrar nombres y años de entronización."}</p>
      </div>
      <a className="clubHistoryHallAll" href={editorial?.immortals.length?
@@ -151,7 +152,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
 
    <div className="clubHistoryOrigins">
     <div>
-     <span className="clubKicker">LA CASA DEL EQUIPO</span>
+     <span className="clubKicker">{COPY.history.stadiumKicker}</span>
      <h3>{overview.stadium??"El estadio de "+club.name}</h3>
      <p>{editorial?.stadiumOpened
        ? editorial.stadiumOpenedNote
@@ -171,7 +172,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
    </div>
 
    <footer className="clubHistorySources">
-    <span className="clubKicker">FUENTES HISTÓRICAS</span>
+    <span className="clubKicker">{COPY.history.sourcesKicker}</span>
     <p>Los hechos y las personas que aparecen aquí tienen referencias documentales; la información actual del estadio procede de la ficha oficial de LMB. Los títulos se presentan hasta 2026.</p>
     <div>
      <a href={LMB_CHAMPIONSHIP_SOURCE} target="_blank" rel="noopener noreferrer">Palmarés de LMB ↗</a>
