@@ -5441,3 +5441,28 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .lmpClubPlayerAvatar > img { width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:inherit; }
 .lmpClubPlayerAvatar > span { font-weight:800;color:#afc1b9; }
 .lmpClubSecondSource { display:block;margin-top:8px; }
+
+/* Algodoneros LMP: calendario contraído únicamente en teléfonos.
+   <details>/<summary> funcionan sin JavaScript y admiten teclado. */
+.lmpClubCalendarMobile { display:none; }
+.lmpClubCalendarDesktop { display:block; }
+@media (max-width: 650px) {
+  .lmpClubCalendarDesktop { display:none; }
+  .lmpClubCalendarMobile { display:block; }
+  .lmpClubCalendarToggle {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    cursor:pointer; padding:12px 13px; border:1px solid rgba(215,255,79,.26);
+    border-radius:10px; background:rgba(215,255,79,.06);
+    font-size:12px; font-weight:800; color:var(--accent);
+    list-style:none; -webkit-tap-highlight-color:transparent;
+  }
+  .lmpClubCalendarToggle::-webkit-details-marker { display:none; }
+  .lmpClubCalendarToggle:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  .lmpClubCalendarChevron { font-size:21px; line-height:1; transition:transform .2s ease; }
+  .lmpClubCalendarMobile[open] .lmpClubCalendarChevron { transform:rotate(180deg); }
+  .lmpClubCalendarExpanded { padding-top:3px; }
+  .lmpClubCalendarExpanded > a { display:inline-block; margin-top:4px; font-size:12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lmpClubCalendarChevron { transition:none; }
+}
