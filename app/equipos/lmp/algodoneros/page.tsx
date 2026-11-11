@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getTeamLogo } from "@/lib/teamLogos";
 import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
+import LmpAlgodonerosEditorialHistory from "@/components/LmpAlgodonerosEditorialHistory";
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getAlgodonerosNews, getAlgodonerosRoster, getAlgodonerosStanding, getAlgodonerosFixtures } from "@/lib/lmpAlgodonerosContent";
 
 export const revalidate = 900;
@@ -200,73 +202,91 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         </div>
       </section>}
 
-      {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb">
-        <header className="clubBigLeaguesHeader"><div><span className="clubKicker">GUASAVE Y LA GRAN CARPA · FUENTES VERIFICADAS</span>
-          <h2>Peloteros de Algodoneros con trayectoria en MLB</h2>
-          <p>El vínculo significa que vistieron la franela de Guasave y también jugaron en Grandes Ligas. No implica que Algodoneros los transfiriera directamente a MLB ni que su debut ocurriera después de pasar por Guasave.</p>
-        </div>{logo&&<img src={logo} width={72} height={72} alt=""/>}</header>
-        <div className="clubBigLeaguesSummary">
-          <div><strong>04</strong><span>Casos documentados con paso por MLB</span></div>
-          <div><strong>01</strong><span>Prospecto documentado en MiLB, sin debut acreditado</span></div>
+      {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb" aria-labelledby="lmpGuasaveMlbTitle">
+        <header className="clubBigLeaguesHeader">
+          <div><span className="clubKicker">{COPY.mlb.kicker}</span>
+            <h2 id="lmpGuasaveMlbTitle">{COPY.mlb.title(name)}</h2>
+            <p>Distinguimos a los jugadores que llegaron a MLB después de su paso por Algodoneros, a quienes ya habían jugado en las Mayores antes de llegar a Guasave, y a los prospectos de Ligas Menores. Un vínculo entre ambos circuitos no significa una transferencia directa.</p>
+          </div>
+          <div className="clubBigLeaguesHeaderMark" aria-hidden="true">
+            {logo?<img className="clubToMlbHeroLogo" src={logo} alt="" width={65} height={65}/>:<span>GSV</span>}
+            <strong>→</strong><span>MLB</span>
+          </div>
+        </header>
+        <div className="clubBigLeaguesSummary" aria-label="Trayectorias documentadas">
+          <div><strong>01</strong><span>Debut posterior en MLB verificado</span></div>
+          <div><strong>03</strong><span>Jugadores con experiencia MLB previa</span></div>
+          <div><strong>01</strong><span>Prospecto de MiLB documentado</span></div>
         </div>
-        <div className="clubBigLeaguesSectionHead"><span className="clubKicker">JUGARON EN GRANDES LIGAS</span><h3>Trayectorias verificadas</h3></div>
-        <div className="clubBigLeaguesProspects clubToMlbProspectGrid">
-          {[
-            {name:"Drew Avans",role:"Jardinero",org:"Athletics y Milwaukee Brewers",detail:"Jugó con Guasave desde 2024–25; debutó en MLB el 27 de mayo de 2025 con Athletics y también jugó para Milwaukee. No fue un traspaso directo desde LMP.",club:"https://losalgodoneros.com/drew-avans-retorna-con-algodoneros-tras-debutar-en-grandes-ligas/",mlb:"https://www.mlb.com/player/drew-avans-682183"},
-            {name:"Jacob Nix",role:"Lanzador derecho",org:"San Diego Padres",detail:"Participó en MLB con Padres en 2018 y se incorporó a los Algodoneros durante la campaña invernal 2025–26. Su etapa MLB fue anterior a Guasave.",club:"https://losalgodoneros.com/jacob-nix-se-integra-al-cuerpo-de-abridores-de-algodoneros/",mlb:"https://www.mlb.com/player/jacob-nix-656798"},
-            {name:"Domingo Acevedo",role:"Lanzador derecho",org:"Oakland Athletics",detail:"El club documentó su incorporación en diciembre de 2025 después de su experiencia de tres temporadas en MLB con Oakland. Su debut en Grandes Ligas fue previo.",club:"https://losalgodoneros.com/domingo-acevedo-redondea-la-rotacion-abridora-de-los-algodoneros/",mlb:"https://www.mlb.com/player/domingo-acevedo-642758"},
-            {name:"Noé Muñoz",role:"Receptor histórico",org:"Los Angeles Dodgers",detail:"El club reconoce su trayectoria con Algodoneros y documenta su breve participación en MLB con Los Angeles Dodgers en 1995. También integra el Salón de la Fama del Beisbol Mexicano.",club:"https://losalgodoneros.com/noe-munoz-una-muralla-que-tuvo-algodoneros-detras-del-home/",mlb:"https://www.mlb.com/player/noe-munoz-477510"}
-          ].map(p=><article key={p.name} className="clubBigLeaguesProspect">
-            <span className="clubBigLeaguesStatus">MLB · PARTICIPACIÓN DOCUMENTADA</span>
-            <h4>{p.name}</h4>
-            <span className="clubBigLeaguesProspectOrganization">{p.role} · {p.org}</span>
-            <p>{p.detail}</p>
-            <a href={p.club} target="_blank" rel="noopener noreferrer">Fuente: Algodoneros de Guasave ↗</a>
-            <a href={p.mlb} target="_blank" rel="noopener noreferrer" className="lmpClubSecondSource">Ficha / historial MLB ↗</a>
-          </article>)}
+
+        <div className="clubBigLeaguesSectionHead">
+          <span className="clubKicker">{COPY.mlb.debutKicker}</span>
+          <h3>{COPY.mlb.debutTitle}</h3>
         </div>
-        <div className="clubBigLeaguesSectionHead"><span className="clubKicker">DESARROLLO EN ESTADOS UNIDOS</span><h3>Prospectos vinculados a MiLB</h3></div>
         <div className="clubBigLeaguesProspects">
           <article className="clubBigLeaguesProspect">
-            <span className="clubBigLeaguesStatus clubBigLeaguesStatus-minor">LIGAS MENORES · NO DEBUT MLB</span>
-            <h4>Ian Medina</h4><span className="clubBigLeaguesProspectOrganization">Lanzador · Miami Marlins (nivel Rookie)</span>
-            <p>Algodoneros documentó su actividad de 2025 en la liga Rookie de Miami y su participación en pretemporada con Guasave. Este registro no acredita debut en MLB.</p>
-            <a href="https://losalgodoneros.com/ian-medina-suma-cuatro-rescates-en-la-liga-rookie-con-los-marlins/" target="_blank" rel="noopener noreferrer">Ver publicación oficial ↗</a>
+            <div className="clubBigLeaguesProspectHeader">
+              <span className="clubBigLeaguesInitials" aria-hidden="true">DA</span>
+              <span className="clubBigLeaguesYear">2025</span>
+            </div>
+            <span className="clubBigLeaguesStatus">DEBUT MLB CONFIRMADO</span>
+            <h4>Drew Avans</h4>
+            <span className="clubBigLeaguesProspectOrganization">Athletics · 27/05/2025</span>
+            <p>Jugó con Guasave desde 2024–25 y debutó en Grandes Ligas el 27 de mayo de 2025. La cronología acredita su debut posterior, pero no un traspaso directo de derechos desde LMP.</p>
+            <a href="https://www.mlb.com/player/drew-avans-682183" target="_blank" rel="noopener noreferrer">Ver debut en fuente oficial ↗</a>
+            <a className="lmpClubSecondSource" href="https://losalgodoneros.com/drew-avans-retorna-con-algodoneros-tras-debutar-en-grandes-ligas/" target="_blank" rel="noopener noreferrer">Ver vínculo con Algodoneros ↗</a>
           </article>
         </div>
-        <p className="clubSmallNote">Selección histórica documentada, no registro completo de todos los jugadores del club ni lista de contratos vigentes.</p>
+
+        <div className="clubBigLeaguesSectionHead">
+          <span className="clubKicker">EXPERIENCIA PREVIA EN GRANDES LIGAS</span>
+          <h3>Jugaron en MLB antes de llegar al club</h3>
+        </div>
+        <p className="clubBigLeaguesNote">Estos peloteros pertenecen a la historia de Guasave, pero no se presentan como prospectos exportados por el equipo, porque su debut en MLB fue anterior a su participación documentada en Algodoneros.</p>
+        <div className="clubBigLeaguesProspects clubToMlbProspectGrid">
+          {[
+            {name:"Jacob Nix",initials:"JN",year:"2018",org:"San Diego Padres",role:"Lanzador derecho",detail:"Debutó en MLB en 2018 y después se integró a Guasave en 2025–26. El club confirmó su incorporación al cuerpo de abridores.",club:"https://losalgodoneros.com/jacob-nix-se-integra-al-cuerpo-de-abridores-de-algodoneros/",mlb:"https://www.mlb.com/player/jacob-nix-656798"},
+            {name:"Domingo Acevedo",initials:"DA",year:"2021",org:"Oakland Athletics",role:"Lanzador derecho",detail:"Debutó en MLB en 2021 y se unió a la rotación de Guasave durante 2025–26 tras su experiencia con Oakland.",club:"https://losalgodoneros.com/domingo-acevedo-redondea-la-rotacion-abridora-de-los-algodoneros/",mlb:"https://www.mlb.com/player/domingo-acevedo-642758"},
+            {name:"Noé Muñoz",initials:"NM",year:"1995",org:"Los Angeles Dodgers",role:"Receptor histórico",detail:"Debutó en MLB con Dodgers en 1995. El club documenta su paso por Guasave y su entronización en el Salón de la Fama del Beisbol Mexicano.",club:"https://losalgodoneros.com/un-algodonero-con-marca-de-salon-de-la-fama/",mlb:"https://www.mlb.com/player/noe-munoz-477510"}
+          ].map(player=><article className="clubBigLeaguesProspect" key={player.name}>
+            <div className="clubBigLeaguesProspectHeader">
+              <span className="clubBigLeaguesInitials" aria-hidden="true">{player.initials}</span>
+              <span className="clubBigLeaguesYear">{player.year}</span>
+            </div>
+            <span className="clubBigLeaguesStatus clubBigLeaguesStatus-minor">DEBUT MLB PREVIO AL PASO POR GUASAVE</span>
+            <h4>{player.name}</h4>
+            <span className="clubBigLeaguesProspectOrganization">{player.role} · {player.org}</span>
+            <p>{player.detail}</p>
+            <a href={player.mlb} target="_blank" rel="noopener noreferrer">Ver historial MLB ↗</a>
+            <a className="lmpClubSecondSource" href={player.club} target="_blank" rel="noopener noreferrer">Ver fuente del club ↗</a>
+          </article>)}
+        </div>
+
+        <div className="clubBigLeaguesSectionHead">
+          <span className="clubKicker">{COPY.mlb.minorKicker}</span>
+          <h3>{COPY.mlb.minorTitle}</h3>
+        </div>
+        <p className="clubBigLeaguesNote">Una firma con una organización estadounidense o la participación en MiLB no equivalen a un debut en MLB ni confirman un contrato vigente.</p>
+        <div className="clubBigLeaguesProspects">
+          <article className="clubBigLeaguesProspect">
+            <div className="clubBigLeaguesProspectHeader"><span className="clubBigLeaguesInitials" aria-hidden="true">IM</span><span className="clubBigLeaguesYear">2025</span></div>
+            <span className="clubBigLeaguesStatus clubBigLeaguesStatus-minor">LIGAS MENORES · SIN DEBUT MLB CONFIRMADO</span>
+            <h4>Ian Medina</h4>
+            <span className="clubBigLeaguesProspectOrganization">Lanzador · Miami Marlins (liga Rookie)</span>
+            <p>El club documentó su actividad en la liga Rookie de Miami durante 2025. Este dato no acredita participación en Grandes Ligas.</p>
+            <a href="https://losalgodoneros.com/ian-medina-suma-cuatro-rescates-en-la-liga-rookie-con-los-marlins/" target="_blank" rel="noopener noreferrer">{COPY.mlb.sourceLabel}</a>
+          </article>
+        </div>
+
+        <div className="clubBigLeaguesFooter">
+          <strong>Una trayectoria de ida no es lo mismo que una de regreso</strong>
+          <p>Presentamos por separado los debuts MLB posteriores al paso por Guasave, la experiencia MLB previa a su llegada y los vínculos de desarrollo en Ligas Menores. Esta selección no pretende abarcar a todos los peloteros que han vestido ambas franelas.</p>
+          <a href="https://losalgodoneros.com/" target="_blank" rel="noopener noreferrer" className="clubDirectorySource">Consultar archivo del club ↗</a>
+        </div>
       </section>}
 
-      {view==="historia"&&<section className="clubHistory clubDirectoryHistory">
-        <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span>
-          <h2>La historia de los Algodoneros de Guasave</h2>
-          <p>El equipo representa a Guasave, Sinaloa, en la pelota invernal mexicana desde 1970. Su afición blanquiazul y Kuroda Park son parte de la identidad del club.</p>
-        </div>{logo&&<img src={logo} alt="Escudo de Algodoneros" width={98} height={98}/>}</header>
-        <div className="clubHistoryStats">
-          <div><span>INGRESO A LMP</span><strong>1970</strong><small>Inicio de su historia en el circuito</small></div>
-          <div><span>TÍTULOS LMP</span><strong>01</strong><small>Campeonato 1971–72</small></div>
-          <div><span>ESTADIO</span><strong className="clubDirectoryStadiumText">Kuroda Park</strong><small>Nombre actual desde 2021</small></div>
-        </div>
-        <div className="clubEditorialSection">
-          <div className="clubSectionTitle"><div><span className="clubKicker">MOMENTOS DOCUMENTADOS</span><h2>Legado del club</h2></div></div>
-          <p>El club conquistó la LMP en la temporada 1971–72 y disputó cinco series finales a lo largo de su historia, según la información del recinto que alberga sus juegos.</p>
-          <p>Su estadio fue renovado en 2019 y adoptó la denominación Kuroda Park en 2021.</p>
-          <a className="clubDirectorySource" href="https://www.kuroda.com/kuroda-park" target="_blank" rel="noopener noreferrer">Consultar historia del estadio y club ↗</a>
-        </div>
-        <section className="clubHistoryHall">
-          <div className="clubHistoryHallHeader"><div><span className="clubKicker">RECONOCIMIENTO HISTÓRICO</span>
-            <h3>Jugadores y Salón de la Fama</h3>
-            <p>Los nombres se incorporan solo cuando el propio club confirma su paso por Guasave y su entronización.</p>
-          </div><a className="clubHistoryHallAll" href="/salon-de-la-fama">Explorar Salón de la Fama ↗</a></div>
-          <div className="clubHistoryHallGrid">
-            <a className="clubHistoryHallMember" href="https://losalgodoneros.com/noe-munoz-una-muralla-que-tuvo-algodoneros-detras-del-home/" target="_blank" rel="noopener noreferrer">
-              <span className="clubHistoryHallMedal" aria-hidden="true">★</span>
-              <strong>Noé Muñoz</strong><small>Receptor histórico; número 28 retirado por Algodoneros</small>
-              <span>Entronizado en 2023 · Fuente del club ↗</span>
-            </a>
-          </div>
-        </section>
-      </section>}
+      {view==="historia"&&<LmpAlgodonerosEditorialHistory name={name} logo={logo} />}
+
     </div>
   </main>;
 }
