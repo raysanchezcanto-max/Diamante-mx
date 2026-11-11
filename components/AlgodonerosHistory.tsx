@@ -1,3 +1,4 @@
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import {
   ALGODONEROS_HISTORY_LEGENDS as legends,
   ALGODONEROS_HISTORY_MILESTONES as milestones,
@@ -9,8 +10,8 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
     <section className="clubHistory" aria-labelledby="clubHistoryTitle">
       <div className="clubHistoryHeading">
         <div>
-          <span className="clubKicker">HISTORIA · LA MÁQUINA GUINDA</span>
-          <h2 id="clubHistoryTitle">Una tradición que nació en 1940</h2>
+          <span className="clubKicker">HISTORIA · LIGA MEXICANA DE BEISBOL</span>
+          <h2 id="clubHistoryTitle">{COPY.history.title("Algodoneros del Unión Laguna")}</h2>
           <p>
             Desde Torreón, los Algodoneros del Unión Laguna han escrito páginas
             memorables del beisbol mexicano. Conoce sus orígenes, las dos estrellas
@@ -27,30 +28,30 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
       </div>
 
       <div className="clubHistorySectionHead">
-        <div><span className="clubKicker">LAS DOS ESTRELLAS</span><h3>Campeonatos de Liga Mexicana</h3></div>
+        <div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{COPY.history.recordTitle("Liga Mexicana")}</h3></div>
         <span className="clubHistoryNote">Títulos de LMB hasta 2026</span>
       </div>
       <div className="clubHistoryChampions">
         <article className="clubHistoryChampionCard">
           <span className="clubHistoryStar" aria-hidden="true">★</span>
-          <span className="clubHistoryChampLabel">PRIMER TÍTULO · LMB</span>
+          <span className="clubHistoryChampLabel">{COPY.history.firstCrown} · LMB</span>
           <strong>1942</strong>
-          <h4>La primera gloria</h4>
+          <h4>{COPY.history.firstGlory}</h4>
           <p>Con Martín Dihigo como jugador-mánager, Unión Laguna alcanzó la cima del circuito mexicano.</p>
           <a href={sources[0].url} target="_blank" rel="noopener noreferrer">Leer historia oficial ↗</a>
         </article>
         <article className="clubHistoryChampionCard">
           <span className="clubHistoryStar" aria-hidden="true">★</span>
-          <span className="clubHistoryChampLabel">SEGUNDO TÍTULO · LMB</span>
+          <span className="clubHistoryChampLabel">{COPY.history.recentCrown} · LMB</span>
           <strong>1950</strong>
-          <h4>La segunda corona</h4>
+          <h4>{COPY.history.mostRecentGlory}</h4>
           <p>El equipo dirigido por Guillermo «Memo» Garibay venció a Charros de Jalisco en seis partidos.</p>
           <a href={sources[2].url} target="_blank" rel="noopener noreferrer">Leer historia del campeonato ↗</a>
         </article>
       </div>
 
       <div className="clubHistorySectionHead">
-        <div><span className="clubKicker">MOMENTOS QUE DEFINIERON AL CLUB</span><h3>Línea del tiempo</h3></div>
+        <div><span className="clubKicker">{COPY.history.timelineKicker}</span><h3>{COPY.history.timelineTitle}</h3></div>
       </div>
       <ol className="clubHistoryTimeline">
         {milestones.map(item=>(
@@ -67,8 +68,8 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
 
       <div className="clubHistorySectionHead">
         <div>
-          <span className="clubKicker">LEYENDAS DE LA MÁQUINA GUINDA</span>
-          <h3>Peloteros que dejaron huella</h3>
+          <span className="clubKicker">{COPY.history.figuresKicker}</span>
+          <h3>{COPY.history.figuresTitle}</h3>
         </div>
       </div>
       <p className="clubHistoryIntro">
@@ -93,8 +94,8 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
       <section className="clubHistoryHall" aria-labelledby="clubHistoryHallTitle">
         <div className="clubHistoryHallHeader">
           <div>
-            <span className="clubKicker">RECONOCIMIENTO OFICIAL</span>
-            <h3 id="clubHistoryHallTitle">Inmortales de la Máquina Guinda</h3>
+            <span className="clubKicker">{COPY.history.hallKicker}</span>
+            <h3 id="clubHistoryHallTitle">{COPY.history.hallTitle}</h3>
             <p>
               Estas figuras tuvieron vínculo con Unión Laguna y están entronizadas
               en el Salón de la Fama del Beisbol Mexicano. Su año de ingreso
@@ -125,7 +126,7 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
 
       <div className="clubHistoryOrigins">
         <div>
-          <span className="clubKicker">EL HOGAR DE LA MÁQUINA GUINDA</span>
+          <span className="clubKicker">{COPY.history.stadiumKicker}</span>
           <h3>Estadio de la Revolución</h3>
           <p>
             La casa histórica de Unión Laguna está en Torreón, Coahuila. Su
@@ -138,7 +139,7 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
       </div>
 
       <footer className="clubHistorySources">
-        <span className="clubKicker">FUENTES HISTÓRICAS</span>
+        <span className="clubKicker">{COPY.history.sourcesKicker}</span>
         <p>Información documentada por el club, la Liga Mexicana de Beisbol y MiLB. Los títulos y los hitos corresponden a la historia registrada hasta 2026.</p>
         <div>
           {sources.map(source=>(
