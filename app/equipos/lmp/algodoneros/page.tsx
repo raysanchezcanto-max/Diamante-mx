@@ -80,14 +80,32 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
           <section className="clubPanel clubCalendarPanel">
             <span className="clubKicker">CALENDARIO · LMP</span>
             <h2>Próximos partidos</h2>
-            {fixtures.length ? <div className="lmpClubUpcomingList">
-              {fixtures.map(game=><a key={game.id} href={"/game/lmp/"+game.id} className="lmpClubUpcomingGame">
-                <span>{new Intl.DateTimeFormat("es-MX",{timeZone:"America/Mexico_City",day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit",hour12:true}).format(new Date(game.startTime))}</span>
-                <strong>{game.home?"vs. ":"@ "}{game.opponent}</strong>
-                <small>{game.home?"LOCAL":"VISITANTE"} · {game.venue}</small>
-              </a>)}
-            </div>:<p>La fuente no devolvió próximos partidos verificables en esta consulta.</p>}
-            <a href="/?league=lmp#juegos">Calendario completo LMP ↗</a>
+            <div className="lmpClubCalendarDesktop">
+              {fixtures.length ? <div className="lmpClubUpcomingList">
+                {fixtures.map(game=><a key={game.id} href={"/game/lmp/"+game.id} className="lmpClubUpcomingGame">
+                  <span>{new Intl.DateTimeFormat("es-MX",{timeZone:"America/Mexico_City",day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit",hour12:true}).format(new Date(game.startTime))}</span>
+                  <strong>{game.home?"vs. ":"@ "}{game.opponent}</strong>
+                  <small>{game.home?"LOCAL":"VISITANTE"} · {game.venue}</small>
+                </a>)}
+              </div>:<p>La fuente no devolvió próximos partidos verificables en esta consulta.</p>}
+              <a href="/?league=lmp#juegos">Calendario completo LMP ↗</a>
+            </div>
+            <details className="lmpClubCalendarMobile">
+              <summary className="lmpClubCalendarToggle">
+                <span>{fixtures.length ? "Ver próximos "+fixtures.length+" juegos" : "Consultar próximos juegos"}</span>
+                <span className="lmpClubCalendarChevron" aria-hidden="true">⌄</span>
+              </summary>
+              <div className="lmpClubCalendarExpanded">
+                {fixtures.length ? <div className="lmpClubUpcomingList">
+                  {fixtures.map(game=><a key={game.id} href={"/game/lmp/"+game.id} className="lmpClubUpcomingGame">
+                    <span>{new Intl.DateTimeFormat("es-MX",{timeZone:"America/Mexico_City",day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit",hour12:true}).format(new Date(game.startTime))}</span>
+                    <strong>{game.home?"vs. ":"@ "}{game.opponent}</strong>
+                    <small>{game.home?"LOCAL":"VISITANTE"} · {game.venue}</small>
+                  </a>)}
+                </div>:<p>La fuente no devolvió próximos partidos verificables en esta consulta.</p>}
+                <a href="/?league=lmp#juegos">Calendario completo LMP ↗</a>
+              </div>
+            </details>
           </section>
         </aside>
         <div className="clubMainColumn">
