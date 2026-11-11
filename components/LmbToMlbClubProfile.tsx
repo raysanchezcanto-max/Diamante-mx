@@ -1,3 +1,4 @@
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import type { LmbClubRecord } from "@/lib/lmbClubs";
 import { getLmbToMlbClub } from "@/lib/lmbToMlb";
 
@@ -14,8 +15,8 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
     <section className="clubBigLeagues clubDirectoryMlb" aria-labelledby="clubToMlbTitle">
       <header className="clubBigLeaguesHeader">
         <div>
-          <span className="clubKicker">DEL BÉISBOL MEXICANO AL DIAMANTE INTERNACIONAL</span>
-          <h2 id="clubToMlbTitle">De {club.name} a Grandes Ligas</h2>
+          <span className="clubKicker">{COPY.mlb.kicker}</span>
+          <h2 id="clubToMlbTitle">{COPY.mlb.title(club.name)}</h2>
           <p>
             {hasPriorMlbDebut
               ? "Presentamos las firmas posteriores al paso por el club y distinguimos a quienes ya habían debutado en MLB antes de jugar en LMB. Una nueva firma no constituye otro debut."
@@ -44,8 +45,8 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
           {debuts.length>0&&(
             <>
               <div className="clubBigLeaguesSectionHead">
-                <span className="clubKicker">LLEGARON A LA GRAN CARPA</span>
-                <h3>Debutaron en MLB después de su paso por el club</h3>
+                <span className="clubKicker">{COPY.mlb.debutKicker}</span>
+                <h3>{COPY.mlb.debutTitle}</h3>
               </div>
               <div className="clubBigLeaguesProspects">
                 {debuts.map(player=>(
@@ -62,8 +63,8 @@ export default function LmbToMlbClubProfile({club,logo}:Props) {
           )}
 
           <div className="clubBigLeaguesSectionHead">
-            <span className="clubKicker">{hasPriorMlbDebut?"REGRESO AL BÉISBOL ESTADOUNIDENSE":"DEL SISTEMA DE DESARROLLO A ESTADOS UNIDOS"}</span>
-            <h3>{hasPriorMlbDebut?"Firmas con organizaciones MLB después del club":"Prospectos firmados por organizaciones MLB"}</h3>
+            <span className="clubKicker">{hasPriorMlbDebut?"REGRESO AL BÉISBOL ESTADOUNIDENSE":COPY.mlb.minorKicker}</span>
+            <h3>{hasPriorMlbDebut?"Firmas con organizaciones MLB después del club":COPY.mlb.minorTitle}</h3>
           </div>
           <p className="clubBigLeaguesNote">
             {hasPriorMlbDebut
