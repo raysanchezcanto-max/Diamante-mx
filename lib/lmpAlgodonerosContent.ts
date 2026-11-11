@@ -9,7 +9,7 @@ const TEAM_ID = 5482;
 const SEASON = 2026;
 
 export type LmpClubNews = { title: string; url: string; published: string; excerpt: string };
-export type LmpClubPlayer = { id: number; name: string; number: string; position: string; group: string };
+export type LmpClubPlayer = { id: number; name: string; number: string; position: string; group: string; photo: string | null; bats: string; throws: string; birthDate: string };
 export type LmpClubRecord = { wins: number; losses: number; pct: string; standing: number };
 
 function plainText(value: string): string {
@@ -51,29 +51,74 @@ export const getAlgodonerosNews = cache(async (): Promise<LmpClubNews[]> => {
   });
 });
 
-type RosterItem = {
-  person?: { id?: number; fullName?: string };
-  jerseyNumber?: string;
-  position?: { type?: string; name?: string };
+type LmpRosterEntry = {
+  name?: string;
+  playerPosition?: string;
+  thumb?: string;
+  playerNum?: string | number;
+  playerMLBamID?: number;
+  playerHitting?: string;
+  playerFielding?: string;
+  playerBirthday?: string;
+  playerStatus?: string;
 };
+const LMP_ROSTER_URL = "https://api.lmp.mx/3.0.0/teams/5482/roster";
 export const getAlgodonerosRoster = cache(async (): Promise<LmpClubPlayer[]> => {
-  const body = await officialJson<{roster?: RosterItem[]}>(`${API}/teams/${TEAM_ID}/roster?rosterType=active&season=${SEASON}`);
-  if (!Array.isArray(body?.roster)) return [];
-  const groups: Record<string,string> = {
+  const body = await officialJson<{ response?: LmpRosterEntry[] }>(LMP_ROSTER_URL);
+  if (!Array.isArray(body?.response)) return [];
+  const groups: Record<string, string> = {
     Pitcher: "Lanzadores", Catcher: "Receptores",
-    Infielder: "Jugadores del cuadro", Outfielder: "Jardineros"
+    Infield: "Jugadores del cuadro", Outfield: "Jardineros"
   };
-  return body.roster.flatMap(item => {
-    const id = item.person?.id;
-    const name = item.person?.fullName?.trim();
-    if (!id || !name) return [];
-    const type = item.position?.type ?? "";
+  return body.response.flatMap(item => {
+    const name = item.name?.trim();
+    const id = item.playerMLBamID;
+    const group = groups[item.playerPosition ?? ""];
+    if (!name || !id || !group || item.playerStatus !== "active") return [];
+    const photo = item.thumb && /^https:\/\/images\.cloudgfx\.com\/player\/mugshot2\/\d+\?/.test(item.thumb)
+      ? item.thumb : null;
     return [{
-      id, name, number:item.jerseyNumber ?? "—",
-      position:item.position?.name ?? "Posición por confirmar",
-      group:groups[type] ?? "Otros jugadores"
+      id, name, number:String(item.playerNum ?? "—"),
+      position:item.playerPosition ?? "",
+      group, photo,
+      bats:item.playerHitting ?? "",
+      throws:item.playerFielding ?? "",
+      birthDate:item.playerBirthday ?? ""
     }];
   });
+});
+
+export type AlgodonerosFixture = {
+  id: number;
+  startTime: string;
+  opponent: string;
+  home: boolean;
+  venue: string;
+};
+type LmpFixture = {
+  gamePk?: number;
+  gameDate?: string;
+  status?: { abstractGameState?: string };
+  teams?: {away?:{team?:{id?:number;name?:string}};home?:{team?:{id?:number;name?:string}}};
+  venue?: {name?:string};
+};
+export const getAlgodonerosFixtures = cache(async (): Promise<AlgodonerosFixture[]> => {
+  const now = new Date();
+  const start = now.toISOString().slice(0,10);
+  const finish = new Date(now.getTime()+35*86400000).toISOString().slice(0,10);
+  const body = await officialJson<{dates?:Array<{games?:LmpFixture[]}>}>(
+    `${API}/schedule?sportId=17&leagueId=132&teamId=${TEAM_ID}&startDate=${start}&endDate=${finish}`
+  );
+  return (body?.dates??[]).flatMap(d=>d.games??[]).flatMap(g=>{
+    if (!g.gamePk || !g.gameDate || Date.parse(g.gameDate) <= now.getTime()-300000
+        || g.status?.abstractGameState==="Final") return [];
+    const home = g.teams?.home?.team?.id===TEAM_ID;
+    const opponent = home ? g.teams?.away?.team?.name : g.teams?.home?.team?.name;
+    return opponent ? [{
+      id:g.gamePk, startTime:g.gameDate, home,
+      opponent, venue:g.venue?.name ?? "Estadio por confirmar"
+    }] : [];
+  }).sort((a,b)=>Date.parse(a.startTime)-Date.parse(b.startTime)).slice(0,8);
 });
 
 type TeamRecord = {team?: {id?:number}; wins?:number;losses?:number;leagueRank?:string};
