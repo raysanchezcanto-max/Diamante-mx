@@ -53,13 +53,13 @@ const newsTag:Record<number,string>={
 };
 const xmlSection=(src:string,key:string)=>{
  const match=src.match(new RegExp("<"+key+"(?:\\s[^>]*)?>([\\s\\S]*?)<\\/"+key+">","i"));
- return (match?.[1]??"").replace(/^<!\\[CDATA\\[|\\]\\]>$/g,"").trim();
+ return (match?.[1]??"").replace(/^<!\[CDATA\[|\]\]>$/g,"").trim();
 };
 function decoded(v:string):string{
- return v.replace(/<[^>]*>/g," ").replace(/&(#x[0-9a-f]+|#\\d+|[a-z]+);/gi,(_,code:string)=>{
+ return v.replace(/<[^>]*>/g," ").replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi,(_,code:string)=>{
   if(code.startsWith("#")){const n=code[1]?.toLowerCase()==="x"?parseInt(code.slice(2),16):parseInt(code.slice(1),10);return Number.isFinite(n)&&n>0&&n<=0x10ffff?String.fromCodePoint(n):" ";}
   return ({amp:"&",quot:'"',apos:"'",nbsp:" ",lt:"<",gt:">",aacute:"á",eacute:"é",iacute:"í",oacute:"ó",uacute:"ú",ntilde:"ñ"} as Record<string,string>)[code.toLowerCase()]??" ";
- }).replace(/\\s+/g," ").trim();
+ }).replace(/\s+/g," ").trim();
 }
 export const getLmpDirectoryNews=cache(async(id:number):Promise<LmpClubNews[]>=>{
  const tag=newsTag[id];
@@ -70,12 +70,12 @@ export const getLmpDirectoryNews=cache(async(id:number):Promise<LmpClubNews[]>=>
   if(!r.ok)return [];
   xml=await r.text();
  }catch{return [];}
- const entries=[...xml.matchAll(/<item>([\\s\\S]*?)<\\/item>/g)].slice(0,12);
+ const entries=[...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0,12);
  return entries.flatMap(([_,content])=>{
   const title=decoded(xmlSection(content,"title")),url=xmlSection(content,"link");
   const pubDate=xmlSection(content,"pubDate");
   const excerpt=decoded(xmlSection(content,"description")).slice(0,220);
-  const cover=content.match(/<media:content\\s+url="([^"]+)"/)?.[1]??"";
+  const cover=content.match(/<media:content\s+url="([^"]+)"/)?.[1]??"";
   const image=cover.startsWith("https://editor.lmp.mx/content/images/")?cover:null;
   if(!title||!url.startsWith("https://editor.lmp.mx/"))return [];
   const published=pubDate&&Number.isFinite(Date.parse(pubDate))?new Date(pubDate).toISOString():"";
