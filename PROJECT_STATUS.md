@@ -1,6 +1,6 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 8 de noviembre de 2026
+**Última revisión:** 10 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
 **Prioridad actual (8/nov/2026):** **sección 131 completada: refresco automático de videos durante el postpartido de LMP**, cada 5 min durante las 24 h posteriores a la última jugada oficial cuando está registrada. Si la fuente no permite medir el final, se usa un plazo conservador y limitado de 30 h desde el inicio programado. El caché de las pestañas y búsqueda YouTube también es de 300 s. Regresión 21/21 y QA en producción confirmada. El resto de ligas no cambia. **Siguiente (132):** verificar los cinco juegos del 8/nov tras pasar a FINAL y los resúmenes/replays nuevos, sin asumir disponibilidad o acceso efectivo con membresía.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
@@ -1806,3 +1806,15 @@ Revisar la jornada del **8/nov/2026** (`850461`, `850460`, `850459`, `850458`, `
 - En `app/globals.css` se añadieron reglas móviles que apilan el encabezado y centran el bloque de inning completo a todo el ancho de la tarjeta. `SITUACIÓN DEL JUEGO` permanece arriba a la izquierda; escritorio conserva el alineado derecho original de los datos. No se modifica el modo de calentamiento ni la lógica de jugadas, bases, conteos o pitchers.
 - Commits `45f84922` (componente) y `5e6beb6b` (CSS). El commit CSS llegó a producción **Vercel READY** con Next.js/TypeScript compilados y 21 pruebas de regresión postgame superadas. Pendiente opcional: inspección visual directa del usuario en teléfono durante el siguiente juego EN VIVO.
 - La sección **132** sigue reservada para validar la publicación tardía de videos de la jornada del 8/nov.
+
+## Pendientes editoriales LMB y transición a perfiles LMP (10/nov/2026)
+
+**Auditoría realizada en producción (10/nov/2026):** 20/20 clubes LMB cuentan con ficha individual y cinco vistas navegables (Resumen, Plantilla, Movimientos, Grandes Ligas, Historia): **100/100 rutas HTTP 200**. Todas exhibían noticias por club, videos y plantilla; todas mostraban movimientos. La información de fuentes externas puede ser parcial y los vínculos históricamente documentados no constituyen un censo exhaustivo.
+
+### Pendientes que NO debemos perder al iniciar LMP
+
+1. **LMB / Conspiradores de Querétaro / Grandes Ligas:** vista creada, pero sin casos individuales acreditados de salida del club hacia MLB o sus organizaciones; muestra «Trayectorias en proceso de documentación». Investigar con fuentes oficiales y verificar dirección y cronología antes de añadir jugadores. No afirmar que no existan.
+2. **LMB / Historia / Salón de la Fama de todos los equipos:** las 20 secciones de Historia están disponibles y enlazan al Salón de la Fama, pero **no están completos para todos los clubes los listados de jugadores/personajes vinculados e inmortales**. El componente `LmbClubEditorialHistory` muestra personas solo cuando `editorial.immortals` contiene casos documentados; en otros casos señala que la relación se verificará antes de presentar nombres o entronizaciones. Ampliar club por club con pruebas de vínculo al equipo y fecha de entronización; no inventar ni atribuir integrantes del Salón sin evidencia.
+3. **Mantenimiento continuo:** noticias, videos, rosters y movimientos provienen de fuentes externas y pueden no ser exhaustivos. «Ficha funcional» y «archivo histórico/editorial completo» son cosas distintas. No cerrar una ficha como exhaustiva por el solo hecho de tener la sección.
+
+**Prioridad acordada con el usuario:** dejar estos puntos abiertos y **continuar con perfiles completos LMP accesibles al pulsar los diez logos**, replicando el estándar de navegación de LMB y empezando por Algodoneros de Guasave. La prueba E2E de videos LMP tardíos de la sección 132 permanece como pendiente independiente.
