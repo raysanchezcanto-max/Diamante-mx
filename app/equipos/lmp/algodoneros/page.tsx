@@ -206,7 +206,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         <header className="clubBigLeaguesHeader">
           <div><span className="clubKicker">{COPY.mlb.kicker}</span>
             <h2 id="lmpGuasaveMlbTitle">{COPY.mlb.title(name)}</h2>
-            <p>Distinguimos a los jugadores que llegaron a MLB después de su paso por Algodoneros, a quienes ya habían jugado en las Mayores antes de llegar a Guasave, y a los prospectos de Ligas Menores. Un vínculo entre ambos circuitos no significa una transferencia directa.</p>
+            <p>{COPY.mlb.intro}</p>
           </div>
           <div className="clubBigLeaguesHeaderMark" aria-hidden="true">
             {logo?<img className="clubToMlbHeroLogo" src={logo} alt="" width={65} height={65}/>:<span>GSV</span>}
