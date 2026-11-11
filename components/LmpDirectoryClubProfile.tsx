@@ -4,6 +4,7 @@ import type {LmpMlbAlumnus,LmpDirectoryMovement} from "@/lib/lmpClubDirectoryDat
 import {CLUB_PROFILE_COPY as COPY} from "@/lib/clubProfileCopy";
 import {getTeamLogo} from "@/lib/teamLogos";
 import LmbClubTabs, {type LmbClubView} from "./LmbClubTabs";
+import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
 
 type Props={club:LmpClubDefinition;view:LmbClubView;roster:LmpClubPlayer[];news:LmpClubNews[];record:LmpClubRecord|null;fixtures:AlgodonerosFixture[];mlbAlumni:LmpMlbAlumnus[];movements:LmpDirectoryMovement[]};
 const groups=["Lanzadores","Receptores","Jugadores del cuadro","Jardineros"];
@@ -125,7 +126,8 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
     <div className="clubBigLeaguesFooter"><strong>Una trayectoria de ida no es lo mismo que una de regreso</strong><p>Antes de marcar a alguien como prospecto firmado desde LMP o debut posterior a su paso por el club, contrastaremos las fechas y los anuncios de ambas organizaciones.</p></div>
    </section>}
 
-   {view==="historia"&&<section className="clubHistory clubDirectoryHistory">
+   {view==="historia" && club.slug==="naranjeros" && <LmpNaranjerosEditorialHistory club={club}/>}
+   {view==="historia" && club.slug!=="naranjeros" && <section className="clubHistory clubDirectoryHistory">
     <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span><h2>{COPY.history.title(club.name)}</h2>
      <p>El palmarés de {club.name}, sus primeras etapas documentadas y los campeonatos que forman parte de su trayectoria en el béisbol invernal mexicano.</p>
     </div>{logo&&<img src={logo} alt={"Escudo de "+club.name} width={98} height={98}/>}</header>
