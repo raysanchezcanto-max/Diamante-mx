@@ -94,6 +94,7 @@ export const getLmpDirectoryMlbAlumni=cache(async(id:number):Promise<LmpMlbAlumn
   .sort((a,b)=>a.name.localeCompare(b.name,"es"));
 });
 export type LmpDirectoryMovement={url:string;title:string;published:string;excerpt:string};
+const normalized=(value:string)=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 export const getLmpDirectoryMovements=cache(async(club:LmpClubDefinition):Promise<LmpDirectoryMovement[]>=>{
  const news=await getLmpDirectoryNews(club.id);
  return news.filter(p=>/refuerzo|alta|baja|contrat|incorpor|firma|movimiento|roster|llega|activ|adquiere/i.test(normalized(p.title)+" "+normalized(p.excerpt)))
