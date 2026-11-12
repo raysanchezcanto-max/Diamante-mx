@@ -148,7 +148,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
             <div className="clubSectionTitle">
               <div>
                 <span className="clubKicker">{COPY.movements.kicker("LMB")}</span>
-                <h2>Últimas operaciones oficiales</h2>
+                <h2>{COPY.movements.title("Algodoneros del Unión Laguna")}</h2>
               </div>
               <a href="https://lmb.com.mx/equipos/algodoneros" target="_blank" rel="noopener noreferrer">
                 Ver equipo en LMB ↗
