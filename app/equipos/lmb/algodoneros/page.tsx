@@ -1,3 +1,4 @@
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 
 import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
@@ -114,7 +115,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
             <div className="clubSectionTitle">
               <div>
                 <span className="clubKicker">{rosterConnected ? "PLANTILLA · FUENTE OFICIAL LMB" : "PLANTILLA · ARCHIVO 2026"}</span>
-                <h2>Jugadores de Algodoneros</h2>
+                <h2>{COPY.roster.title("Algodoneros del Unión Laguna")}</h2>
               </div>
               <a href={club.lmbRoster} target="_blank" rel="noopener noreferrer">Ver roster oficial ↗</a>
             </div>
@@ -146,7 +147,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
           <section className="clubMovementsContent" aria-label="Movimientos de Algodoneros">
             <div className="clubSectionTitle">
               <div>
-                <span className="clubKicker">MOVIMIENTOS · LMB 2026</span>
+                <span className="clubKicker">{COPY.movements.kicker("LMB")}</span>
                 <h2>Últimas operaciones oficiales</h2>
               </div>
               <a href="https://lmb.com.mx/equipos/algodoneros" target="_blank" rel="noopener noreferrer">
@@ -204,8 +205,8 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
           <div className="clubContentGrid">
             <aside className="clubSideLeft">
               <section className="clubPanel clubCalendarPanel">
-                <span className="clubKicker">CALENDARIO</span>
-                <h2>Próximos juegos</h2>
+                <span className="clubKicker">{COPY.summary.calendarKicker("LMB")}</span>
+                <h2>{COPY.summary.calendarTitle}</h2>
                 <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
                 <strong>Temporada 2026 finalizada</strong>
                 <p>El próximo encuentro de Algodoneros todavía no está confirmado.</p>
@@ -213,7 +214,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               </section>
               <section className="clubPanel clubRecordPanel">
                 <span className="clubKicker">{seasonLabel}</span>
-                <h2>Balance del equipo</h2>
+                <h2>{COPY.summary.recordTitle}</h2>
                 <div className="clubRecordGrid">
                   <div><strong>{record?.wins ?? "—"}</strong><span>GANADOS</span></div>
                   <div><strong>{record?.losses ?? "—"}</strong><span>PERDIDOS</span></div>
@@ -241,7 +242,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               </section>
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
-                  <div><span className="clubKicker">{newsConnected ? "NOTICIAS · FUENTE LMB" : "ARCHIVO LMB · 2026"}</span><h2>Noticias relacionadas</h2></div>
+                  <div><span className="clubKicker">{newsConnected ? "NOTICIAS · FUENTE LMB" : "ARCHIVO LMB · 2026"}</span><h2>{COPY.summary.newsTitle}</h2></div>
                 </div>
                 <p className="clubSmallNote">{newsConnected
                   ? "Publicaciones seleccionadas por la LMB. Actualización automática al abrir la página, con caché de aproximadamente 30 minutos."
@@ -257,7 +258,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               </section>
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
-                  <div><span className="clubKicker">MOMENTOS DEL JUEGO</span><h2>Videos destacados</h2></div>
+                  <div><span className="clubKicker">{COPY.summary.videosKicker("LMB")}</span><h2>{COPY.summary.videosTitle}</h2></div>
                   <a href="https://lmb.com.mx/videos" target="_blank" rel="noopener noreferrer">Ver más en LMB ↗</a>
                 </div>
                 <div className="clubVideoGrid">
@@ -282,7 +283,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
 
             <aside className="clubSideRight">
               <section className="clubPanel">
-                <div className="clubSideHeading"><h2>Titulares</h2><span>{newsConnected ? "LMB" : "2026"}</span></div>
+                <div className="clubSideHeading"><h2>{COPY.summary.headlineTitle}</h2><span>{newsConnected ? "LMB" : "2026"}</span></div>
                 <div className="clubHeadlines">
                   {displayedStories.slice(4,11).map((story,i)=>(
                     <a href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
