@@ -35,4 +35,36 @@ for(const heading of ["EL PALMARÉS","Línea del tiempo","Figuras históricas de
 }
 const contract=read("CLUB_PROFILE_STANDARD.md");
 assert(contract.includes("APERTURA DEL ESTADIO")&&contract.includes("AÑO DE INAUGURACIÓN"),"Design contract missing");n++;
-console.log("OK "+n+" club profile standard checks (LMB/LMP shared History metrics).");
+// Additional profile pages must share copy AND column order (calendar before record).
+const pages=[
+ "app/equipos/lmb/[slug]/page.tsx",
+ "app/equipos/lmp/algodoneros/page.tsx",
+ "components/LmpDirectoryClubProfile.tsx"
+];
+for(const p of pages){
+ const text=read(p);
+ const required=[
+   "COPY.summary.calendarKicker",
+   "COPY.summary.calendarTitle",
+   "COPY.summary.recordTitle",
+   "COPY.summary.newsTitle",
+   "COPY.summary.videosKicker",
+   "COPY.summary.videosTitle",
+   "COPY.summary.headlineTitle",
+   "COPY.roster.title",
+   "COPY.movements.kicker",
+   "COPY.movements.title"
+ ];
+ for(const symbol of required){
+  assert(text.includes(symbol),p+" missing shared section copy: "+symbol);n++;
+ }
+ const calendar=text.indexOf("clubCalendarPanel");
+ const record=text.indexOf("clubRecordPanel");
+ assert(calendar>=0 && record>calendar,p+" must show calendar before standings record");n++;
+}
+const lexicon=read("lib/clubProfileCopy.ts");
+for(const phrase of ["Próximos juegos","Actualidad del equipo","Videos destacados","Balance del equipo","Movimientos de ","Jugadores de "]){
+ assert(lexicon.includes(phrase),"missing common label "+phrase);n++;
+}
+
+console.log("OK "+n+" club profile standard checks (History + shared headings and Summary order).");
