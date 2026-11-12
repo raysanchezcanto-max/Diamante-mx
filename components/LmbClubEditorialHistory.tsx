@@ -1,3 +1,4 @@
+import { ClubHistoryMetrics, ClubHistoryStadiumYear } from "@/components/ClubHistoryFacts";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import type {LmbClubRecord} from "@/lib/lmbClubs";
 import type {LmbClubOverview} from "@/lib/lmbClubContent";
@@ -33,21 +34,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
     {logo&&<img src={logo} alt={"Escudo de "+club.name} width={98} height={98}/>}
    </header>
 
-   <div className="clubHistoryStats">
-    <div><span>{editorial?(editorial.debutLabel??"DEBUT HISTÓRICO LMB"):"ZONA LMB"}</span>
-      <strong>{editorial?.debutYear??club.region}</strong>
-      <small>{editorial?"Primeras temporadas documentadas":"Ubicación en la liga"}</small>
-    </div>
-    <div><span>CAMPEONATOS LMB</span><strong>{String(years.length).padStart(2,"0")}</strong><small>Hasta la temporada 2026</small></div>
-    <div><span>{editorial?.stadiumOpened
-        ? (editorial.stadiumOpenedNote?"APERTURA DE LAS SEDES":"APERTURA DEL ESTADIO")
-        : (overview.capacity?"CAPACIDAD DEL ESTADIO":"SEDE ACTUAL")}</span>
-      <strong className={editorial?.stadiumOpened?"":"clubDirectoryStadiumText"}>
-        {editorial?.stadiumOpened??(overview.capacity?overview.capacity.toLocaleString("es-MX"):overview.stadium??"—")}
-      </strong>
-      <small>{editorial?.stadiumOpened?overview.stadium??"Recinto del club":overview.capacity?"Espectadores · fuente LMB":"Fuente LMB"}</small>
-    </div>
-   </div>
+   <ClubHistoryMetrics league="LMB" debutYear={editorial?.debutYear??null} championships={years.length} seasonLabel="2026" stadiumName={overview.stadium} stadiumOpened={editorial?.stadiumOpened??null}/>
 
    <div className="clubHistorySectionHead">
     <div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{years.length?COPY.history.recordTitle("Liga Mexicana"):"La búsqueda de la primera estrella"}</h3></div>
@@ -164,11 +151,7 @@ export default function LmbClubEditorialHistory({club,overview,logo}:Props){
       {overview.capacitySource&&<a href={overview.capacitySource} target="_blank" rel="noopener noreferrer"
         style={{display:"block",marginTop:8}}>Consultar capacidades de las sedes ↗</a>}
     </div>
-    <div className={"clubHistoryStadiumMark"+(editorial?.stadiumOpenedNote?" clubHistoryStadiumMark--multi":"")} aria-hidden="true">
-      <span>{editorial?.stadiumOpenedNote?"ESTADIOS":"ESTADIO"}</span>
-      <strong>{editorial?.stadiumOpened??(overview.capacity?overview.capacity.toLocaleString("es-MX"):"—")}</strong>
-      <span>{editorial?.stadiumOpenedNote?"APERTURAS":editorial?.stadiumOpened?"AÑO DE INAUGURACIÓN":overview.capacity?"CAPACIDAD · PERSONAS":"SIN FECHA VERIFICADA"}</span>
-    </div>
+    <ClubHistoryStadiumYear stadiumOpened={editorial?.stadiumOpened??null}/>
    </div>
 
    <footer className="clubHistorySources">
