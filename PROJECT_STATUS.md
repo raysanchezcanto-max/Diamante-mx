@@ -1941,3 +1941,29 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 **Pendientes claramente abiertos (NO terminados):** (a) armonización exhaustiva de contenido/semántica de las demás secciones — Resumen, Plantilla, Movimientos y Grandes Ligas — incluyendo historia individual documentada, métricas/jerarquía y fuentes, no solo los títulos; (b) investigación de debut y apertura para clubes sin evidencia y posibles cambios de recinto, especialmente Mayos; (c) completar biografías, inmortales e historias en las siete fichas LMP que aún no tienen profundidad equivalente a Toros; (d) fichas de clubes de MLB como liga, hoy inexistentes en el estándar LMB/LMP; (e) QA visual en navegador real en PC y celular. Nunca anunciar uniformidad editorial exhaustiva de las tres ligas hasta cerrarlos.
 
 **Commits principales:** `870addb` (componente único), `8d62400` (fuentes LMP años estadio), `ec3c5ee`, `b1d0425`, `13973e8`, `3b570ec`, `0ca6eef`, `4af0aa2` (migración de seis componentes), `2dcbd58` (norma maestra), `eb90ca1` (regresión), `146a0ab` (integración CI).
+
+## Sección 139 — Alineación de Resumen, Plantilla, Movimientos y Grandes Ligas (11/nov/2026)
+
+**Objetivo:** continuar normalización horizontal después de la sección 138 (Historia). La base aprobada sigue siendo LMB. Evitar diferencias de etiquetas, orden y lenguaje entre las fichas genéricas LMB, las especiales Unión Laguna LMB, Guasave LMP y las nueve LMP parametrizadas.
+
+### Implementación
+
+- `lib/clubProfileCopy.ts` incorpora apartados **summary, roster y movements** con títulos/labels compartidos: `CALENDARIO OFICIAL · {liga}`, `Próximos juegos`, `Balance del equipo`, `Actualidad del equipo`, `COBERTURA AUDIOVISUAL · {liga}`, `Videos destacados`, `Titulares`, `Jugadores de {club}`, `MOVIMIENTOS · {liga}`, `Movimientos de {club}`. Se preservan diferencias de contenido verificable en cada competición y estados de conectividad.
+- Páginas migradas: `app/equipos/lmb/[slug]/page.tsx` (19 clubes), `app/equipos/lmb/algodoneros/page.tsx` (especial Unión Laguna), `components/LmpDirectoryClubProfile.tsx` (nueve clubes) y `app/equipos/lmp/algodoneros/page.tsx` (Guasave especial).
+- La columna lateral **Resumen** presenta calendario antes del balance para las 30 fichas, como en LMB. El calendario LMP sigue desplegable solamente en móvil y completo en escritorio.
+- `components/AlgodonerosGrandesLigas.tsx` (Unión Laguna) adopta el mismo kicker, título e introducción editorial del resto (`COPY.mlb.kicker/title/intro`) y el mismo nombre para el bloque de prospectos firmados. **No se forzó el texto «debut posterior» sobre casos con cronología distinta**, ni se alteraron sus registros/documentos.
+- `scripts/club-profile-standard-regression.cjs` protege los nuevos títulos y el orden calendario → balance en las cuatro implementaciones de páginas y el copy de MLB en la ficha especial. Se ejecuta dentro de `npm run build`, evitando reintroducir rotulaciones divergentes.
+
+### QA desplegado
+
+- Build de `8168d52` Vercel **READY** tras cambios de copy y prueba de regresión.
+- **120/120 vistas publicadas** (20 clubes LMB × 4 secciones + 10 clubes LMP × 4 secciones) HTTP 200, todas con tabs, sin errores de etiquetas ni de orden. Se comprobaron: las cuatro cabeceras clave de Resumen, «Jugadores de ...» en Plantilla, «Movimientos de ...» en Movimientos y la cabecera compartida de Grandes Ligas. En primer pase surgieron **dos diferencias** en la página especial de Unión Laguna; se corrigieron antes del pase final 120/120.
+- Esto es **uniformidad textual y de orden estructural**, no prueba de equivalencia exhaustiva de todos los datos de cada sección; esa distinción es indispensable.
+
+### Pendientes sin cerrar
+
+1. **Diferencias semánticas de contenido:** LMB Movimientos obtiene comunicados y algunas direcciones verificadas; LMP hoy filtra noticias que mencionan posibles movimientos y no dispone de fuente equivalente de transacciones. No declarar exhaustividad ni importar direcciones por inferencia.
+2. **Galerías por equipo y perfiles de MLB:** imágenes, videos, hitos históricos y prospectos deben completarse con fuentes por club. LMB y LMP tienen calendarios/temporadas diferentes; mostrar estados propios, no datos artificiales.
+3. **Historias profundas de los siete LMP pendientes, QA visual mobile/desktop y futura estructura de fichas de clubes MLB.** Mantener `CLUB_PROFILE_STANDARD.md` como contrato del proyecto.
+
+**Commits destacados:** `cee0238` copy, `2ee65c2` LMB general, `cd4a8c6` LMP general, `3b6e317` Guasave, `3465b69` y `df5a366` orden calendario, `084ea5e` regresión, `8fb230f` / `116c8d6` especial Laguna, `97b6234` MLB Laguna, `8168d52` regresión especial.
