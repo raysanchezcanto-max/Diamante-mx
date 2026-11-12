@@ -43,11 +43,6 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
 
    {view==="resumen"&&<div className="clubContentGrid">
     <aside className="clubSideLeft">
-     <section className="clubPanel clubRecordPanel">
-      <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span><h2>{COPY.summary.recordTitle}</h2>
-      <div className="clubRecordGrid"><div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div><div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div><div><strong>{record?.pct??"—"}</strong><span>PCT</span></div></div>
-      <p>Registro oficial de temporada, sujeto a actualización. No corresponde al marcador en vivo.</p>
-     </section>
      <section className="clubPanel clubCalendarPanel">
       <span className="clubKicker">{COPY.summary.calendarKicker("LMP")}</span><h2>{COPY.summary.calendarTitle}</h2>
       <div className="lmpClubCalendarDesktop">
@@ -61,6 +56,12 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
         <a href="/?league=lmp#juegos">Calendario completo LMP ↗</a>
        </div>
       </details>
+     </section>
+
+     <section className="clubPanel clubRecordPanel">
+      <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span><h2>{COPY.summary.recordTitle}</h2>
+      <div className="clubRecordGrid"><div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div><div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div><div><strong>{record?.pct??"—"}</strong><span>PCT</span></div></div>
+      <p>Registro oficial de temporada, sujeto a actualización. No corresponde al marcador en vivo.</p>
      </section>
     </aside>
     <div className="clubMainColumn">
