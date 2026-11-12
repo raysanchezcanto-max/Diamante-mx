@@ -14,6 +14,7 @@ const files=[
  "components/LmpNaranjerosEditorialHistory.tsx",
  "components/LmpAguilasEditorialHistory.tsx",
  "components/LmpTomaterosEditorialHistory.tsx",
+ "components/LmpYaquisEditorialHistory.tsx",
  "components/LmpDirectoryClubProfile.tsx"
 ];
 let n=0;
