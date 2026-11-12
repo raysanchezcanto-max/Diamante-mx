@@ -1,3 +1,4 @@
+import { ClubHistoryMetrics, ClubHistoryStadiumYear } from "@/components/ClubHistoryFacts";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import type { LmpClubDefinition } from "@/lib/lmpClubDirectory";
 import { getTeamLogo } from "@/lib/teamLogos";
@@ -33,11 +34,7 @@ export default function LmpAguilasEditorialHistory({club}:{club:LmpClubDefinitio
   <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span><h2>{COPY.history.title(club.name)}</h2>
    <p>Los Caballeros Águilas se integraron a la LMP en 1976–77. Su historia reúne cuatro campeonatos de liga y una corona de Serie del Caribe, con etapas ganadoras dirigidas por grandes mánagers.</p>
   </div>{logo&&<img src={logo} alt="Escudo de Águilas de Mexicali" width={98} height={98}/>}</header>
-  <div className="clubHistoryStats">
-   <div><span>DEBUT HISTÓRICO LMP</span><strong>1976</strong><small>Primera campaña 1976–77</small></div>
-   <div><span>CAMPEONATOS LMP</span><strong>04</strong><small>Hasta la temporada 2025–26</small></div>
-   <div><span>SERIES DEL CARIBE</span><strong>01</strong><small>Campeón Maracaibo 1986</small></div>
-  </div>
+  <ClubHistoryMetrics league="LMP" debutYear="1976" championships={4} seasonLabel="2025–26" stadiumName="El Nido de los Águilas" stadiumOpened="1976"/>
   <div className="clubHistorySectionHead"><div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{COPY.history.recordTitle("Liga Mexicana del Pacífico")}</h3></div><span className="clubHistoryNote">4 títulos LMP hasta 2025–26</span></div>
   <div className="clubHistoryChampions">{["1985–86","2016–17"].map((season,i)=><article className="clubHistoryChampionCard" key={season}>
    <span className="clubHistoryStar" aria-hidden="true">★</span>
@@ -70,7 +67,7 @@ export default function LmpAguilasEditorialHistory({club}:{club:LmpClubDefinitio
   <div className="clubHistoryOrigins"><div><span className="clubKicker">{COPY.history.stadiumKicker}</span><h3>El Nido de los Águilas</h3>
     <p>La Ciudad Deportiva de Mexicali recibió a Águilas en octubre de 1976. Su estadio es conocido como El Nido de los Águilas y es uno de los recintos tradicionales del béisbol de invierno.</p>
     <a href={historical} target="_blank" rel="noopener noreferrer">Consultar historia del club ↗</a></div>
-    <div className="clubHistoryStadiumMark" aria-hidden="true"><span>PRIMERA TEMPORADA LMP</span><strong>1976</strong><span>MEXICALI · BAJA CALIFORNIA</span></div>
+    <ClubHistoryStadiumYear stadiumOpened="1976"/>
   </div>
   <footer className="clubHistorySources"><span className="clubKicker">{COPY.history.sourcesKicker}</span><p>El relato se fundamenta en el archivo del club difundido por LMP, su guía histórica y las referencias de entronización del Salón de la Fama. No pretende ser un listado exhaustivo de jugadores.</p><div>
    <a href={clubHistory} target="_blank" rel="noopener noreferrer">Historia y 75 aniversario ↗</a>
