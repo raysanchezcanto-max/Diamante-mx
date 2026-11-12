@@ -1,3 +1,4 @@
+import { ClubHistoryMetrics, ClubHistoryStadiumYear } from "@/components/ClubHistoryFacts";
 import {CLUB_PROFILE_COPY as COPY} from "@/lib/clubProfileCopy";
 import type {LmpClubDefinition} from "@/lib/lmpClubDirectory";
 import {getTeamLogo} from "@/lib/teamLogos";
@@ -29,11 +30,7 @@ export default function LmpNaranjerosEditorialHistory({club}:{club:LmpClubDefini
  const logo=getTeamLogo("LMP",club.id,club.name);
  return <section className="clubHistory clubDirectoryHistory">
   <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span><h2>{COPY.history.title(club.name)}</h2><p>La historia de Naranjeros une la antigua Liga de la Costa, 17 coronas de la actual LMP y dos títulos de Serie del Caribe. Distinguimos cada etapa para no sumar campeonatos de circuitos diferentes.</p></div>{logo&&<img src={logo} alt="Escudo de Naranjeros" width={98} height={98}/>}</header>
-  <div className="clubHistoryStats">
-   <div><span>INICIO DE LA LMP MODERNA</span><strong>1958</strong><small>Antecedentes del equipo desde 1945</small></div>
-   <div><span>CAMPEONATOS LMP</span><strong>17</strong><small>Hasta la temporada 2025–26</small></div>
-   <div><span>SERIES DEL CARIBE</span><strong>02</strong><small>1976 · 2014</small></div>
-  </div>
+  <ClubHistoryMetrics league="LMP" debutYear="1958" championships={17} seasonLabel="2025–26" stadiumName="Estadio Fernando Valenzuela" stadiumOpened="2013"/>
   <div className="clubHistorySectionHead"><div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{COPY.history.recordTitle("Liga Mexicana del Pacífico")}</h3></div><span className="clubHistoryNote">17 coronas de LMP · era moderna</span></div>
   <div className="clubHistoryChampions">
    {[club.championships[0],club.championships[club.championships.length-1]].map((season,i)=><article className="clubHistoryChampionCard" key={season}>
@@ -55,7 +52,7 @@ export default function LmpNaranjerosEditorialHistory({club}:{club:LmpClubDefini
     {[{name:"Héctor Espino",year:1988,role:"Bateador legendario de Naranjeros",url:hall},{name:"Arcadio Valenzuela",year:2008,role:"Presidente de Naranjeros entre 1962 y 1986",url:arcadio}].map(p=><a className="clubHistoryHallMember" href={p.url} key={p.name} target="_blank" rel="noopener noreferrer"><span className="clubHistoryHallMedal" aria-hidden="true">★</span><strong>{p.name}</strong><small>{p.role}</small><span>Entronizado {p.year} ↗</span></a>)}
    </div>
   </section>
-  <div className="clubHistoryOrigins"><div><span className="clubKicker">{COPY.history.stadiumKicker}</span><h3>Estadio Fernando Valenzuela</h3><p>La casa actual de Naranjeros está en Hermosillo, Sonora. La franquicia jugó durante décadas en el antiguo Estadio Héctor Espino, vinculado estrechamente con su identidad.</p><a href={encyclopedia} target="_blank" rel="noopener noreferrer">Conocer historia de las sedes ↗</a></div><div className="clubHistoryStadiumMark" aria-hidden="true"><span>ESTADIO</span><strong>2013</strong><span>INICIO DE LA NUEVA SEDE</span></div></div>
+  <div className="clubHistoryOrigins"><div><span className="clubKicker">{COPY.history.stadiumKicker}</span><h3>Estadio Fernando Valenzuela</h3><p>La casa actual de Naranjeros está en Hermosillo, Sonora. La franquicia jugó durante décadas en el antiguo Estadio Héctor Espino, vinculado estrechamente con su identidad.</p><a href={encyclopedia} target="_blank" rel="noopener noreferrer">Conocer historia de las sedes ↗</a></div><ClubHistoryStadiumYear stadiumOpened="2013"/></div>
   <footer className="clubHistorySources"><span className="clubKicker">{COPY.history.sourcesKicker}</span><p>Campeonatos, hitos, figuras e inmortales respaldados por publicaciones de LMP y el Salón de la Fama. Los años de Liga de la Costa se presentan separados de la LMP moderna.</p><div><a href={source} target="_blank" rel="noopener noreferrer">Historia oficial del club ↗</a><a href={titles} target="_blank" rel="noopener noreferrer">Palmarés LMP ↗</a><a href={caribbean} target="_blank" rel="noopener noreferrer">Serie del Caribe ↗</a><a href={hall} target="_blank" rel="noopener noreferrer">Salón de la Fama ↗</a></div></footer>
  </section>;
 }
