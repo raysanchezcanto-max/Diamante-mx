@@ -1,3 +1,4 @@
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import {
   ALGODONEROS_MLB_PLAYERS as players,
@@ -9,13 +10,9 @@ export default function AlgodonerosGrandesLigas() {
     <section className="clubBigLeagues" aria-labelledby="clubBigLeaguesTitle">
       <header className="clubBigLeaguesHeader">
         <div>
-          <span className="clubKicker">DEL REVOLUCIÓN AL DIAMANTE INTERNACIONAL</span>
-          <h2 id="clubBigLeaguesTitle">De Algodoneros a Grandes Ligas</h2>
-          <p>
-            Algunos jugadores dieron el salto desde Unión Laguna al béisbol de
-            Estados Unidos. Aquí distinguimos los debuts en MLB de las firmas
-            para sus Ligas Menores y de los prospectos formados en la academia.
-          </p>
+          <span className="clubKicker">{COPY.mlb.kicker}</span>
+          <h2 id="clubBigLeaguesTitle">{COPY.mlb.title("Algodoneros del Unión Laguna")}</h2>
+          <p>{COPY.mlb.intro}</p>
         </div>
         <div className="clubBigLeaguesHeaderMark" aria-hidden="true"><span>UL</span><strong>→</strong><span>MLB</span></div>
       </header>
@@ -55,8 +52,8 @@ export default function AlgodonerosGrandesLigas() {
       </div>
 
       <div className="clubBigLeaguesSectionHead">
-        <span className="clubKicker">ACADEMIA ALGODONERA</span>
-        <h3>Prospectos que firmaron con organizaciones MLB</h3>
+        <span className="clubKicker">{COPY.mlb.minorKicker}</span>
+        <h3>{COPY.mlb.minorTitle}</h3>
       </div>
       <p className="clubBigLeaguesNote">
         Estas firmas representan oportunidades de desarrollo, no debuts confirmados
