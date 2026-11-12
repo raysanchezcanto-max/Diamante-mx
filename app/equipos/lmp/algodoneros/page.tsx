@@ -70,7 +70,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         <aside className="clubSideLeft">
           <section className="clubPanel clubRecordPanel">
             <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span>
-            <h2>Balance del equipo</h2>
+            <h2>{COPY.summary.recordTitle}</h2>
             <div className="clubRecordGrid">
               <div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div>
               <div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div>
@@ -80,8 +80,8 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
             {record&&<p>Posición calculada por porcentaje de victorias: {record.standing}.ª</p>}
           </section>
           <section className="clubPanel clubCalendarPanel">
-            <span className="clubKicker">CALENDARIO · LMP</span>
-            <h2>Próximos partidos</h2>
+            <span className="clubKicker">{COPY.summary.calendarKicker("LMP")}</span>
+            <h2>{COPY.summary.calendarTitle}</h2>
             <div className="lmpClubCalendarDesktop">
               {fixtures.length ? <div className="lmpClubUpcomingList">
                 {fixtures.map(game=><a key={game.id} href={"/game/lmp/"+game.id} className="lmpClubUpcomingGame">
@@ -123,7 +123,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
             </div>
           </section>:<section className="clubDirectoryNotice"><h2>Noticias oficiales</h2><p>El sitio oficial no devolvió publicaciones en esta consulta.</p><a href="https://losalgodoneros.com/noticias/" target="_blank" rel="noopener noreferrer">Consultar noticias ↗</a></section>}
           <section className="clubEditorialSection">
-            <div className="clubSectionTitle"><div><span className="clubKicker">NOTICIAS · ALGODONEROS DE GUASAVE</span><h2>Actualidad del equipo</h2></div></div>
+            <div className="clubSectionTitle"><div><span className="clubKicker">NOTICIAS · ALGODONEROS DE GUASAVE</span><h2>{COPY.summary.newsTitle}</h2></div></div>
             <p className="clubSmallNote">Publicaciones automáticas del sitio oficial, con actualización aproximada cada 15 minutos.</p>
             <div className="clubNewsGrid">
               {news.slice(1,5).map(story=><a className="clubNewsCard" href={story.url} key={story.url} target="_blank" rel="noopener noreferrer">
@@ -135,7 +135,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
             </div>
           </section>
           <section className="clubEditorialSection">
-            <div className="clubSectionTitle"><div><span className="clubKicker">COBERTURA AUDIOVISUAL · LMP</span><h2>Videos oficiales de Algodoneros</h2></div></div>
+            <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.summary.videosKicker("LMP")}</span><h2>{COPY.summary.videosTitle}</h2></div></div>
             <p className="clubSmallNote">Selección verificada de resúmenes del canal oficial de LMP. Estos clips corresponden a los juegos de Guasave del 7 de noviembre de 2026, no a transmisiones en vivo.</p>
             <div className="clubVideoGrid">
               {[
@@ -153,7 +153,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         </div>
         <aside className="clubSideRight">
           <section className="clubPanel">
-            <div className="clubSideHeading"><h2>Titulares</h2><span>LMP</span></div>
+            <div className="clubSideHeading"><h2>{COPY.summary.headlineTitle}</h2><span>LMP</span></div>
             <div className="clubHeadlines">
               {news.slice(5,8).map((story,i)=><a href={story.url} key={story.url} target="_blank" rel="noopener noreferrer">
                 <span className="clubHeadlineIndex">{String(i+1).padStart(2,"0")}</span><strong>{story.title}</strong>
@@ -170,7 +170,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
       </div>}
 
       {view==="plantilla"&&<section className="clubRosterContent">
-        <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · 2026–27</span><h2>Jugadores de {name}</h2></div>
+        <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · 2026–27</span><h2>{COPY.roster.title(name)}</h2></div>
           <a href={rosterLink} target="_blank" rel="noopener noreferrer">Plantilla del club ↗</a></div>
         <p className="clubSmallNote">Plantilla activa obtenida directamente del servicio oficial de LMP, con fotografía, nombre, dorsal, posición y datos biográficos disponibles. Los registros pueden cambiar durante la temporada.</p>
         {roster.length?<div className="clubRosterGrid">
@@ -190,7 +190,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
       </section>}
 
       {view==="movimientos"&&<section className="clubMovementsContent">
-        <div className="clubSectionTitle"><div><span className="clubKicker">MOVIMIENTOS · ALGODONEROS · NOVIEMBRE 2026</span><h2>Altas y bajas del equipo</h2></div><a href={official} target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
+        <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(name)}</h2></div><a href={official} target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
         <p className="clubSmallNote">Selección de comunicados publicados en «Últimos movimientos» por el club. Archivo verificado, no alimentación instantánea ni historial completo.</p>
         <div className="clubMovementsTimeline">
           {movements.map(item=><article className="clubMovementItem" key={item.date}>
