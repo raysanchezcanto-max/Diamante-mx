@@ -1,3 +1,5 @@
+import { getLmpStadiumYear } from "@/lib/lmpStadiumFacts";
+import { ClubHistoryMetrics, ClubHistoryStadiumYear } from "@/components/ClubHistoryFacts";
 import type {LmpClubDefinition} from "@/lib/lmpClubDirectory";
 import type {LmpClubPlayer,LmpClubNews,LmpClubRecord,AlgodonerosFixture} from "@/lib/lmpAlgodonerosContent";
 import type {LmpMlbAlumnus,LmpDirectoryMovement} from "@/lib/lmpClubDirectoryData";
@@ -133,9 +135,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
     <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span><h2>{COPY.history.title(club.name)}</h2>
      <p>El palmarés de {club.name}, sus primeras etapas documentadas y los campeonatos que forman parte de su trayectoria en el béisbol invernal mexicano.</p>
     </div>{logo&&<img src={logo} alt={"Escudo de "+club.name} width={98} height={98}/>}</header>
-    <div className="clubHistoryStats"><div><span>PRIMERAS TEMPORADAS</span><strong>{club.debut}</strong><small>Origen histórico documentado</small></div>
-     <div><span>CAMPEONATOS LMP</span><strong>{String(titleCount).padStart(2,"0")}</strong><small>Hasta 2025–26</small></div>
-     <div><span>SEDE ACTUAL</span><strong className="clubDirectoryStadiumText">{club.stadium}</strong><small>{club.city}</small></div></div>
+    <ClubHistoryMetrics league="LMP" debutYear={club.debut} championships={titleCount} seasonLabel="2025–26" stadiumName={club.stadium} stadiumOpened={getLmpStadiumYear(club.slug)}/>
     <div className="clubHistorySectionHead"><div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{titleCount?COPY.history.recordTitle("Liga Mexicana del Pacífico"):"La búsqueda de la primera estrella"}</h3></div><span className="clubHistoryNote">Títulos LMP hasta 2025–26</span></div>
     {highlights.length?<div className="clubHistoryChampions">{highlights.map((season,i)=><article className="clubHistoryChampionCard" key={season}>
      <span className="clubHistoryStar" aria-hidden="true">★</span><span className="clubHistoryChampLabel">{i===0?COPY.history.firstCrown:COPY.history.recentCrown} · LMP</span>
@@ -153,7 +153,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
     <div className="clubHistorySectionHead"><div><span className="clubKicker">{COPY.history.figuresKicker}</span><h3>{COPY.history.figuresTitle}</h3></div></div>
     <div className="clubDirectoryNotice"><p>La investigación de las figuras históricas de {club.name} continúa. Para incluir a un personaje aquí debemos comprobar su paso por esta franquicia y su contribución, sin confundir etapas en otros equipos.</p><a href={club.website??club.historicalSource} target="_blank" rel="noopener noreferrer">Consultar archivo histórico ↗</a></div>
     <section className="clubHistoryHall"><div className="clubHistoryHallHeader"><div><span className="clubKicker">{COPY.history.hallKicker}</span><h3>{COPY.history.hallTitle}</h3><p>La relación de inmortales con este club se verificará antes de mostrar nombres y años de entronización.</p></div><a className="clubHistoryHallAll" href="/salon-de-la-fama">Explorar Salón de la Fama ↗</a></div></section>
-    <div className="clubHistoryOrigins"><div><span className="clubKicker">{COPY.history.stadiumKicker}</span><h3>{club.stadium}</h3><p>La sede actual del club se ubica en {club.city}. Se conservará el dato oficial del estadio sin atribuirle una fecha de construcción no verificada.</p><a href="https://www.lmp.mx/" target="_blank" rel="noopener noreferrer">Consultar información de la liga ↗</a></div><div className="clubHistoryStadiumMark" aria-hidden="true"><span>ESTADIO</span><strong>2026</strong><span>SEDE ACTUAL · LMP</span></div></div>
+    <div className="clubHistoryOrigins"><div><span className="clubKicker">{COPY.history.stadiumKicker}</span><h3>{club.stadium}</h3><p>La sede actual del club se ubica en {club.city}. Se conservará el dato oficial del estadio sin atribuirle una fecha de construcción no verificada.</p><a href="https://www.lmp.mx/" target="_blank" rel="noopener noreferrer">Consultar información de la liga ↗</a></div><ClubHistoryStadiumYear stadiumOpened={getLmpStadiumYear(club.slug)}/></div>
     <footer className="clubHistorySources"><span className="clubKicker">{COPY.history.sourcesKicker}</span><p>Selección editorial basada en la fuente histórica del circuito y los datos oficiales de la temporada. Los hitos y las trayectorias pendientes se incorporarán solo tras verificarse.</p><div><a href={club.historicalSource} target="_blank" rel="noopener noreferrer">Historial de campeones ↗</a><a href="https://www.lmp.mx/" target="_blank" rel="noopener noreferrer">Liga Mexicana del Pacífico ↗</a></div></footer>
    </section>}
   </div>
