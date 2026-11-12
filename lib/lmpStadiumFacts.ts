@@ -7,7 +7,7 @@ export const LMP_STADIUM_OPENED: Record<string,{year:string;source:string}|undef
  algodoneros:{year:"1970",source:"https://www.kuroda.com/kuroda-park"},
  yaquis:{year:"2016",source:"https://www.yaquis.com.mx/2016/10/12/estrenan-yaquis-su-nueva-casa-con-colorida-fiesta/"},
  caneros:{year:"1962",source:"https://www.meganoticias.mx/tepic/noticia/cambio-de-nombre-a-chevronpark-toco-fibras-profundas/367185"},
- tomateros:{year:"2015",source:"https://www.culiacan.gob.mx/component/content/article/387-estadio-los-tomateros?catid=57"},
+ tomateros:{year:"2015",source:"https://www.noroeste.com.mx/deportes/beisbol/ya-es-oficial-instalan-las-letras-del-estadio-juan-ley-fong-en-la-casa-de-los-tomateros-de-culiacan-NJ26499150"},
  venados:{year:"1962",source:"https://www.venados.com/el-estadio-teodoro-mariscal-llega-a-los-62-anos-de-su-gloriosa-inauguracion/"},
  charros:{year:"2011",source:"https://www.lmp.mx/"},
  // Jaguares y Mayos: contrastar primero el recinto actual y su fecha real.
