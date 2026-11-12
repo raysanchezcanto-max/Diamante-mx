@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run test:lmp-youtube && npm run test:lmp-postgame && next build",
+    "build": "npm run test:lmp-youtube && npm run test:lmp-postgame && npm run test:club-profiles && next build",
     "start": "next start",
     "test:lmp-youtube": "node scripts/lmp-youtube-regression.cjs",
-    "test:lmp-postgame": "node scripts/lmp-postgame-regression.cjs"
+    "test:lmp-postgame": "node scripts/lmp-postgame-regression.cjs",
+    "test:club-profiles": "node scripts/club-profile-standard-regression.cjs"
   },
   "dependencies": {
     "next": "latest",
