@@ -1995,3 +1995,39 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Pendientes:** faltan cinco Historias profundas LMP (Cañeros, Venados, Jaguares, Charros y Mayos). Conservamos por separado pendientes de MLB, movimientos, videos y revisión visual. No declarar todas las fichas completas hasta terminar su investigación individual.
 
 **Commits:** `b6b75dc` contenido Yaquis; `b530190` conexión a plantilla; `228c0c5` prueba automatizada.
+
+## Sección 142 — Corte operativo y siguiente equipo LMP (12/nov/2026)
+
+**Objetivo de este corte:** tener un punto de reanudación inequívoco para la estrategia **un equipo LMP a la vez**, aprobada por el usuario. Se preserva el historial de las secciones anteriores; las entradas antiguas son cortes históricos y no describen necesariamente el último estado. No confundir fichas navegables con historias investigadas exhaustivamente.
+
+### Estado actual de perfiles
+
+- **LMB:** 20/20 clubes cuentan con páginas navegables y sus cinco pestañas. La referencia visual/editorial maestra sigue siendo LMB (en particular Toros de Tijuana), bajo `CLUB_PROFILE_STANDARD.md`. La ficha especial de Unión Laguna comparte las etiquetas y jerarquía aprobadas.
+- **LMP:** 10/10 clubes tienen enlaces propios desde los logos y las cinco pestañas disponibles; el calendario móvil es desplegable a ancho de teléfono, sin cambiar su versión de escritorio. **5/10 Historias tienen una ampliación editorial individual**: Algodoneros de Guasave (`LmpAlgodonerosEditorialHistory.tsx`), Naranjeros de Hermosillo (`LmpNaranjerosEditorialHistory.tsx`), Águilas de Mexicali (`LmpAguilasEditorialHistory.tsx`), Tomateros de Culiacán (`LmpTomaterosEditorialHistory.tsx`) y Yaquis de Ciudad Obregón (`LmpYaquisEditorialHistory.tsx`). La presencia de datos, tarjetas y fuentes **no equivale a una auditoría visual completa en navegadores y teléfonos reales**.
+- **LMP pendiente de historias individuales completas (5):** Cañeros de Los Mochis, Venados de Mazatlán, Jaguares de Nayarit, Charros de Jalisco y Mayos de Navojoa. Por ahora muestran la Historia genérica de `LmpDirectoryClubProfile.tsx`; sus secciones no deben anunciarse como desarrolladas al estándar histórico de Toros/Yaquis.
+- **MLB:** la liga está operativa en la plataforma, pero **las fichas de sus equipos equivalentes a la estructura LMB/LMP todavía no están construidas**. No declarar uniformidad de tres ligas concluida.
+
+### Entregas verificadas hasta hoy
+
+- **Regla transversal:** `lib/clubProfileCopy.ts` establece los mismos títulos y textos de Resumen, Plantilla, Movimientos, Grandes Ligas e Historia; `components/ClubHistoryFacts.tsx` evita que se mezclen métricas de apertura de estadio con capacidad, temporada o sede. La regresión `scripts/club-profile-standard-regression.cjs` se ejecuta dentro de `npm run build` y ya cubre las Historias ampliadas, **incluido Yaquis**.
+- **Auditorías ya documentadas:** 30/30 vistas Historia LMB+LMP con estructura/etiquetas correctas y 120/120 vistas de las otras cuatro secciones con cabeceras y orden común (secciones 138 y 139). Estas son comprobaciones HTTP/DOM; no certifican que cada jugador, movimiento, imagen o hecho histórico sea exhaustivo.
+- **Yaquis, última historia desarrollada:** sección 141. Historia HTTP 200, 12 hitos, 8 figuras, 3 inmortales vinculados con fuente, 2 tarjetas de campeonatos destacados y KPIs uniformes. Resumen, Plantilla y Grandes Ligas HTTP 200; verificadas también Historias Tomateros, Águilas y Toros. Entrega de código `228c0c553b586c76ad5e82be60c4648e0226d031`.
+- **Estado Vercel comprobado para el presente corte:** último despliegue previo `dpl_EYRCt6HmWD5K7iMPTo95Aw9uF8ub` del commit `671a301329be8bc42733b65f3a51f43d3ba90fde` **READY**. Este estado confirma el corte documental anterior; verificar el despliegue correspondiente al commit de esta propia actualización antes de cerrar.
+
+### Próximo trabajo confirmado: Cañeros de Los Mochis
+
+1. Consultar fuentes oficiales de Cañeros y LMP para su origen, los cuatro títulos LMP consignados actualmente (1968–69, 1983–84, 2002–03, 2022–23), hitos, leyendas, inmortales nacionales **realmente vinculados** y la inauguración del estadio actual. No reutilizar a priori años de un estadio antiguo ni equiparar renombramiento comercial con inauguración.
+2. Crear `components/LmpCanerosEditorialHistory.tsx` usando **exactamente** los mismos componentes/etiquetas de Historia y patrón visual de Toros, Guasave, Naranjeros, Águilas, Tomateros y Yaquis; conservar datos y fuentes propios de Cañeros.
+3. Conectar la vista únicamente para `club.slug==="caneros"` dentro de `components/LmpDirectoryClubProfile.tsx`; añadir el archivo nuevo a la regresión compartida. Revisar y corregir la sede oficial si cambia frente al catálogo.
+4. Verificar `npm run build` vía Vercel READY, luego páginas `/equipos/lmp/caneros?vista=historia`, Resumen, Plantilla, Movimientos y Grandes Ligas, además de algunas fichas de referencia LMB/LMP. Comprobar fechas, enlaces, número de elementos y evitar duplicar fuentes rotas.
+5. Al terminar, actualizar de nuevo `PROJECT_STATUS.md`: **6/10** Historias ampliadas si Cañeros supera QA, quedando Venados, Jaguares, Charros y Mayos. Hasta entonces **el estado correcto sigue siendo 5/10**.
+
+### Pendientes transversales que siguen abiertos
+
+- **Movimientos:** LMB dispone de boletines y alguna direccionalidad, pero las páginas LMP filtran noticias sin una fuente transaccional completa; no tratar esas noticias como altas/bajas formalmente verificadas.
+- **Grandes Ligas:** la coincidencia de roster LMP y fecha de debut MLB no demuestra que un club exportara al jugador. Documentar cronologías/firmas caso por caso; distinguir prospectos MiLB y debut MLB.
+- **Videos oficiales por club:** clips atribuidos por rival, fecha y partido; mantener botón de repeticiones solo cuando haya grabación verificable. No inventar transmisiones.
+- **Calidad y accesibilidad:** revisión visual real en PC y móvil, encabezados/contraste/responsive, fotos, vínculos, nomenclatura de estadios y coherencia editorial en cada liga.
+- **LMB históricos:** completar entradas documentales específicas que faltan, como los casos MLB de Conspiradores e inmortales no exhaustivos. Se mantienen abiertos los pendientes previos de `PROJECT_STATUS.md`.
+
+**Regla editorial permanente:** trabajar y cerrar **un club por vez**; mismas cinco pestañas, mismas palabras, orden, métricas y jerarquía visual de LMB; solo varían los datos verificables propios del equipo. Antes de dar por finalizado un club, comprobar contenido, fuentes, regresiones y despliegue; no decir «completo» si faltan fuentes o la inspección visual sigue pendiente.
