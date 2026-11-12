@@ -62,6 +62,15 @@ for(const p of pages){
  const record=text.indexOf("clubRecordPanel");
  assert(calendar>=0 && record>calendar,p+" must show calendar before standings record");n++;
 }
+const special=read("app/equipos/lmb/algodoneros/page.tsx");
+for(const symbol of ["COPY.summary.calendarKicker","COPY.summary.calendarTitle","COPY.summary.recordTitle","COPY.summary.newsTitle","COPY.summary.videosKicker","COPY.summary.videosTitle","COPY.summary.headlineTitle","COPY.roster.title","COPY.movements.kicker","COPY.movements.title"]){
+ assert(special.includes(symbol),"Union Laguna bespoke page must use "+symbol);n++;
+}
+assert(special.indexOf("clubCalendarPanel")<special.indexOf("clubRecordPanel"),"Union Laguna must show calendar before record");n++;
+const specialMlb=read("components/AlgodonerosGrandesLigas.tsx");
+for(const symbol of ["COPY.mlb.kicker","COPY.mlb.title","COPY.mlb.intro","COPY.mlb.minorKicker","COPY.mlb.minorTitle"]){
+ assert(specialMlb.includes(symbol),"Union Laguna MLB page must use "+symbol);n++;
+}
 const lexicon=read("lib/clubProfileCopy.ts");
 for(const phrase of ["Próximos juegos","Actualidad del equipo","Videos destacados","Balance del equipo","Movimientos de ","Jugadores de "]){
  assert(lexicon.includes(phrase),"missing common label "+phrase);n++;
