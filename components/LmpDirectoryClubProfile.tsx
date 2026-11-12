@@ -44,12 +44,12 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    {view==="resumen"&&<div className="clubContentGrid">
     <aside className="clubSideLeft">
      <section className="clubPanel clubRecordPanel">
-      <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span><h2>Balance del equipo</h2>
+      <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span><h2>{COPY.summary.recordTitle}</h2>
       <div className="clubRecordGrid"><div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div><div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div><div><strong>{record?.pct??"—"}</strong><span>PCT</span></div></div>
       <p>Registro oficial de temporada, sujeto a actualización. No corresponde al marcador en vivo.</p>
      </section>
      <section className="clubPanel clubCalendarPanel">
-      <span className="clubKicker">CALENDARIO · LMP</span><h2>Próximos partidos</h2>
+      <span className="clubKicker">{COPY.summary.calendarKicker("LMP")}</span><h2>{COPY.summary.calendarTitle}</h2>
       <div className="lmpClubCalendarDesktop">
        <div className="lmpClubUpcomingList">{fixtures.map(g=><a key={g.id} className="lmpClubUpcomingGame" href={"/game/lmp/"+g.id}><span>{dateTime(g.startTime)}</span><strong>{g.home?"vs. ":"@ "}{g.opponent}</strong><small>{g.home?"LOCAL":"VISITANTE"} · {g.venue}</small></a>)}</div>
        {!fixtures.length&&<p>Sin juegos futuros confirmados por la fuente en esta consulta.</p>}
@@ -69,20 +69,20 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
        <div className="clubFeatureShade"/><div className="clubFeatureContent"><span className="clubKicker">NOTICIA DESTACADA · FUENTE OFICIAL LMP</span>
         <h2>{news[0].title}</h2><p>{news[0].excerpt}</p><a href={news[0].url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a></div>
       </section>:<section className="clubDirectoryNotice"><h2>Noticias oficiales</h2><p>La fuente oficial no devolvió noticias encabezadas por este equipo en las publicaciones más recientes. No mostramos las de otros clubes como propias.</p><a href="https://www.lmp.mx/" target="_blank" rel="noopener noreferrer">Consultar LMP ↗</a></section>}
-     <section className="clubEditorialSection"><div className="clubSectionTitle"><div><span className="clubKicker">NOTICIAS · {club.name.toLocaleUpperCase("es")}</span><h2>Actualidad del equipo</h2></div></div>
+     <section className="clubEditorialSection"><div className="clubSectionTitle"><div><span className="clubKicker">NOTICIAS · {club.name.toLocaleUpperCase("es")}</span><h2>{COPY.summary.newsTitle}</h2></div></div>
       <p className="clubSmallNote">Noticias de LMP cuyo titular identifica al equipo como protagonista. La selección no incluye todas las menciones al club.</p>
       <div className="clubNewsGrid">{news.slice(1,6).map(story=><a className="clubNewsCard" key={story.url} href={story.url} target="_blank" rel="noopener noreferrer">
        {story.image&&<img className="clubNewsThumb" src={story.image} alt="" loading="lazy"/>}
        <span>{story.published.slice(0,10)}</span><strong>{story.title}</strong><small>Leer noticia ↗</small></a>)}</div>
      </section>
      <section className="clubEditorialSection">
-      <div className="clubSectionTitle"><div><span className="clubKicker">COBERTURA AUDIOVISUAL · LMP</span><h2>Videos oficiales</h2></div></div>
+      <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.summary.videosKicker("LMP")}</span><h2>{COPY.summary.videosTitle}</h2></div></div>
       <p className="clubSmallNote">Archivo audiovisual del canal oficial de la Liga Mexicana del Pacífico. Los clips individuales solo aparecerán aquí cuando el rival, partido y fecha estén comprobados.</p>
       <a className="clubDirectorySource" href="https://www.youtube.com/channel/UCdW_4rN3OarOoawQ4Er-ZXw/videos" target="_blank" rel="noopener noreferrer">Explorar canal oficial LMP ↗</a>
      </section>
     </div>
     <aside className="clubSideRight">
-     <section className="clubPanel"><div className="clubSideHeading"><h2>Titulares</h2><span>LMP</span></div>
+     <section className="clubPanel"><div className="clubSideHeading"><h2>{COPY.summary.headlineTitle}</h2><span>LMP</span></div>
       <div className="clubHeadlines">{news.slice(6,8).map((story,i)=><a key={story.url} href={story.url} target="_blank" rel="noopener noreferrer"><span className="clubHeadlineIndex">{String(i+1).padStart(2,"0")}</span><strong>{story.title}</strong></a>)}</div>
       {!news.length&&<p className="clubSmallNote">Sin publicaciones individuales verificadas en esta consulta.</p>}
      </section>
@@ -91,7 +91,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    </div>}
 
    {view==="plantilla"&&<section className="clubRosterContent">
-     <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · TEMPORADA 2026–27</span><h2>Jugadores de {club.name}</h2></div><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Rosters oficiales ↗</a></div>
+     <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · TEMPORADA 2026–27</span><h2>{COPY.roster.title(club.name)}</h2></div><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Rosters oficiales ↗</a></div>
      <p className="clubSmallNote">Fotografías oficiales, nombres, dorsales y posiciones de jugadores activos según el servicio de LMP. Cuerpo técnico excluido. Datos sujetos a cambios durante la temporada.</p>
      {roster.length?<div className="clubRosterGrid">
       {groups.map(group=>{const players=roster.filter(p=>p.group===group);return players.length?<section className="clubRosterGroup" key={group}><h3>{group} <span>{players.length}</span></h3>
@@ -103,12 +103,12 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    </section>}
 
    {view==="movimientos"&&<section className="clubMovementsContent">
-    <div className="clubSectionTitle"><div><span className="clubKicker">MOVIMIENTOS · {club.name.toLocaleUpperCase("es")}</span><h2>Altas y bajas del equipo</h2></div></div>
-    <p className="clubSmallNote">Publicaciones oficiales recientes con posibles movimientos de plantilla. Esta búsqueda no reemplaza el registro formal de transacciones y no constituye un historial exhaustivo.</p>
+    <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(club.name)}</h2></div></div>
+    <p className="clubSmallNote">{COPY.movements.note} Estas publicaciones han sido filtradas a partir de las noticias oficiales del club, no de un registro formal de transacciones.</p>
     {movements.length?<div className="clubMovementsTimeline">{movements.map(item=><article className="clubMovementItem" key={item.url}>
       <div className="clubMovementDate"><span>{item.published.slice(0,10)}</span><span className="clubMovementType">Noticia oficial LMP</span></div>
       <div className="clubMovementBody">{logo&&<img src={logo} alt="" width={53} height={53}/>}<div><h3>{item.title}</h3><p>{item.excerpt}</p><a href={item.url} target="_blank" rel="noopener noreferrer">Consultar nota oficial ↗</a></div></div>
-    </article>)}</div>:<div className="clubDirectoryNotice"><h3>Sin movimientos verificables en las noticias recientes</h3><p>La lista oficial de movimientos requiere una fuente de transacciones específica. No presentaremos anuncios antiguos o rumores como altas y bajas actuales.</p><a href={club.website??"https://www.lmp.mx/"} target="_blank" rel="noopener noreferrer">Consultar fuente oficial ↗</a></div>}
+    </article>)}</div>:<div className="clubDirectoryNotice"><h3>{COPY.movements.noneTitle}</h3><p>La lista oficial de movimientos requiere una fuente de transacciones específica. No presentaremos anuncios antiguos o rumores como altas y bajas actuales.</p><a href={club.website??"https://www.lmp.mx/"} target="_blank" rel="noopener noreferrer">Consultar fuente oficial ↗</a></div>}
    </section>}
 
    {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb">
