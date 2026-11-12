@@ -1,3 +1,4 @@
+import { ClubHistoryMetrics, ClubHistoryStadiumYear } from "@/components/ClubHistoryFacts";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import {
   ALGODONEROS_HISTORY_LEGENDS as legends,
@@ -21,11 +22,7 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
         <img src={logo} alt="Escudo de Algodoneros del Unión Laguna" width={98} height={98}/>
       </div>
 
-      <div className="clubHistoryStats" aria-label="Datos históricos del club">
-        <div><span>PRIMERA TEMPORADA LMB</span><strong>1940</strong><small>30 de marzo</small></div>
-        <div><span>CAMPEONATOS LMB</span><strong>02</strong><small>1942 · 1950</small></div>
-        <div><span>REGRESO DEL NOMBRE</span><strong>2018</strong><small>Algodoneros</small></div>
-      </div>
+      <ClubHistoryMetrics league="LMB" debutYear="1940" championships={2} seasonLabel="2026" stadiumName="Estadio de la Revolución" stadiumOpened="1932"/>
 
       <div className="clubHistorySectionHead">
         <div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{COPY.history.recordTitle("Liga Mexicana")}</h3></div>
@@ -135,7 +132,7 @@ export default function AlgodonerosHistory({logo}: {logo:string}) {
           </p>
           <a href={sources[0].url} target="_blank" rel="noopener noreferrer">Conocer la historia del estadio ↗</a>
         </div>
-        <div className="clubHistoryStadiumMark" aria-hidden="true"><span>ESTADIO</span><strong>1940</strong><span>REVOLUCIÓN</span></div>
+        <ClubHistoryStadiumYear stadiumOpened="1932"/>
       </div>
 
       <footer className="clubHistorySources">
