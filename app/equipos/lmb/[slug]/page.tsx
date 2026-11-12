@@ -1,3 +1,4 @@
+import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLmbStandings } from "@/lib/lmb";
@@ -116,8 +117,8 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
           <div className="clubContentGrid">
             <aside className="clubSideLeft">
               <section className="clubPanel clubCalendarPanel">
-                <span className="clubKicker">CALENDARIO OFICIAL · LMB</span>
-                <h2>Próximos juegos</h2>
+                <span className="clubKicker">{COPY.summary.calendarKicker("LMB")}</span>
+                <h2>{COPY.summary.calendarTitle}</h2>
                 <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
                 <strong>Próxima fecha por confirmar</strong>
                 <p>No mostramos el siguiente encuentro hasta contar con un calendario verificable del club.</p>
@@ -125,7 +126,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
               </section>
               <section className="clubPanel clubRecordPanel">
                 <span className="clubKicker">ÚLTIMA TABLA LMB DISPONIBLE</span>
-                <h2>Balance del equipo</h2>
+                <h2>{COPY.summary.recordTitle}</h2>
                 <div className="clubRecordGrid">
                   <div><strong>{teamRecord?.wins??"—"}</strong><span>GANADOS</span></div>
                   <div><strong>{teamRecord?.losses??"—"}</strong><span>PERDIDOS</span></div>
@@ -159,7 +160,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                 <div className="clubSectionTitle">
                   <div>
                     <span className="clubKicker">{news?.sourceStatus==="connected"?"NOTICIAS · FUENTE LMB":"NOTICIAS · SIN CONEXIÓN"}</span>
-                    <h2>Noticias relacionadas</h2>
+                    <h2>{COPY.summary.newsTitle}</h2>
                   </div>
                 </div>
                 <p className="clubSmallNote">La liga selecciona estas publicaciones. Consulta automática con caché aproximada de 30 minutos; no garantiza orden cronológico.</p>
@@ -176,8 +177,8 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
               <section className="clubEditorialSection" aria-label={"Videos de béisbol relacionados con "+club.name}>
                 <div className="clubSectionTitle">
                   <div>
-                    <span className="clubKicker">COBERTURA AUDIOVISUAL · LMB</span>
-                    <h2>Videos destacados</h2>
+                    <span className="clubKicker">{COPY.summary.videosKicker("LMB")}</span>
+                    <h2>{COPY.summary.videosTitle}</h2>
                   </div>
                   <a href="https://lmb.com.mx/videos" target="_blank" rel="noopener noreferrer">
                     Ver catálogo LMB ↗
@@ -218,7 +219,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
             <aside className="clubSideRight">
               <section className="clubPanel">
                 <div className="clubSideHeading">
-                  <h2>Titulares</h2>
+                  <h2>{COPY.summary.headlineTitle}</h2>
                   <span>{news?.sourceStatus==="connected"?"LMB":"SIN DATOS"}</span>
                 </div>
                 {headlines.length>0?(
@@ -287,8 +288,8 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         {view==="plantilla"&&(
           <section className="clubRosterContent">
             <div className="clubSectionTitle">
-              <div><span className="clubKicker">PLANTILLA · {roster?.sourceStatus==="connected"?"FUENTE OFICIAL LMB":"NO VERIFICADA"}</span><h2>Jugadores de {club.name}</h2></div>
-              <a href={official(club.slug)+"/roster"} target="_blank" rel="noopener noreferrer">Ver roster oficial ↗</a>
+              <div><span className="clubKicker">PLANTILLA · {roster?.sourceStatus==="connected"?"FUENTE OFICIAL LMB":"NO VERIFICADA"}</span><h2>{COPY.roster.title(club.name)}</h2></div>
+              <a href={official(club.slug)+"/roster"} target="_blank" rel="noopener noreferrer">{COPY.roster.sourceLabel}</a>
             </div>
             <p className="clubSmallNote">{roster?.sourceStatus==="connected"?
               "Nombres, dorsales, posiciones y fotografías vinculadas a la plantilla publicada por LMB. Consulta automática con caché aproximada de 30 minutos.":
@@ -314,7 +315,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         {view==="movimientos"&&(
           <section className="clubMovementsContent">
             <div className="clubSectionTitle">
-              <div><span className="clubKicker">MOVIMIENTOS · LMB</span><h2>Operaciones de {club.name}</h2></div>
+              <div><span className="clubKicker">{COPY.movements.kicker("LMB")}</span><h2>{COPY.movements.title(club.name)}</h2></div>
               <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Ver equipo en LMB ↗</a>
             </div>
             <p className="clubSmallNote">
@@ -342,7 +343,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   </article>
                 ))}
               </div>
-            ):<div className="clubDirectoryNotice"><h3>No hay movimientos verificados en esta consulta</h3>
+            ):<div className="clubDirectoryNotice"><h3>{COPY.movements.noneTitle}</h3>
               <p>Esto no significa que no hayan existido operaciones. El historial publicado por LMB puede ser parcial.</p>
               <a href="https://lmb.com.mx/movimientos" target="_blank" rel="noopener noreferrer">Ver movimientos LMB ↗</a></div>}
             <p className="clubSmallNote">Los boletines se actualizan al visitar la sección; no son alertas instantáneas ni un historial exhaustivo.</p>
