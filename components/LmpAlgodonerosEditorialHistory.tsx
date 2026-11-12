@@ -1,3 +1,4 @@
+import { ClubHistoryMetrics, ClubHistoryStadiumYear } from "@/components/ClubHistoryFacts";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 
 type Props = { name: string; logo: string | null };
@@ -38,11 +39,7 @@ export default function LmpAlgodonerosEditorialHistory({name,logo}:Props){
       {logo&&<img src={logo} alt={"Escudo de "+name} width={98} height={98}/>}
     </header>
 
-    <div className="clubHistoryStats">
-      <div><span>DEBUT HISTÓRICO LMP</span><strong>1970</strong><small>Primeras temporadas documentadas</small></div>
-      <div><span>CAMPEONATOS LMP</span><strong>01</strong><small>Hasta la temporada 2025–26</small></div>
-      <div><span>SEDE ACTUAL</span><strong className="clubDirectoryStadiumText">Kuroda Park</strong><small>Guasave, Sinaloa</small></div>
-    </div>
+    <ClubHistoryMetrics league="LMP" debutYear="1970" championships={1} seasonLabel="2025–26" stadiumName="Kuroda Park" stadiumOpened="1970"/>
 
     <div className="clubHistorySectionHead">
       <div><span className="clubKicker">{COPY.history.recordKicker}</span><h3>{COPY.history.recordTitle("Liga Mexicana del Pacífico")}</h3></div>
@@ -105,7 +102,7 @@ export default function LmpAlgodonerosEditorialHistory({name,logo}:Props){
         <p>El estadio de Guasave fue renovado para el regreso del equipo en 2019. Su nombre comercial actual es Kuroda Park y cuenta con capacidad informada de 8,000 espectadores.</p>
         <a href={stadium} target="_blank" rel="noopener noreferrer">Conocer el estadio ↗</a>
       </div>
-      <div className="clubHistoryStadiumMark" aria-hidden="true"><span>ESTADIO</span><strong>8,000</strong><span>CAPACIDAD · PERSONAS</span></div>
+      <ClubHistoryStadiumYear stadiumOpened="1970"/>
     </div>
 
     <footer className="clubHistorySources">
