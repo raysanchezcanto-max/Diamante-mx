@@ -17,7 +17,7 @@ export const LMP_CLUB_DIRECTORY:readonly LmpClubDefinition[]=[
  {slug:"venados",id:679,name:"Venados de Mazatlán",city:"Mazatlán, Sinaloa",stadium:"Estadio Teodoro Mariscal",website:"https://www.venados.com/",debut:"1965",championships:["1973–74","1976–77","1986–87","1992–93","1997–98","2004–05","2005–06","2008–09","2015–16"],historicalSource:historySource},
  {slug:"jaguares",id:6483,name:"Jaguares de Nayarit",city:"Tepic, Nayarit",stadium:"Coloso del Pacífico",website:null,debut:"2025",championships:[],historicalSource:recentSource},
  {slug:"charros",id:674,name:"Charros de Jalisco",city:"Zapopan, Jalisco",stadium:"Estadio Panamericano de los Charros",website:"https://charrosjalisco.com/",debut:"2014",championships:["2018–19","2021–22","2024–25","2025–26"],historicalSource:"https://www.mlb.com/es/news/charros-barren-a-tomateros-y-repiten-como-campeones-de-lmp"},
- {slug:"mayos",id:676,name:"Mayos de Navojoa",city:"Navojoa, Sonora",stadium:"Estadio Manuel Ciclón Echeverría",website:"https://mayosbeisbol.mx/",debut:"1962",championships:["1978–79","1999–00"],historicalSource:historySource}
+ {slug:"mayos",id:676,name:"Mayos de Navojoa",city:"Navojoa, Sonora",stadium:"Estadio Manuel Ciclón Echeverría",website:"https://mayosbeisbol.mx/",debut:"1959",championships:["1978–79","1999–00"],historicalSource:historySource}
 ];
 export const getLmpDirectoryClub=(slug:string)=>LMP_CLUB_DIRECTORY.find(c=>c.slug===slug);
 const normalize=(name:string)=>name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
