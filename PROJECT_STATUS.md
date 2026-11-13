@@ -2165,3 +2165,13 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - Inspección directa de las fichas en producción: Jaguares de Nayarit (monograma azul «N»), Cañeros de Los Mochis («LM» amarillo), Charros de Jalisco (símbolo azul) y Olmecas de Tabasco (símbolo azul/verde). Las cuatro imágenes ya se muestran **sin cuadro blanco externo**; las imágenes de origen no se sustituyeron por logos ficticios.
 - Hallazgo: el escudo azul/verde de Olmecas mantiene poco contraste sobre la cabecera borgoña. `app/globals.css` agrega sombra óptica neutra a las insignias y un halo blanco/cian muy sutil para Olmecas. No cambia geometría, tipografía ni colores internos del archivo original. Commit `216f76d`.
 - **Pendiente:** validar el resultado del CSS en el despliegue READY, comprobar móvil y revisar las restantes identidades LMB/LMP visualmente una por una. La revisión de cuatro cabeceras no equivale a aprobación exhaustiva de los treinta clubes ni a una verificación de derechos de los activos originales.
+
+
+## 151. Revisión técnica completa de los 30 escudos de ficha (13-nov-2026)
+
+**Cobertura:** 10 LMP y 20 LMB. Se visitaron individualmente en producción las 30 fichas y se verificaron las rutas de `.clubHeroLogo img`, el tamaño natural de las imágenes y la caja CSS común de **104 px**. La primera lectura de Jaguares ocurrió antes de terminar la carga; una segunda visita confirmó imagen completa de **158×158**, por lo que **no** se considera rota.
+
+- **LMP (10/10):** Algodoneros 158×158; Naranjeros 158×158; Águilas 158×158; Tomateros 158×158; Yaquis 158×158; Cañeros 254×222; Venados 158×158; Jaguares 158×158; Charros 198×158; Mayos 158×158. Todas alcanzaron carga en la ficha y conservan relación de aspecto por `object-fit:contain`.
+- **LMB (20/20):** archivos localizados y mostrados; ocho PNG de **96×96** (Acereros, Saraperos, Diablos Rojos, Guerreros, Pericos, Piratas, Dorados, Conspiradores) se ampliaban a 104 px. Ahora se mantienen a **96×96** dentro del contenedor fijo para evitar ampliación innecesaria y pérdida de nitidez. Resto de LMB tiene recursos de 150 a 823 px (variable por club; Tecos WebP, dos insignias SVG).
+- **Contraste:** halo discreto específico para la «N» azul de Jaguares, como el ajuste previo del azul/verde de Olmecas. Sin sustituir ni recolorear directamente archivos originales. Commit `2d2dc87`.
+- **Importante:** esto es un control **técnico** de carga, proporción y resolución, no prueba de licencia/autenticidad del emblema ni aprobación visual subjetiva de treinta capturas. Aún hace falta contraste final con los archivos oficiales y pruebas móviles para cerrar el rubro gráfico al 100%.
