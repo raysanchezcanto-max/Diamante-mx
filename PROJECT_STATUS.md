@@ -2074,3 +2074,17 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Siguiente equipo sugerido:** Jaguares de Nayarit, atendiendo a que es una franquicia más reciente y NO atribuyéndole títulos, inmortales ni hitos de una franquicia anterior sin fuente; continuar después con Charros y Mayos.
 
 **Pendientes transversales:** ampliar movimientos formales LMP, videos oficiales verdaderamente por club, cronologías MLB con dirección verificada, QA visual móvil/escritorio y perfiles individuales de MLB como liga. Mantener normativa `CLUB_PROFILE_STANDARD.md`.
+
+
+## 145. Historia LMP — Jaguares de Nayarit (8/10)
+
+**Estado:** Implementada y publicada en `/equipos/lmp/jaguares?vista=historia`. Se mantiene intacta la navegación de las demás vistas del equipo.
+
+- Nuevo `components/LmpJaguaresEditorialHistory.tsx`: estructura editorial común, KPI de debut **2025**, **0 títulos** y apertura del estadio en **2024**; dos tarjetas de hechos destacados (liderato 40–28 de 2025–26 y Mánager del Año, expresamente NO campeonatos); **10 hitos**, **5 protagonistas** y apartado de Salón de la Fama sin entronizados atribuidos artificialmente al club.
+- Línea del tiempo diferencia apertura del Coloso en noviembre de 2024, aprobación de franquicia mayo de 2025, debut de octubre de 2025, primera barrida, liderato de rol regular, primer playoff y segunda temporada.
+- Fuentes primarias en tarjetas e hitos: LMP, notas de prensa del club alojadas por LMP y CONADE. Invitación inaugural a Mariano Rivera identificada expresamente como homenaje, no participación como jugador; ningún pasado de otras franquicias se transfirió sin respaldo.
+- Integración exclusiva por slug `jaguares` en `components/LmpDirectoryClubProfile.tsx`; registrado en `scripts/club-profile-standard-regression.cjs`; `lib/lmpStadiumFacts.ts` ya registra 2024 y fuente CONADE.
+- Commits: `ab65898` (historia), `3edfe5d` (ruta), `2344b17` (guardia), `f227ccf` (estadio). Despliegue `f227ccf` confirmado **READY** y producción HTTP **200** con contenido Jaguares/Mánager del Año, sin error de aplicación. **Validación HTTP/DOM, no QA visual manual móvil/escritorio.**
+- **Avance LMP: 8/10 equipos** con historias individualizadas. Pendientes: **Charros de Jalisco** y **Mayos de Navojoa**.
+
+**Nota:** El palmarés de Jaguares en el catálogo continúa vacío correctamente. No confundir liderato de temporada regular con campeonato de liga.
