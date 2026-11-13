@@ -14,6 +14,7 @@ import LmpCanerosEditorialHistory from "./LmpCanerosEditorialHistory";
 import LmpVenadosEditorialHistory from "./LmpVenadosEditorialHistory";
 import LmpJaguaresEditorialHistory from "./LmpJaguaresEditorialHistory";
 import LmpCharrosEditorialHistory from "./LmpCharrosEditorialHistory";
+import LmpMayosEditorialHistory from "./LmpMayosEditorialHistory";
 
 type Props={club:LmpClubDefinition;view:LmbClubView;roster:LmpClubPlayer[];news:LmpClubNews[];record:LmpClubRecord|null;fixtures:AlgodonerosFixture[];mlbAlumni:LmpMlbAlumnus[];movements:LmpDirectoryMovement[]};
 const groups=["Lanzadores","Receptores","Jugadores del cuadro","Jardineros"];
@@ -144,7 +145,8 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    {view==="historia" && club.slug==="venados" && <LmpVenadosEditorialHistory club={club}/>}
    {view==="historia" && club.slug==="jaguares" && <LmpJaguaresEditorialHistory club={club}/>}
    {view==="historia" && club.slug==="charros" && <LmpCharrosEditorialHistory club={club}/>}
-   {view==="historia" && club.slug!=="naranjeros" && club.slug!=="aguilas" && club.slug!=="tomateros" && club.slug!=="yaquis" && club.slug!=="caneros" && club.slug!=="venados" && club.slug!=="jaguares" && club.slug!=="charros" && <section className="clubHistory clubDirectoryHistory">
+   {view==="historia" && club.slug==="mayos" && <LmpMayosEditorialHistory club={club}/>}
+   {view==="historia" && club.slug!=="naranjeros" && club.slug!=="aguilas" && club.slug!=="tomateros" && club.slug!=="yaquis" && club.slug!=="caneros" && club.slug!=="venados" && club.slug!=="jaguares" && club.slug!=="charros" && club.slug!=="mayos" && <section className="clubHistory clubDirectoryHistory">
     <header className="clubHistoryHeading"><div><span className="clubKicker">HISTORIA · LIGA MEXICANA DEL PACÍFICO</span><h2>{COPY.history.title(club.name)}</h2>
      <p>El palmarés de {club.name}, sus primeras etapas documentadas y los campeonatos que forman parte de su trayectoria en el béisbol invernal mexicano.</p>
     </div>{logo&&<img src={logo} alt={"Escudo de "+club.name} width={98} height={98}/>}</header>
