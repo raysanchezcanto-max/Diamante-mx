@@ -2088,3 +2088,18 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Avance LMP: 8/10 equipos** con historias individualizadas. Pendientes: **Charros de Jalisco** y **Mayos de Navojoa**.
 
 **Nota:** El palmarés de Jaguares en el catálogo continúa vacío correctamente. No confundir liderato de temporada regular con campeonato de liga.
+
+
+## 146. Historia LMP — Charros de Jalisco (9/10)
+
+**Estado:** perfil editorial implementado en `/equipos/lmp/charros?vista=historia`.
+
+- `components/LmpCharrosEditorialHistory.tsx` individualiza **13 hitos**, **8 figuras históricas** y **2 inmortales** de la etapa LMB (Benjamín «Cananea» Reyes, 1992; Jorge «Charolito» Orta, 1996). La afiliación de cada época se etiqueta con claridad.
+- Palmarés LMP verificado: **2018–19, 2021–22, 2024–25, 2025–26** (cuatro títulos), separado de coronas LMB **1967, 1971** y de la primera Serie del Caribe **2026**, jugada como México Rojo. Tarjetas destacadas: primera y cuarta corona LMP.
+- Reconstrucción de la historia desde Pozoleros/Liga del Centro (1946–49), épocas LMB, remontada final de 1971 ante Saltillo, regreso a LMP en 2014, bicampeonato y museo 2026. Fuentes: historia oficial Charros, LMP, Salón de la Fama y documentación municipal.
+- Estadio Panamericano de Zapopan: edificio original **2011** (atletismo de Juegos Panamericanos), adaptado/reinaugurado para béisbol en **2014**. Se conserva KPI central único mediante `ClubHistoryMetrics` y `ClubHistoryStadiumYear`.
+- Integración por slug `charros` exclusivamente en `components/LmpDirectoryClubProfile.tsx`; componente incorporado a `scripts/club-profile-standard-regression.cjs`, que protege estructura y copia uniforme.
+- Commits: `ade263d` (componente), `a64549b` (ruta), `9317498` (regresión), `29f0a68` (fecha documentada de Orta).
+- **Avance LMP: 9/10 historias individualizadas. Último pendiente: Mayos de Navojoa.**
+
+**Verificación:** pendiente de registrar la compilación READY y respuesta HTTP en producción antes de cerrar esta entrega. QA visual manual en móvil/escritorio pendiente.
