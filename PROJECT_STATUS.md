@@ -1,14 +1,14 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 10 de noviembre de 2026
+**Última revisión:** 13 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (8/nov/2026):** **sección 131 completada: refresco automático de videos durante el postpartido de LMP**, cada 5 min durante las 24 h posteriores a la última jugada oficial cuando está registrada. Si la fuente no permite medir el final, se usa un plazo conservador y limitado de 30 h desde el inicio programado. El caché de las pestañas y búsqueda YouTube también es de 300 s. Regresión 21/21 y QA en producción confirmada. El resto de ligas no cambia. **Siguiente (132):** verificar los cinco juegos del 8/nov tras pasar a FINAL y los resúmenes/replays nuevos, sin asumir disponibilidad o acceso efectivo con membresía.
+**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 152:** ajuste de contraste de Olmecas en cabecera principal e Historia publicado y verificado en escritorio (commit `b1641bb`, Vercel READY). **Siguiente:** inspección móvil real y auditoría visual/legitimidad de los escudos, avanzando un club por vez; no marcar calidad de los 30 como aprobada sin esa revisión.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (8/nov/2026):** sección **131** lista y publicada, con QA en producción de LMP 850455, 850456 (FINAL y refresco 300000 ms), 850461 (PREVIEW 10000 ms), LMB 867481 y MLB 849805 (FINAL histórico sin refresco adicional). **Siguiente (132):** revisar 850461, 850460, 850459, 850458, 850462 cuando FINAL y YouTube publique videos. Confirmar actualización de botones, hora de cruce de medianoche, calidad de enlaces y no falsas repeticiones; no es necesario reinstalar ni cargar IDs manualmente para funcionar.
+> **REANUDACIÓN INMEDIATA (13/nov/2026):** retomar desde **§152**. Olmecas ya tiene la misma regla de contraste en el escudo del encabezado y en Historia, con Vercel READY y prueba visual de escritorio. **Siguiente:** revisar su contraste y escala en móvil, continuar los escudos pendientes **equipo por equipo** y verificar origen oficial/licencia de los recursos gráficos. **Pendientes independientes:** transición real de estados LMB/LMP, fuentes de movimientos, cronologías hacia MLB y videos por partido; véanse §142 y §149–151.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2175,3 +2175,14 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **LMB (20/20):** archivos localizados y mostrados; ocho PNG de **96×96** (Acereros, Saraperos, Diablos Rojos, Guerreros, Pericos, Piratas, Dorados, Conspiradores) se ampliaban a 104 px. Ahora se mantienen a **96×96** dentro del contenedor fijo para evitar ampliación innecesaria y pérdida de nitidez. Resto de LMB tiene recursos de 150 a 823 px (variable por club; Tecos WebP, dos insignias SVG).
 - **Contraste:** halo discreto específico para la «N» azul de Jaguares, como el ajuste previo del azul/verde de Olmecas. Sin sustituir ni recolorear directamente archivos originales. Commit `2d2dc87`.
 - **Importante:** esto es un control **técnico** de carga, proporción y resolución, no prueba de licencia/autenticidad del emblema ni aprobación visual subjetiva de treinta capturas. Aún hace falta contraste final con los archivos oficiales y pruebas móviles para cerrar el rubro gráfico al 100%.
+
+
+## 152. Contraste consistente de Olmecas en cabecera e Historia (13-nov-2026)
+
+**Hallazgo en producción:** tras la auditoría técnica de 30 escudos (§151), se comprobó visualmente en escritorio que la insignia de **Olmecas de Tabasco** se distinguía mejor en la cabecera general que en la cabecera editorial de Historia. El motivo comprobado en el DOM era que el filtro de contraste solo alcanzaba a `.clubHeroLogo img`; la segunda imagen de `.clubHistoryHeading img` conservaba `filter: none`.
+
+- **Corrección acotada:** `app/globals.css` ahora usa una regla compartida y específica para la ruta `olmecas-tabasco` en las dos cabeceras. Amplía moderadamente el contorno óptico blanco/cian y el halo, sin recolorear el archivo, agregar recuadros de fondo, alterar la geometría del escudo ni afectar los emblemas de otros equipos.
+- **GitHub:** commit `b1641bbaf4e56bd767f7b33157a5427ccd1e4363` (`Unificar contraste de escudos de Olmecas en cabecera e Historia`).
+- **Vercel:** despliegue `dpl_GxgZqffEUCtHhoXRTKpUyW5JB8wd` **READY** en producción. Se recargó `/equipos/lmb/olmecas?vista=historia`: **ambas imágenes** (759×759 naturales, cargadas) tienen el mismo filtro CSS calculado; en captura de escritorio el contorno es más legible, incluido el de Historia.
+- **Límite del QA:** la inspección realizada es de **escritorio** y verifica implementación/filtros y apariencia en esa vista. **No acredita** pruebas visuales en teléfono ni autorización oficial/licencia de los recursos gráficos.
+- **Próximo paso concreto:** abrir la ficha de Olmecas en pantalla móvil, revisar que ambos escudos mantengan tamaño y contraste sin desbordes y, después, continuar la revisión visual de las fichas LMB/LMP **club por club**, documentando hallazgos reales. Conservar pendientes editoriales y de datos en vivo descritos en §142 y §149–151.
