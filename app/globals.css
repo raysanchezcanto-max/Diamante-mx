@@ -4680,6 +4680,7 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHistorySectionHead h3{font-size:25px;margin:7px 0 0;line-height:1.2}
 .clubHistoryNote{color:#9caf9e;font-size:11px}
 .clubHistoryChampions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.clubHistoryChampions>.clubHistoryChampionCard:only-child{grid-column:1/-1}
 .clubHistoryChampionCard{position:relative;overflow:hidden;min-height:226px;padding:25px 27px;background:linear-gradient(130deg,#50152b 0%,#321420 62%,#142119 100%);border:1px solid #834257;border-radius:16px}
 .clubHistoryChampLabel{position:relative;display:block;z-index:1;color:#f6d7dd;font-size:10px;letter-spacing:.1em;font-weight:900}
 .clubHistoryChampionCard>strong{display:block;position:relative;z-index:1;color:#fff;font-size:65px;letter-spacing:-.05em;line-height:1;margin:12px 0 4px;font-variant-numeric:tabular-nums}
