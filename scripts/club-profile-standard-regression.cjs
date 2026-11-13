@@ -83,4 +83,17 @@ for(const phrase of ["Próximos juegos","Actualidad del equipo","Videos destacad
  assert(lexicon.includes(phrase),"missing common label "+phrase);n++;
 }
 
+
+// LMP histories must keep the same editorial section names and the same
+// factual widgets, including new teams that have not won a championship.
+for(const p of files.filter(p=>p.startsWith("components/Lmp")&&p.endsWith("EditorialHistory.tsx"))){
+ const s=read(p);
+ for(const symbol of ["COPY.history.recordTitle", "COPY.history.timelineTitle", "COPY.history.figuresTitle", "COPY.history.hallTitle", "COPY.history.sourcesKicker", "COPY.history.figuresNote"]){
+  assert(s.includes(symbol),p+" must use shared History wording: "+symbol);n++;
+ }
+ for(const section of ["clubHistoryChampions","clubHistoryTimeline","clubHistoryLegends","clubHistoryHall","clubHistoryOrigins","clubHistorySources"]){
+  assert(s.includes(section),p+" missing history section "+section);n++;
+ }
+}
+
 console.log("OK "+n+" club profile standard checks (History + shared headings and Summary order).");
