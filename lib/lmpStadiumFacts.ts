@@ -10,8 +10,8 @@ export const LMP_STADIUM_OPENED: Record<string,{year:string;source:string}|undef
  tomateros:{year:"2015",source:"https://www.noroeste.com.mx/deportes/beisbol/ya-es-oficial-instalan-las-letras-del-estadio-juan-ley-fong-en-la-casa-de-los-tomateros-de-culiacan-NJ26499150"},
  venados:{year:"1962",source:"https://www.venados.com/el-estadio-teodoro-mariscal-llega-a-los-62-anos-de-su-gloriosa-inauguracion/"},
  charros:{year:"2011",source:"https://www.lmp.mx/"},
- // Jaguares y Mayos: contrastar primero el recinto actual y su fecha real.
- jaguares:undefined,
+ // El Coloso se inauguró en 2024, antes del debut de Jaguares en LMP.
+ jaguares:{year:"2024",source:"https://www.gob.mx/conade/prensa/conade-presente-en-la-inauguracion-del-coloso-del-pacifico-nuevo-estadio-de-beisbol-en-tepic"},
  mayos:undefined
 };
 export function getLmpStadiumYear(slug:string):string|null{
