@@ -2,7 +2,7 @@
 
 **Última revisión:** 13 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 152:** ajuste de contraste de Olmecas en cabecera principal e Historia publicado y verificado en escritorio (commit `b1641bb`, Vercel READY). **Siguiente:** inspección móvil real y auditoría visual/legitimidad de los escudos, avanzando un club por vez; no marcar calidad de los 30 como aprobada sin esa revisión.
+**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 152:** ajuste de contraste de Olmecas en cabecera principal e Historia publicado y verificado en escritorio (commit `b1641bb`, Vercel READY). **Siguiente:** continuar inspección de los escudos por club (tras QA de Olmecas a 340 px CSS en escritorio; §153), comprobar teléfonos físicos y legitimidad de los emblemas. No marcar calidad de los 30 como aprobada sin esa revisión.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
@@ -2186,3 +2186,16 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Vercel:** despliegue `dpl_GxgZqffEUCtHhoXRTKpUyW5JB8wd` **READY** en producción. Se recargó `/equipos/lmb/olmecas?vista=historia`: **ambas imágenes** (759×759 naturales, cargadas) tienen el mismo filtro CSS calculado; en captura de escritorio el contorno es más legible, incluido el de Historia.
 - **Límite del QA:** la inspección realizada es de **escritorio** y verifica implementación/filtros y apariencia en esa vista. **No acredita** pruebas visuales en teléfono ni autorización oficial/licencia de los recursos gráficos.
 - **Próximo paso concreto:** abrir la ficha de Olmecas en pantalla móvil, revisar que ambos escudos mantengan tamaño y contraste sin desbordes y, después, continuar la revisión visual de las fichas LMB/LMP **club por club**, documentando hallazgos reales. Conservar pendientes editoriales y de datos en vivo descritos en §142 y §149–151.
+
+
+## 153. QA adaptable de Olmecas — cinco vistas a 340 px CSS (13-nov-2026)
+
+**Objetivo:** verificar que la corrección de los dos escudos de Olmecas (§152) no se superpone con el texto ni rompe la navegación en un ancho pequeño de pantalla.
+
+- **Método:** inspección interactiva de producción en Chromium, reduciendo el ancho efectivo mediante zoom del navegador hasta `window.innerWidth=340` px CSS (`devicePixelRatio=4` por zoom); se revisó también la vista de escritorio habitual a 1363 px CSS. **Es una simulación de ancho móvil en escritorio, no una prueba en teléfono físico ni una certificación de táctil/Android.** DevTools no estuvo disponible por política del navegador y no se utilizó.
+- **Cinco vistas revisadas de Olmecas:** Resumen, Plantilla, Movimientos, Grandes Ligas e Historia cargaron sin mensaje `Application error` y con escudo principal completamente cargado. En las cinco `document.documentElement.scrollWidth=337` frente a `innerWidth=340`, sin desbordamiento horizontal de la página.
+- **Pestañas:** conservan las cinco etiquetas canónicas; la banda tiene `scrollWidth=451` y `clientWidth=307`, con desplazamiento horizontal previsto por CSS. En Historia, el desplazamiento automático dejó visible la pestaña seleccionada. Ese scroll interior de pestañas **no** es un desbordamiento global ni se debe eliminar.
+- **Cabecera general:** a 340 px CSS, contenedor de 307 px; escudo dentro de caja de 72×72 px (imagen 58×58 px tras padding). Texto y metadatos fluyen en la composición móvil sin encimarse.
+- **Cabecera Historia:** contenedor de 307 px, escudo de 57×57 px al lado del título, con separación observada; imagen completamente cargada y usando el mismo realce óptico que la cabecera general. No se detectó solapamiento ni corte horizontal en la visualización.
+- **Resultado:** **Olmecas aprobado en revisión adaptable simulada a 340 px CSS y escritorio**, con cinco vistas accesibles y sin desbordamiento global. **Pendiente explícito:** validación en teléfono físico, accesibilidad táctil, origen/licencia del emblema y calidad visual de las demás fichas LMB/LMP.
+- **Siguiente club propuesto:** Jaguares de Nayarit (LMP), cuya insignia «N» también recibió un ajuste de contraste en §151; revisar sus cinco pestañas y cabeceras al mismo ancho, documentar diferencias y aplicar cambios solo si hay un defecto observado.
