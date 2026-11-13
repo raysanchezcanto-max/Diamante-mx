@@ -2158,3 +2158,10 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - Comprobación de escritorio en producción: el antiguo rectángulo blanco desapareció de la cabecera de **Águilas de Mexicali** y su insignia roja se ve flotante sobre el degradado; se verificó la ficha de **Olmecas de Tabasco** en LMB con la misma presentación sin recuadro blanco.
 - **Pendiente visible:** en Olmecas la insignia no se distingue en la captura del encabezado. La normalización del contenedor por CSS no reemplaza los PNG de origen. Es necesario revisar contraste/recorte de recursos por club para declarar las cabeceras gráficamente completas.
 - El código de las tarjetas regulares fue compilado por Vercel (`44856af` READY). Las reglas de LMB en vivo y calentamiento requieren prueba con partido real; una compilación por sí sola no acredita eventos dinámicos futuros.
+
+
+## 150. Auditoría visual de insignias LMP/LMB (13-nov-2026)
+
+- Inspección directa de las fichas en producción: Jaguares de Nayarit (monograma azul «N»), Cañeros de Los Mochis («LM» amarillo), Charros de Jalisco (símbolo azul) y Olmecas de Tabasco (símbolo azul/verde). Las cuatro imágenes ya se muestran **sin cuadro blanco externo**; las imágenes de origen no se sustituyeron por logos ficticios.
+- Hallazgo: el escudo azul/verde de Olmecas mantiene poco contraste sobre la cabecera borgoña. `app/globals.css` agrega sombra óptica neutra a las insignias y un halo blanco/cian muy sutil para Olmecas. No cambia geometría, tipografía ni colores internos del archivo original. Commit `216f76d`.
+- **Pendiente:** validar el resultado del CSS en el despliegue READY, comprobar móvil y revisar las restantes identidades LMB/LMP visualmente una por una. La revisión de cuatro cabeceras no equivale a aprobación exhaustiva de los treinta clubes ni a una verificación de derechos de los activos originales.
