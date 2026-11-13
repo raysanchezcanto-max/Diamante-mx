@@ -2119,3 +2119,19 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Siguiente etapa recomendada:** auditoría final de las diez historias (fuentes, consistencia de tarjetas, fechas, maquetación móvil/escritorio, enlaces), luego retomar pendientes transversales LMB/LMP y flujos en vivo.
 
 **Verificación:** pendiente documentar SHA definitivo READY y pruebas HTTP tras concluir compilación del despliegue. La verificación visual móvil/escritorio no queda acreditada por pruebas HTTP/DOM.
+
+
+## 148. Auditoría de uniformidad — diez historias LMP (13-nov-2026)
+
+**Alcance:** Algodoneros, Naranjeros, Águilas, Tomateros, Yaquis, Cañeros, Venados, Jaguares, Charros y Mayos. Revisión de componentes editoriales, títulos compartidos, apartados, palmarés y presentación de tarjetas. Se conserva la historia real de cada franquicia; las secciones que no tienen logros documentados lo explican sin crear campeonatos ni inmortales ficticios.
+
+- **Estructura 10/10:** mismo encabezado editorial, tres métricas (debut, coronas y apertura del estadio), palmarés, línea del tiempo, figuras, vínculos al Salón de la Fama, estadio y fuentes históricas. Todas siguen usando las mismas clases visuales y las copias maestras de `lib/clubProfileCopy.ts`.
+- **Palabras unificadas:** Jaguares ahora usa `Campeonatos de Liga Mexicana del Pacífico` y `Figuras históricas del club`, así como el aviso editorial común para sus protagonistas; se mantienen las aclaraciones de su debut 2025–26, **cero campeonatos** y ausencia de inmortales documentados vinculados a su trayectoria.
+- **Dato corregido y contrastado con fuente primaria:** Benjamín «Cananea» Reyes ingresó al Salón de la Fama del Beisbol Mexicano en **1992** (no 1991). Ajustados tarjeta y enlace en Águilas. Referencia: https://www.salondelafamadelbeisbolmexicano.com/post/uniforme-de-benjam%C3%ADn-cananea-reyes
+- **Uniformidad visual:** cuando un club tiene solo una tarjeta de campeonato —caso de Guasave— se extiende a ambas columnas en escritorio; en móvil mantiene la cuadrícula de una columna.
+- **Protección de futuras ediciones:** `scripts/club-profile-standard-regression.cjs` exige en los 10 componentes los encabezados compartidos y todos los apartados editoriales (12 condiciones nuevas por perfil).
+- **Comprobación HTTP:** las 10 rutas `/equipos/lmp/{slug}?vista=historia` devolvieron **200 OK** y encabezado de historia. Se comprobó visualmente en escritorio la página de Jaguares y Águilas, y la imagen enlazada del equipo. Prueba móvil exhaustiva, auditoría de cada URL externa y recuento biográfico integral aún pendientes.
+- **Hallazgo visual pendiente, importante:** al menos las cabeceras de Águilas y Jaguares exhiben un **recuadro blanco** en lugar de escudo integrado. El PNG consultado de Águilas (`/logos/lmp/official/aguilas-mexicali.png`) es un gráfico de marcador y **no** un escudo oficial limpio. Revisar los diez PNG `public/logos/lmp/official/`, buscar fuentes oficiales con derechos de uso y reemplazar los recursos inválidos antes de declarar calidad visual final. No se han inventado logos ni se ha sustituido por marcas no verificadas.
+- **Commits:** `8ba95c6` (Jaguares), `1c6041f` (Cananea), `0f498b4` (tarjeta única), `8afdcb2` (regresión).
+
+**Estado:** 10/10 historias completas en estructura y publicadas con respuesta HTTP 200. **Revisión visual final: parcial**, pendiente resolver recursos de los escudos y probar móvil; por tanto no se marca calidad estética 100% validada.
