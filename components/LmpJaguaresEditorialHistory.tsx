@@ -52,7 +52,7 @@ export default function LmpJaguaresEditorialHistory({club}:{club:LmpClubDefiniti
 
   <div className="clubHistorySectionHead"><div>
    <span className="clubKicker">{COPY.history.recordKicker}</span>
-   <h3>Una historia que empieza a escribirse</h3>
+   <h3>{COPY.history.recordTitle("Liga Mexicana del Pacífico")}</h3>
   </div><span className="clubHistoryNote">0 títulos LMP · debut 2025–26</span></div>
   <div className="clubHistoryChampions">
    <article className="clubHistoryChampionCard">
@@ -81,8 +81,8 @@ export default function LmpJaguaresEditorialHistory({club}:{club:LmpClubDefiniti
   </li>)}</ol>
 
   <div className="clubHistorySectionHead"><div><span className="clubKicker">{COPY.history.figuresKicker}</span>
-   <h3>Protagonistas de los primeros años</h3></div></div>
-  <p className="clubHistoryIntro">La franquicia aún no tiene décadas de leyendas propias. Estas son personas documentadas que participaron en sus inicios o en la ceremonia inaugural.</p>
+   <h3>{COPY.history.figuresTitle}</h3></div></div>
+  <p className="clubHistoryIntro">{COPY.history.figuresNote} La franquicia aún no tiene décadas de leyendas propias. Estas son personas documentadas que participaron en sus inicios o en la ceremonia inaugural.</p>
   <div className="clubHistoryLegends">{figures.map(person=><article className="clubHistoryLegend" key={person.name}>
    <div className="clubHistoryLegendTop"><span className="clubHistoryLegendMonogram" aria-hidden="true">{initials(person.name)}</span><span className="clubHistoryLegendEra">{person.era}</span></div>
    <h4>{person.name}</h4><span className="clubHistoryLegendRole">{person.role}</span>
