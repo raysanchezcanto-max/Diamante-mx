@@ -2,13 +2,13 @@
 
 **Última revisión:** 13 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 152:** ajuste de contraste de Olmecas en cabecera principal e Historia publicado y verificado en escritorio (commit `b1641bb`, Vercel READY). **Siguiente:** continuar inspección de los escudos por club (tras QA de Olmecas a 340 px CSS en escritorio; §153), comprobar teléfonos físicos y legitimidad de los emblemas. No marcar calidad de los 30 como aprobada sin esa revisión.
+**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 152:** ajuste de contraste de Olmecas en cabecera principal e Historia publicado y verificado en escritorio (commit `b1641bb`, Vercel READY). **Siguiente:** continuar inspección visual club por club (Olmecas §153 y Jaguares §154 ya revisados en escritorio y a 340 px CSS); el próximo será Cañeros de Los Mochis. Quedan pendientes las pruebas en teléfonos físicos y la validación de origen/licencia de escudos; no declarar los 30 gráficamente aprobados.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (13/nov/2026):** retomar desde **§152**. Olmecas ya tiene la misma regla de contraste en el escudo del encabezado y en Historia, con Vercel READY y prueba visual de escritorio. **Siguiente:** revisar su contraste y escala en móvil, continuar los escudos pendientes **equipo por equipo** y verificar origen oficial/licencia de los recursos gráficos. **Pendientes independientes:** transición real de estados LMB/LMP, fuentes de movimientos, cronologías hacia MLB y videos por partido; véanse §142 y §149–151.
+> **REANUDACIÓN INMEDIATA (13/nov/2026):** retomar desde **§154**. Olmecas (§152–153) y Jaguares (§154) tienen escudos de cabecera e Historia alineados, despliegues READY y comprobación adaptable a 340 px CSS en escritorio; cinco vistas de cada club sin error ni desborde global. **Siguiente club: Cañeros de Los Mochis**, prestando atención al recorte/legibilidad de la insignia y su contraste. Continuar **equipo por equipo**; faltan pruebas en dispositivo físico y validación de licencia/origen. Los pendientes de juegos en vivo, movimientos y videos siguen abiertos.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2199,3 +2199,16 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Cabecera Historia:** contenedor de 307 px, escudo de 57×57 px al lado del título, con separación observada; imagen completamente cargada y usando el mismo realce óptico que la cabecera general. No se detectó solapamiento ni corte horizontal en la visualización.
 - **Resultado:** **Olmecas aprobado en revisión adaptable simulada a 340 px CSS y escritorio**, con cinco vistas accesibles y sin desbordamiento global. **Pendiente explícito:** validación en teléfono físico, accesibilidad táctil, origen/licencia del emblema y calidad visual de las demás fichas LMB/LMP.
 - **Siguiente club propuesto:** Jaguares de Nayarit (LMP), cuya insignia «N» también recibió un ajuste de contraste en §151; revisar sus cinco pestañas y cabeceras al mismo ancho, documentar diferencias y aplicar cambios solo si hay un defecto observado.
+
+
+## 154. QA de Jaguares y contraste único en ambas cabeceras (13-nov-2026)
+
+**Club auditado:** Jaguares de Nayarit (LMP), retomando la estrategia de un club a la vez tras Olmecas (§153).
+
+- **Inspección de escritorio previa:** el escudo «N» oscuro en `.clubHeroLogo img` no tenía el brillo aplicado por la regla global para logos LMP, mientras el de `.clubHistoryHeading img` sí usaba `brightness(2.6) saturate(1.14)`; por ello los dos encabezados exhibían intensidad y tono visiblemente diferentes. El PNG de origen se había cargado correctamente (158×158 px).
+- **Revisión adaptable inicial:** Chromium en ancho efectivo `innerWidth=340` px CSS (zoom 400 %, sin DevTools). Las vistas **Resumen, Plantilla, Movimientos, Grandes Ligas e Historia** cargaron sin `Application error` y con escudo principal cargado. En todas `document.documentElement.scrollWidth=337`, por debajo del viewport: **sin desborde horizontal global**. Las cinco pestañas mantienen scroll interior intencional de `451` px, compatible con la sección seleccionada.
+- **Comprobación de maquetación:** escudo principal 58×58 dentro del contenedor móvil, segunda insignia 57×57; título de Historia y escudo tienen separación, sin solapamiento. En escritorio se corroboraron los mismos elementos y las tres métricas históricas (2025, 00 y 2024), con los dos hitos destacados aclarados como no campeonatos.
+- **Corrección CSS:** regla específica de las dos cabeceras de Jaguares en `app/globals.css` con `brightness(2.1) saturate(1.10)` y dos `drop-shadow` discretos. No se editó el PNG original ni se modificaron otras ligas o clubes. Commit `5527416be717b9080b197febb57d085c144a14ad`.
+- **QA después de publicación:** Vercel del commit `5527416` **READY**; en página pública ambos `img` cargan, comparten exactamente el mismo filtro calculado y se ven alineados visualmente tanto a 340 como a 1363 px CSS. Documento sin desborde horizontal en ambos anchos.
+- **Limitación:** se simuló un ancho móvil en el navegador de escritorio; **no** se prueba en teléfono físico ni se afirma autorización de uso del emblema. La información editorial conserva referencia a 0 títulos de LMP para no confundir primer lugar de rol regular con campeonato.
+- **Siguiente club:** **Cañeros de Los Mochis**. Revisar especialmente símbolo «LM» y la inquietud previa sobre la «L» aparentemente recortada, en las cinco vistas y ambos tamaños. Corregir solo tras identificar origen del recorte (archivo, caja o `object-fit`); no reemplazar escudo por recreaciones no oficiales.
