@@ -4481,6 +4481,8 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHeroLogo{width:112px;height:112px;flex:0 0 112px;display:grid;place-items:center;border-radius:16px;background:transparent;padding:4px}
 .clubHeroLogo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35)) drop-shadow(0 0 1px rgba(255,255,255,.38))}
 .clubHeroLogo img[src*="olmecas-tabasco"]{filter:drop-shadow(0 0 1.5px rgba(217,247,255,.95)) drop-shadow(0 0 8px rgba(125,190,197,.22))}
+.clubHeroLogo img[src*="jaguares-nayarit"]{filter:drop-shadow(0 0 1.5px rgba(170,228,255,.95)) drop-shadow(0 0 7px rgba(69,149,243,.3))}
+.clubHeroLogo img:is([src*="acereros-monclova"],[src*="saraperos-saltillo"],[src*="diablos-rojos-mexico"],[src*="guerreros-oaxaca"],[src*="pericos-puebla"],[src*="piratas-campeche"],[src*="dorados-chihuahua"],[src*="conspiradores-queretaro"]){width:96px;height:96px}
 .clubKicker{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.11em}
 .clubHero .clubKicker{color:#e8e4d3}
 .clubHeroText h1{font-size:clamp(26px,3.5vw,46px);letter-spacing:-.035em;line-height:1.04;margin:9px 0;color:#fff;max-width:600px}
