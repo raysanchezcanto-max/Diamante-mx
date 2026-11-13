@@ -12,7 +12,7 @@ export const LMP_STADIUM_OPENED: Record<string,{year:string;source:string}|undef
  charros:{year:"2011",source:"https://www.lmp.mx/"},
  // El Coloso se inauguró en 2024, antes del debut de Jaguares en LMP.
  jaguares:{year:"2024",source:"https://www.gob.mx/conade/prensa/conade-presente-en-la-inauguracion-del-coloso-del-pacifico-nuevo-estadio-de-beisbol-en-tepic"},
- mayos:undefined
+ mayos:{year:"1970",source:"https://www.sonora.gob.mx/gobierno/acciones/gobernador/arranca-gobernador-durazo-modernizacion-del-estadio-de-los-mayos-ciclon-echeverria"}
 };
 export function getLmpStadiumYear(slug:string):string|null{
  return LMP_STADIUM_OPENED[slug]?.year??null;
