@@ -57,7 +57,7 @@ export default function LmpAguilasEditorialHistory({club}:{club:LmpClubDefinitio
   </div><a className="clubHistoryHallAll" href="/salon-de-la-fama">Explorar Salón de la Fama ↗</a></div>
    <div className="clubHistoryHallGrid">
     {[
-     {name:"Benjamín «Cananea» Reyes",role:"Mánager de Águilas campeón de 1985–86",year:"1991",link:hallCananea},
+     {name:"Benjamín «Cananea» Reyes",role:"Mánager de Águilas campeón de 1985–86",year:"1992",link:hallCananea},
      {name:"Roberto «Chapo» Vizcarra",role:"Mánager de Águilas campeón de 2016–17",year:"2023",link:hallRoberto}
     ].map(person=><a className="clubHistoryHallMember" href={person.link} target="_blank" rel="noopener noreferrer" key={person.name}>
      <span className="clubHistoryHallMedal" aria-hidden="true">★</span><strong>{person.name}</strong><small>{person.role}</small><span>Entronizado {person.year} ↗</span>
@@ -73,7 +73,7 @@ export default function LmpAguilasEditorialHistory({club}:{club:LmpClubDefinitio
    <a href={clubHistory} target="_blank" rel="noopener noreferrer">Historia y 75 aniversario ↗</a>
    <a href={guide} target="_blank" rel="noopener noreferrer">Guía oficial LMP ↗</a>
    <a href={hallRoberto} target="_blank" rel="noopener noreferrer">Vizcarra, clase 2023 ↗</a>
-   <a href={hallCananea} target="_blank" rel="noopener noreferrer">Cananea Reyes, 1991 ↗</a>
+   <a href={hallCananea} target="_blank" rel="noopener noreferrer">Cananea Reyes, 1992 ↗</a>
   </div></footer>
  </section>;
 }
