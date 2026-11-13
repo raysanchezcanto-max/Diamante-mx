@@ -49,7 +49,7 @@ const figures:readonly Figure[]=[
 ];
 const immortals=[
  {name:"Benjamín «Cananea» Reyes",year:"1992",role:"Mánager campeón de Charros en LMB (1971)",source:reyes},
- {name:"Jorge «Charolito» Orta",year:"Salón de la Fama",role:"Pelotero surgido de Charros en su etapa histórica de LMB",source:orta}
+ {name:"Jorge «Charolito» Orta",year:"1996",role:"Pelotero surgido de Charros en su etapa histórica de LMB",source:orta}
 ] as const;
 const initials=(name:string)=>name.replace(/[«»]/g,"").split(/\s+/).filter(Boolean).slice(0,2).map(t=>t[0]).join("").toLocaleUpperCase("es");
 
