@@ -2103,3 +2103,19 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Avance LMP: 9/10 historias individualizadas. Último pendiente: Mayos de Navojoa.**
 
 **Verificación:** pendiente de registrar la compilación READY y respuesta HTTP en producción antes de cerrar esta entrega. QA visual manual en móvil/escritorio pendiente.
+
+
+## 147. Historia LMP — Mayos de Navojoa (10/10 COMPLETO)
+
+**Estado:** décimo perfil editorial incorporado en `/equipos/lmp/mayos?vista=historia`, completando la personalización individual de las diez historias LMP (Algodoneros de Guasave + nueve equipos del directorio).
+
+- Nuevo `components/LmpMayosEditorialHistory.tsx`: **13 hitos cronológicos**, **8 protagonistas**, **3 inmortales vinculados al club/Navojoa**, dos tarjetas de los campeonatos LMP **1978–79 (Chuck Goggins)** y **1999–00 (Lorenzo Bundy)**, ambos ante Naranjeros.
+- Debut histórico original de Mayos en Liga Invernal de Sonora **1959–60** corroborado por Enciclopedia oficial de LMP; reaparición en expansión **1962–63** explicada aparte. Catálogo `lib/lmpClubDirectory.ts` corregido a `debut:"1959"`.
+- Contexto reciente documentado: aprobación de sede Tucson para 2025–26, aplazamiento de actividades en estadio estadounidense, retorno oficial a Navojoa en 2026–27 y presentación de Miguel Tejada como mánager. No se contabiliza ningún trofeo inexistente por el cambio de sede.
+- Estadio histórico Manuel «Ciclón» Echeverría: inauguración del recinto original **1970**, nombre recibido en **1978**, obras de modernización desde **junio 2026**; actualizado `lib/lmpStadiumFacts.ts` con fuente Gobierno de Sonora. Diferenciar apertura original de remodelación moderna.
+- Salón de la Fama mexicano: **Manuel Echeverría (1982)**, **Francisco «Paquín» Estrada (2000)** y **Isidro Márquez (2020)**, con las relaciones históricas expresadas y enlaces a las fuentes oficiales.
+- Routing `components/LmpDirectoryClubProfile.tsx`: rama individual `mayos`, sin afectar resumen/plantilla/movimientos/MLB. Registro de las diez historias LMP en `scripts/club-profile-standard-regression.cjs` para proteger KPIs/copias uniformes en build.
+- Commits: `22db94e` historia, `939db17` routing, `1e2c98d` regresión, `f804865` estadio, `ec4a578` debut.
+- **Siguiente etapa recomendada:** auditoría final de las diez historias (fuentes, consistencia de tarjetas, fechas, maquetación móvil/escritorio, enlaces), luego retomar pendientes transversales LMB/LMP y flujos en vivo.
+
+**Verificación:** pendiente documentar SHA definitivo READY y pruebas HTTP tras concluir compilación del despliegue. La verificación visual móvil/escritorio no queda acreditada por pruebas HTTP/DOM.
