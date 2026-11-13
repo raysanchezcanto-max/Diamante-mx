@@ -228,7 +228,7 @@ const isMlbWarmup =
     )
   ) ||
   (
-    league === "LMP" &&
+    (league === "LMP" || league === "LMB") &&
     (game.status === "Live" ||
       game.status === "Preview") &&
     game.firstPitchRecorded !== true &&
@@ -255,6 +255,7 @@ const isMlbWarmup =
 
 const showMlbRegularPitchers =
   (league === "LMP" ||
+    league === "LMB" ||
     (league === "MLB" && game.gameType === "R")) &&
 
   mexicoDateKey(new Date(game.startTime)) ===
@@ -351,7 +352,7 @@ DOBLE · JUEGO {game.gameNumber}
       {specialStatus}
     </span>
     
-    {league === "LMP" &&
+    {(league === "LMP" || league === "LMB") &&
       specialStatus === "POSPUESTO" &&
       game.statusReason?.trim() && (
         <span
@@ -379,7 +380,7 @@ DOBLE · JUEGO {game.gameNumber}
       )}
 
 
-    {league === "LMP" &&
+    {(league === "LMP" || league === "LMB") &&
       specialStatus === "POSPUESTO" &&
       game.rescheduleDate &&
       /^\d{4}-\d{2}-\d{2}$/.test(
@@ -566,7 +567,7 @@ specialStatus === "POSPUESTO"
             
 {showMlbRegularPitchers && (
   <div className="mlbRegularPitcher">
-    {game.awayProbablePitcher?.id ? (
+    {game.awayProbablePitcher?.id && league !== "LMB" ? (
       <img
         className="mlbWorldSeriesPitcherPhoto"
         src={`https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${game.awayProbablePitcher.id}/headshot/67/current`}
@@ -640,7 +641,7 @@ specialStatus === "POSPUESTO"
             
 {showMlbRegularPitchers && (
   <div className="mlbRegularPitcher">
-    {game.homeProbablePitcher?.id ? (
+    {game.homeProbablePitcher?.id && league !== "LMB" ? (
       <img
         className="mlbWorldSeriesPitcherPhoto"
         src={`https://img.mlbstatic.com/mlb-photos/image/upload/w_80,q_auto:best/v1/people/${game.homeProbablePitcher.id}/headshot/67/current`}
