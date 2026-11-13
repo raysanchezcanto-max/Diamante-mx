@@ -4464,6 +4464,11 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
   transform: scale(.92);
   transform-origin: center;
 }
+/* Cañeros: conservar la L completa y compensar los márgenes transparentes del PNG de gorra. */
+.teamExplorer--lmp .teamLogoRail .teamLogoTrack .teamLogoChoice img[src*="caneros-mochis.png"] {
+  transform: scale(1.16);
+  filter: brightness(1.24) saturate(1.08) drop-shadow(0 0 0.8px rgba(226,250,172,.35));
+}
 
 /* Ficha extendida de Algodoneros (LMB): estilos encapsulados.
    La navegación principal y las tarjetas de partidos no se alteran. */
