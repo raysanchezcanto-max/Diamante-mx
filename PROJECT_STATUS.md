@@ -2135,3 +2135,18 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Commits:** `8ba95c6` (Jaguares), `1c6041f` (Cananea), `0f498b4` (tarjeta única), `8afdcb2` (regresión).
 
 **Estado:** 10/10 historias completas en estructura y publicadas con respuesta HTTP 200. **Revisión visual final: parcial**, pendiente resolver recursos de los escudos y probar móvil; por tanto no se marca calidad estética 100% validada.
+
+
+## 149. Paridad de tarjetas LMB/LMP y cabeceras de clubes (13-nov-2026)
+
+**Revisión de código:** las tarjetas de temporada regular de MLB, LMB y LMP salen de **un solo componente** `components/Games.tsx` (`GameCards`). Comparten orden, estado principal, marcador, escudos por nombre/ID, indicadores de ventaja, doble cartelera, enlaces al detalle y colores. La diferencia entre ligas debe limitarse a los datos que sus fuentes ofrecen.
+
+**Diferencias corregidas:**
+- LMB ahora participa de la regla de calentamiento **POR COMENZAR** que ya tenía LMP cuando todavía no se registra el primer lanzamiento, con estado compatible en ambas ligas.
+- LMB ahora puede mostrar las dos filas de pitchers probables antes de iniciar, cuando la fuente los proporciona. Si solo existe un nombre, el otro queda **Por confirmar**; si ninguno está disponible, la franja no aparece. Para LMB no se solicitan fotos de la CDN MLB con IDs ajenos; se conserva el marcador visual común.
+- Aplazamientos LMB y LMP ahora comparten la presentación de motivo y fecha **REPROGRAMADO** cuando esos campos existen. Se preservan fuente y zona horaria.
+- Se retiró el relleno blanco de `.clubHeroLogo` de las fichas de **ambas ligas**, para no imponer un cuadro blanco alrededor de la insignia. El PNG origen aún puede incluir fondo opaco: verificar y reemplazar esos recursos uno por uno con versiones oficiales depuradas.
+
+**Playoffs:** `LmpPostseasonCard.tsx` y `LmbPostseasonCard.tsx` usan las mismas clases maestras `mlbPostseasonSeriesCard`, `mlbPostseasonSeriesTeams`, `mlbPostseasonSeriesStatus`, los mismos estados `GANÓ LA SERIE` / `EN VIVO` / `PRÓXIMO` / `SERIE EN DISPUTA`, y la misma lógica de enlaces a juegos y horarios por confirmar. Se conservan diferencias legítimas del formato: LMB muestra zonas y **mejor perdedor** y distingue `CAMPEÓN` en Serie del Rey; LMP usa rondas sin zonas y Serie Final. Las fichas de clubes comparten las cinco pestañas y los textos de `lib/clubProfileCopy.ts`; las biografías históricas son específicas.
+
+**Cambios:** `44856af` (reglas en `Games.tsx`), `e6716b3` (cabeceras sin fondo blanco). **Validación pendiente:** confirmar build READY del último SHA, comprobar tarjetas con LMB en vivo/prejuego y revisar los PNG/SVG oficiales LMB/LMP; las ligas no deben inventar datos de pitcher donde no hay fuente.
