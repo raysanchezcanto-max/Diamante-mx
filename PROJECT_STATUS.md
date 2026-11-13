@@ -2150,3 +2150,11 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 **Playoffs:** `LmpPostseasonCard.tsx` y `LmbPostseasonCard.tsx` usan las mismas clases maestras `mlbPostseasonSeriesCard`, `mlbPostseasonSeriesTeams`, `mlbPostseasonSeriesStatus`, los mismos estados `GANÓ LA SERIE` / `EN VIVO` / `PRÓXIMO` / `SERIE EN DISPUTA`, y la misma lógica de enlaces a juegos y horarios por confirmar. Se conservan diferencias legítimas del formato: LMB muestra zonas y **mejor perdedor** y distingue `CAMPEÓN` en Serie del Rey; LMP usa rondas sin zonas y Serie Final. Las fichas de clubes comparten las cinco pestañas y los textos de `lib/clubProfileCopy.ts`; las biografías históricas son específicas.
 
 **Cambios:** `44856af` (reglas en `Games.tsx`), `e6716b3` (cabeceras sin fondo blanco). **Validación pendiente:** confirmar build READY del último SHA, comprobar tarjetas con LMB en vivo/prejuego y revisar los PNG/SVG oficiales LMB/LMP; las ligas no deben inventar datos de pitcher donde no hay fuente.
+
+
+### Verificación posterior al despliegue (13-nov-2026)
+
+- Vercel: versión de seguimiento `69d14c22` en estado **READY** (incluye ajustes funcionales y CSS).
+- Comprobación de escritorio en producción: el antiguo rectángulo blanco desapareció de la cabecera de **Águilas de Mexicali** y su insignia roja se ve flotante sobre el degradado; se verificó la ficha de **Olmecas de Tabasco** en LMB con la misma presentación sin recuadro blanco.
+- **Pendiente visible:** en Olmecas la insignia no se distingue en la captura del encabezado. La normalización del contenedor por CSS no reemplaza los PNG de origen. Es necesario revisar contraste/recorte de recursos por club para declarar las cabeceras gráficamente completas.
+- El código de las tarjetas regulares fue compilado por Vercel (`44856af` READY). Las reglas de LMB en vivo y calentamiento requieren prueba con partido real; una compilación por sí sola no acredita eventos dinámicos futuros.
