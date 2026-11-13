@@ -4478,7 +4478,7 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubShell{max-width:1270px;margin:25px auto;padding:0 25px 60px}
 .clubHero{min-height:202px;padding:28px 32px;border-radius:18px;background:linear-gradient(105deg,#4b1026 0%,#691b33 56%,#2c1320 100%);display:flex;justify-content:space-between;align-items:center;gap:28px;box-shadow:0 16px 40px #0002}
 .clubHeroIdentity{display:flex;gap:22px;align-items:center;min-width:0}
-.clubHeroLogo{width:112px;height:112px;flex:0 0 112px;display:grid;place-items:center;border-radius:16px;background:#fff;padding:10px}
+.clubHeroLogo{width:112px;height:112px;flex:0 0 112px;display:grid;place-items:center;border-radius:16px;background:transparent;padding:4px}
 .clubHeroLogo img{width:100%;height:100%;object-fit:contain}
 .clubKicker{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.11em}
 .clubHero .clubKicker{color:#e8e4d3}
