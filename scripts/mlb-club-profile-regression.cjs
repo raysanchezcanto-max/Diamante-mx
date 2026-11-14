@@ -50,6 +50,8 @@ const { mlbEditorialHistory } = require("../lib/mlbHistoryEditorial.ts");
 const raysHistory = mlbEditorialHistory(139);
 verify(Boolean(raysHistory), "Rays tienen historia documental propia");
 verify(raysHistory.debutYear === "1998", "Rays debutaron en 1998");
+verify(raysHistory.featuredStory.url.startsWith("https://www.mlb.com/rays/news/"),
+  "reportaje Rays enlazado a fuente MLB");
 verify(raysHistory.stadiumOpened === "1990", "Tropicana Field abrió en 1990");
 verify(raysHistory.worldSeriesTitles === 0 && raysHistory.titlesVerifiedThrough === "2026",
   "sin coronas de Serie Mundial hasta 2026");
@@ -63,6 +65,8 @@ verify(raysHistory.immortals.length === 2 &&
 verify(raysHistory.sources.every(source => source.url.startsWith("https://")),
   "fuentes históricas seguras");
 verify(mlbEditorialHistory(158) === null, "sin datos inventados para otras franquicias");
+verify(page.includes('className="clubFeature"') && page.includes("editorial.featuredStory"),
+  "Resumen Rays usa el destacado editorial compartido");
 verify(history.includes("mlbEditorialHistory") && history.includes("clubHistoryLegends") &&
   history.includes("clubHistoryHallGrid") && history.includes("clubHistoryChampions"),
   "mismo esquema histórico visual LMB/LMP");
