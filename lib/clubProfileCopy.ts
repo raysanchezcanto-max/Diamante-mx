@@ -3,21 +3,21 @@
 // Los hechos, la dirección cronológica MLB y los años se documentan por club.
 export const CLUB_PROFILE_COPY = {
   summary: {
-    calendarKicker: (league: "LMB"|"LMP") => "CALENDARIO OFICIAL · " + league,
+    calendarKicker: (league: "LMB"|"LMP"|"MLB") => "CALENDARIO OFICIAL · " + league,
     calendarTitle: "Próximos juegos",
     recordTitle: "Balance del equipo",
     newsTitle: "Actualidad del equipo",
-    videosKicker: (league: "LMB"|"LMP") => "COBERTURA AUDIOVISUAL · " + league,
+    videosKicker: (league: "LMB"|"LMP"|"MLB") => "COBERTURA AUDIOVISUAL · " + league,
     videosTitle: "Videos destacados",
     headlineTitle: "Titulares",
   },
   roster: {
-    kicker: (league:"LMB"|"LMP", season:string) => "PLANTILLA · FUENTE OFICIAL " + league + " · " + season,
+    kicker: (league:"LMB"|"LMP"|"MLB", season:string) => "PLANTILLA · FUENTE OFICIAL " + league + " · " + season,
     title: (club:string) => "Jugadores de " + club,
     sourceLabel: "Ver roster oficial ↗",
   },
   movements: {
-    kicker: (league:"LMB"|"LMP") => "MOVIMIENTOS · " + league,
+    kicker: (league:"LMB"|"LMP"|"MLB") => "MOVIMIENTOS · " + league,
     title: (club:string) => "Movimientos de " + club,
     note: "Los comunicados y las noticias seleccionadas no constituyen necesariamente un historial completo de transacciones ni implican cambios inmediatos en la plantilla activa.",
     noneTitle: "No hay movimientos verificados en esta consulta",
