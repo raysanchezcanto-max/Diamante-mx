@@ -1,26 +1,9 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const ts = require("typescript");
-
-function loadTs(relativePath) {
-  const file = path.join(__dirname, "..", relativePath);
-  const source = fs.readFileSync(file, "utf8");
-  const transpiled = ts.transpileModule(source, {
-    compilerOptions: {
-      module: ts.ModuleKind.CommonJS,
-      target: ts.ScriptTarget.ES2022,
-    },
-    fileName: file,
-  }).outputText;
-  const module = { exports: {} };
-  new Function("module", "exports", transpiled)(module, module.exports);
-  return module.exports;
-}
-
 const { getScheduleCardMeta, isSecondGameTimeUnconfirmed } =
-  loadTs("lib/gameScheduleMeta.ts");
-const { getGameSpecialStatus } = loadTs("lib/gameSpecialStatus.ts");
+  require("../lib/gameScheduleMeta.ts");
+const { getGameSpecialStatus } = require("../lib/gameSpecialStatus.ts");
 
 let checks = 0;
 const check = (actual, expected, name) => {
