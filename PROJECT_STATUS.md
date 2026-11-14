@@ -2,13 +2,13 @@
 
 **Última revisión:** 13 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 161:** Mayos de Navojoa pasó QA de cinco vistas a 1363/340 px CSS; se igualó en ambas cabeceras el filtro rojo del monograma ya aplicado a la franja (`c7037a0`, Vercel READY). Auditados consecutivamente Olmecas (§153), Jaguares (§154), Cañeros (§155), Charros (§156), Yaquis (§157), Venados (§158), Naranjeros (§159) y Tomateros (§160). **Siguiente:** Algodoneros de Guasave, último equipo de esta ronda LMP. Pendientes: teléfono físico, pequeño punto claro del PNG Yaquis, licencias, validación editorial profunda y lógica en vivo; no declarar todos los escudos aprobados.
+**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas y **10/10 clubes reales LMP** revisados ahora individualmente en sus cinco pestañas a 1363/340 px CSS (§154–§163); Olmecas de Tabasco (§153) es LMB y fue QA adicional, no cuenta dentro de esos 10. También 30/30 insignias LMB/LMP cargan técnicamente (§151). **Secciones 162–163:** Algodoneros de Guasave escudo azul unificado (`dfcb3de`, READY) y Águilas de Mexicali escudo rojo unificado (`32bb570`, READY). La ronda visual no equivale a certificación de móvil físico, contenido histórico, licencias, ni lógica en vivo. **Siguiente etapa recomendada:** auditoría transversal LMB/LMP de tarjetas de juegos, estados HOY/EN VIVO/FINAL, datos y jerarquía visual; registrar y priorizar defectos reales.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (13/nov/2026):** continuar desde **§161**. Mayos revisado en cinco pestañas escritorio y 340 px CSS sin error ni desborde global; escudo rojo de cabecera principal ahora comparte `brightness(1.24) saturate(1.06)` con Historia y la franja LMP, y se confirmó publicación `c7037a0` **READY**. **Siguiente club: Algodoneros de Guasave**, último en esta ronda visual de diez equipos LMP: comprobar dos cabeceras, franja, cinco vistas y uniformidad. Mantener pendientes de teléfono real, licencia/origen, PNG Yaquis, contenido editorial y partidos en vivo. El siguiente commit de bitácora `5abb1ad` sí activó un despliegue automático, confirmado READY; el ajuste CSS de Mayos requirió despliegue explícito al no aparecer uno inmediato.
+> **REANUDACIÓN INMEDIATA (13/nov/2026):** **§163 cierra la ronda individual de 10 clubes LMP**: Jaguares (§154), Cañeros (§155), Charros (§156), Yaquis (§157), Venados (§158), Naranjeros (§159), Tomateros (§160), Mayos (§161), Algodoneros (§162) y Águilas (§163). Olmecas (§153) corresponde a LMB. Algodoneros y Águilas cargan cinco pestañas sin error a 1363/340 px CSS, con escudos de ambas cabeceras y franja uniformados, y Vercel READY. **Siguiente paso:** auditoría funcional LMB/LMP de tarjetas, estados reales de partidos y detalles; después QA física móvil y asuntos pendientes de imágenes/licencias, PNG Yaquis y datos editoriales. No presentar la plataforma entera como validada.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2315,3 +2315,33 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Contenido mostrado, no revalidado editorialmente aquí:** debut histórico 1959, dos títulos LMP (1978–79 y 1999–00), estadio Manuel Ciclón Echeverría. Esta revisión cubre presentación y carga técnica, no una validación profunda de fuentes.
 - **Pendientes transversales:** QA en teléfono real, procedencia/licencias de logotipos, pequeño punto claro del PNG Yaquis, editoriales y pruebas de marcadores/transiciones de juegos en vivo.
 - **Siguiente club:** **Algodoneros de Guasave**, décimo y último de esta ronda de uniformidad visual LMP, comparando sus cinco vistas con la jerarquía establecida.
+
+
+## 162. Algodoneros de Guasave — unificación del monograma azul (13-nov-2026)
+
+**Club auditado:** Algodoneros de Guasave (LMP), noveno club LMP de la ronda adaptativa, además de la ficha Olmecas (LMB) revisada al inicio.
+
+- **Hallazgo inicial:** PNG `/logos/lmp/official/algodoneros-guasave.png` de 158×158 px cargaba bien; sin embargo, la insignia de la cabecera principal se veía mucho más oscura que las de Historia y la franja LMP. El CSS genérico de `.clubHeroLogo img` prevalecía sobre el filtro específico del club.
+- **Corrección:** commit **`dfcb3de463deeba412cc3321c8726e38adf49dae`**, Vercel **READY** automático. Se agregó una regla posterior y específica para la imagen en cabecera principal, con `brightness(2.6) saturate(1.14) drop-shadow(0 0 1.5px rgba(189,213,255,.26))`, idéntica al acabado existente de Historia y franja. Se conservó el PNG y no se alteró ningún otro club.
+- **QA escritorio:** Resumen, Plantilla, Movimientos, Grandes Ligas e Historia sin `Application error` a 1363 px CSS; documento `scrollWidth=1348` en las cinco. Logo principal cargado en todas y segundo logo cargado en Historia.
+- **QA compacto:** zoom 400 % en Chromium de escritorio (no móvil físico) para ancho de 340 px CSS. Cinco vistas sin errores ni desbordes globales (`scrollWidth=337`); pestañas de navegación con desplazamiento horizontal intencional (451/307 px).
+- **Franja LMP:** insignia cargada, filtro azul coincidente, caja aprox. 29×31 px en el ancho compacto.
+- **Verificación posterior al despliegue:** ambos escudos de cabecera cargados (naturalWidth 158), filtros computados idénticos en escritorio y compacto, sin error. La captura publicada confirmó la legibilidad del monograma.
+- **Contenido mostrado, sin auditoría editorial exhaustiva:** debut 1970, corona LMP 1971–72, regreso 2019, Kuroda Park y capacidad publicada de 8,000. Sus fuentes y afirmaciones no fueron revalidadas en esta ronda visual.
+- **Siguiente dentro de ronda LMP:** **Águilas de Mexicali**, omitido al contar por error a Olmecas de Tabasco (LMB) como club LMP.
+
+
+## 163. Águilas de Mexicali — cierre correcto de 10/10 clubes LMP (13-nov-2026)
+
+**Aclaración de inventario:** la ronda iniciada en §153 incluyó Olmecas de Tabasco, que pertenece a la **LMB**. El décimo club real de LMP es **Águilas de Mexicali**; ya tenía historia individual y ajustes previos, pero faltaba esta QA de cinco vistas y ancho compacto. Esta sección la completa, sin afirmar que Olmecas es LMP.
+
+- **Observación visual:** recurso `/logos/lmp/official/aguilas-mexicali.png` de 158×158 px cargaba en ambas cabeceras y en la franja. El monograma rojo se veía bien, pero la cabecera principal aplicaba dos sombras genéricas mientras Historia y franja tenían `filter:none`.
+- **Ajuste específico:** commit **`32bb57060092b088672ee8349b46c3fd0433dae8`**, Vercel **READY** automático. Se agregó `.clubHeroLogo img[src*="/logos/lmp/official/aguilas-mexicali.png"]{filter:none}` después del estilo genérico. Las dos cabeceras y franja conservan el mismo rojo original sin sombreado diferencial.
+- **QA escritorio:** Resumen, Plantilla, Movimientos, Grandes Ligas e Historia cargaron sin `Application error` a `innerWidth=1363`; `scrollWidth=1348` en cuatro vistas y 1363 en Movimientos (sin desborde). Escudo principal cargado en todas y el segundo de Historia también.
+- **QA compacto:** Chromium de escritorio zoom 400 %, `innerWidth=340` y `scrollWidth=337` en las cinco vistas; sin errores ni desborde global. Barra de pestañas desplazable como está diseñada: 451/307 px.
+- **Franja LMP:** PNG cargado, `filter:none`, caja aprox. 29×31 px en simulación compacta. Filtros coincidentes con ambas cabeceras.
+- **Prueba publicada:** después de Vercel READY, ambas cabeceras dieron `filter:none` con logos cargados en escritorio y ancho compacto; captura de Historia confirma composición limpia y roja.
+- **Contenido mostrado, no revalidado aquí:** debut en LMP 1976–77, cuatro coronas, Serie del Caribe 1986, Estadio Nido de los Águilas. Queda pendiente contraste editorial de hechos y fuentes.
+- **Cierre de ronda:** diez clubes **LMP reales** revisados individualmente: Jaguares (§154), Cañeros (§155), Charros (§156), Yaquis (§157), Venados (§158), Naranjeros (§159), Tomateros (§160), Mayos (§161), Algodoneros (§162) y Águilas (§163). También hubo QA extra de Olmecas LMB (§153). Se comprobaron las cinco pestañas de cada uno a 1363 y 340 px CSS y se corrigieron diferencias visuales específicas donde se observaron.
+- **No declarado como completo:** pruebas en celular real, licencias/origen de recursos, marca clara residual en PNG Yaquis, revisión editorial a fondo y casos reales en vivo de tarjetas y su jerarquía funcional.
+- **Siguiente etapa:** auditoría transversal de tarjetas LMB/LMP para comprobar la misma lógica de estados y detalles (HOY, POR COMENZAR, EN VIVO, FINAL, dobles carteleras, cruce de medianoche), con capturas reales y móvil cuando esté disponible.
