@@ -2,13 +2,13 @@
 
 **Última revisión:** 13 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas y **10/10 clubes reales LMP** revisados ahora individualmente en sus cinco pestañas a 1363/340 px CSS (§154–§163); Olmecas de Tabasco (§153) es LMB y fue QA adicional, no cuenta dentro de esos 10. También 30/30 insignias LMB/LMP cargan técnicamente (§151). **Secciones 162–163:** Algodoneros de Guasave escudo azul unificado (`dfcb3de`, READY) y Águilas de Mexicali escudo rojo unificado (`32bb570`, READY). La ronda visual no equivale a certificación de móvil físico, contenido histórico, licencias, ni lógica en vivo. **Siguiente etapa recomendada:** auditoría transversal LMB/LMP de tarjetas de juegos, estados HOY/EN VIVO/FINAL, datos y jerarquía visual; registrar y priorizar defectos reales.
+**Prioridad actual (13/nov/2026):** §164 auditoría transversal de tarjetas de juegos LMB/LMP: ambas comparten el componente GameCards; LMP EN VIVO y PRÓXIMO más detalle en vivo observados en producción, con cinco encuentros reales y sin error. Se corrigió la etiqueta de última mitad confirmada en LMB (9867a0d) y el texto de respaldo que decía falsamente «Serie del Rey» (93f6236). **Vercel READY** en commit 93f6236. Fuera de temporada LMB no pudo probarse EN VIVO. Pendientes: casos reales FINAL, doble cartelera, pospuesto/reprogramado, cruce de medianoche y móvil físico. Las diez fichas LMP constan en §154–§163.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (13/nov/2026):** **§163 cierra la ronda individual de 10 clubes LMP**: Jaguares (§154), Cañeros (§155), Charros (§156), Yaquis (§157), Venados (§158), Naranjeros (§159), Tomateros (§160), Mayos (§161), Algodoneros (§162) y Águilas (§163). Olmecas (§153) corresponde a LMB. Algodoneros y Águilas cargan cinco pestañas sin error a 1363/340 px CSS, con escudos de ambas cabeceras y franja uniformados, y Vercel READY. **Siguiente paso:** auditoría funcional LMB/LMP de tarjetas, estados reales de partidos y detalles; después QA física móvil y asuntos pendientes de imágenes/licencias, PNG Yaquis y datos editoriales. No presentar la plataforma entera como validada.
+> **REANUDACIÓN INMEDIATA (13/nov/2026):** §164 registra la primera comparación de tarjetas compartidas y LMP en vivo tras publicar ajustes, con Vercel READY. **Siguiente paso:** pruebas de regresión reproducibles para tarjetas HOY/PRÓXIMO/EN VIVO/FINAL y estados especiales (doble cartelera, pospuestos, cruce de medianoche); verificar con datos reales cuando se presenten. Las fichas LMP 10/10 ya constan en §154–§163.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2345,3 +2345,25 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Cierre de ronda:** diez clubes **LMP reales** revisados individualmente: Jaguares (§154), Cañeros (§155), Charros (§156), Yaquis (§157), Venados (§158), Naranjeros (§159), Tomateros (§160), Mayos (§161), Algodoneros (§162) y Águilas (§163). También hubo QA extra de Olmecas LMB (§153). Se comprobaron las cinco pestañas de cada uno a 1363 y 340 px CSS y se corrigieron diferencias visuales específicas donde se observaron.
 - **No declarado como completo:** pruebas en celular real, licencias/origen de recursos, marca clara residual en PNG Yaquis, revisión editorial a fondo y casos reales en vivo de tarjetas y su jerarquía funcional.
 - **Siguiente etapa:** auditoría transversal de tarjetas LMB/LMP para comprobar la misma lógica de estados y detalles (HOY, POR COMENZAR, EN VIVO, FINAL, dobles carteleras, cruce de medianoche), con capturas reales y móvil cuando esté disponible.
+
+## 164. Tarjetas LMB/LMP — auditoría transversal y correcciones (13-nov-2026)
+
+**Alcance y evidencia**
+
+- **Componente común:** components/Games.tsx expone GameCards para MLB, LMB y LMP. Estructura, clases, estado, marcador, ventaja del equipo ganador, lanzadores probables, dobles carteleras y avisos de reprogramación comparten presentación, salvo diferencias justificadas por cada fuente.
+- **LMP realmente en vivo:** en https://diamante-mx.vercel.app/?league=lmp se observaron cinco partidos EN VIVO (Venados/Tomateros, Jaguares/Yaquis, Mayos/Cañeros, Charros/Naranjeros y Águilas/Algodoneros), con marcador, ALTA/BAJA y énfasis de ventaja cuando no hay empate. También hubo tarjetas PRÓXIMO con hora y sin resultados inventados, y resultados recientes FINAL. No equivale a probar exhaustivamente cada estado.
+- **Detalle real:** /game/lmp/850430 mostró EN VIVO, «ABRIÓ» cuando ya relevó otro pitcher, línea de juego, «SITUACIÓN DEL JUEGO», bateador, lanzador, bolas, strikes, outs, jugadas y cambios de lanzador. Las opciones «Dónde ver» enlazan fuentes externas; disponibilidad de video no garantizada.
+- **LMB fuera de temporada:** producción muestra campeón de Serie del Rey y próximo ciclo 2027, sin partido LMB EN VIVO al momento de revisar. No se certificó ese estado con juego real.
+- **Inspección del código compartido:** la selección de HOY/PRÓXIMO considera fecha local de México; un vivo de ayer puede mantenerse visible al cruzar medianoche; solo hay destaque de ventaja en Live/Final con anotaciones diferentes, sin estado especial ni calentamiento; lanzadores probables se presentan solamente con fuente. Estos comportamientos fueron inspeccionados en código, no probados para todos los casos reales.
+
+**Correcciones publicadas**
+
+1. **LMB media entrada:** antes su helper adelantaba «BAJA N» en middle y «ALTA N+1» en end. LMB ahora aplica el mismo etiquetado de última mitad confirmada que LMP: top/middle = «ALTA N» y bottom/end = «BAJA N». Si no hay número y mitad fiables, solo se lee «EN VIVO»; no inventa la siguiente acción. Commit 9867a0d621c4ec05495a749a099692b154cd40d1.
+2. **LMB fase inventada:** lib/lmb.ts devolvía «Serie del Rey» para cualquier juego Live sin detailedStatus, incluso en temporada regular futura. Se corrigió a «En vivo», sin afirmar una fase que la fuente no confirmó. Commit 93f623661884dcf4ae7e757d4177b74d785cc578.
+3. **Guarda genérica MLB:** si falta tanto la entrada como detailedState en un juego vivo, el componente presenta «EN VIVO» en vez de «EN VIVO · undefined».
+
+**Verificación y pendientes**
+
+- **Vercel producción READY**, último commit 93f6236 (despliegue dpl_3Zd5Et1MAPeVh6f7aTDr4nma1tQ8); se revisó otra vez LMP en URL pública tras el despliegue: cinco tarjetas vivas con etiquetas ALTA/BAJA y sin «Application error».
+- **Aún no probado con casos reales:** middle/end de LMB durante juego; segundo encuentro de doble cartelera con horario oficial/por confirmar; pospuestos/reprogramados actuales; transición de día cuando un juego sigue vivo; dispositivo móvil físico.
+- **Siguiente ronda:** crear/verificar casos reproducibles de regresión HOY, PRÓXIMO, EN VIVO, FINAL, dobles, pospuestos y madrugada, y contrastar de nuevo con partidos LMP reales cuando aparezcan. Mantener paridad de composición, jerarquía y términos de LMB/LMP.
