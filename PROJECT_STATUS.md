@@ -2367,3 +2367,21 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Vercel producción READY**, último commit 93f6236 (despliegue dpl_3Zd5Et1MAPeVh6f7aTDr4nma1tQ8); se revisó otra vez LMP en URL pública tras el despliegue: cinco tarjetas vivas con etiquetas ALTA/BAJA y sin «Application error».
 - **Aún no probado con casos reales:** middle/end de LMB durante juego; segundo encuentro de doble cartelera con horario oficial/por confirmar; pospuestos/reprogramados actuales; transición de día cuando un juego sigue vivo; dispositivo móvil físico.
 - **Siguiente ronda:** crear/verificar casos reproducibles de regresión HOY, PRÓXIMO, EN VIVO, FINAL, dobles, pospuestos y madrugada, y contrastar de nuevo con partidos LMP reales cuando aparezcan. Mantener paridad de composición, jerarquía y términos de LMB/LMP.
+
+
+## 165. Calendario unificado: dobles, pospuestos y hora oficial (14-nov-2026)
+
+**Alcance de esta ronda:** cambio conservador de datos/etiquetas de calendario para MLB, LMB y LMP; no modifica el diseño de tarjetas, clasificación HOY/EN VIVO/FINAL, cruce de medianoche, playoffs ni fichas de clubes. Todo se desarrolló en la rama de validación `fix/game-card-states-20261113` antes de tocar `main`.
+
+**Implementación:**
+
+- `lib/gameScheduleMeta.ts` centraliza motivo de suspensión/aplazamiento, fecha destino de reprogramación validada y bandera oficial `startTimeTBD`; nunca infiere información ausente.
+- Los adaptadores `lib/mlb.ts`, `lib/lmp.ts`, `lib/lmb.ts` y `lib/nextGames.ts` conservan estos campos en sus diferentes orígenes de calendario (incluidos respaldos); la tarjeta muestra razón/reprogramación en MLB igual que en LMB/LMP cuando la fuente los informa.
+- Juego 2 de doble cartelera tradicional conserva «HORA POR CONFIRMAR» mientras la hora no esté confirmada expresamente; la confirmación oficial permite mostrarla. Las carteleras separadas/inferidas muestran una hora válida publicada salvo bandera explícita de pendiente. Partidos en vivo/finalizados conservan su estado prioritario.
+- `scripts/game-card-status-regression.cjs` comprueba 24 casos de datos de calendario, horario de dobles, pospuestos/retrasados/suspendidos y conexiones de los cuatro adaptadores. `npm run build` lo ejecuta junto con los tests ya existentes.
+
+**Verificación:** rama de prueba compiló en Vercel **READY**; pasaron 24 verificaciones de nuevas tarjetas, 21 de refresco pospartido LMP y 240 controles de consistencia de fichas (además de las otras pruebas de la cadena). No se habilitó acceso público a la vista protegida de la rama. Referencia de producción anterior: cinco partidos LMP EN VIVO, cinco próximos, resultados finales y un detalle en vivo funcional; MLB y LMB muestran sus respectivos cierres de temporada. La validación visual final del nuevo código se debe efectuar después de publicar.
+
+**Conservado expresamente:** orden y color de tarjetas, detección de juegos de ayer que continúan vivos, transiciones existentes, datos de lanzadores, etiquetas ALTA/BAJA, fichas LMB/LMP y la actual ficha breve de MLB. Las 30 fichas detalladas de MLB y la adaptación a Serie del Caribe son fases separadas.
+
+**Limitación pendiente:** no se contó con dobles carteleras, pospuestos/reprogramados ni cruce real de medianoche ocurriendo en las tres ligas durante esta revisión; sus casos reproducibles están comprobados mediante reglas/código, no mediante tres partidos reales simultáneos.
