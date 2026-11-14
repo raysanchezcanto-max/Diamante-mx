@@ -7,6 +7,7 @@ import {
   getMlbClubOverview, getMlbClubRoster, getMlbClubTransactions, getMlbClubNextGame,
 } from "@/lib/mlbClubContent";
 import MlbClubEditorialHistory from "@/components/MlbClubEditorialHistory";
+import { mlbEditorialHistory } from "@/lib/mlbHistoryEditorial";
 import MlbRosterHeadshot from "@/components/MlbRosterHeadshot";
 import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
@@ -54,6 +55,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   const home = "/equipos/mlb/" + club.id;
   const official = mlbOfficialTeamUrl(club);
   const record = standings.find(s => s.teamId === club.id);
+  const editorial = mlbEditorialHistory(club.id);
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
   const opponent = nextGame
@@ -123,14 +125,24 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           </section>
         </aside>
         <div className="clubMainColumn">
-          <section className="clubDirectoryNotice" aria-label={"Noticias de " + club.name}>
+          {editorial ? <article className="clubFeature" aria-label={"Reportaje verificado de " + club.name}>
+            {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
+            <div className="clubFeatureShade" aria-hidden="true"/>
+            <div className="clubFeatureContent">
+              <span className="clubKicker">{editorial.featuredStory.kicker}</span>
+              <h2>{editorial.featuredStory.title}</h2>
+              <p>{editorial.featuredStory.excerpt}</p>
+              <a href={editorial.featuredStory.url} target="_blank" rel="noopener noreferrer">
+                Leer nota oficial ↗</a>
+            </div>
+          </article> : <section className="clubDirectoryNotice" aria-label={"Noticias de " + club.name}>
             <span className="clubKicker">FUENTE DE NOTICIAS · MLB</span>
             <h2>Publicaciones oficiales</h2>
             <p>Consulta la actualidad de {club.name} en su portal oficial.
               Todavía no hay artículos individuales verificados para mostrar dentro de Diamante MX.</p>
             <a href={official + "/news"} target="_blank" rel="noopener noreferrer">
               Noticias del equipo en MLB ↗</a>
-          </section>
+          </section>}
           <section className="clubEditorialSection">
             <div className="clubSectionTitle">
               <div><span className="clubKicker">NOTICIAS · FUENTE MLB</span>
@@ -180,8 +192,11 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           </section>
           <section className="clubPanel">
             <div className="clubSideHeading"><h2>Legado del club</h2><span>MLB</span></div>
-            <p className="clubSmallNote">Consulta el historial de la franquicia, sus figuras documentadas
-              y el archivo de sus logros deportivos.</p>
+            <p className="clubSmallNote">{editorial
+              ? editorial.pennants.length + " banderines de la Liga Americana y " +
+                editorial.divisionTitles.length + " títulos divisionales hasta " +
+                editorial.titlesVerifiedThrough + "."
+              : "Consulta el historial de la franquicia, sus figuras documentadas y el archivo de sus logros deportivos."}</p>
             <a href={home + "?vista=historia"} className="clubDirectoryDetailLink">
               Historia y palmarés ↗</a>
             <a href="https://baseballhall.org/hall-of-famers" target="_blank"

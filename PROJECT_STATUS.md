@@ -2402,3 +2402,19 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 **Historial editorial:** el diseño incluye hero, tres KPI, palmarés, línea del tiempo, figuras, inmortales, estadio y fuentes, tal como en las otras dos ligas. **Aún falta enriquecer y verificar individualmente** la cantidad/años de títulos, fecha original de estadio, biografías, Hall of Fame, noticias y videos de cada franquicia; por ahora esos campos aparecen como «por verificar» y nunca con cifras fabricadas. La pestaña «Grandes Ligas» conserva la jerarquía visual común, pero describe a la propia franquicia MLB, no un traslado desde LMB/LMP.
 
 **QA:** `scripts/mlb-club-profile-regression.cjs` verifica 118 condiciones (30 IDs/rutas/fuentes, enlaces intactos y componentes comunes); los test previos de perfiles, partidos y LMP siguen pasando. La rama de prueba compiló **READY** en Vercel. Se requiere revisar visualmente producción después de publicar, ya que la URL preview requiere autenticación.
+
+
+## 167. MLB · Tampa Bay Rays — primera ficha documental completa (14-nov-2026)
+
+**Enfoque:** completar equipo por equipo, conservando la misma arquitectura de datos, el mismo CSS y las cinco pestañas `Resumen · Plantilla · Movimientos · Grandes Ligas · Historia` que comparten MLB/LMB/LMP. Nueva rama `feat/mlb-rays-editorial-20261114`; no modifica logos, APIs de partidos, rutas de LMB/LMP ni reglas de calendario.
+
+**Fuente verificable:** `lib/mlbHistoryEditorial.ts` incorpora la primera ficha de historia MLB con editorial estructurado, hechos y URLs por dato. Rays (ID 139): debut MLB 1998, inauguración de Tropicana Field 1990, 0 Series Mundiales ganadas hasta 2026, banderines AL 2008/2020/2026, títulos del Este de AL 2008/2010/2020/2021/2026. Las tres finales de la franquicia y sus resultados se cotejan con el historial oficial de postemporada de MLB.
+
+**Historia:** cronología (1995, 1998, 2008, 2018, 2020, 2026), cuatro figuras documentadas (Evan Longoria, Carl Crawford, Blake Snell y Randy Arozarena), dos miembros de Cooperstown relacionados con la franquicia (Wade Boggs 2005 y Fred McGriff 2023), hechos del estadio y vínculos a MLB/Cooperstown. Los honores de Cooperstown se distinguen del Salón de la Fama propio del club. Se reutilizan `clubHistoryChampions`, `clubHistoryTimeline`, `clubHistoryLegends`, `clubHistoryHallGrid` y `ClubHistoryMetrics` en lugar de introducir nuevos componentes visuales.
+
+**Resumen:** Rays presenta un reportaje oficial archivado sobre su Serie Mundial de 2026 dentro de `clubFeature`, la tarjeta destacada del estándar LMP/LMB; su panel «Legado» resume banderines y títulos divisionales. El espacio de noticias automáticas continúa señalando honestamente que falta conectar titulares individuales, evitando hacer pasar un artículo histórico por noticia en vivo.
+
+**Otras 29 franquicias:** conservan las cinco vistas, sus datos dinámicos y marcadores de verificación de contenido histórico. El modelo editorial está preparado para incorporar sus hechos individualmente sin bifurcar el diseño.
+
+**Verificación de código:** `scripts/mlb-club-profile-regression.cjs` añade pruebas de cronología, coronas, banderines, división, figuras, inmortales y tarjeta destacada a los 118 controles previos, y se ejecuta en el `npm run build` de Vercel. **Pendiente** hasta cierre de esta fase: confirmar build de la rama, comparar visualmente Resumen/Historia con Algodoneros y Toros en producción, verificar regreso a portadas y registrar publicación final.
+
