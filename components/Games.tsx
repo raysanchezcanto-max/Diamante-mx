@@ -100,7 +100,8 @@ function gameTime(
   league: LeagueCode
 ) {
   if (game.status === "Live") {
-  if (league === "LMP") {
+  // LMP y LMB muestran la última mitad confirmada, sin anticipar el cambio.
+  if (league === "LMP" || league === "LMB") {
     const inning = getLmpInningLabel(game.inningState, game.inning);
     return inning ? `EN VIVO · ${inning}` : "EN VIVO";
   }
@@ -116,7 +117,7 @@ const inning =
     ? `${inningInfo.half} ${inningInfo.inning}`
     : game.detailedState;
 
-  return `EN VIVO · ${inning}`;
+  return inning ? `EN VIVO · ${inning}` : "EN VIVO";
 }
 
   if (game.status === "Final") {
