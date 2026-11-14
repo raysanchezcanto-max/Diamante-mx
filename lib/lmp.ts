@@ -1,3 +1,4 @@
+import { getScheduleCardMeta } from "./gameScheduleMeta";
 import { cache } from "react";
 import type { Game, Standing, Leader } from "./mlb";
 
@@ -250,6 +251,7 @@ const todayGames =
 const gamesForToday: Game[] = todayGames.map((g: any) => ({
 
         id: g.gamePk,
+        ...getScheduleCardMeta(g),
   
 gameNumber:
   typeof g.gameNumber === "number"
@@ -270,12 +272,6 @@ doubleHeader:
         detailedState:
           g.status?.detailedState ??
           "Programado",
-
-        statusReason:
-          typeof g.status?.reason === "string"
-            ? g.status.reason
-            : undefined,
-
 
         awayId:
           g.teams?.away?.team?.id ?? 0,
@@ -326,13 +322,6 @@ homeProbablePitcher:
 
 startTime:
   g.gameDate,
-
-rescheduleDate:
-  typeof g.rescheduleGameDate === "string"
-    ? g.rescheduleGameDate
-    : typeof g.rescheduleDate === "string"
-      ? g.rescheduleDate
-      : undefined,
 }));
 
 
@@ -398,6 +387,7 @@ return await attachLmpFirstPitchRecorded(gamesForToday);
     
 return nextGames.map((g: any) => ({
   id: g.gamePk,
+        ...getScheduleCardMeta(g),
 
   gameNumber:
     typeof g.gameNumber === "number"
