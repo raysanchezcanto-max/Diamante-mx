@@ -1,6 +1,6 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 13 de noviembre de 2026
+**Última revisión:** 14 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
 **Prioridad actual (13/nov/2026):** §164 auditoría transversal de tarjetas de juegos LMB/LMP: ambas comparten el componente GameCards; LMP EN VIVO y PRÓXIMO más detalle en vivo observados en producción, con cinco encuentros reales y sin error. Se corrigió la etiqueta de última mitad confirmada en LMB (9867a0d) y el texto de respaldo que decía falsamente «Serie del Rey» (93f6236). **Vercel READY** en commit 93f6236. Fuera de temporada LMB no pudo probarse EN VIVO. Pendientes: casos reales FINAL, doble cartelera, pospuesto/reprogramado, cruce de medianoche y móvil físico. Las diez fichas LMP constan en §154–§163.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
@@ -2418,3 +2418,21 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 
 **QA FINAL en producción (14-nov-2026):** `scripts/mlb-club-profile-regression.cjs` pasó **132 controles** (118 anteriores + 14 nuevos) y también pasaron 240 de estándar de fichas, 24 de tarjetas de juego, 21 de refresco LMP y 10 de YouTube LMP. Vercel producción **READY** tras el merge `e1317ad1563ff4efc33d99ff20455a97eaa278f8`. En navegador se observaron Resumen e Historia actualizados: reportaje oficial de la Serie Mundial 2026, debut 1998, 00 campeonatos mundiales, estadio abierto en 1990, banderines 2008/2020/2026, cronología, cuatro figuras y dos miembros de Cooperstown. La ficha de Algodoneros LMP, Toros LMB y Brewers MLB sigue mostrando las cinco pestañas sin error. Los titulares/noticias automatizadas de MLB y el enriquecimiento de las otras 29 franquicias permanecen como fases futuras; no se alteraron reglas de juego ni diseños de las otras ligas.
 
+
+
+## §168 · 14/nov/2026 — Tarjetas MLB más completas y corrección del segundo escudo
+
+**Solicitud:** en la ficha de Tampa Bay Rays, la segunda marca de la pestaña «Grandes Ligas» aparecía sobre una placa blanca casi ilegible y esa pestaña carecía de contenido comparable con Algodoneros LMP / Toros LMB. Se requiere una experiencia unificada, sin alterar la lógica ni las páginas de las otras ligas.
+
+**Implementación verificada en preview:**
+
+- Se mantiene el componente global de cinco pestañas y el sistema común de tarjeta, colores y jerarquía. Solo las páginas de franquicias MLB reciben la variante de estilo específica; su segundo logo usa fondo transparente sin recuadro blanco. La variante LMB no cambió.
+- La pestaña «Grandes Ligas» queda enriquecida para las **30 franquicias** mediante MLB StatsAPI: balance de temporada, bateo colectivo (carreras, HR, AVG), pitcheo (ERA, ponches, WHIP), tabla divisional con el equipo resaltado, datos de estadio/capacidad cuando la fuente los informa y enlaces oficiales.
+- La ficha superior busca la capacidad en la ficha de sede de MLB; si no está disponible, muestra la liga, no «Por verificar» como KPI vacío.
+- La portada «Resumen» incluye noticias individuales del RSS oficial de cada franquicia, hasta tres tarjetas, con fuente propia y caché de 30 minutos; conserva el reportaje editorial destacado de Rays y no usa noticias de otros clubes como suplencia.
+- La sección de figuras históricas usa el catálogo editorial solo cuando la franquicia ya está documentada (actualmente Rays); el palmarés y las cronologías individualizadas de las otras 29 siguen **pendientes de cotejo equipo por equipo**. No se insertan logros ni jugadores inventados.
+- Estilos responsive acotados a las tarjetas MLB y pruebas de regresión ampliadas.
+
+**QA previa al merge:** Vercel preview compila con TypeScript y suite de regresión; navegador comprobó «Grandes Ligas» de Rays y Brewers con métricas reales y segundo logo sin placa, Resumen con titulares distintos por club, las pestañas Plantilla/Movimientos/Historia de Rays, y «Grandes Ligas» de Toros LMB y Algodoneros LMP sin anomalías.
+
+**Pendiente:** completar archivo editorial individual de las 29 franquicias MLB restantes y ampliar video/noticias con clips o destacados específicos documentados cuando sus fuentes estén disponibles. Llevar la lógica de encuentros a Serie del Caribe sigue siendo un frente separado y no fue alterado en este cambio.
