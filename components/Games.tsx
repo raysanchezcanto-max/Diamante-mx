@@ -1,3 +1,4 @@
+import { isSecondGameTimeUnconfirmed } from "@/lib/gameScheduleMeta";
 import MlbPostseasonCard from "@/components/MlbPostseasonCard";
 import type {
   MlbPostseason,
@@ -125,20 +126,9 @@ const inning =
   }
   
 
-if (
- 
-(league === "LMP" ||
-  league === "MLB" ||
-  league === "LMB") &&
-
-  game.doubleHeader === "Y" &&
-  game.gameNumber === 2 &&
-  game.status === "Preview"
-) {
-  
-return "HORA POR CONFIRMAR";
-
-}
+if (isSecondGameTimeUnconfirmed(game)) {
+    return "HORA POR CONFIRMAR";
+  }
 
 
 
@@ -353,8 +343,7 @@ DOBLE · JUEGO {game.gameNumber}
       {specialStatus}
     </span>
     
-    {(league === "LMP" || league === "LMB") &&
-      specialStatus === "POSPUESTO" &&
+    {specialStatus === "POSPUESTO" &&
       game.statusReason?.trim() && (
         <span
           style={{
@@ -381,8 +370,7 @@ DOBLE · JUEGO {game.gameNumber}
       )}
 
 
-    {(league === "LMP" || league === "LMB") &&
-      specialStatus === "POSPUESTO" &&
+    {specialStatus === "POSPUESTO" &&
       game.rescheduleDate &&
       /^\d{4}-\d{2}-\d{2}$/.test(
         game.rescheduleDate
