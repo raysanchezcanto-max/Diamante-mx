@@ -3,6 +3,7 @@
 import { useState, type CSSProperties } from "react";
 import { lmbClubHref } from "@/lib/lmbClubs";
 import { lmpClubHref } from "@/lib/lmpClubDirectory";
+import { mlbClubHref } from "@/lib/mlbClubDirectory";
 import type { Game, Standing } from "@/lib/mlb";
 import {
   getTeamLogo,
@@ -166,11 +167,13 @@ export default function TeamLogoStrip({
       <div className="teamLogoRail" aria-label={league==="CARIBE"?"Participantes del Caribe":`Equipos de ${league}`}>
         <div className="teamLogoTrack">
           {teams.map(team=>{
-            const profileUrl = league === "LMB"
-              ? lmbClubHref(team.name)
-              : league === "LMP"
-                ? lmpClubHref(team.name)
-                : null;
+            const profileUrl = league === "MLB"
+              ? mlbClubHref(team.id)
+              : league === "LMB"
+                ? lmbClubHref(team.name)
+                : league === "LMP"
+                  ? lmpClubHref(team.name)
+                  : null;
             const logoStyle = league === "LMB"
               ? { "--lmb-logo-scale": LMB_LOGO_SCALE[clean(team.name)] ?? 1 } as CSSProperties
               : undefined;
