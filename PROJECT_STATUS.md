@@ -2,13 +2,13 @@
 
 **Última revisión:** 13 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 158:** Venados de Mazatlán cerró auditoría de cinco pestañas a 1363 y 340 px CSS; se eliminó únicamente la sombra genérica de su cabecera principal para hacerla coincidir con Historia y franja (`ac297e4`, READY). Ya auditados Olmecas (§153), Jaguares (§154), Cañeros (§155), Charros (§156) y Yaquis (§157). **Siguiente:** Naranjeros de Hermosillo. Pendientes: teléfono físico, posible punto claro en PNG de Yaquis, procedencia/licencia de escudos y pruebas de juegos en vivo; no declarar los 30 gráficamente aprobados.
+**Prioridad actual (13/nov/2026):** fichas LMP **10/10 historias individuales** publicadas; 30/30 insignias LMB/LMP cargan técnicamente. Tarjetas regulares LMB/LMP comparten componente, estados y reglas principales, con validaciones de transición real aún pendientes. **Sección 159:** Naranjeros de Hermosillo pasó QA de cinco vistas a 1363/340 px CSS; el escudo naranja de la cabecera principal ahora conserva la misma nitidez que Historia y la franja (`5d73447`, READY). Auditados individualmente Olmecas (§153), Jaguares (§154), Cañeros (§155), Charros (§156), Yaquis (§157) y Venados (§158). **Siguiente:** Tomateros de Culiacán. Pendientes: prueba en teléfono físico, pequeño punto claro del PNG de Yaquis, procedencia/licencias, validación editorial profunda y juegos en vivo; no declarar los 30 gráficamente aprobados.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (13/nov/2026):** continuar desde **§158**, revisión de Venados terminada. El escudo rojo de las dos cabeceras usa `filter:none` (cambio CSS `ac297e4`, Vercel READY), sin alterar la imagen oficial ni el resto de las ligas. Las cinco pestañas cargan a 1363/340 px CSS sin error ni desborde horizontal global; scroll horizontal interno de pestañas esperado. **Siguiente club: Naranjeros de Hermosillo**, revisar contraste naranja, ambas cabeceras, franja LMP y cinco secciones. Mantener pendientes independientes (licencia/origen, dispositivo real, punto claro de Yaquis, juegos en vivo, movimientos y videos).
+> **REANUDACIÓN INMEDIATA (13/nov/2026):** continuar desde **§159**. Naranjeros de Hermosillo revisado en cinco secciones, escritorio y ancho simulado de 340 px CSS: sin `Application error` ni desborde global. Ajuste aislado del escudo principal a `filter:none`, igual que Historia y franja LMP, `5d73447` Vercel READY. **Siguiente club: Tomateros de Culiacán**: inspeccionar monograma de bajo contraste, ambas cabeceras, franja y cinco vistas; cambiar únicamente defectos constatados. Mantener separados pendientes de teléfono real, origen/licencia, contenido histórico, PNG Yaquis y lógica de partidos en vivo.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2268,3 +2268,19 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Datos editoriales mostrados:** ficha incluye 9 títulos LMP y dos Series del Caribe, con primera corona moderna 1973–74, más reciente 2015–16 y estadio inaugurado en 1962. Estas cifras no se reaudiaron contra documentos externos en esta revisión visual; la ficha conserva sus enlaces de fuente preexistentes.
 - **Límites:** prueba adaptable simulada, derechos de uso/origen del logo pendientes y sin prueba física de Android/iPhone; no se certificó la lógica de resultados en vivo.
 - **Siguiente club:** **Naranjeros de Hermosillo**, contrastar naranja en cabeceras y franja, inspeccionar cinco pestañas a ambos anchos y corregir exclusivamente hallazgos comprobados.
+
+
+## 159. Naranjeros de Hermosillo — acabado naranja consistente y cinco secciones (13-nov-2026)
+
+**Club auditado:** Naranjeros de Hermosillo (LMP), séptimo equipo consecutivo en revisión individual.
+
+- **Material gráfico:** `/logos/lmp/official/naranjeros-hermosillo.png` (158×158 px) cargó con `object-fit:contain` en las dos cabeceras. La `H` naranja conserva contraste alto sobre los fondos oscuros, sin recorte observado.
+- **Hallazgo inicial:** el logo de `.clubHeroLogo img` usaba dos `drop-shadow` genéricos, mientras `.clubHistoryHeading img` y la franja LMP tenían `filter:none`. El primer tratamiento suavizaba ligeramente los bordes del naranja, pese a no necesitar iluminación adicional.
+- **Ajuste puntual en `app/globals.css`:** `.clubHeroLogo img[src*="/logos/lmp/official/naranjeros-hermosillo.png"]{filter:none}`. Se mantiene la imagen original, el tono naranja y todas las reglas de los otros equipos. Commit **`5d734473c5d3e58440d1271e0571fedbc6638379`**, Vercel **READY**.
+- **Franja principal de LMP:** `H` naranja cargada y visible, `object-fit:contain`, escala compartida `.92`, caja aproximada 33×35 px en 1363 px CSS. No requirió filtros ni aumento de escala.
+- **QA de las cinco pestañas en escritorio:** Resumen, Plantilla, Movimientos, Grandes Ligas e Historia cargaron sin `Application error` a `innerWidth=1363`. Las cinco tenían escudo principal disponible y la sección Historia también el segundo; ancho global del documento 1348 px salvo Movimientos (1363), sin desborde.
+- **QA a 340 px CSS:** Chromium de escritorio con zoom 400 % (no teléfono real). Las cinco vistas reportaron `scrollWidth=337` frente a `innerWidth=340`; sin desborde global. La navegación por pestañas dispone de scroll horizontal intencional (451 px de contenido para 307 px de caja).
+- **Comprobación tras publicación:** filtros `none` idénticos en las dos cabeceras, logos cargados y sin error visible en la página de producción, observado tanto en ancho compacto como en escritorio.
+- **Contenido editorial presente:** Historia muestra 17 títulos de LMP, dos Series del Caribe, primera corona moderna 1960–61, última 2023–24 y estadio abierto en 2013. Son datos **mostrados** en la ficha con referencias existentes, no cifras revalidadas en esta revisión visual; queda pendiente una auditoría editorial profunda y de uniformidad del nivel de detalle.
+- **Límites:** emulación del ancho mediante zoom, sin prueba física; no se certificó licencia de uso del monograma ni la lógica de tarjetas de juegos en vivo.
+- **Siguiente club:** **Tomateros de Culiacán**, poniendo atención al contraste de su insignia vino/burdeos, las dos cabeceras, franja y cinco secciones en escritorio y ancho compacto.
