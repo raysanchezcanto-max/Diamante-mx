@@ -26,6 +26,7 @@ export type MlbHallOfFamer = {
 export type MlbHistoricalSource = { label: string; url: string };
 export type MlbEditorialHistory = {
   intro: string;
+  featuredStory: { title: string; excerpt: string; url: string; kicker: string };
   debutYear: string;
   worldSeriesTitles: number;
   titlesVerifiedThrough: string;
@@ -50,6 +51,12 @@ const RAYS_HOF = "https://baseballhall.org/nine/tampa-bay-rays";
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
   139: {
     intro: "Desde su debut en 1998, Tampa Bay pasó de sus años como Devil Rays a tres banderines de la Liga Americana. La franquicia ha disputado las Series Mundiales de 2008, 2020 y 2026, sin conquistar aún el título.",
+    featuredStory: {
+      kicker: "REPORTAJE · POSTEMPORADA MLB 2026",
+      title: "LOS RAYS REGRESARON A LA SERIE MUNDIAL POR TERCERA VEZ",
+      excerpt: "Tampa Bay conquistó la Liga Americana y disputó la Serie Mundial de 2026, en la que Milwaukee se impuso por cuatro juegos a uno.",
+      url: "https://www.mlb.com/rays/news/rays-lose-2026-world-series-to-brewers",
+    },
     debutYear: "1998",
     worldSeriesTitles: 0,
     titlesVerifiedThrough: "2026",
