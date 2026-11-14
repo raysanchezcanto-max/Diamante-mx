@@ -1,3 +1,4 @@
+import { getScheduleCardMeta } from "./gameScheduleMeta";
 const MLB_API = "https://statsapi.mlb.com/api/v1";
 function getMlbDivisionName(
   divisionId: number
@@ -57,6 +58,7 @@ gamesInSeries?: number;
   startTime: string;
   
   rescheduleDate?: string;
+  startTimeTBD?: boolean;
 
 };
 
@@ -221,6 +223,7 @@ const todayGames =
     if (todayGames.length > 0) {
       const gamesForToday: Game[] = todayGames.map((g: any) => ({
         id: g.gamePk,
+        ...getScheduleCardMeta(g),
         
 gameNumber:
   typeof g.gameNumber === "number"
@@ -362,6 +365,7 @@ gamesInSeries:
     return nextGames.map((g: any) => ({
       id:
         g.gamePk,
+      ...getScheduleCardMeta(g),
       
 gameNumber:
   typeof g.gameNumber === "number"
