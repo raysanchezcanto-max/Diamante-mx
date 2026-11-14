@@ -27,10 +27,17 @@ export async function getMlbClubOverview(club: MlbClub): Promise<MlbClubOverview
   const t = data?.teams?.[0];
   const firstYear = typeof t?.firstYearOfPlay === "string" && /^\d{4}$/.test(t.firstYearOfPlay)
     ? t.firstYearOfPlay : null;
+  const divisions: Record<number, string> = {
+    200: "Liga Americana Oeste", 201: "Liga Americana Este", 202: "Liga Americana Central",
+    203: "Liga Nacional Oeste", 204: "Liga Nacional Este", 205: "Liga Nacional Central",
+  };
+  const leagues: Record<number, string> = { 103: "Liga Americana", 104: "Liga Nacional" };
   return {
     name: club.name,
-    division: typeof t?.division?.name === "string" ? t.division.name : "División por verificar",
-    league: typeof t?.league?.name === "string" ? t.league.name : "Major League Baseball",
+    division: divisions[Number(t?.division?.id)] ??
+      (typeof t?.division?.name === "string" ? t.division.name : "División por verificar"),
+    league: leagues[Number(t?.league?.id)] ??
+      (typeof t?.league?.name === "string" ? t.league.name : "Major League Baseball"),
     stadium: typeof t?.venue?.name === "string" ? t.venue.name : null,
     firstYear,
     venueId: Number.isInteger(t?.venue?.id) ? t.venue.id : null,
@@ -53,10 +60,17 @@ export async function getMlbClubRoster(club: MlbClub): Promise<MlbClubRoster> {
     const category = pos.includes("pitch") ? "Lanzadores" :
       pos.includes("catch") ? "Receptores" : pos.includes("infield") ? "Jugadores de cuadro" :
       pos.includes("outfield") ? "Jardineros" : "Otros";
+    const positions: Record<string, string> = {
+      P: "Lanzador", C: "Receptor", "1B": "Primera base", "2B": "Segunda base",
+      "3B": "Tercera base", SS: "Campocorto", LF: "Jardinero izquierdo",
+      CF: "Jardinero central", RF: "Jardinero derecho", OF: "Jardinero",
+      IF: "Jugador de cuadro", DH: "Bateador designado", TWP: "Jugador de dos vías",
+    };
+    const abbreviation = String(row?.position?.abbreviation ?? "");
     groups.get(category)?.push({
       id, name,
       number: typeof row?.jerseyNumber === "string" && row.jerseyNumber.trim() ? row.jerseyNumber : "—",
-      position: typeof row?.position?.name === "string" ? row.position.name : category,
+      position: positions[abbreviation] ?? category,
     });
   }
   return {
