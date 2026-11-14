@@ -3,9 +3,9 @@
  * Una fecha no comprobada se muestra como dato pendiente, nunca como capacidad.
  */
 export type ClubHistoryMetricFacts = {
- league:"LMB"|"LMP";
+ league:"LMB"|"LMP"|"MLB";
  debutYear:string|null|undefined;
- championships:number;
+ championships:number|null;
  seasonLabel:string;
  stadiumName:string|null|undefined;
  stadiumOpened:string|null|undefined;
@@ -13,7 +13,7 @@ export type ClubHistoryMetricFacts = {
 export function ClubHistoryMetrics({league,debutYear,championships,seasonLabel,stadiumName,stadiumOpened}:ClubHistoryMetricFacts){
  return <div className="clubHistoryStats">
   <div><span>DEBUT HISTÓRICO {league}</span><strong>{debutYear||"—"}</strong><small>{debutYear?"Primeras temporadas documentadas":"Año por verificar"}</small></div>
-  <div><span>CAMPEONATOS {league}</span><strong>{String(championships).padStart(2,"0")}</strong><small>Hasta la temporada {seasonLabel}</small></div>
+  <div><span>CAMPEONATOS {league}</span><strong>{championships===null?"—":String(championships).padStart(2,"0")}</strong><small>{championships===null?"Por verificar":"Hasta la temporada "+seasonLabel}</small></div>
   <div><span>APERTURA DEL ESTADIO</span><strong>{stadiumOpened||"—"}</strong><small>{stadiumOpened?(stadiumName||"Recinto del club"):"Año por verificar · "+(stadiumName||"estadio")}</small></div>
  </div>;
 }
