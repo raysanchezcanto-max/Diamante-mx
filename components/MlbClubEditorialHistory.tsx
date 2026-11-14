@@ -9,6 +9,12 @@ export default function MlbClubEditorialHistory({
 }: { club: MlbClub; overview: MlbClubOverview; logo: string | null }) {
   const official = mlbOfficialTeamUrl(club);
   const historyUrl = official + "/history";
+  // MLB StatsAPI can report organizational years before the first MLB season.
+  // The Rays played their first MLB regular-season game on March 31, 1998.
+  const isRays = club.id === 139;
+  const documentedDebut = isRays ? "1998" : overview.firstYear;
+  const documentedStadiumOpened = isRays ? "1990" : null;
+  const debutSourceUrl = isRays ? historyUrl + "/timeline" : official;
   return <section className="clubHistory clubDirectoryHistory" aria-labelledby="mlbClubHistoryTitle">
     <header className="clubHistoryHeading">
       <div>
@@ -19,8 +25,9 @@ export default function MlbClubEditorialHistory({
       </div>
       {logo && <img src={logo} alt={"Escudo de " + club.name} width={98} height={98}/>}
     </header>
-    <ClubHistoryMetrics league="MLB" debutYear={overview.firstYear} championships={null}
-      seasonLabel={String(new Date().getUTCFullYear())} stadiumName={overview.stadium} stadiumOpened={null}/>
+    <ClubHistoryMetrics league="MLB" debutYear={documentedDebut} championships={null}
+      seasonLabel={String(new Date().getUTCFullYear())} stadiumName={overview.stadium}
+      stadiumOpened={documentedStadiumOpened}/>
 
     <div className="clubHistorySectionHead">
       <div><span className="clubKicker">{COPY.history.recordKicker}</span>
@@ -37,13 +44,14 @@ export default function MlbClubEditorialHistory({
       <div><span className="clubKicker">{COPY.history.timelineKicker}</span>
         <h3>{COPY.history.timelineTitle}</h3></div>
     </div>
-    {overview.firstYear ? <ol className="clubHistoryTimeline">
-      <li><span className="clubHistoryYear">{overview.firstYear}</span>
+    {documentedDebut ? <ol className="clubHistoryTimeline">
+      <li><span className="clubHistoryYear">{documentedDebut}</span>
         <div className="clubHistoryTimelineBody">
-          <h4>Primer año de la franquicia registrado por MLB</h4>
-          <p>La ficha oficial de MLB indica {overview.firstYear} como primer año de juego de esta franquicia.
-            La fecha puede preceder al nombre o ciudad actuales del equipo.</p>
-          <a href={official} target="_blank" rel="noopener noreferrer">Ver fuente oficial ↗</a>
+          <h4>{isRays ? "Primer partido de temporada regular en MLB" : "Primer año registrado por MLB"}</h4>
+          <p>{isRays
+            ? "Tampa Bay disputó su primer partido de temporada regular el 31 de marzo de 1998. La organización ya existía durante sus preparativos previos al debut."
+            : "La ficha de MLB identifica " + documentedDebut + " como año inicial del registro de la franquicia; puede preceder al debut de temporada regular o al nombre actual."}</p>
+          <a href={debutSourceUrl} target="_blank" rel="noopener noreferrer">Ver fuente oficial ↗</a>
         </div>
       </li>
     </ol> : <div className="clubDirectoryNotice">
@@ -77,20 +85,24 @@ export default function MlbClubEditorialHistory({
         <p>{overview.stadium
           ? "La ficha actual de MLB identifica este recinto como sede de " + club.name + "."
           : "No hay un estadio verificable en la respuesta actual de MLB."}
-          {" "}La fecha original de inauguración se documentará con fuentes del estadio;
-          no debe confundirse con el primer año de la franquicia.</p>
+          {" "}{isRays
+            ? "Tropicana Field abrió en 1990, antes del debut de los Rays en 1998, según el archivo oficial de MLB."
+            : "La fecha original de inauguración se documentará con fuentes del estadio; no debe confundirse con el primer año de la franquicia."}</p>
         <a href={official} target="_blank" rel="noopener noreferrer">Consultar ficha oficial ↗</a>
       </div>
-      <ClubHistoryStadiumYear stadiumOpened={null}/>
+      <ClubHistoryStadiumYear stadiumOpened={documentedStadiumOpened}/>
     </div>
 
     <footer className="clubHistorySources">
       <span className="clubKicker">{COPY.history.sourcesKicker}</span>
-      <p>Primer año, identidad y estadio proceden de la ficha de equipos de MLB StatsAPI.
-        Campeonatos, personajes y año de apertura requieren verificación documental por club.</p>
+      <p>Identidad y estadio se consultan en MLB StatsAPI. {isRays
+        ? "Para Tampa Bay, el debut de 1998 y la apertura de Tropicana Field en 1990 están contrastados con la cronología y el archivo de estadios de MLB."
+        : "El año inicial es el del registro de StatsAPI y no necesariamente el debut en MLB; la inauguración del recinto sigue por verificar."}
+        Campeonatos y figuras históricas requieren verificación documental por club.</p>
       <div>
         <a href={official} target="_blank" rel="noopener noreferrer">Ficha oficial MLB ↗</a>
         <a href={historyUrl} target="_blank" rel="noopener noreferrer">Historia del club ↗</a>
+        {isRays && <a href="https://www.mlb.com/news/mlb-parks-from-oldest-to-newest" target="_blank" rel="noopener noreferrer">Historia del estadio ↗</a>}
         <a href="https://baseballhall.org/hall-of-famers" target="_blank"
           rel="noopener noreferrer">Salón de la Fama ↗</a>
       </div>
