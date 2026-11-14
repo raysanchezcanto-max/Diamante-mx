@@ -4487,6 +4487,8 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHeroLogo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35)) drop-shadow(0 0 1px rgba(255,255,255,.38))}
 .clubHeroLogo img[src*="olmecas-tabasco"],.clubHistoryHeading img[src*="olmecas-tabasco"]{filter:drop-shadow(0 0 1.75px rgba(232,250,255,.98)) drop-shadow(0 0 5px rgba(164,223,255,.60)) drop-shadow(0 0 10px rgba(80,191,224,.32))}
 .clubHeroLogo img[src*="jaguares-nayarit"],.clubHistoryHeading img[src*="jaguares-nayarit"]{filter:brightness(2.1) saturate(1.10) drop-shadow(0 0 1.5px rgba(170,228,255,.85)) drop-shadow(0 0 7px rgba(69,149,243,.28))}
+/* Charros de Jalisco (LMP): igualar la cabecera con Historia y la franja de equipos. */
+.clubHeroLogo img[src*="/logos/lmp/official/charros-jalisco.png"]{filter:brightness(1.9) saturate(1.06) drop-shadow(0 0 1.5px rgba(202,222,255,.27))}
 .clubHeroLogo img:is([src*="acereros-monclova"],[src*="saraperos-saltillo"],[src*="diablos-rojos-mexico"],[src*="guerreros-oaxaca"],[src*="pericos-puebla"],[src*="piratas-campeche"],[src*="dorados-chihuahua"],[src*="conspiradores-queretaro"]){width:96px;height:96px}
 .clubKicker{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.11em}
 .clubHero .clubKicker{color:#e8e4d3}
