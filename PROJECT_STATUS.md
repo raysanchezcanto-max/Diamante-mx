@@ -2387,3 +2387,18 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 **Limitación pendiente:** no se contó con dobles carteleras, pospuestos/reprogramados ni cruce real de medianoche ocurriendo en las tres ligas durante esta revisión; sus casos reproducibles están comprobados mediante reglas/código, no mediante tres partidos reales simultáneos.
 
 **Cierre en producción (14-nov-2026):** `main` avanzó por fast-forward hasta `5d7b296384cddd1c226a1ae5b1ba2bb456baa4f9`; Vercel producción quedó **READY** con alias `diamante-mx.vercel.app`. En navegador se confirmó MLB con campeón y 30 logotipos, LMB con Serie del Rey y 20 perfiles, y LMP con 5 tarjetas EN VIVO, 5 PRÓXIMO y 10 FINAL sin error de aplicación. Se abrió `/game/lmp/850430` y cargaron marcador, situación del juego y línea por entradas. Se conservan como pendientes de prueba en partidos reales las dobles, pospuestos y cruces de madrugada que no ocurrieron durante esta comprobación.
+
+
+## 166. Perfiles MLB — estándar unificado y 30 rutas (14-nov-2026)
+
+**Estrategia conservadora:** rama `feat/mlb-club-profiles-standard-20261114` desde producción confirmada; no sustituye componentes de LMB/LMP ni modifica rutas de sus logos. Se mantiene el tema oscuro guinda/lima y el CSS existente.
+
+**Estructura aprobada:** las 30 fichas MLB usan **exactamente el componente `LmbClubTabs`** (Resumen, Plantilla, Movimientos, Grandes Ligas, Historia) y las clases visuales ya publicadas para LMB/LMP: `clubProfile`, `clubHero`, `clubContentGrid`, `clubRosterContent`, `clubMovementsContent`, `clubBigLeagues`, `clubHistory`. Los títulos provienen del mismo `CLUB_PROFILE_COPY`. Las cinco vistas comparten ruta `/equipos/mlb/{id}` con parámetro `?vista=`.
+
+**Al hacer clic en logos MLB:** `TeamLogoStrip` abre ahora la ficha completa de cada uno de los 30 IDs oficiales, en vez del panel rápido. LMB/LMP conservan sus enlaces; no se cambió `teamLogos.ts`.
+
+**Datos:** el perfil consulta MLB StatsAPI para nombre de división y liga (traducidos), sede, año inicial de la franquicia cuando existe, última tabla regular, próximo partido, roster de 40 y transacciones recientes. Las fotografías usan la fuente MLB y el mismo formato visual de jugadores de LMB/LMP. Se incluye enlace a fuentes oficiales por sección; errores de API se comunican sin inventar datos.
+
+**Historial editorial:** el diseño incluye hero, tres KPI, palmarés, línea del tiempo, figuras, inmortales, estadio y fuentes, tal como en las otras dos ligas. **Aún falta enriquecer y verificar individualmente** la cantidad/años de títulos, fecha original de estadio, biografías, Hall of Fame, noticias y videos de cada franquicia; por ahora esos campos aparecen como «por verificar» y nunca con cifras fabricadas. La pestaña «Grandes Ligas» conserva la jerarquía visual común, pero describe a la propia franquicia MLB, no un traslado desde LMB/LMP.
+
+**QA:** `scripts/mlb-club-profile-regression.cjs` verifica 118 condiciones (30 IDs/rutas/fuentes, enlaces intactos y componentes comunes); los test previos de perfiles, partidos y LMP siguen pasando. La rama de prueba compiló **READY** en Vercel. Se requiere revisar visualmente producción después de publicar, ya que la URL preview requiere autenticación.
