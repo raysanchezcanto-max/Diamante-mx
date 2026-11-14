@@ -5493,3 +5493,43 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 @media (prefers-reduced-motion: reduce) {
   .lmpClubCalendarChevron { transition:none; }
 }
+
+/* MLB · 14-nov-2026: mismo sistema de tarjetas que LMB/LMP, escudo sin placa blanca. */
+.clubDirectoryMlb--franchise .clubToMlbHeroLogo{
+  background:transparent;border:0;border-radius:0;padding:0;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.5)) drop-shadow(0 0 2px rgba(255,255,255,.24));
+}
+.clubDirectoryMlb--franchise .clubBigLeaguesHeaderMark{
+  min-width:130px;justify-content:flex-end;gap:12px;
+}
+.clubDirectoryMlb--franchise .clubBigLeaguesHeaderMark span{white-space:nowrap}
+.clubMlbSeasonGrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+.clubMlbSeasonGrid .clubDirectoryHistoryPanel{min-width:0}
+.clubMlbSeasonGrid .clubDirectoryHistoryPanel>p strong{color:#f5f2e9}
+.clubMlbSeasonGrid .clubStandingsScroll{margin:3px 0 8px}
+.clubMlbSeasonGrid .clubStandingsTable td:first-child span{font-size:11px}
+.clubMlbSeasonLinks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.clubMlbSeasonLinks>.clubDirectoryHistoryPanel{
+  min-width:0;text-decoration:none;transition:border-color .15s ease,transform .15s ease;
+}
+.clubMlbSeasonLinks>.clubDirectoryHistoryPanel:hover{border-color:#c5eb60;transform:translateY(-2px)}
+.clubMlbSeasonLinks>.clubDirectoryHistoryPanel:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.clubMlbSeasonLinks h3{color:#f4f7eb!important}
+.clubMlbSeasonLinks p{color:#b8cabc!important}
+.clubDirectoryMlb--franchise .clubBigLeaguesPlayer .clubHistoryLegendMonogram{
+  flex:0 0 51px;width:51px;height:51px;display:grid;place-items:center;
+}
+.clubDirectoryMlb--franchise .clubBigLeaguesPlayer>a{margin-top:auto;color:#d9ff65!important;font-size:11px;font-weight:900}
+@media(max-width:800px){
+  .clubMlbSeasonGrid{grid-template-columns:1fr}
+  .clubMlbSeasonLinks{grid-template-columns:1fr}
+}
+
+/* Titulares del canal MLB: misma presentación editorial que LMB/LMP. */
+.clubMlbHeadlines{display:grid;gap:10px;margin:12px 0 18px}
+.clubMlbHeadlines>a{
+  display:block;border-bottom:1px solid #2b4435;padding-bottom:10px;
+  color:#f2f5eb!important;font-size:12px;font-weight:750;line-height:1.55;text-decoration:none;
+}
+.clubMlbHeadlines>a:hover{color:var(--accent)!important}
+.clubMlbHeadlines>a span{color:var(--accent)}
