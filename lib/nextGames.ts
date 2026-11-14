@@ -1,3 +1,4 @@
+import { getScheduleCardMeta } from "./gameScheduleMeta";
 
 import { inferLmbDoubleHeaders } from "./lmbDoubleHeaders";
 
@@ -47,6 +48,7 @@ function mapGame(g: any): Game {
   return {
     id:
       g.gamePk,
+    ...getScheduleCardMeta(g),
     
 gameNumber:
   typeof g.gameNumber === "number"
@@ -292,6 +294,7 @@ doubleHeader:
 
 
               status,
+              ...getScheduleCardMeta(g),
 
               detailedState:
                 g.detailedStatus ??
