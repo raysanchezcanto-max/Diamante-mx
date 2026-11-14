@@ -46,6 +46,27 @@ for (const component of ["ClubHistoryMetrics", "ClubHistoryStadiumYear"]) {
 for (const section of ["clubHistorySectionHead", "clubHistoryHall", "clubHistoryOrigins", "clubHistorySources"]) {
   verify(history.includes(section), "bloque de Historia " + section);
 }
+const { mlbEditorialHistory } = require("../lib/mlbHistoryEditorial.ts");
+const raysHistory = mlbEditorialHistory(139);
+verify(Boolean(raysHistory), "Rays tienen historia documental propia");
+verify(raysHistory.debutYear === "1998", "Rays debutaron en 1998");
+verify(raysHistory.stadiumOpened === "1990", "Tropicana Field abrió en 1990");
+verify(raysHistory.worldSeriesTitles === 0 && raysHistory.titlesVerifiedThrough === "2026",
+  "sin coronas de Serie Mundial hasta 2026");
+verify(raysHistory.pennants.join(",") === "2008,2020,2026", "tres banderines de la Americana");
+verify(raysHistory.divisionTitles.length === 5, "cinco títulos de división");
+verify(raysHistory.milestones.length >= 5, "cronología completa Rays");
+verify(raysHistory.legends.length >= 4, "figuras con fuente oficial");
+verify(raysHistory.immortals.length === 2 &&
+  raysHistory.immortals.every(person => person.url.startsWith("https://baseballhall.org/")),
+  "Cooperstown documentado por franquicia");
+verify(raysHistory.sources.every(source => source.url.startsWith("https://")),
+  "fuentes históricas seguras");
+verify(mlbEditorialHistory(158) === null, "sin datos inventados para otras franquicias");
+verify(history.includes("mlbEditorialHistory") && history.includes("clubHistoryLegends") &&
+  history.includes("clubHistoryHallGrid") && history.includes("clubHistoryChampions"),
+  "mismo esquema histórico visual LMB/LMP");
+
 verify(read("lib/mlbClubContent.ts").includes("statsapi.mlb.com/api/v1"),
   "datos MLB desde fuente oficial");
 verify(page.includes("getMlbClub(Number(id))"), "validacion de id de franquicia");
