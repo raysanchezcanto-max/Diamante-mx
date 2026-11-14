@@ -4491,6 +4491,8 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHeroLogo img[src*="/logos/lmp/official/charros-jalisco.png"]{filter:brightness(1.9) saturate(1.06) drop-shadow(0 0 1.5px rgba(202,222,255,.27))}
 /* Yaquis de Obregón (LMP): el mismo contraste de Historia en cabecera principal. */
 .clubHeroLogo img[src*="/logos/lmp/official/yaquis-obregon.png"]{filter:brightness(1.65) saturate(1.08) drop-shadow(0 0 1px rgba(189,213,255,.18))}
+/* Venados de Mazatlán (LMP): mantener la nitidez natural del rojo en ambas cabeceras. */
+.clubHeroLogo img[src*="/logos/lmp/official/venados-mazatlan.png"]{filter:none}
 .clubHeroLogo img:is([src*="acereros-monclova"],[src*="saraperos-saltillo"],[src*="diablos-rojos-mexico"],[src*="guerreros-oaxaca"],[src*="pericos-puebla"],[src*="piratas-campeche"],[src*="dorados-chihuahua"],[src*="conspiradores-queretaro"]){width:96px;height:96px}
 .clubKicker{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.11em}
 .clubHero .clubKicker{color:#e8e4d3}
