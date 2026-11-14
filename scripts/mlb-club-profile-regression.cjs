@@ -34,7 +34,8 @@ verify(page.includes('className="clubHero clubDirectoryHero"'), "cabecera comun"
 verify(page.includes('className="clubContentGrid"'), "tres columnas en Resumen");
 verify(page.includes('className="clubRosterContent"'), "plantilla compartida");
 verify(page.includes('className="clubMovementsContent"'), "movimientos compartidos");
-verify(page.includes('className="clubBigLeagues clubDirectoryMlb"'), "grandes ligas compartido");
+verify(page.includes('className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"'),
+  "grandes ligas comparte layout y scope MLB");
 verify(history.includes('className="clubHistory clubDirectoryHistory"'), "historia compartida");
 for (const view of ["resumen", "plantilla", "movimientos", "grandes-ligas", "historia"]) {
   verify(page.includes('"' + view + '"') && tabs.includes('id: "' + view + '"'),
@@ -71,6 +72,27 @@ verify(history.includes("mlbEditorialHistory") && history.includes("clubHistoryL
   history.includes("clubHistoryHallGrid") && history.includes("clubHistoryChampions"),
   "mismo esquema histórico visual LMB/LMP");
 
+const css = read("app/globals.css");
+for (const panel of [
+  "NÚMEROS DEL EQUIPO", "Bateo colectivo", "Pitcheo colectivo",
+  "El equipo frente a sus rivales", "Para seguir al club",
+  "clubMlbSeasonGrid", "clubMlbSeasonLinks",
+]) verify(page.includes(panel), "Grandes Ligas incluye " + panel);
+verify(page.includes("getMlbClubSeasonStats"), "carga temporada solo en Grandes Ligas");
+verify(page.includes("getMlbClubNews") && page.includes("news.items.slice(0, 3)"),
+  "Resumen muestra noticias MLB propias en tarjetas reales");
+verify(css.includes(".clubDirectoryMlb--franchise .clubToMlbHeroLogo") &&
+  css.includes("background:transparent;border:0"), "segundo escudo MLB sin placa blanca");
+verify(!css.includes(".clubDirectoryMlb .clubToMlbHeroLogo{background:transparent"),
+  "LMB conserva su estilo original");
+const source = read("lib/mlbClubContent.ts");
+verify(source.includes("/venues/") && source.includes("fieldInfo?.capacity"),
+  "capacidad se obtiene del estadio MLB");
+verify(source.includes("/feeds/news/rss.xml") && source.includes('url.startsWith("https://www.mlb.com/")'),
+  "RSS oficial por club sin mezcla de fuentes");
+verify(source.includes("/stats?stats=season&season=") &&
+  source.includes("hitting") && source.includes("pitching"),
+  "estadisticas por equipo y temporada desde MLB StatsAPI");
 verify(read("lib/mlbClubContent.ts").includes("statsapi.mlb.com/api/v1"),
   "datos MLB desde fuente oficial");
 verify(page.includes("getMlbClub(Number(id))"), "validacion de id de franquicia");
