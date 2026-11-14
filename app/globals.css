@@ -4495,6 +4495,8 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHeroLogo img[src*="/logos/lmp/official/venados-mazatlan.png"]{filter:none}
 /* Naranjeros de Hermosillo (LMP): conservar el naranja original y el mismo acabado en las dos cabeceras. */
 .clubHeroLogo img[src*="/logos/lmp/official/naranjeros-hermosillo.png"]{filter:none}
+/* Mayos de Navojoa (LMP): igualar el rojo del escudo entre cabecera, Historia y franja. */
+.clubHeroLogo img[src*="/logos/lmp/official/mayos-navojoa.png"]{filter:brightness(1.24) saturate(1.06)}
 /* Tomateros de Culiacán (LMP): conservar el guinda con contorno óptico para fondos oscuros. */
 img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) saturate(1.04) drop-shadow(0 0 1.4px rgba(255,195,215,.72)) drop-shadow(0 0 4px rgba(225,100,135,.20))}
 /* En la franja, reforzar apenas la legibilidad del monograma pequeño. */
