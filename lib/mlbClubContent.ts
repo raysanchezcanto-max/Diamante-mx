@@ -1,4 +1,4 @@
-import type { MlbClub } from "./mlbClubDirectory";
+import { mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory";
 
 const API = "https://statsapi.mlb.com/api/v1";
 const mxDate = (date = new Date()) =>
@@ -19,7 +19,7 @@ async function getJson(path: string, seconds = 1800): Promise<any | null> {
 
 export type MlbClubOverview = {
   name: string; division: string; league: string;
-  stadium: string | null; firstYear: string | null;
+  stadium: string | null; capacity: number | null; firstYear: string | null;
   venueId: number | null;
 };
 export async function getMlbClubOverview(club: MlbClub): Promise<MlbClubOverview> {
@@ -27,6 +27,12 @@ export async function getMlbClubOverview(club: MlbClub): Promise<MlbClubOverview
   const t = data?.teams?.[0];
   const firstYear = typeof t?.firstYearOfPlay === "string" && /^\d{4}$/.test(t.firstYearOfPlay)
     ? t.firstYearOfPlay : null;
+  const venueId = Number(t?.venue?.id);
+  const stadiumData = Number.isInteger(venueId) && venueId > 0
+    ? await getJson("/venues/" + venueId + "?hydrate=fieldInfo", 86400) : null;
+  const venue = stadiumData?.venues?.[0] ?? t?.venue;
+  const rawCapacity = venue?.fieldInfo?.capacity ?? t?.venue?.fieldInfo?.capacity;
+  const capacity = Number(rawCapacity);
   const divisions: Record<number, string> = {
     200: "Liga Americana Oeste", 201: "Liga Americana Este", 202: "Liga Americana Central",
     203: "Liga Nacional Oeste", 204: "Liga Nacional Este", 205: "Liga Nacional Central",
@@ -39,8 +45,9 @@ export async function getMlbClubOverview(club: MlbClub): Promise<MlbClubOverview
     league: leagues[Number(t?.league?.id)] ??
       (typeof t?.league?.name === "string" ? t.league.name : "Major League Baseball"),
     stadium: typeof t?.venue?.name === "string" ? t.venue.name : null,
+    capacity: Number.isInteger(capacity) && capacity > 0 ? capacity : null,
     firstYear,
-    venueId: Number.isInteger(t?.venue?.id) ? t.venue.id : null,
+    venueId: Number.isInteger(venueId) ? venueId : null,
   };
 }
 
@@ -132,4 +139,113 @@ export async function getMlbClubNextGame(club: MlbClub): Promise<MlbClubFixture 
     awayId: Number(g.teams?.away?.team?.id ?? 0),
     homeId: Number(g.teams?.home?.team?.id ?? 0),
   };
+}
+
+/** Estadísticas agregadas de temporada regular: cada dato pertenece exclusivamente al club. */
+export type MlbClubSeasonStats = {
+  season: number;
+  batting: {
+    runs: string; homeRuns: string; avg: string;
+    obp: string; hits: string; stolenBases: string;
+  } | null;
+  pitching: {
+    era: string; whip: string; strikeOuts: string;
+    saves: string; wins: string; losses: string;
+  } | null;
+};
+function officialTeamStats(json: any): Record<string, unknown> | null {
+  if (!Array.isArray(json?.stats)) return null;
+  for (const group of json.stats) {
+    if (!Array.isArray(group?.splits)) continue;
+    const row = group.splits.find((entry: any) => entry?.stat && typeof entry.stat === "object");
+    if (row?.stat) return row.stat as Record<string, unknown>;
+  }
+  return null;
+}
+function statText(value: unknown): string {
+  return typeof value === "number" && Number.isFinite(value) ? String(value)
+    : typeof value === "string" && /^(?:\d+(?:\.\d+)?|\.\d+)$/.test(value)
+      ? value : "—";
+}
+async function officialSeasonStats(teamId: number, year: number): Promise<MlbClubSeasonStats | null> {
+  const path = "/teams/" + teamId + "/stats?stats=season&season=" + year + "&group=";
+  const [battingData, pitchingData] = await Promise.all([
+    getJson(path + "hitting", 86400),
+    getJson(path + "pitching", 86400),
+  ]);
+  const b = officialTeamStats(battingData), p = officialTeamStats(pitchingData);
+  if (!b && !p) return null;
+  return {
+    season: year,
+    batting: b ? {
+      runs: statText(b.runs), homeRuns: statText(b.homeRuns),
+      avg: statText(b.avg), obp: statText(b.obp),
+      hits: statText(b.hits), stolenBases: statText(b.stolenBases),
+    } : null,
+    pitching: p ? {
+      era: statText(p.era), whip: statText(p.whip),
+      strikeOuts: statText(p.strikeOuts), saves: statText(p.saves),
+      wins: statText(p.wins), losses: statText(p.losses),
+    } : null,
+  };
+}
+export async function getMlbClubSeasonStats(club: MlbClub): Promise<MlbClubSeasonStats | null> {
+  const current = season();
+  return await officialSeasonStats(club.id, current)
+    ?? await officialSeasonStats(club.id, current - 1);
+}
+
+/** Titulares propios de cada club publicados por su canal RSS en MLB.com. */
+export type MlbClubNewsStory = { title: string; url: string; date: string | null };
+export type MlbClubNews = {
+  sourceStatus: "connected" | "unavailable";
+  items: MlbClubNewsStory[];
+};
+function rssText(value: string): string {
+  const plain = value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/<[^>]*>/g, "").trim();
+  return plain.replace(/&(#x[\da-f]+|#\d+|amp|quot|apos|lt|gt|nbsp);/gi, entity => {
+    const known: Record<string, string> = {
+      "&amp;": "&", "&quot;": '"', "&apos;": "'", "&lt;": "<",
+      "&gt;": ">", "&nbsp;": " ",
+    };
+    if (known[entity.toLowerCase()]) return known[entity.toLowerCase()];
+    const hex = entity.toLowerCase().startsWith("&#x");
+    const value = Number.parseInt(entity.slice(hex ? 3 : 2, -1), hex ? 16 : 10);
+    return Number.isInteger(value) && value > 0 && value <= 0x10ffff
+      ? String.fromCodePoint(value) : entity;
+  });
+}
+function rssItemField(item: string, tag: string): string {
+  const match = item.match(new RegExp("<" + tag + "(?:\\s[^>]*)?>([\\s\\S]*?)<\\/" + tag + ">", "i"));
+  return match ? rssText(match[1]) : "";
+}
+export async function getMlbClubNews(club: MlbClub): Promise<MlbClubNews> {
+  try {
+    const response = await fetch(mlbOfficialTeamUrl(club) + "/feeds/news/rss.xml", {
+      next: { revalidate: 1800 },
+      headers: { Accept: "application/rss+xml, application/xml, text/xml" },
+    });
+    if (!response.ok) return { sourceStatus: "unavailable", items: [] };
+    const xml = await response.text();
+    if (!xml.includes("<rss") || !xml.includes("<item")) {
+      return { sourceStatus: "unavailable", items: [] };
+    }
+    const items: MlbClubNewsStory[] = [];
+    const seen = new Set<string>();
+    for (const match of xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)) {
+      const fragment = match[1];
+      const title = rssItemField(fragment, "title");
+      const url = rssItemField(fragment, "link");
+      const published = rssItemField(fragment, "pubDate");
+      if (!title || !url.startsWith("https://www.mlb.com/") || seen.has(url)) continue;
+      seen.add(url);
+      items.push({ title, url, date: Number.isFinite(Date.parse(published))
+        ? new Date(published).toISOString() : null });
+      if (items.length === 6) break;
+    }
+    return { sourceStatus: "connected", items };
+  } catch {
+    return { sourceStatus: "unavailable", items: [] };
+  }
 }
