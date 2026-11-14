@@ -5,6 +5,7 @@ import { getTeamLogo } from "@/lib/teamLogos";
 import { getMlbClub, mlbOfficialTeamUrl } from "@/lib/mlbClubDirectory";
 import {
   getMlbClubOverview, getMlbClubRoster, getMlbClubTransactions, getMlbClubNextGame,
+  getMlbClubSeasonStats, getMlbClubNews,
 } from "@/lib/mlbClubContent";
 import MlbClubEditorialHistory from "@/components/MlbClubEditorialHistory";
 import { mlbEditorialHistory } from "@/lib/mlbHistoryEditorial";
@@ -44,12 +45,14 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   if (!club || String(club.id) !== id) notFound();
   const view: LmbClubView = views.includes(q?.vista as LmbClubView)
     ? (q?.vista as LmbClubView) : "resumen";
-  const [overview, standings, roster, transactions, nextGame] = await Promise.all([
+  const [overview, standings, roster, transactions, nextGame, seasonStats, news] = await Promise.all([
     getMlbClubOverview(club),
     view === "resumen" || view === "grandes-ligas" ? getStandings() : Promise.resolve([]),
     view === "plantilla" ? getMlbClubRoster(club) : Promise.resolve(null),
     view === "movimientos" ? getMlbClubTransactions(club) : Promise.resolve(null),
     view === "resumen" ? getMlbClubNextGame(club) : Promise.resolve(null),
+    view === "grandes-ligas" ? getMlbClubSeasonStats(club) : Promise.resolve(null),
+    view === "resumen" ? getMlbClubNews(club) : Promise.resolve(null),
   ]);
   const logo = getTeamLogo("MLB", club.id, club.name);
   const home = "/equipos/mlb/" + club.id;
@@ -58,6 +61,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   const editorial = mlbEditorialHistory(club.id);
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
+  const divisionRank = divisionTeams.findIndex(s => s.teamId === club.id) + 1;
+  const seasonLabel = seasonStats?.season ?? new Date().getUTCFullYear();
   const opponent = nextGame
     ? nextGame.awayId === club.id ? nextGame.home : nextGame.away
     : null;
@@ -85,7 +90,10 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
         </div>
         <div className="clubHeroMeta">
           <div><span>ESTADIO</span><strong>{overview.stadium ?? "Por verificar"}</strong></div>
-          <div><span>CAPACIDAD</span><strong>Por verificar</strong></div>
+          <div><span>{overview.capacity ? "CAPACIDAD" : "LIGA"}</span>
+            <strong>{overview.capacity
+              ? new Intl.NumberFormat("es-MX").format(overview.capacity) + " espectadores"
+              : overview.league}</strong></div>
           <div className="clubHeroLinks">
             <a href={official} target="_blank" rel="noopener noreferrer">Ficha MLB ↗</a>
             <a href={official + "/tickets"} target="_blank" rel="noopener noreferrer">Boletos ↗</a>
@@ -135,6 +143,17 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               <a href={editorial.featuredStory.url} target="_blank" rel="noopener noreferrer">
                 Leer nota oficial ↗</a>
             </div>
+          </article> : news?.items.length ? <article className="clubFeature"
+            aria-label={"Noticia oficial de " + club.name}>
+            {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
+            <div className="clubFeatureShade" aria-hidden="true"/>
+            <div className="clubFeatureContent">
+              <span className="clubKicker">ACTUALIDAD · FUENTE MLB</span>
+              <h2>{news.items[0].title}</h2>
+              <p>Una publicación reciente del canal oficial de noticias de {club.name}.</p>
+              <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
+                Leer noticia en MLB ↗</a>
+            </div>
           </article> : <section className="clubDirectoryNotice" aria-label={"Noticias de " + club.name}>
             <span className="clubKicker">FUENTE DE NOTICIAS · MLB</span>
             <h2>Publicaciones oficiales</h2>
@@ -148,9 +167,20 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               <div><span className="clubKicker">NOTICIAS · FUENTE MLB</span>
                 <h2>{COPY.summary.newsTitle}</h2></div>
             </div>
-            <p className="clubSmallNote">No sustituimos las noticias de este club por las de otro equipo.
-              La conexión de titulares individuales está pendiente de verificación.</p>
-            <div className="clubNewsGrid"/>
+            <p className="clubSmallNote">{news?.items.length
+              ? "Titulares del canal oficial de " + club.name + " en MLB. Se actualizan aproximadamente cada 30 minutos."
+              : "No se recibieron artículos verificables del canal oficial en esta consulta."}</p>
+            {news?.items.length ? <div className="clubNewsGrid">
+              {news.items.slice(0, 3).map(story => <a href={story.url}
+                className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
+                <span>NOTICIA · MLB</span><strong>{story.title}</strong>
+                <small>Leer publicación oficial ↗</small>
+              </a>)}
+            </div> : <div className="clubDirectoryNotice">
+              <p>Consulta todas las publicaciones recientes en el portal del club.</p>
+              <a href={official + "/news"} target="_blank" rel="noopener noreferrer">
+                Noticias oficiales MLB ↗</a>
+            </div>}
           </section>
           <section className="clubEditorialSection" aria-label={"Videos relacionados con " + club.name}>
             <div className="clubSectionTitle">
@@ -169,9 +199,14 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           <section className="clubPanel">
             <div className="clubSideHeading"><h2>{COPY.summary.headlineTitle}</h2>
               <span>MLB</span></div>
-            <p className="clubSmallNote">Titulares individuales pendientes de conexión con la fuente oficial.</p>
+            {news?.items.length ? <div className="clubMlbHeadlines">
+              {news.items.slice(0, 3).map(story =>
+                <a key={story.url} href={story.url} target="_blank" rel="noopener noreferrer">
+                  {story.title}<span> ↗</span>
+                </a>)}
+            </div> : <p className="clubSmallNote">Consulta la actualidad en la fuente oficial del club.</p>}
             <a href={official + "/news"} target="_blank" rel="noopener noreferrer">
-              Ver noticias MLB ↗</a>
+              Todas las noticias MLB ↗</a>
           </section>
           <section className="clubPanel" id="tabla-de-posiciones">
             <div className="clubSideHeading"><h2>Posiciones</h2><span>{record?.division ?? "MLB"}</span></div>
@@ -266,40 +301,147 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
         </div>}
       </section>}
 
-      {view === "grandes-ligas" && <section className="clubBigLeagues clubDirectoryMlb"
+      {view === "grandes-ligas" && <section className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"
         aria-labelledby="mlbTeamBigLeaguesTitle">
         <header className="clubBigLeaguesHeader">
-          <div><span className="clubKicker">EL CLUB EN EL MÁXIMO NIVEL · MLB</span>
+          <div><span className="clubKicker">LA FRANQUICIA · MAJOR LEAGUE BASEBALL</span>
             <h2 id="mlbTeamBigLeaguesTitle">{club.name} en Grandes Ligas</h2>
-            <p>{club.name} es una franquicia de Major League Baseball. Esta sección reúne
-              los datos de participación de la organización; no presentamos fichajes como
-              debuts ni confundimos su historia con la de clubes mexicanos.</p></div>
+            <p>Estadísticas de temporada regular, posición en su división y protagonistas
+              de {club.name}. El mismo formato visual de nuestros perfiles LMB y LMP,
+              con información propia de una franquicia de Grandes Ligas.</p></div>
           <div className="clubBigLeaguesHeaderMark" aria-hidden="true">
             {logo && <img className="clubToMlbHeroLogo" src={logo} alt="" width={65} height={65}/>}
-            <strong>·</strong><span>MLB</span>
+            <span>MLB</span>
           </div>
         </header>
-        <div className="clubBigLeaguesSummary">
-          <div><strong>{record?.wins ?? "—"}</strong><span>Victorias · última temporada disponible</span></div>
-          <div><strong>{record?.losses ?? "—"}</strong><span>Derrotas · última temporada disponible</span></div>
+
+        <div className="clubBigLeaguesSummary" aria-label="Resultados de temporada regular">
+          <div><strong>{record?.wins ?? "—"}</strong><span>Victorias · tabla MLB disponible</span></div>
+          <div><strong>{record?.losses ?? "—"}</strong><span>Derrotas · tabla MLB disponible</span></div>
           <div><strong>{record?.pct ?? "—"}</strong><span>Porcentaje de victorias</span></div>
         </div>
+
         <div className="clubBigLeaguesSectionHead">
-          <span className="clubKicker">FUENTES OFICIALES</span>
-          <h3>Trayectoria y estadísticas MLB</h3>
+          <span className="clubKicker">NÚMEROS DEL EQUIPO · TEMPORADA {seasonLabel}</span>
+          <h3>Bateo colectivo</h3>
         </div>
-        <div className="clubDirectoryNotice">
-          <p>{overview.division} · {overview.league}.
-            La composición histórica del equipo y sus títulos se documentan en Historia.</p>
-          <a href={official + "/stats"} target="_blank" rel="noopener noreferrer">
-            Estadísticas oficiales MLB ↗</a>
-          <a href={official + "/roster"} target="_blank" rel="noopener noreferrer">
-            Plantilla de Grandes Ligas ↗</a>
+        {seasonStats?.batting ? <div className="clubBigLeaguesSummary" aria-label="Estadísticas de bateo">
+          <div><strong>{seasonStats.batting.runs}</strong><span>Carreras anotadas</span></div>
+          <div><strong>{seasonStats.batting.homeRuns}</strong><span>Cuadrangulares</span></div>
+          <div><strong>{seasonStats.batting.avg}</strong><span>Promedio de bateo (AVG)</span></div>
+        </div> : <div className="clubDirectoryNotice">
+          <p>Las estadísticas de bateo de la temporada aún no están disponibles en la fuente MLB.</p>
+          <a href={official + "/stats/team"} target="_blank" rel="noopener noreferrer">Consultar bateo oficial ↗</a>
+        </div>}
+
+        <div className="clubBigLeaguesSectionHead">
+          <span className="clubKicker">NÚMEROS DEL EQUIPO · TEMPORADA {seasonLabel}</span>
+          <h3>Pitcheo colectivo</h3>
+        </div>
+        {seasonStats?.pitching ? <div className="clubBigLeaguesSummary" aria-label="Estadísticas de pitcheo">
+          <div><strong>{seasonStats.pitching.era}</strong><span>Efectividad (ERA)</span></div>
+          <div><strong>{seasonStats.pitching.strikeOuts}</strong><span>Ponches recetados</span></div>
+          <div><strong>{seasonStats.pitching.whip}</strong><span>Corredores por entrada (WHIP)</span></div>
+        </div> : <div className="clubDirectoryNotice">
+          <p>Las estadísticas de pitcheo de la temporada aún no están disponibles en la fuente MLB.</p>
+          <a href={official + "/stats/team/pitching"} target="_blank" rel="noopener noreferrer">Consultar pitcheo oficial ↗</a>
+        </div>}
+
+        <div className="clubBigLeaguesSectionHead">
+          <span className="clubKicker">COMPETENCIA · DIVISIÓN MLB</span>
+          <h3>El equipo frente a sus rivales</h3>
+        </div>
+        <div className="clubMlbSeasonGrid">
+          <section className="clubDirectoryHistoryPanel">
+            <span className="clubKicker">{overview.division}</span>
+            <h3>{divisionRank
+              ? "Lugar " + divisionRank + " de " + divisionTeams.length
+              : "Clasificación divisional"}</h3>
+            <p>Resultados de temporada regular en la última tabla MLB disponible.
+              El equipo seleccionado aparece resaltado en verde lima.</p>
+            {divisionTeams.length ? <div className="clubStandingsScroll">
+              <table className="clubStandingsTable">
+                <thead><tr><th>Equipo</th><th>G</th><th>P</th><th>PCT</th></tr></thead>
+                <tbody>{divisionTeams.map(team => <tr key={team.teamId}
+                  className={team.teamId === club.id ? "clubCurrentTeam" : ""}>
+                  <td>{getTeamLogo("MLB", team.teamId, team.team) &&
+                    <img src={getTeamLogo("MLB", team.teamId, team.team)!} alt="" width={25} height={25}/>}
+                    <span>{team.team}</span></td>
+                  <td>{team.wins}</td><td>{team.losses}</td><td>{team.pct}</td>
+                </tr>)}</tbody>
+              </table>
+            </div> : <p>La clasificación oficial no está disponible temporalmente.</p>}
+            <a href="/?league=mlb#posiciones">Tabla completa de MLB ↗</a>
+          </section>
+          <section className="clubDirectoryHistoryPanel">
+            <span className="clubKicker">IDENTIDAD DE LA FRANQUICIA</span>
+            <h3>{club.name}</h3>
+            <p><strong>Liga:</strong> {overview.league}</p>
+            <p><strong>División:</strong> {overview.division}</p>
+            <p><strong>Estadio:</strong> {overview.stadium ?? "Consultar ficha oficial"}</p>
+            {overview.capacity && <p><strong>Capacidad:</strong> {
+              new Intl.NumberFormat("es-MX").format(overview.capacity)} espectadores</p>}
+            {editorial
+              ? <p>Archivo verificado: {editorial.pennants.length} banderines y {
+                editorial.divisionTitles.length} títulos divisionales hasta {
+                editorial.titlesVerifiedThrough}.</p>
+              : <p>Los campeonatos, figuras y fechas históricas se documentan
+                  individualmente en la pestaña Historia.</p>}
+            <a href={home + "?vista=historia"}>Explorar Historia y palmarés ↗</a>
+          </section>
+        </div>
+
+        {editorial?.legends.length ? <>
+          <div className="clubBigLeaguesSectionHead">
+            <span className="clubKicker">ARCHIVO HISTÓRICO VERIFICADO</span>
+            <h3>Figuras que marcaron la franquicia</h3>
+          </div>
+          <div className="clubBigLeaguesPlayers">
+            {editorial.legends.slice(0, 3).map(player =>
+              <article key={player.name} className="clubBigLeaguesPlayer">
+                <div className="clubBigLeaguesPlayerTop">
+                  <span className="clubHistoryLegendMonogram" aria-hidden="true">★</span>
+                  <div className="clubBigLeaguesPlayerIdentity">
+                    <span className="clubBigLeaguesStatus">FIGURA HISTÓRICA · {player.era}</span>
+                    <h4>{player.name}</h4>
+                    <span>{player.role}</span>
+                  </div>
+                </div>
+                <p>{player.highlight}</p>
+                <a href={player.url} target="_blank" rel="noopener noreferrer">Ver fuente oficial ↗</a>
+              </article>)}
+          </div>
+        </> : null}
+
+        <div className="clubBigLeaguesSectionHead">
+          <span className="clubKicker">FUENTES OFICIALES · MLB</span>
+          <h3>Para seguir al club</h3>
+        </div>
+        <div className="clubMlbSeasonLinks">
+          <a className="clubDirectoryHistoryPanel" href={official + "/stats/team"}
+            target="_blank" rel="noopener noreferrer">
+            <span className="clubKicker">ESTADÍSTICAS</span>
+            <h3>Temporada y líderes ↗</h3>
+            <p>Bateo, pitcheo y rendimiento del equipo en el portal oficial.</p>
+          </a>
+          <a className="clubDirectoryHistoryPanel" href={official + "/roster"}
+            target="_blank" rel="noopener noreferrer">
+            <span className="clubKicker">PLANTILLA</span>
+            <h3>Peloteros del club ↗</h3>
+            <p>Jugadores, posiciones y actualizaciones de su roster oficial.</p>
+          </a>
+          <a className="clubDirectoryHistoryPanel" href={official + "/schedule"}
+            target="_blank" rel="noopener noreferrer">
+            <span className="clubKicker">CALENDARIO</span>
+            <h3>Encuentros y resultados ↗</h3>
+            <p>Fechas y marcadores de temporada regular y postemporada.</p>
+          </a>
         </div>
         <div className="clubBigLeaguesFooter">
-          <strong>Identidad deportiva: {club.name} · MLB</strong>
-          <p>Esta sección usa datos del mismo equipo, su división y sus resultados.
-            No se mezclan registros de filiales, LMB ni LMP.</p>
+          <strong>{club.name} · {overview.league}</strong>
+          <p>Resultados y cifras proceden de MLB StatsAPI; las figuras históricas
+            solo aparecen cuando cuentan con documentación específica del equipo.
+            No mezclamos datos de LMB, LMP ni ligas menores.</p>
         </div>
       </section>}
 
