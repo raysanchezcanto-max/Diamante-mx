@@ -4495,10 +4495,10 @@ img[src*="/logos/lmp/official/caneros-mochis.png"] {
 .clubHeroLogo img[src*="/logos/lmp/official/venados-mazatlan.png"]{filter:none}
 /* Naranjeros de Hermosillo (LMP): conservar el naranja original y el mismo acabado en las dos cabeceras. */
 .clubHeroLogo img[src*="/logos/lmp/official/naranjeros-hermosillo.png"]{filter:none}
-/* Tomateros de Culiacán (LMP): rescatar contraste del guinda sin alterar el PNG. */
-img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.6) saturate(1.08) drop-shadow(0 0 1px rgba(255,169,202,.18))}
-/* En la franja la insignia es más pequeña y requiere un leve refuerzo adicional. */
-.teamExplorer--lmp .teamLogoChoice img[src*="tomateros-culiacan.png"]{filter:brightness(1.95) saturate(1.08) drop-shadow(0 0 .9px rgba(255,153,185,.22))}
+/* Tomateros de Culiacán (LMP): conservar el guinda con contorno óptico para fondos oscuros. */
+img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) saturate(1.04) drop-shadow(0 0 1.4px rgba(255,195,215,.72)) drop-shadow(0 0 4px rgba(225,100,135,.20))}
+/* En la franja, reforzar apenas la legibilidad del monograma pequeño. */
+.teamExplorer--lmp .teamLogoChoice img[src*="tomateros-culiacan.png"]{filter:brightness(1.40) saturate(1.04) drop-shadow(0 0 1px rgba(255,195,215,.72))}
 .clubHeroLogo img:is([src*="acereros-monclova"],[src*="saraperos-saltillo"],[src*="diablos-rojos-mexico"],[src*="guerreros-oaxaca"],[src*="pericos-puebla"],[src*="piratas-campeche"],[src*="dorados-chihuahua"],[src*="conspiradores-queretaro"]){width:96px;height:96px}
 .clubKicker{color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.11em}
 .clubHero .clubKicker{color:#e8e4d3}
