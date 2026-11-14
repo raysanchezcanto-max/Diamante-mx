@@ -1,3 +1,4 @@
+import { getScheduleCardMeta } from "./gameScheduleMeta";
 
 import { inferLmbDoubleHeaders } from "./lmbDoubleHeaders";
 
@@ -184,6 +185,7 @@ doubleHeader:
 
 
         status,
+        ...getScheduleCardMeta(g),
 
        
 detailedState:
@@ -271,6 +273,7 @@ const todayGames =
     if (todayGames.length > 0) {
       return todayGames.map((g: any) => ({
         id: g.gamePk,
+        ...getScheduleCardMeta(g),
 
         status:
           g.status?.abstractGameState ??
@@ -440,6 +443,7 @@ if (
 
     return nextGames.map((g: any) => ({
       id: g.gamePk,
+        ...getScheduleCardMeta(g),
 
       status:
         g.status?.abstractGameState ??
