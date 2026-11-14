@@ -191,7 +191,7 @@ detailedState:
   g.detailedStatus.trim()
     ? g.detailedStatus
     : status === "Live"
-      ? "Serie del Rey"
+      ? "En vivo"
       : status === "Final"
         ? "Final"
         : "Programado",
