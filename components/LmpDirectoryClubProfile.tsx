@@ -6,6 +6,7 @@ import type {LmpMlbAlumnus,LmpDirectoryMovement} from "@/lib/lmpClubDirectoryDat
 import {CLUB_PROFILE_COPY as COPY} from "@/lib/clubProfileCopy";
 import {getTeamLogo} from "@/lib/teamLogos";
 import LmbClubTabs, {type LmbClubView} from "./LmbClubTabs";
+import LmpMovementTimeline from "./LmpMovementTimeline";
 import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
 import LmpAguilasEditorialHistory from "./LmpAguilasEditorialHistory";
 import LmpTomaterosEditorialHistory from "./LmpTomaterosEditorialHistory";
@@ -111,12 +112,8 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    </section>}
 
    {view==="movimientos"&&<section className="clubMovementsContent">
-    <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(club.name)}</h2></div></div>
-    <p className="clubSmallNote">{COPY.movements.note} Estas publicaciones han sido filtradas a partir de las noticias oficiales del club, no de un registro formal de transacciones.</p>
-    {movements.length?<div className="clubMovementsTimeline">{movements.map(item=><article className="clubMovementItem" key={item.url}>
-      <div className="clubMovementDate"><span>{item.published.slice(0,10)}</span><span className="clubMovementType">Noticia oficial LMP</span></div>
-      <div className="clubMovementBody">{logo&&<img src={logo} alt="" width={53} height={53}/>}<div><h3>{item.title}</h3><p>{item.excerpt}</p><a href={item.url} target="_blank" rel="noopener noreferrer">Consultar nota oficial ↗</a></div></div>
-    </article>)}</div>:<div className="clubDirectoryNotice"><h3>{COPY.movements.noneTitle}</h3><p>La lista oficial de movimientos requiere una fuente de transacciones específica. No presentaremos anuncios antiguos o rumores como altas y bajas actuales.</p><a href={club.website??"https://www.lmp.mx/"} target="_blank" rel="noopener noreferrer">Consultar fuente oficial ↗</a></div>}
+    <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(club.name)}</h2></div><a href={"https://www.lmp.mx/rosters/"+club.slug} target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
+    <LmpMovementTimeline movements={movements} logo={logo} sourceUrl={"https://www.lmp.mx/rosters/"+club.slug}/>
    </section>}
 
    {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb">
