@@ -17,9 +17,9 @@ export default function MlbClubEditorialHistory({
   // StatsAPI firstYearOfPlay can precede the first MLB regular-season game.
   const documentedDebut = editorial?.debutYear ?? overview.firstYear;
   const documentedStadiumOpened = editorial?.stadiumOpened ?? null;
-  const debutSourceUrl = editorial?.milestones[0]?.url ?? official;
   const postseasonUrl = editorial?.postseasonSource ?? historyUrl;
   const pennantLeague = (year: string) => editorial?.pennantLeagues?.[year] ?? overview.league;
+  const pennantSource = (year: string) => editorial?.pennantSources?.[year] ?? postseasonUrl;
   const timeline = editorial?.milestones ?? (overview.firstYear ? [{
     year: overview.firstYear,
     title: "Primer año registrado por MLB",
@@ -64,7 +64,7 @@ export default function MlbClubEditorialHistory({
             <strong>{year}</strong>
             <h4>{i === 0 ? "Primera gran conquista" : "De regreso a la Serie Mundial"}</h4>
             <p>{club.name} ganó el título de la {pennantLeague(year)} en {year} y avanzó a la Serie Mundial.</p>
-            <a href={postseasonUrl} target="_blank"
+            <a href={pennantSource(year)} target="_blank"
               rel="noopener noreferrer">Consultar palmarés ↗</a>
           </article>)}
       </div>

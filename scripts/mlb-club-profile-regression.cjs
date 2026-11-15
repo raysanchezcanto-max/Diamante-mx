@@ -73,6 +73,11 @@ verify(brewersHistory.worldSeriesTitles === 1 &&
 verify(brewersHistory.pennantLeagues["1982"] === "Liga Americana" &&
   brewersHistory.pennantLeagues["2026"] === "Liga Nacional",
   "banderines de Milwaukee respetan la liga de cada epoca");
+verify(brewersHistory.pennantSources["1982"].endsWith("/1982") &&
+  brewersHistory.pennantSources["2026"].endsWith("/2026"),
+  "cada banderin de Milwaukee lleva a su postemporada correspondiente");
+verify(raysHistory.postseasonSource.includes("rays/history/postseason-results"),
+  "Rays conservan el enlace a su historial de postemporada");
 verify(brewersHistory.divisionTitles.length === 9, "nueve titulos divisionales Milwaukee");
 verify(brewersHistory.stadiumOpened === "2001", "estadio Milwaukee abre en 2001");
 verify(brewersHistory.milestones.length >= 6 &&
