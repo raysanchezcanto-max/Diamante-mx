@@ -52,8 +52,116 @@ const RAYS_RETIRED = "https://www.mlb.com/rays/history/retired-numbers";
 const RAYS_STADIUM = "https://www.mlb.com/news/mlb-parks-from-oldest-to-newest";
 const RAYS_2026_DIVISION = "https://www.mlb.com/rays/news/rays-clinch-2026-al-east-title";
 const RAYS_HOF = "https://baseballhall.org/nine/tampa-bay-rays";
+const DBACKS_TIMELINE = "https://www.mlb.com/dbacks/history/timeline";
+const DBACKS_POSTSEASON = "https://www.mlb.com/dbacks/history/postseason-results";
+const DBACKS_AWARDS = "https://www.mlb.com/dbacks/history/awards";
+const DBACKS_RETIRED = "https://www.mlb.com/dbacks/history/retired-numbers";
+const DBACKS_STADIUM = "https://www.mlb.com/dbacks/ballpark";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  109: {
+    intro: "Arizona debutó en Grandes Ligas en 1998 como franquicia de expansión. Ganó la División Oeste de la Liga Nacional en su segunda temporada y conquistó la Serie Mundial de 2001 ante los Yankees. En 2023 volvió al Clásico de Otoño, esta vez como subcampeón ante Texas.",
+    featuredStory: {
+      kicker: "HISTORIA · SERIE MUNDIAL 2001",
+      title: "EL IMPARABLE DE LUIS GONZÁLEZ QUE CORONÓ A ARIZONA",
+      excerpt: "En el séptimo juego de 2001, un sencillo de Luis González frente a Mariano Rivera permitió que Jay Bell anotara la carrera del primer campeonato de los Diamondbacks.",
+      url: "https://www.mlb.com/dbacks/news/top-moments-in-diamondbacks-history",
+    },
+    debutYear: "1998",
+    worldSeriesTitles: 1,
+    worldSeriesWinningYears: ["2001"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["2001", "2023"],
+    postseasonSource: DBACKS_POSTSEASON,
+    divisionTitles: ["1999", "2001", "2002", "2007", "2011"],
+    stadiumOpened: "1998",
+    stadiumOpenedNote: "Chase Field abrió el 31 de marzo de 1998 como Bank One Ballpark, para el primer partido de temporada regular de Arizona frente a Colorado. Su techo retráctil ayuda a proteger del calor de Phoenix.",
+    stadiumSource: DBACKS_STADIUM,
+    milestones: [
+      {
+        year: "1995",
+        title: "MLB concede una franquicia a Arizona",
+        description: "La expansión de Grandes Ligas abre paso a un nuevo equipo en Phoenix, que comenzará a competir en 1998.",
+        url: DBACKS_TIMELINE,
+      },
+      {
+        year: "1998",
+        title: "Debut frente a Colorado",
+        description: "El 31 de marzo juega su primer encuentro de temporada regular en el recién inaugurado Bank One Ballpark.",
+        url: "https://www.mlb.com/dbacks/history/club-firsts",
+      },
+      {
+        year: "1999",
+        title: "Primer campeonato divisional",
+        description: "En apenas su segunda campaña, Arizona gana el Oeste de la Liga Nacional y consigue su primera clasificación a los playoffs.",
+        url: DBACKS_TIMELINE,
+      },
+      {
+        year: "2001",
+        title: "Una Serie Mundial para la historia",
+        description: "Supera 4-3 a los Yankees: Luis González impulsa la carrera decisiva en la novena entrada del séptimo juego.",
+        url: DBACKS_POSTSEASON,
+      },
+      {
+        year: "2004",
+        title: "Juego perfecto de Randy Johnson",
+        description: "El 18 de mayo, el zurdo retira a los 27 bateadores de Atlanta y registra el primer juego perfecto de la franquicia.",
+        url: "https://www.mlb.com/dbacks/history/no-hitters",
+      },
+      {
+        year: "2023",
+        title: "Segundo banderín de la Nacional",
+        description: "Remonta la Serie de Campeonato contra Philadelphia y regresa a la Serie Mundial, en la que cae ante Texas por 4-1.",
+        url: "https://www.mlb.com/dbacks/news/d-backs-win-nlcs-2023",
+      },
+    ],
+    legends: [
+      {
+        name: "Randy Johnson",
+        era: "1999–2004 y 2007–2008",
+        role: "Lanzador · cuatro Cy Young consecutivos con Arizona",
+        highlight: "Fue co-MVP de la Serie Mundial de 2001, lanzó un juego perfecto en 2004 y representó a la franquicia en su placa de Cooperstown.",
+        url: "https://baseballhall.org/discover-more/news/randy-johnson-cap-selection",
+      },
+      {
+        name: "Luis González",
+        era: "1999–2006",
+        role: "Jardinero · héroe del título de 2001",
+        highlight: "Conectó 57 jonrones en la temporada de 2001 y produjo el imparable que decidió el séptimo juego ante los Yankees. Su número 20 fue retirado.",
+        url: DBACKS_RETIRED,
+      },
+      {
+        name: "Brandon Webb",
+        era: "2003–2009",
+        role: "Lanzador · Cy Young de la Nacional en 2006",
+        highlight: "Ganó el Cy Young de 2006 y fue seleccionado tres veces al Juego de Estrellas como pitcher de Arizona.",
+        url: DBACKS_AWARDS,
+      },
+      {
+        name: "Paul Goldschmidt",
+        era: "2011–2018",
+        role: "Primera base · seis Juegos de Estrellas con Arizona",
+        highlight: "Se convirtió en uno de los referentes ofensivos del club, ganó el premio Hank Aaron de 2013 y obtuvo varios Guantes de Oro y Bates de Plata.",
+        url: DBACKS_AWARDS,
+      },
+    ],
+    immortals: [
+      {
+        name: "Randy Johnson",
+        year: "2015",
+        role: "Cooperstown · lanzador · placa con el emblema de Arizona",
+        url: "https://baseballhall.org/hall-of-famers/johnson-randy",
+      },
+    ],
+    sources: [
+      { label: "Cronología de Arizona", url: DBACKS_TIMELINE },
+      { label: "Postemporada y banderines", url: DBACKS_POSTSEASON },
+      { label: "Premios y protagonistas", url: DBACKS_AWARDS },
+      { label: "Dorsales retirados", url: DBACKS_RETIRED },
+      { label: "Historia de Chase Field", url: DBACKS_STADIUM },
+      { label: "Cooperstown: Randy Johnson", url: "https://baseballhall.org/hall-of-famers/johnson-randy" },
+    ],
+  },
   139: {
     intro: "Desde su debut en 1998, Tampa Bay pasó de sus años como Devil Rays a tres banderines de la Liga Americana. La franquicia ha disputado las Series Mundiales de 2008, 2020 y 2026, sin conquistar aún el título.",
     featuredStory: {
