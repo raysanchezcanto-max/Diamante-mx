@@ -11,6 +11,159 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 110, group: "debut",
+    connection: {
+      name: "Ramón Urías", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mexico-to-mlb", role: "Jugador de cuadro",
+      year: "2013–2017 → MLB 2020",
+      description: "Disputó cinco temporadas con Diablos Rojos del México antes de su debut en Grandes Ligas con los Orioles en agosto de 2020.",
+      source: "https://www.milb.com/news/lmb-conocidos-nuestros-llegan-al-entrenamiento-de-primavera",
+      verificationSource: "https://www.mlb.com/es/news/los-hermanos-urias-de-magdalena-para-grandes-ligas",
+    },
+  },
+  {
+    mlbClubId: 110, group: "debut",
+    connection: {
+      name: "Ramón Urías", league: "LMP", mexicanClub: "Cañeros de Los Mochis",
+      mexicanSlug: "caneros", direction: "mexico-to-mlb", role: "Jugador de cuadro",
+      year: "2019–20 → MLB 2020",
+      description: "Jugó 29 encuentros con Cañeros en la campaña invernal 2019-20 y ese mismo año recibió el llamado de Baltimore para estrenarse en MLB.",
+      source: "https://editor.lmp.mx/ramon-urias/amp/",
+      verificationSource: "https://editor.lmp.mx/ramon-urias-esta-de-regreso/",
+    },
+  },
+  {
+    mlbClubId: 110, group: "debut",
+    connection: {
+      name: "Manny Barreda", league: "LMB", mexicanClub: "Toros de Tijuana",
+      mexicanSlug: "toros", direction: "mexico-to-mlb", role: "Lanzador",
+      year: "2015–2019 → MLB 2021",
+      description: "Lanzó para Toros desde 2015 y consiguió su juego sin hit ni carrera en 2017. Debutó en las Mayores con Baltimore durante 2021; regresó después al circuito mexicano.",
+      source: "https://www.milb.com/news/toros-soy-la-mala-suerte-barreda",
+      verificationSource: "https://www.milb.com/news/mexicobeis-manny-barreda-se-une-a-la-seleccion-mexicana-del-beisbol",
+    },
+  },
+  {
+    mlbClubId: 110, group: "debut",
+    connection: {
+      name: "Miguel González", league: "LMP", mexicanClub: "Venados de Mazatlán",
+      mexicanSlug: "venados", direction: "mexico-to-mlb", role: "Lanzador",
+      year: "2011–12 → MLB 2012",
+      description: "Lanzó con Venados en el invierno de 2011 antes de firmar con Baltimore; el 29 de mayo de 2012 se estrenó en MLB con Orioles.",
+      source: "https://www.mlb.com/es/news/gonzalez-de-descarte-a-abridor-en-playoffs/c-39650792",
+      verificationSource: "https://www.mlb.com/es/player/miguel-gonzalez-456068",
+    },
+  },
+  {
+    mlbClubId: 110, group: "previousExperience",
+    connection: {
+      name: "César Valdez", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mexico-to-mlb", role: "Lanzador",
+      year: "2019 → MLB Baltimore 2020",
+      description: "Fue Pitcher del Año de LMB con Yucatán en 2019; volvió a las Mayores con Baltimore en 2020, después de un debut MLB anterior con Arizona.",
+      source: "https://www.milb.com/news/cesar-valdez-regresa-a-grandes-ligas",
+      verificationSource: "https://www.mlb.com/player/cesar-valdez-491624",
+    },
+  },
+  {
+    mlbClubId: 110, group: "previousExperience",
+    connection: {
+      name: "Fernando Valenzuela", league: "LMB", mexicanClub: "Charros de Jalisco",
+      mexicanSlug: "charros", direction: "mexico-to-mlb", role: "Lanzador zurdo",
+      year: "1992 → MLB Baltimore 1993",
+      description: "Tras su etapa en Grandes Ligas con Dodgers, lanzó con los Charros en la LMB de 1992 (10-9, efectividad 3.86) y regresó a MLB con Baltimore en 1993. Se trata de los Charros de verano, no de la LMP actual.",
+      source: "https://www.milb.com/news/lmb-fernando-valenzuela-la-leyenda-del-hombre-del-tirabuzon",
+      verificationSource: "https://www.milb.com/news/los-charros-de-jalisco-regresan-a-la-lmb",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Jonathan Schoop", league: "LMB", mexicanClub: "Algodoneros del Unión Laguna",
+      mexicanSlug: "algodoneros", direction: "mlb-to-mexico", role: "Segunda base",
+      year: "2024",
+      description: "Debutó en MLB con Orioles en 2013 y jugó para Baltimore hasta 2018. En abril de 2024 conectó sus primeros dos jonrones de LMB con Algodoneros frente a Durango.",
+      source: "https://www.milb.com/news/algodoneros-ul-se-queda-con-la-serie-en-casa-ante-durango",
+      verificationSource: "https://www.mlb.com/player/jonathan-schoop-570731",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Dariel Álvarez", league: "LMP", mexicanClub: "Charros de Jalisco",
+      mexicanSlug: "charros", direction: "mlb-to-mexico", role: "Jardinero",
+      year: "2022–23",
+      description: "Después de jugar en MLB con Orioles en 2015 y 2016, participó en 33 partidos con Charros durante el invierno de 2022, antes de pasar a Yaquis.",
+      source: "https://editor.lmp.mx/yaquis-inicia-segunda-vuelta-con-movimientos/",
+      verificationSource: "https://www.mlb.com/player/dariel-alvarez-645848",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Dariel Álvarez", league: "LMP", mexicanClub: "Yaquis de Obregón",
+      mexicanSlug: "yaquis", direction: "mlb-to-mexico", role: "Jardinero",
+      year: "2020–21 y 2022–23",
+      description: "Exjugador de Orioles, compitió con Yaquis como refuerzo en la postemporada 2020-21 y volvió a integrarse al equipo durante la campaña 2022-23.",
+      source: "https://editor.lmp.mx/yaquis-inicia-segunda-vuelta-con-movimientos/",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Luis Ayala", league: "LMP", mexicanClub: "Yaquis de Obregón",
+      mexicanSlug: "yaquis", direction: "mlb-to-mexico", role: "Relevista",
+      year: "Invierno 2012–13",
+      description: "Después de lanzar para Baltimore en 2012, jugó con Yaquis: consiguió un salvamento de dos entradas en blanco durante los playoffs de enero de 2013.",
+      source: "https://www.mlb.com/es/news/yaquis-se-colocan-a-un-triunfo-de-semifinales/c-40882182",
+      verificationSource: "https://www.mlb.com/player/luis-ayala-425646",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Dariel Álvarez", league: "LMB", mexicanClub: "Saraperos de Saltillo",
+      mexicanSlug: "saraperos", direction: "mlb-to-mexico", role: "Jardinero",
+      year: "2022",
+      description: "Después de su paso por Baltimore, jugó en la LMB con Saltillo; el 27 de julio de 2022 conectó un cuadrangular de tres carreras para vencer a Yucatán.",
+      source: "https://www.milb.com/news/saraperos-cuadrangular-de-tres-rayitas-le-da-el-triunfo-al-dragon-del-norte",
+      verificationSource: "https://www.mlb.com/player/dariel-alvarez-645848",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Jonathan Villar", league: "LMB", mexicanClub: "Algodoneros del Unión Laguna",
+      mexicanSlug: "algodoneros", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "2023–2025",
+      description: "Fue figura de Orioles en 2018 y 2019. Después disputó tres campañas de LMB con Algodoneros; conectó un jonrón de tres carreras ante Chihuahua en julio de 2024.",
+      source: "https://lmb.com.mx/noticias/llegan-jonathan-villar-y-nestor-anguamea-caliente",
+      verificationSource: "https://www.milb.com/news/algodoneros-union-laguna-gana-su-septima-serie-en-forma-consecutiva",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Jonathan Villar", league: "LMB", mexicanClub: "Caliente de Durango",
+      mexicanSlug: "caliente", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "2026",
+      description: "Tras sus años con Baltimore y tres temporadas en Unión Laguna, continuó su carrera mexicana con Caliente de Durango durante 2026.",
+      source: "https://lmb.com.mx/jugador/542340",
+      verificationSource: "https://lmb.com.mx/noticias/llegan-jonathan-villar-y-nestor-anguamea-caliente",
+    },
+  },
+  {
+    mlbClubId: 110, group: "toMexico",
+    connection: {
+      name: "Emmanuel Rivera", league: "LMB", mexicanClub: "Algodoneros del Unión Laguna",
+      mexicanSlug: "algodoneros", direction: "mlb-to-mexico", role: "Tercera base",
+      year: "2026",
+      description: "Jugó en MLB con Orioles durante 2024 y 2025; en la temporada 2026 registró actividad de LMB con Algodoneros antes de quedar libre en julio.",
+      source: "https://lmb.com.mx/jugador/656896",
+      verificationSource: "https://www.mlb.com/es/orioles/news/orioles-suman-a-vazquez-en-cambio-con-cubs-rivera-designado-para-asignacion",
+    },
+  },
+  {
     mlbClubId: 144, group: "debut",
     connection: {
       name: "Daniel Castro", league: "LMB", mexicanClub: "Saraperos de Saltillo",

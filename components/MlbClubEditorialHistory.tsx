@@ -28,6 +28,7 @@ export default function MlbClubEditorialHistory({
   const documentedStadiumOpened = editorial?.stadiumOpened ?? null;
   const postseasonUrl = editorial?.postseasonSource ?? historyUrl;
   const pennantLeague = (year: string) => editorial?.pennantLeagues?.[year] ?? overview.league;
+  const pennantClubName = (year: string) => editorial?.pennantClubNames?.[year] ?? club.name;
   const pennantSource = (year: string) => editorial?.pennantSources?.[year] ?? postseasonUrl;
   const timeline = editorial?.milestones ?? (overview.firstYear ? [{
     year: overview.firstYear,
@@ -73,7 +74,7 @@ export default function MlbClubEditorialHistory({
             <strong>{year}</strong>
             <h4>{i === 0 ? "Primera gran conquista"
               : pennantLedToWorldSeries(year) ? "De regreso a la Serie Mundial" : "Último banderín documentado"}</h4>
-            <p>{club.name} ganó el título de la {pennantLeague(year)} en {year}.{pennantOutcome(year)}</p>
+            <p>{pennantClubName(year)} ganó el título de la {pennantLeague(year)} en {year}.{pennantOutcome(year)}</p>
             <a href={pennantSource(year)} target="_blank"
               rel="noopener noreferrer">Consultar palmarés ↗</a>
           </article>)}

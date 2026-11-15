@@ -33,6 +33,7 @@ export type MlbEditorialHistory = {
   titlesVerifiedThrough: string;
   pennants: readonly string[];
   pennantLeagues?: Readonly<Record<string, string>>;
+  pennantClubNames?: Readonly<Record<string, string>>;
   pennantSources?: Readonly<Record<string, string>>;
   postseasonSource?: string;
   divisionTitles: readonly string[];
@@ -63,6 +64,11 @@ const BRAVES_POSTSEASON = "https://www.mlb.com/braves/history/postseason-results
 const BRAVES_RETIRED = "https://www.mlb.com/braves/history/retired-numbers";
 const BRAVES_HOF = "https://www.mlb.com/braves/history/hall-of-famers";
 const BRAVES_BALLPARKS = "https://www.mlb.com/braves/history/ballpark";
+const ORIOLES_TIMELINE = "https://www.mlb.com/orioles/history/timeline";
+const ORIOLES_POSTSEASON = "https://www.mlb.com/orioles/history/postseason-results";
+const ORIOLES_RETIRED = "https://www.mlb.com/orioles/history/retired-numbers";
+const ORIOLES_BALLPARKS = "https://www.mlb.com/orioles/history/ballparks";
+const ORIOLES_HOF = "https://www.mlb.com/orioles/history/hall-of-fame-players";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
   109: {
@@ -166,6 +172,65 @@ const histories: Readonly<Record<number, MlbEditorialHistory>> = {
       { label: "Dorsales retirados", url: DBACKS_RETIRED },
       { label: "Historia de Chase Field", url: DBACKS_STADIUM },
       { label: "Cooperstown: Randy Johnson", url: "https://baseballhall.org/hall-of-famers/johnson-randy" },
+    ],
+  },
+  110: {
+    intro: "La franquicia comenzó en la Liga Americana en 1901 como los Milwaukee Brewers originales, se convirtió en los St. Louis Browns (1902–1953) y se mudó a Baltimore en 1954. Desde entonces los Orioles han conquistado las Series Mundiales de 1966, 1970 y 1983. El banderín de 1944 corresponde a la etapa de los Browns, no al club ya establecido en Baltimore.",
+    featuredStory: {
+      kicker: "HISTORIA · EL HOMBRE DE HIERRO",
+      title: "CAL RIPKEN JR. Y LA RACHA DE 2,632 PARTIDOS",
+      excerpt: "El 6 de septiembre de 1995, ante su afición en Camden Yards, Cal Ripken Jr. jugó su encuentro consecutivo número 2,131, superó la marca de Lou Gehrig y continuó hasta llegar a 2,632.",
+      url: "https://www.mlb.com/orioles/news/cal-ripken-jr-consecutive-games-streak-celebrated-on-30th-anniversary",
+    },
+    debutYear: "1901",
+    worldSeriesTitles: 3,
+    worldSeriesWinningYears: ["1966", "1970", "1983"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1944", "1966", "1969", "1970", "1971", "1979", "1983"],
+    pennantClubNames: { "1944": "St. Louis Browns (antecesores de Baltimore Orioles)" },
+    pennantSources: { "1944": "https://www.mlb.com/postseason/history/1944" },
+    postseasonSource: ORIOLES_POSTSEASON,
+    divisionTitles: ["1969", "1970", "1971", "1973", "1974", "1979", "1983", "1997", "2014", "2023"],
+    divisionTitlesLabel: "Títulos del Este de la Liga Americana (10; no incluye los banderines de 1944 y 1966, previos a la era divisional)",
+    stadiumOpened: "1992",
+    stadiumOpenedNote: "Oriole Park at Camden Yards abrió el 6 de abril de 1992 con una victoria 2-0 sobre Cleveland. Su arquitectura de estilo clásico influyó en el diseño de numerosos estadios posteriores.",
+    stadiumSource: ORIOLES_BALLPARKS,
+    milestones: [
+      { year: "1901–1902", title: "De Milwaukee a St. Louis", description: "La franquicia juega su primer año de Liga Americana como Milwaukee Brewers y se traslada a St. Louis para convertirse en los Browns desde 1902.", url: "https://www.mlb.com/es/news/equipos-de-mlb-que-han-cambiado-de-nombre" },
+      { year: "1944", title: "Único banderín de los St. Louis Browns", description: "La franquicia conquista la Liga Americana por primera vez y disputa la Serie Mundial contra los Cardinals, todavía como equipo de St. Louis.", url: "https://www.mlb.com/postseason/history/1944" },
+      { year: "1954", title: "Nacen los Orioles modernos en Baltimore", description: "Tras la aprobación de la mudanza en septiembre de 1953, el club deja St. Louis y debuta con el nombre Baltimore Orioles en 1954, jugando en Memorial Stadium.", url: ORIOLES_TIMELINE },
+      { year: "1966", title: "Primera Serie Mundial ganada", description: "Con Frank Robinson como Triple Corona y MVP de la Americana, Baltimore barre 4-0 a Los Angeles Dodgers y gana su primera corona.", url: "https://www.mlb.com/postseason/history/1966" },
+      { year: "1969–1971", title: "Tres banderines consecutivos de la Americana", description: "El equipo domina la liga durante tres años seguidos y gana la Serie Mundial de 1970 por 4-1 contra Cincinnati, con Brooks Robinson como MVP de la serie.", url: ORIOLES_POSTSEASON },
+      { year: "1983", title: "Tercer campeonato mundial", description: "Los Orioles superan a Philadelphia en cinco juegos; Eddie Murray conecta dos jonrones en el partido que asegura el título.", url: "https://www.mlb.com/orioles/video/orioles-win-1983-world-series" },
+      { year: "1992", title: "Camden Yards transforma los estadios", description: "El 6 de abril abre Oriole Park at Camden Yards, que combina el entorno del centro de Baltimore con arquitectura de inspiración histórica.", url: ORIOLES_BALLPARKS },
+      { year: "1995", title: "Cal Ripken Jr. supera a Lou Gehrig", description: "El 6 de septiembre disputa su encuentro consecutivo 2,131; extendería el récord hasta 2,632, cifra que permanece como marca de MLB.", url: "https://baseballhall.org/hall-of-famers/ripken-cal" },
+      { year: "2014", title: "Baltimore vuelve a una Serie de Campeonato", description: "Gana la División Este y elimina a Detroit en la Serie Divisional, antes de caer ante Kansas City en la Serie de Campeonato.", url: ORIOLES_POSTSEASON },
+      { year: "2023", title: "101 victorias y nuevo título del Este", description: "Con 101 triunfos en temporada regular, se corona campeón divisional y clasifica a postemporada; Texas lo elimina en la Serie Divisional.", url: ORIOLES_POSTSEASON },
+    ],
+    legends: [
+      { name: "Cal Ripken Jr.", era: "1981–2001", role: "Campocorto y tercera base · Hombre de Hierro", highlight: "Disputó 2,632 juegos consecutivos; fue Novato del Año 1982, MVP de la Americana en 1983 y 1991 y campeón de la Serie Mundial de 1983.", url: "https://baseballhall.org/hall-of-famers/ripken-cal" },
+      { name: "Brooks Robinson", era: "1955–1977", role: "Tercera base · 16 Guantes de Oro", highlight: "Apodado «la aspiradora humana», ganó el MVP de la Serie Mundial de 1970 y fue uno de los defensores más destacados de la historia.", url: ORIOLES_RETIRED },
+      { name: "Frank Robinson", era: "1966–1971 como jugador", role: "Jardinero · Triple Corona 1966", highlight: "Conquistó el MVP de ambas ligas a lo largo de su carrera; fue Triple Corona, MVP de la Americana y campeón con Orioles en 1966.", url: ORIOLES_RETIRED },
+      { name: "Jim Palmer", era: "1965–1967 y 1969–1984", role: "Lanzador · tres premios Cy Young", highlight: "Pasó toda su carrera en MLB con Baltimore, obtuvo 268 victorias y conquistó títulos mundiales en 1966, 1970 y 1983.", url: "https://baseballhall.org/hall-of-famers/palmer-jim" },
+      { name: "Eddie Murray", era: "1977–1988 y 1996", role: "Primera base · bateador ambidiestro", highlight: "Ganó el premio Novato del Año 1977, fue protagonista del campeonato de 1983 y acumuló más de 3,000 hits y 500 jonrones en MLB.", url: ORIOLES_RETIRED },
+      { name: "Earl Weaver", era: "1968–1982 y 1985–1986", role: "Mánager · leyenda de Birdland", highlight: "Dirigió a los Orioles al título de 1970, cuatro banderines de la Americana y seis campeonatos del Este durante su primera etapa.", url: ORIOLES_RETIRED },
+    ],
+    immortals: [
+      { name: "Frank Robinson", year: "1982", role: "Cooperstown · jardinero · MVP 1966", url: "https://baseballhall.org/hall-of-famers/robinson-frank" },
+      { name: "Brooks Robinson", year: "1983", role: "Cooperstown · tercera base", url: "https://baseballhall.org/hall-of-famers/robinson-brooks" },
+      { name: "Jim Palmer", year: "1990", role: "Cooperstown · lanzador", url: "https://baseballhall.org/hall-of-famers/palmer-jim" },
+      { name: "Earl Weaver", year: "1996", role: "Cooperstown · mánager", url: "https://baseballhall.org/hall-of-famers/weaver-earl" },
+      { name: "Eddie Murray", year: "2003", role: "Cooperstown · primera base", url: "https://baseballhall.org/hall-of-famers/murray-eddie" },
+      { name: "Cal Ripken Jr.", year: "2007", role: "Cooperstown · campocorto y tercera base", url: "https://baseballhall.org/hall-of-famers/ripken-cal" },
+    ],
+    sources: [
+      { label: "Cronología oficial de Baltimore", url: ORIOLES_TIMELINE },
+      { label: "Origen del nombre y mudanzas", url: "https://www.mlb.com/es/news/equipos-de-mlb-que-han-cambiado-de-nombre" },
+      { label: "Resultados y títulos de postemporada", url: ORIOLES_POSTSEASON },
+      { label: "Historial de la Serie Mundial de 1944", url: "https://www.mlb.com/postseason/history/1944" },
+      { label: "Camden Yards y antiguos estadios", url: ORIOLES_BALLPARKS },
+      { label: "Dorsales retirados y leyendas", url: ORIOLES_RETIRED },
+      { label: "Jugadores del club en Cooperstown", url: ORIOLES_HOF },
     ],
   },
   144: {
