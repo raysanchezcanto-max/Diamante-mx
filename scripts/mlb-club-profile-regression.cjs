@@ -127,6 +127,9 @@ verify(brewersHistory.milestones.length >= 6 &&
   "cronologia, figuras y Cooperstown de Milwaukee completos");
 verify(history.includes("pennantLeague(year)") && history.includes("editorial.worldSeriesTitles > 0"),
   "Historia distingue ligas antiguas y campeonatos de Serie Mundial");
+verify(history.includes("Number(year) >= 1903") && history.includes('year !== "1904"') &&
+  history.includes("La Serie Mundial moderna todavía no existía."),
+  "los banderines de 1877 y otros previos a 1903 no implican una Serie Mundial inexistente");
 verify(!history.includes("mlb.com/rays/history/postseason-results"),
   "no se muestran fuentes Rays en otras fichas");
 verify(page.includes('className="clubFeature"') && page.includes("editorial.featuredStory"),
