@@ -33,7 +33,8 @@ verify(page.includes('className="clubProfile clubProfile--all"'), "contenedor co
 verify(page.includes('className="clubHero clubDirectoryHero"'), "cabecera comun");
 verify(page.includes('className="clubContentGrid"'), "tres columnas en Resumen");
 verify(page.includes('className="clubRosterContent"'), "plantilla compartida");
-verify(page.includes('className="clubMovementsContent"'), "movimientos compartidos");
+verify(page.includes('className="clubMovementsContent clubMovementsContent--mlb"'),
+  "movimientos compartidos, con ajuste visual solo para MLB");
 verify(page.includes('className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"'),
   "grandes ligas comparte layout y scope MLB");
 verify(history.includes('className="clubHistory clubDirectoryHistory"'), "historia compartida");

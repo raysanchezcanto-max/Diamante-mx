@@ -5034,6 +5034,11 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
   width:55px;height:55px;object-fit:contain;flex:0 0 55px;
   background:#e9efe7;border-radius:12px;padding:7px;
 }
+/* MLB: insignia flotante sobre fondo oscuro, sin la placa clara de LMB/LMP. */
+.clubProfile--all .clubMovementsContent--mlb .clubMovementBody>img{
+  background:transparent;border:0;border-radius:0;padding:0;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.5)) drop-shadow(0 0 1px rgba(255,255,255,.25));
+}
 .clubProfile--all .clubHistoryStats>div{min-width:0}
 .clubProfile--all .clubHistoryStats strong{overflow-wrap:anywhere}
 .clubProfile--all .clubHistoryChampionCard>strong{font-size:clamp(39px,5vw,65px)}
