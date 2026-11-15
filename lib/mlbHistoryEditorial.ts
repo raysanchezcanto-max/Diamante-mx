@@ -33,6 +33,7 @@ export type MlbEditorialHistory = {
   titlesVerifiedThrough: string;
   pennants: readonly string[];
   pennantLeagues?: Readonly<Record<string, string>>;
+  pennantSources?: Readonly<Record<string, string>>;
   postseasonSource?: string;
   divisionTitles: readonly string[];
   divisionTitlesLabel?: string;
@@ -65,6 +66,7 @@ const histories: Readonly<Record<number, MlbEditorialHistory>> = {
     worldSeriesTitles: 0,
     titlesVerifiedThrough: "2026",
     pennants: ["2008", "2020", "2026"],
+    postseasonSource: RAYS_POSTSEASON,
     divisionTitles: ["2008", "2010", "2020", "2021", "2026"],
     stadiumOpened: "1990",
     stadiumOpenedNote: "Tropicana Field abrió en 1990, ocho años antes del primer partido de temporada regular de la franquicia. El recinto se identificó originalmente como Florida Suncoast Dome.",
@@ -174,6 +176,10 @@ const histories: Readonly<Record<number, MlbEditorialHistory>> = {
     titlesVerifiedThrough: "2026",
     pennants: ["1982", "2026"],
     pennantLeagues: { "1982": "Liga Americana", "2026": "Liga Nacional" },
+    pennantSources: {
+      "1982": "https://www.mlb.com/postseason/history/1982",
+      "2026": "https://www.mlb.com/postseason/history/2026",
+    },
     postseasonSource: "https://www.mlb.com/postseason/history/2026",
     divisionTitles: ["1981", "1982", "2011", "2018", "2021", "2023", "2024", "2025", "2026"],
     divisionTitlesLabel: "Títulos divisionales (1981: segunda mitad de temporada)",
