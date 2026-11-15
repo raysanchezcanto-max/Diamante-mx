@@ -11,7 +11,7 @@
     "test:club-profiles": "node scripts/club-profile-standard-regression.cjs",
     "audit:lmp-profiles": "node scripts/lmp-profile-data-audit.cjs",
     "test:game-cards": "node scripts/game-card-status-regression.cjs",
-    "test:mlb-profiles": "node scripts/mlb-club-profile-regression.cjs"
+    "test:mlb-profiles": "node scripts/mlb-club-profile-regression.cjs && node scripts/mlb-transactions-spanish-regression.cjs"
   },
   "dependencies": {
     "next": "latest",
