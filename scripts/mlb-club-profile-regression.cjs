@@ -65,7 +65,23 @@ verify(raysHistory.immortals.length === 2 &&
   "Cooperstown documentado por franquicia");
 verify(raysHistory.sources.every(source => source.url.startsWith("https://")),
   "fuentes históricas seguras");
-verify(mlbEditorialHistory(158) === null, "sin datos inventados para otras franquicias");
+const brewersHistory = mlbEditorialHistory(158);
+verify(Boolean(brewersHistory), "Milwaukee tiene ficha historica propia");
+verify(brewersHistory.debutYear === "1969", "franquicia Brewers debuta como Pilots en 1969");
+verify(brewersHistory.worldSeriesTitles === 1 &&
+  brewersHistory.worldSeriesWinningYears.join(",") === "2026", "Milwaukee campeon MLB 2026");
+verify(brewersHistory.pennantLeagues["1982"] === "Liga Americana" &&
+  brewersHistory.pennantLeagues["2026"] === "Liga Nacional",
+  "banderines de Milwaukee respetan la liga de cada epoca");
+verify(brewersHistory.divisionTitles.length === 9, "nueve titulos divisionales Milwaukee");
+verify(brewersHistory.stadiumOpened === "2001", "estadio Milwaukee abre en 2001");
+verify(brewersHistory.milestones.length >= 6 &&
+  brewersHistory.legends.length >= 4 && brewersHistory.immortals.length >= 3,
+  "cronologia, figuras y Cooperstown de Milwaukee completos");
+verify(history.includes("pennantLeague(year)") && history.includes("editorial.worldSeriesTitles > 0"),
+  "Historia distingue ligas antiguas y campeonatos de Serie Mundial");
+verify(!history.includes("mlb.com/rays/history/postseason-results"),
+  "no se muestran fuentes Rays en otras fichas");
 verify(page.includes('className="clubFeature"') && page.includes("editorial.featuredStory"),
   "Resumen Rays usa el destacado editorial compartido");
 verify(history.includes("mlbEditorialHistory") && history.includes("clubHistoryLegends") &&
