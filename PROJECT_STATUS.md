@@ -2483,3 +2483,36 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 **Corrección en el componente compartido de las 60 fichas:** la fuente para recuperar datos queda separada del enlace visible. El botón abre la página oficial para personas de la franquicia MLB en español (`www.mlb.com/es/{equipo}/stats`) o las estadísticas de LMB (`lmb.com.mx/estadisticas`) y LMP (`www.lmp.mx/estadisticas/general`), según la liga. Los líderes individuales enlazan a las fichas públicas oficiales (`www.mlb.com/es/player/{id}`, `lmb.com.mx/jugador/{id}`, `www.lmp.mx/jugadores/{id}/ficha-tecnica`). Las fuentes de datos internos continúan sin alteración y el año de estadísticas sigue siendo automático.
 
 **Control preventivo:** `test:club-statistics` comprueba que las cinco variantes de página (MLB, LMB genérica/Algodoneros, LMP genérica/Algodoneros) incluyan URLs humanas y que la plantilla compartida nunca use la API como destino del botón; comprueba también la ruta de perfil de las tres ligas. Es una prueba estructural: cada destino exterior puede sufrir cambios o disponibilidad ajenos a Diamante MX.
+
+## §174 · 14/nov/2026 — Hoja de ruta aprobada: primero uniformidad; después estadísticas, idiomas y aplicaciones
+
+**Decisión de Valeria:** mantener el español como idioma predeterminado, terminar los compromisos actuales de Diamante MX y no abrir desarrollos grandes que dejen a medias las fichas. En una fase posterior, integrar estadísticas completas y perfiles individuales dentro de Diamante MX, sin obligar al aficionado a visitar otra web; después, incorporar un selector de idioma para que cada persona elija el suyo. La aplicación Android (APK), la futura versión iOS y la web deberán sentirse como **un solo producto**.
+
+**Prioridad 0 · EN CURSO · Cerrar la base común de las tres ligas, antes de iniciar nuevas funciones:**
+
+- Completar y auditar los **60 equipos: 30 MLB, 20 LMB y 10 LMP**, con las **seis pestañas compartidas** (`Resumen`, `Estadísticas`, `Plantilla`, `Movimientos`, `Grandes Ligas`, `Historia`) y una misma jerarquía visual, textos y semántica. Mantener datos, noticias y biografías propios de cada club; no rellenar vacíos con contenidos de otro.
+- Revisar club por club las historias MLB aún sin expediente individual (última auditoría editorial: **28/30 pendientes**), el detalle histórico y fuentes de LMB/LMP, la calidad/autenticidad de escudos, fotografías y otros recursos, la traducción completa de los movimientos y los enlaces que todavía presenten fallas. No confundir estructura uniforme con contenido finalizado.
+- Confirmar resultados, apertura, estadísticas, transmisiones y estados en vivo/reprogramaciones de las ligas con pruebas reproducibles; auditar navegación y visualización en **Android, iPhone y escritorio reales**, incluida accesibilidad y pantallas pequeñas. El barrido HTTP de 360 rutas sirve de base, pero no sustituye la revisión editorial y visual.
+- **Criterio de cierre de la prioridad 0:** matriz verificable de las 60 fichas × 6 vistas, con contenido y fuentes revisados, terminología española consistente, logos correctos y funcionamiento móvil; documentar excepciones expresas si una fuente no ofrece ciertos datos. No marcar «completo» únicamente por compilar o responder HTTP 200.
+
+**Prioridad 1 · PENDIENTE APROBADO · Centro estadístico integrado:**
+
+- Ampliar «Estadísticas» con tablas colectivas de bateo/pitcheo, filtros, ordenación, líderes, posición y selector de temporada automático (MLB/LMB por año; LMP por campaña invernal); no duplicarlo en «Resumen».
+- Crear **perfiles internos de jugadores** (foto real, club, posición, números de temporada, trayectoria y temporadas anteriores según fuente disponible). Los nombres deben abrir fichas dentro de Diamante MX; los enlaces a otras ligas quedan solo como respaldo de procedencia.
+- Reutilizar un **servicio central de datos** para web y APK/iOS; empezar por el mecanismo actual de consultas del servidor y caché, y evaluar una base de datos para históricos, rendimiento y tolerancia a fallas cuando exista necesidad. Validar disponibilidad, atribución y permisos de uso/redistribución de MLB, LMB y LMP antes de ampliar la explotación pública o comercial.
+- **Criterio de cierre:** mismo esquema y funcionalidad en las tres ligas, con estados de datos ausentes explícitos, pruebas con equipos/jugadores de cada circuito y actualizaciones automáticas.
+
+**Prioridad 2 · PENDIENTE APROBADO · Idiomas seleccionables:**
+
+- Mantener **español (México) como valor inicial**. Añadir después un selector visible de idioma y persistir la preferencia en web y aplicación; decidir cuáles idiomas se incorporan primero al diseñar esta fase.
+- Internacionalizar navegación, titulares de interfaz, etiquetas beisboleras, fechas, cifras, estados de partidos, tablas, notificaciones y contenido editorial. Diferenciar los textos controlados por Diamante MX de noticias que requieren traducción automática y revisión de vocabulario. Nombres propios y marcas no se traducen.
+- **Criterio de cierre:** ningún texto estático olvidado en el idioma anterior; accesibilidad y componentes completos al cambiar el idioma en MLB/LMB/LMP, web y app.
+
+**Prioridad 3 · PENDIENTE DE PREPARACIÓN Y PUBLICACIÓN · Sitio oficial propio + Android/iOS:**
+
+- **Web:** decidir dominio propio y marca, enlazarlo a Vercel con HTTPS; completar SEO básico, metadatos, indexabilidad, rendimiento, accesibilidad, monitoreo, páginas de privacidad/términos/contacto, política de fuentes/uso de imágenes y pruebas de producción. Ya existe sitio público y manifiesto PWA; eso **no** equivale a una aplicación de tienda publicada.
+- **Móviles:** elegir la estrategia de código compartido (PWA / envoltura Android e iOS / integración nativa de funcionalidades) tras validar necesidades reales; diseñar navegación táctil, estados sin conexión, favoritos y notificaciones solo si se aprueban. Probar dispositivos reales, consumos, reconexiones y vínculos profundos. Para iOS, la aplicación debe aportar experiencia útil más allá de mostrar una página en un contenedor.
+- **Tiendas:** preparar identidad/cuentas de desarrollador, firma, paquetes y versiones, íconos y capturas, textos de fichas, privacidad y declaraciones de datos; ejecutar pruebas cerradas/beta (Google Play y TestFlight cuando corresponda), revisión de las tiendas y publicación gradual.
+- **Marca y atribución:** Diamante MX será la plataforma **oficial propia del proyecto**; no presentarlo como producto oficial, autorizado o afiliado a MLB/LMB/LMP sin acuerdos expresos. Comprobar derechos de uso de marcas, escudos, estadísticas y contenido antes de distribución comercial.
+
+**Regla de secuencia:** por ahora **SOLO avanzar y cerrar la prioridad 0**. Las prioridades 1, 2 y 3 quedan registradas como acuerdos/pendientes, **NO IMPLEMENTADAS**, sin iniciar publicaciones de APK/iOS ni selector de idioma. Mantener este orden en las futuras sesiones y actualizar el estado con evidencias al cerrar cada hito.
