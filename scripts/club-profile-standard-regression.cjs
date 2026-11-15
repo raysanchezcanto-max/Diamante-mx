@@ -97,3 +97,18 @@ for(const p of files.filter(p=>p.startsWith("components/Lmp")&&p.endsWith("Edito
 }
 
 console.log("OK "+n+" club profile standard checks (History + shared headings and Summary order).");
+
+// A news article feed is not a transactions feed. All 10 Pacific teams must
+// share the same official LMP movements API and the same visual timeline.
+const movementData=read("lib/lmpClubDirectoryData.ts");
+assert(movementData.includes("/teams/${id}/movements?limit=50"),"LMP must use the official team transactions API");n++;
+assert(!movementData.includes("getLmpDirectoryNews(club.id)"),"LMP transactions must not be inferred from club news");n++;
+const movementComponent=read("components/LmpMovementTimeline.tsx");
+for(const label of ["clubMovementsTimeline","clubMovementItem","clubMovementDate","clubMovementBody","Registro oficial LMP"]){
+ assert(movementComponent.includes(label),"Shared LMP movement design missing "+label);n++;
+}
+assert(read("components/LmpDirectoryClubProfile.tsx").includes("<LmpMovementTimeline"),"The nine directory profiles must use the shared timeline");n++;
+const guasave=read("app/equipos/lmp/algodoneros/page.tsx");
+assert(guasave.includes("<LmpMovementTimeline")&&guasave.includes("getLmpDirectoryMovements(5482)"),"Algodoneros must use the same live LMP transaction source");n++;
+assert(read("app/equipos/lmp/[slug]/page.tsx").includes("getLmpDirectoryMovements(club.id)"),"Every LMP directory club must fetch its own transactions");n++;
+console.log("OK "+(n-240)+" additional LMP official movements source + visual consistency checks.");

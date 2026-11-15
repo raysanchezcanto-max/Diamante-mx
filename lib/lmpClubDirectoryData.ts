@@ -1,5 +1,4 @@
 import {cache} from "react";
-import type { LmpClubDefinition } from "./lmpClubDirectory";
 import type { LmpClubNews, LmpClubPlayer, LmpClubRecord, AlgodonerosFixture } from "./lmpAlgodonerosContent";
 
 const API="https://statsapi.mlb.com/api/v1";
@@ -93,10 +92,23 @@ export const getLmpDirectoryMlbAlumni=cache(async(id:number):Promise<LmpMlbAlumn
   .map(p=>({id:p.id,name:p.fullName??roster.find(r=>r.id===p.id)?.name??"Jugador",debut:p.mlbDebutDate!,role:p.primaryPosition?.name??"Jugador"}))
   .sort((a,b)=>a.name.localeCompare(b.name,"es"));
 });
-export type LmpDirectoryMovement={url:string;title:string;published:string;excerpt:string};
-const normalized=(value:string)=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-export const getLmpDirectoryMovements=cache(async(club:LmpClubDefinition):Promise<LmpDirectoryMovement[]>=>{
- const news=await getLmpDirectoryNews(club.id);
- return news.filter(p=>/refuerzo|alta|baja|contrat|incorpor|firma|movimiento|roster|llega|activ|adquiere/i.test(normalized(p.title)+" "+normalized(p.excerpt)))
-   .map(({url,title,published,excerpt})=>({url,title,published,excerpt}));
+// Registro de transacciones de la propia LMP (misma API que usa lmp.mx/rosters).
+// Las notas periodísticas NO son un sustituto del registro de altas y bajas.
+type OfficialLmpMovement={transactionDate?:string;description?:string;transactionType?:string};
+export type LmpDirectoryMovement={date:string;description:string};
+export const getLmpDirectoryMovements=cache(async(id:number):Promise<LmpDirectoryMovement[]>=>{
+ const data=await officialJSON<{response?:{movements?:OfficialLmpMovement[]}}>(
+  `https://api.lmp.mx/3.0.0/teams/${id}/movements?limit=50`
+ );
+ if(!Array.isArray(data?.response?.movements))return [];
+ const seen=new Set<string>();
+ return data.response.movements.flatMap(item=>{
+  const date=item.transactionDate?.trim()??"";
+  const description=item.description?.replace(/\s+/g," ").trim()??"";
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!description)return [];
+  const key=date+"|"+description;
+  if(seen.has(key))return [];
+  seen.add(key);
+  return [{date,description}];
+ }).sort((a,b)=>b.date.localeCompare(a.date));
 });
