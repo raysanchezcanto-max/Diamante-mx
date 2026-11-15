@@ -56,6 +56,10 @@ const source = fs.readFileSync(path.join(__dirname, "../lib/mlbClubContent.ts"),
 verify(page.includes("clubMovementsContent--mlb"), "estilo de movimientos MLB aislado");
 verify(css.includes(".clubProfile--all .clubMovementsContent--mlb .clubMovementBody>img"),
   "insignia MLB sin placa blanca");
+verify(/\.clubProfile--all \.clubMovementsContent--mlb \.clubMovementsTimeline\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/.test(css),
+  "movimientos MLB en una columna como LMB y LMP");
+verify(/\.clubProfile--all \.clubMovementsContent--mlb \.clubMovementDate\s*\{[^}]*color:#cfdfd2/.test(css),
+  "fechas MLB en tono neutro para evitar saturación de amarillo");
 verify(source.includes("translateMlbTransaction") && source.includes("spanishHeadline"),
   "movimientos y noticias pasan por traducción");
 verify(!page.includes("pueden estar en inglés"), "la interfaz no advierte inglés sin traducir");

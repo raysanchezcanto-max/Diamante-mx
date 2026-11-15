@@ -5629,7 +5629,13 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 .clubProfile--all .clubVideoCard>p{font-size:11px;color:#b3c5b6;line-height:1.55;margin:0;flex:1}
 .clubProfile--all .clubVideoCard>small{font-size:10px;color:#d4ff67;font-weight:800}
 .clubProfile--all .clubMovementsContent--mlb .clubMovementsTimeline{
-  grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+  /* Una ficha por fila, igual que las listas de LMB y LMP. */
+  grid-template-columns:minmax(0,1fr);align-items:stretch}
+.clubProfile--all .clubMovementsContent--mlb .clubMovementDate{
+  /* Las fechas se repiten a menudo: el lima queda reservado para las acciones. */
+  color:#cfdfd2;font-weight:800}
+.clubProfile--all .clubMovementsContent--mlb .clubMovementBody a{
+  color:#deff87}
 @media(max-width:900px){
   .clubProfile--all .clubVideoGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
