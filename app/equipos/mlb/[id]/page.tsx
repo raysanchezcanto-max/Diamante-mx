@@ -230,7 +230,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
 
       {view === "estadisticas" && <ClubStatisticsProfile league="MLB" clubName={club.name}
         teamId={club.id} season={statistics?.season ?? mexicoSeasonYear()}
-        standings={divisionTeams} statistics={statistics} standingsUrl="/?league=mlb#posiciones"/>}
+        standings={divisionTeams} statistics={statistics} standingsUrl="/?league=mlb#posiciones"
+        officialStatsUrl={`https://www.mlb.com/es/${club.webSlug}/stats`}/>}
 
       {view === "plantilla" && <section className="clubRosterContent">
         <div className="clubSectionTitle">

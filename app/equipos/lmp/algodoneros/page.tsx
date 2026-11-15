@@ -173,7 +173,8 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
 
       {view==="estadisticas"&&<ClubStatisticsProfile league="LMP"
         clubName={name} teamId={5482} season={statistics?.season??statsSeason??new Date().getUTCFullYear()}
-        standings={standings} statistics={statistics} standingsUrl="/?league=lmp#posiciones"/>}
+        standings={standings} statistics={statistics} standingsUrl="/?league=lmp#posiciones"
+        officialStatsUrl="https://www.lmp.mx/estadisticas"/>}
 
       {view==="plantilla"&&<section className="clubRosterContent">
         <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · 2026–27</span><h2>{COPY.roster.title(name)}</h2></div>

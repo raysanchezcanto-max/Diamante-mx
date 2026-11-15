@@ -208,7 +208,8 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
           <ClubStatisticsProfile league="LMB" clubName={club.name} teamId={447}
             season={statistics?.season??mexicoSeasonYear()}
             standings={statisticsStandings.filter(s=>s.division==="Zona Norte")}
-            statistics={statistics} standingsUrl="/?league=lmb#posiciones"/>
+            statistics={statistics} standingsUrl="/?league=lmb#posiciones"
+            officialStatsUrl="https://lmb.com.mx/estadisticas"/>
         ) : grandesLigasView ? (
           <AlgodonerosGrandesLigas />
         ) : historyView ? (

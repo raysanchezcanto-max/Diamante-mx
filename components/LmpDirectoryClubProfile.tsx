@@ -104,7 +104,8 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
 
    {view==="estadisticas"&&<ClubStatisticsProfile league="LMP" clubName={club.name}
     teamId={club.id} season={statistics?.season??statsSeason??new Date().getUTCFullYear()}
-    standings={standings} statistics={statistics} standingsUrl="/?league=lmp#posiciones"/>}
+    standings={standings} statistics={statistics} standingsUrl="/?league=lmp#posiciones"
+    officialStatsUrl="https://www.lmp.mx/estadisticas"/>}
 
    {view==="plantilla"&&<section className="clubRosterContent">
      <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · TEMPORADA 2026–27</span><h2>{COPY.roster.title(club.name)}</h2></div><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Plantillas oficiales ↗</a></div>

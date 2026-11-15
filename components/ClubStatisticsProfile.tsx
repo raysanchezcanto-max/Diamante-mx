@@ -10,6 +10,7 @@ type Props = {
   standings: ClubStanding[];
   statistics: ClubSeasonStatistics | null;
   standingsUrl: string;
+  officialStatsUrl: string;
 };
 
 function metric(value: string | undefined, label: string) {
@@ -17,7 +18,7 @@ function metric(value: string | undefined, label: string) {
 }
 
 export default function ClubStatisticsProfile({ league, clubName, teamId, season,
-  standings, statistics, standingsUrl }: Props) {
+  standings, statistics, standingsUrl, officialStatsUrl }: Props) {
   const period = clubSeasonLabel(league, statistics?.season ?? season);
   const sorted = [...standings].sort((a, b) =>
     (a.rank ?? Infinity) - (b.rank ?? Infinity) || Number(b.pct) - Number(a.pct) ||
@@ -88,7 +89,7 @@ export default function ClubStatisticsProfile({ league, clubName, teamId, season
           {metric(statistics?.pitching?.strikeOuts, "Ponches recetados")}
           {metric(statistics?.pitching?.whip, "Corredores permitidos por entrada")}
         </div>
-        <a className="clubDirectorySource" href={statistics.source} target="_blank"
+        <a className="clubDirectorySource" href={officialStatsUrl} target="_blank"
           rel="noopener noreferrer">Consultar estadísticas oficiales ↗</a>
       </> : <div className="clubDirectoryNotice"><p>No hay estadísticas colectivas
         verificables para esta temporada en la fuente consultada. No se muestran cifras
