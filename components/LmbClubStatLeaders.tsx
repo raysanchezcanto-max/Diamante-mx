@@ -95,7 +95,7 @@ export default function LmbClubStatLeaders({ clubName, data }: Props) {
           Selección por categoría calculada con registros oficiales de LMB {data.season}
           {" "}correspondientes a {clubName}. Promedio de bateo: mínimo 100 turnos;
           efectividad: mínimo 30 entradas lanzadas. Es archivo de temporada,
-          no una clasificación en vivo ni un roster actual.
+          no una clasificación en vivo ni una plantilla actual.
         </p>
       </div>
     </section>
