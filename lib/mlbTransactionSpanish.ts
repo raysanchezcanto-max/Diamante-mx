@@ -54,7 +54,13 @@ function fallbackType(typeDesc: string): string {
 
 function positionOf(description: string, player: string | null): string | null {
   if (!player) return null;
-  const position = description.match(/\b(RHP|LHP|1B|2B|3B|SS|LF|CF|RF|OF|IF|DH|C|P)\s+/i);
+  // Los códigos de posición oficiales aparecen en mayúsculas. La búsqueda
+  // insensible a mayúsculas interpretaba la preposición inglesa "of" como
+  // OF (jardinero), incluso en transacciones de lanzadores sin posición.
+  const escapedName = player.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const position = description.match(new RegExp(
+    "\\b(RHP|LHP|1B|2B|3B|SS|LF|CF|RF|OF|IF|DH|C|P)\\s+" + escapedName + "\\b",
+  ));
   return position ? POSITIONS[position[1].toUpperCase()] ?? null : null;
 }
 

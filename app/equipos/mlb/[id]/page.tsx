@@ -15,6 +15,7 @@ import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
 import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear } from "@/lib/clubStatistics";
 import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
+import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
 
 export const revalidate = 1800;
 type PageProps = {
@@ -65,6 +66,9 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   const official = mlbOfficialTeamUrl(club);
   const record = standings.find(s => s.teamId === club.id);
   const editorial = mlbEditorialHistory(club.id);
+  const videos = view === "resumen" ? getMlbClubVerifiedVideos(club.id) : [];
+  const secondaryNews = news?.items.length
+    ? news.items.length > 1 ? news.items.slice(1, 4) : news.items : [];
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
   const opponent = nextGame
@@ -137,7 +141,18 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           </section>
         </aside>
         <div className="clubMainColumn">
-          {editorial ? <article className="clubFeature" aria-label={"Reportaje verificado de " + club.name}>
+          {news?.items.length ? <article className="clubFeature"
+            aria-label={"Noticia oficial reciente de " + club.name}>
+            {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
+            <div className="clubFeatureShade" aria-hidden="true"/>
+            <div className="clubFeatureContent">
+              <span className="clubKicker">ACTUALIDAD · FUENTE MLB</span>
+              <h2>{news.items[0].title}</h2>
+              <p>Noticia reciente publicada por el canal oficial de {club.name}.</p>
+              <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
+                Leer noticia en MLB ↗</a>
+            </div>
+          </article> : editorial ? <article className="clubFeature" aria-label={"Reportaje verificado de " + club.name}>
             {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
             <div className="clubFeatureShade" aria-hidden="true"/>
             <div className="clubFeatureContent">
@@ -146,17 +161,6 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               <p>{editorial.featuredStory.excerpt}</p>
               <a href={editorial.featuredStory.url} target="_blank" rel="noopener noreferrer">
                 Leer nota oficial ↗</a>
-            </div>
-          </article> : news?.items.length ? <article className="clubFeature"
-            aria-label={"Noticia oficial de " + club.name}>
-            {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
-            <div className="clubFeatureShade" aria-hidden="true"/>
-            <div className="clubFeatureContent">
-              <span className="clubKicker">ACTUALIDAD · FUENTE MLB</span>
-              <h2>{news.items[0].title}</h2>
-              <p>Una publicación reciente del canal oficial de noticias de {club.name}.</p>
-              <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
-                Leer noticia en MLB ↗</a>
             </div>
           </article> : <section className="clubDirectoryNotice" aria-label={"Noticias de " + club.name}>
             <span className="clubKicker">FUENTE DE NOTICIAS · MLB</span>
@@ -175,7 +179,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               ? "Titulares del canal oficial de " + club.name + " en MLB. Se actualizan aproximadamente cada 30 minutos."
               : "No se recibieron artículos verificables del canal oficial en esta consulta."}</p>
             {news?.items.length ? <div className="clubNewsGrid">
-              {news.items.slice(0, 3).map(story => <a href={story.url}
+              {secondaryNews.map(story => <a href={story.url}
                 className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                 <span>NOTICIA · MLB</span><strong>{story.title}</strong>
                 <small>Leer publicación oficial ↗</small>
@@ -193,10 +197,19 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               <a href={official + "/video"} target="_blank" rel="noopener noreferrer">
                 Ver catálogo MLB ↗</a>
             </div>
-            <div className="clubDirectoryNotice">
-              <p>Los videos oficiales de {club.name} se consultan en MLB.
-                No insertamos transmisiones o clips sin un enlace verificable.</p>
-            </div>
+            {videos.length ? <div className="clubVideoGrid">
+              {videos.map(video => <a className="clubVideoCard" href={video.url}
+                target="_blank" rel="noopener noreferrer" key={video.url}>
+                <span className="clubVideoCardKicker"><span aria-hidden="true">▶</span>
+                  VIDEO OFICIAL MLB · {video.duration}</span>
+                <strong>{video.title}</strong>
+                <p>{video.description}</p>
+                <small>{video.date} · Ver video en MLB ↗</small>
+              </a>)}
+            </div> : <div className="clubDirectoryNotice">
+              <p>El catálogo audiovisual oficial de {club.name} se encuentra disponible
+                en MLB. La selección de clips individuales está en revisión.</p>
+            </div>}
           </section>
         </div>
         <aside className="clubSideRight">
