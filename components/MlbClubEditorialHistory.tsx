@@ -8,6 +8,15 @@ import { mlbEditorialHistory } from "@/lib/mlbHistoryEditorial";
 const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
   .map(part => part.charAt(0).toLocaleUpperCase("es")).join("");
 
+// Los primeros banderines de la Nacional preceden a la Serie Mundial moderna.
+// Tampoco hubo Serie Mundial en 1904, pese a disputarse desde 1903.
+const pennantLedToWorldSeries = (year: string) => Number(year) >= 1903 && year !== "1904";
+const pennantOutcome = (year: string) => Number(year) < 1903
+  ? " La Serie Mundial moderna todavía no existía."
+  : year === "1904"
+    ? " Ese año no se celebró la Serie Mundial."
+    : " Disputó la Serie Mundial de esa temporada.";
+
 export default function MlbClubEditorialHistory({
   club, overview, logo,
 }: { club: MlbClub; overview: MlbClubOverview; logo: string | null }) {
@@ -62,8 +71,9 @@ export default function MlbClubEditorialHistory({
               ? "PRIMER BANDERÍN · " + pennantLeague(year).toLocaleUpperCase("es")
               : "BANDERÍN MÁS RECIENTE · " + pennantLeague(year).toLocaleUpperCase("es")}</span>
             <strong>{year}</strong>
-            <h4>{i === 0 ? "Primera gran conquista" : "De regreso a la Serie Mundial"}</h4>
-            <p>{club.name} ganó el título de la {pennantLeague(year)} en {year} y avanzó a la Serie Mundial.</p>
+            <h4>{i === 0 ? "Primera gran conquista"
+              : pennantLedToWorldSeries(year) ? "De regreso a la Serie Mundial" : "Último banderín documentado"}</h4>
+            <p>{club.name} ganó el título de la {pennantLeague(year)} en {year}.{pennantOutcome(year)}</p>
             <a href={pennantSource(year)} target="_blank"
               rel="noopener noreferrer">Consultar palmarés ↗</a>
           </article>)}
