@@ -100,7 +100,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
    </div>}
 
    {view==="plantilla"&&<section className="clubRosterContent">
-     <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · TEMPORADA 2026–27</span><h2>{COPY.roster.title(club.name)}</h2></div><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Rosters oficiales ↗</a></div>
+     <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · TEMPORADA 2026–27</span><h2>{COPY.roster.title(club.name)}</h2></div><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Plantillas oficiales ↗</a></div>
      <p className="clubSmallNote">Fotografías oficiales, nombres, dorsales y posiciones de jugadores activos según el servicio de LMP. Cuerpo técnico excluido. Datos sujetos a cambios durante la temporada.</p>
      {roster.length?<div className="clubRosterGrid">
       {groups.map(group=>{const players=roster.filter(p=>p.group===group);return players.length?<section className="clubRosterGroup" key={group}><h3>{group} <span>{players.length}</span></h3>
@@ -108,7 +108,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
         {p.photo?<img src={p.photo} alt={"Retrato de "+p.name} width={52} height={52} loading="lazy"/>:<span aria-hidden="true">{initial(p.name)}</span>}
        </span><span className="clubRosterPlayerInfo"><strong>{p.name}</strong><small>#{p.number} · {p.position}</small><small>{[p.throws&&"Lanza: "+p.throws,p.bats&&"Batea: "+p.bats,p.birthDate&&"Nac.: "+p.birthDate].filter(Boolean).join(" · ")}</small></span></div>)}</div>
       </section>:null})}
-     </div>:<div className="clubDirectoryNotice"><p>La fuente oficial no devolvió jugadores activos en esta consulta. No se muestran nombres de otras temporadas como actuales.</p><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Consultar rosters LMP ↗</a></div>}
+     </div>:<div className="clubDirectoryNotice"><p>La fuente oficial no devolvió jugadores activos en esta consulta. No se muestran nombres de otras temporadas como actuales.</p><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Consultar plantillas LMP ↗</a></div>}
    </section>}
 
    {view==="movimientos"&&<section className="clubMovementsContent">
@@ -123,8 +123,8 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
     <div className="clubBigLeaguesSummary"><div><strong>{String(mlbAlumni.length).padStart(2,"0")}</strong><span>Integrantes actuales con debut MLB confirmado</span></div>
      <div><strong>—</strong><span>Debuts posteriores al paso por el club aún no documentados</span></div>
      <div><strong>—</strong><span>Firmas de prospectos por verificar</span></div></div>
-    <div className="clubBigLeaguesSectionHead"><span className="clubKicker">EXPERIENCIA EN GRANDES LIGAS</span><h3>Peloteros del roster con debut MLB confirmado</h3></div>
-    <p className="clubBigLeaguesNote">La coincidencia entre el roster oficial de LMP y la ficha de MLB confirma que estas personas jugaron en ambas competiciones. No acredita cuándo ingresaron a cada equipo ni que el club los exportara a Grandes Ligas.</p>
+    <div className="clubBigLeaguesSectionHead"><span className="clubKicker">EXPERIENCIA EN GRANDES LIGAS</span><h3>Peloteros de la plantilla con debut MLB confirmado</h3></div>
+    <p className="clubBigLeaguesNote">La coincidencia entre la plantilla oficial de LMP y la ficha de MLB confirma que estas personas jugaron en ambas competiciones. No acredita cuándo ingresaron a cada equipo ni que el club los exportara a Grandes Ligas.</p>
     {mlbAlumni.length?<div className="clubBigLeaguesProspects clubToMlbProspectGrid">{mlbAlumni.map(p=><article className="clubBigLeaguesProspect" key={p.id}>
      <div className="clubBigLeaguesProspectHeader"><span className="clubBigLeaguesInitials" aria-hidden="true">{initial(p.name)}</span><span className="clubBigLeaguesYear">{p.debut.slice(0,4)}</span></div>
      <span className="clubBigLeaguesStatus">DEBUT MLB CONFIRMADO</span><h4>{p.name}</h4><span className="clubBigLeaguesProspectOrganization">{p.role} · Debut {p.debut}</span>
