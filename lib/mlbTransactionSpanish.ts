@@ -73,6 +73,17 @@ function detailAfterActivation(description: string): string {
   return "";
 }
 
+function minorLeagueDestination(description: string): string {
+  const match = description.match(/\bto\s+([A-Za-zÀ-ÿ0-9 .'’\-]+)\.?$/i);
+  return match ? " (" + match[1].trim().replace(/\.$/, "") + ")" : "";
+}
+
+function minorLeagueOrigin(description: string): string {
+  const match = description.match(/\bfrom\s+([A-Za-zÀ-ÿ0-9 .'’\-]+)\.?$/i);
+  if (!match || /^(the |an? )?(injured|restricted|paternity|bereavement)\b/i.test(match[1])) return "";
+  return " procedente de " + match[1].trim().replace(/\.$/, "");
+}
+
 export function translateMlbTransaction(
   description: string,
   typeDesc: string,
@@ -86,12 +97,26 @@ export function translateMlbTransaction(
   const person = player ? player + (position ? " (" + position + ")" : "") : null;
   const subject = person ?? "un integrante de su plantilla";
 
+  // Algunas acciones de StatsAPI están en la descripción, pero no son verbos
+  // incluidos en su clasificación general («Declared Free Agency», etc.).
+  if (/\belected free agency\b/i.test(original)) {
+    return { label: "Agencia libre", description: subject + " optó por declararse agente libre." };
+  }
+  if (/\bsent\b.*\boutright to\b/i.test(original)) {
+    const destino = original.match(/\boutright to\s+(.+?)\.?$/i)?.[1]?.replace(/\.$/, "");
+    return { label: "Asignación definitiva", description: clubName + " asignó a " + subject +
+      " de forma definitiva" + (destino ? " a " + destino : " a ligas menores") + "." };
+  }
+  if (/\bnon-tendered\b/i.test(original)) {
+    return { label: "Sin oferta de contrato", description: clubName + " no ofreció un nuevo contrato a " + subject + "." };
+  }
+
   // Cada variante utiliza únicamente información comprobable de la transacción.
   switch (action) {
     case "activated": return { label, description: clubName + " activó a " + subject + detailAfterActivation(original) + "." };
     case "reinstated": return { label, description: clubName + " reincorporó a " + subject + detailAfterActivation(original) + "." };
-    case "recalled": return { label, description: clubName + " llamó de ligas menores a " + subject + "." };
-    case "optioned": return { label, description: clubName + " envió a " + subject + " a ligas menores." };
+    case "recalled": return { label, description: clubName + " llamó de ligas menores a " + subject + minorLeagueOrigin(original) + "." };
+    case "optioned": return { label, description: clubName + " envió a " + subject + " a ligas menores" + minorLeagueDestination(original) + "." };
     case "placed": {
       if (/\binjured list\b/i.test(original)) {
         return { label: "Lista de lesionados", description: clubName + " colocó a " + subject + " en la lista de lesionados" + injuryList(original) + "." };
@@ -106,9 +131,17 @@ export function translateMlbTransaction(
     case "signed": return { label, description: clubName + " contrató a " + subject + (/\bfree agent\b/i.test(original) ? " como agente libre" : "") + "." };
     case "claimed": return { label, description: clubName + " incorporó a " + subject + " desde la lista de jugadores disponibles." };
     case "acquired": return { label, description: clubName + " adquirió a " + subject + "." };
-    case "traded": return { label, description: clubName + " registró un intercambio relacionado con " + subject + "." };
+    case "traded": {
+      const deal = original.match(/\btraded\b.*?\bto\s+(.+?)\s+for\s+cash(?: considerations)?\.?$/i);
+      const inferred = !person ? original.match(/\btraded\s+(?:(RHP|LHP|C|1B|2B|3B|SS|LF|CF|RF|OF|IF|DH|P)\s+)?(.+?)\s+to\b/i) : null;
+      const playerName = person ?? (inferred ? inferred[2] + (inferred[1] ? " (" + POSITIONS[inferred[1].toUpperCase()] + ")" : "") : subject);
+      return { label, description: deal
+        ? clubName + " intercambió a " + playerName + " con " + deal[1].trim() + " a cambio de dinero."
+        : clubName + " registró un intercambio relacionado con " + playerName + "." };
+    }
     case "assigned": return { label, description: clubName + " asignó a " + subject + "." };
-    case "selected": return { label, description: clubName + " seleccionó el contrato de " + subject + " para su plantilla." };
+    case "selected": return { label, description: clubName + " seleccionó el contrato de " + subject +
+      " para su plantilla" + minorLeagueOrigin(original) + "." };
     case "suspended": return { label, description: clubName + " registró una suspensión de " + subject + "." };
     case "outrighted": return { label, description: clubName + " asignó a " + subject + " a ligas menores." };
     case "promoted": return { label, description: clubName + " ascendió a " + subject + "." };
