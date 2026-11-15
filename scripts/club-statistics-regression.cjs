@@ -22,7 +22,7 @@ const entries = [
 const publicStatsUrls = {
   MLB: "https://www.mlb.com/es/${club.webSlug}/stats",
   LMB: "https://lmb.com.mx/estadisticas",
-  LMP: "https://www.lmp.mx/estadisticas",
+  LMP: "https://www.lmp.mx/estadisticas/general",
 };
 for (const [league, pagePath, delegatedPath] of entries) {
   const page = read(pagePath);
