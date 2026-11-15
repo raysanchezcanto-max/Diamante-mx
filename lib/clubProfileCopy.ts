@@ -14,7 +14,7 @@ export const CLUB_PROFILE_COPY = {
   roster: {
     kicker: (league:"LMB"|"LMP"|"MLB", season:string) => "PLANTILLA · FUENTE OFICIAL " + league + " · " + season,
     title: (club:string) => "Jugadores de " + club,
-    sourceLabel: "Ver roster oficial ↗",
+    sourceLabel: "Ver plantilla oficial ↗",
   },
   movements: {
     kicker: (league:"LMB"|"LMP"|"MLB") => "MOVIMIENTOS · " + league,
