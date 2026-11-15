@@ -18,6 +18,8 @@ export default function MlbClubEditorialHistory({
   const documentedDebut = editorial?.debutYear ?? overview.firstYear;
   const documentedStadiumOpened = editorial?.stadiumOpened ?? null;
   const debutSourceUrl = editorial?.milestones[0]?.url ?? official;
+  const postseasonUrl = editorial?.postseasonSource ?? historyUrl;
+  const pennantLeague = (year: string) => editorial?.pennantLeagues?.[year] ?? overview.league;
   const timeline = editorial?.milestones ?? (overview.firstYear ? [{
     year: overview.firstYear,
     title: "Primer año registrado por MLB",
@@ -57,21 +59,29 @@ export default function MlbClubEditorialHistory({
           .map((year, i) => <article className="clubHistoryChampionCard" key={year}>
             <span className="clubHistoryStar" aria-hidden="true">★</span>
             <span className="clubHistoryChampLabel">{i === 0
-              ? "PRIMER BANDERÍN · LIGA AMERICANA"
-              : "BANDERÍN MÁS RECIENTE · LIGA AMERICANA"}</span>
+              ? "PRIMER BANDERÍN · " + pennantLeague(year).toLocaleUpperCase("es")
+              : "BANDERÍN MÁS RECIENTE · " + pennantLeague(year).toLocaleUpperCase("es")}</span>
             <strong>{year}</strong>
             <h4>{i === 0 ? "Primera gran conquista" : "De regreso a la Serie Mundial"}</h4>
-            <p>{club.name} ganó el título de la Liga Americana en {year} y avanzó a la Serie Mundial.</p>
-            <a href="https://www.mlb.com/rays/history/postseason-results" target="_blank"
+            <p>{club.name} ganó el título de la {pennantLeague(year)} en {year} y avanzó a la Serie Mundial.</p>
+            <a href={postseasonUrl} target="_blank"
               rel="noopener noreferrer">Consultar palmarés ↗</a>
           </article>)}
       </div>
-      <p className="clubSmallNote">Banderines de la Americana: {editorial.pennants.join(" · ")}.
-        {" "}Títulos del Este de la Americana: {editorial.divisionTitles.join(" · ")}.</p>
+      <p className="clubSmallNote">Banderines de liga: {editorial.pennants
+        .map(year => year + " (" + pennantLeague(year) + ")").join(" · ")}.
+        {" "}{editorial.divisionTitlesLabel ?? "Títulos divisionales"}: {
+          editorial.divisionTitles.join(" · ")}.</p>
       <div className="clubDirectoryNotice">
-        <p>Hasta {editorial.titlesVerifiedThrough}, {club.name} no registra coronas de Serie Mundial.
-          Los banderines de la Liga Americana son logros diferentes del campeonato de MLB.</p>
-        <a href="https://www.mlb.com/rays/history/postseason-results" target="_blank"
+        {editorial.worldSeriesTitles > 0
+          ? <p><strong>{club.name}: {editorial.worldSeriesTitles} campeonato{
+            editorial.worldSeriesTitles === 1 ? "" : "s"} de Serie Mundial</strong>{
+              editorial.worldSeriesWinningYears?.length
+                ? " (" + editorial.worldSeriesWinningYears.join(" · ") + ")" : ""}.
+              Los banderines de liga se registran por separado.</p>
+          : <p>Hasta {editorial.titlesVerifiedThrough}, {club.name} no registra coronas de Serie Mundial.
+              Los banderines de liga son logros diferentes del campeonato de MLB.</p>}
+        <a href={postseasonUrl} target="_blank"
           rel="noopener noreferrer">Historial oficial de postemporada ↗</a>
       </div>
     </> : <div className="clubDirectoryNotice">
