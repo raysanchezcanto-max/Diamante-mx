@@ -35,8 +35,10 @@ verify(page.includes('className="clubContentGrid"'), "tres columnas en Resumen")
 verify(page.includes('className="clubRosterContent"'), "plantilla compartida");
 verify(page.includes('className="clubMovementsContent clubMovementsContent--mlb"'),
   "movimientos compartidos, con ajuste visual solo para MLB");
-verify(page.includes('className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"'),
-  "grandes ligas comparte layout y scope MLB");
+const mexicoConnections = read("components/MlbMexicanConnections.tsx");
+verify(page.includes('<MlbMexicanConnections club={club} logo={logo}/>') &&
+  mexicoConnections.includes('className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"'),
+  "Grandes Ligas reutiliza layout para trayectorias mexico-MLB");
 verify(history.includes('className="clubHistory clubDirectoryHistory"'), "historia compartida");
 for (const view of ["resumen", "plantilla", "movimientos", "grandes-ligas", "historia"]) {
   verify(page.includes('"' + view + '"') && tabs.includes('id: "' + view + '"'),
@@ -96,11 +98,35 @@ verify(history.includes("mlbEditorialHistory") && history.includes("clubHistoryL
 
 const css = read("app/globals.css");
 for (const panel of [
-  "NÚMEROS DEL EQUIPO", "Bateo colectivo", "Pitcheo colectivo",
-  "El equipo frente a sus rivales", "Para seguir al club",
-  "clubMlbSeasonGrid", "clubMlbSeasonLinks",
-]) verify(page.includes(panel), "Grandes Ligas incluye " + panel);
-verify(page.includes("getMlbClubSeasonStats"), "carga temporada solo en Grandes Ligas");
+  "Bateo colectivo", "Pitcheo colectivo", "Rendimiento de temporada regular",
+]) verify(page.includes(panel), "Resumen incluye " + panel);
+verify(page.includes('view === "resumen" ? getMlbClubSeasonStats(club)'),
+  "las estadisticas se consultan solo en Resumen");
+for (const label of [
+  "DEL BÉISBOL MEXICANO AL DIAMANTE INTERNACIONAL",
+  "Debutaron en MLB después de su paso por México",
+  "Experiencia MLB anterior",
+  "Prospectos y contratos de Ligas Menores",
+]) verify(label === "DEL BÉISBOL MEXICANO AL DIAMANTE INTERNACIONAL"
+  ? read("lib/clubProfileCopy.ts").includes(label) : mexicoConnections.includes(label),
+  "Grandes Ligas clasifica trayectorias: " + label);
+verify(!mexicoConnections.includes("NÚMEROS DEL EQUIPO") &&
+  !mexicoConnections.includes("Pitcheo colectivo") &&
+  !mexicoConnections.includes("El equipo frente a sus rivales") &&
+  !mexicoConnections.includes("FIGURA HISTÓRICA"),
+  "Grandes Ligas no repite estadisticas ni Historia");
+const connectionsSource = read("lib/mlbMexicanConnections.ts");
+verify(connectionsSource.includes("getLmbToMlbClub") &&
+  connectionsSource.includes("LMB_CLUB_DIRECTORY") &&
+  connectionsSource.includes("ALGODONEROS_MLB_PLAYERS"),
+  "MLB usa los mismos registros documentados de las fichas mexicanas");
+verify(connectionsSource.includes("result.debuts.push") &&
+  connectionsSource.includes("result.previousExperience") &&
+  connectionsSource.includes("result.prospects"),
+  "datos de MLB separan debuts, experiencia anterior y contratos menores");
+verify(read("lib/lmbToMlb.ts").includes('name:"Jesús Manuel Broca"') &&
+  read("lib/lmbToMlb.ts").includes('organization:"Milwaukee Brewers"'),
+  "fuente Olmecas-Milwaukee en registro compartido");
 verify(page.includes("getMlbClubNews") && page.includes("news.items.slice(0, 3)"),
   "Resumen muestra noticias MLB propias en tarjetas reales");
 verify(css.includes(".clubDirectoryMlb--franchise .clubToMlbHeroLogo") &&
