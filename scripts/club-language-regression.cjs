@@ -14,6 +14,9 @@ const cases = [
   ["inactivanco a Rubén Reyes", "inactivando a Rubén Reyes"],
   ["El pitcher zurdo y catcher participaron", "El lanzador zurdo y receptor participaron"],
   ["toma su lugar en roster de activos", "toma su lugar en la plantilla de activos"],
+  ["Desactiva de roster a Roel Ramírez", "Desactiva de la plantilla a Roel Ramírez"],
+  ["Coloca a Abraham (D/D, IF, Tijuana) en su lista de academia rookie", "(D/D, jugador de cuadro, Tijuana) en su lista de academia de novatos"],
+  ["Da de baja a un jugador por waiver", "por lista de jugadores disponibles"],
 ];
 let count = 0;
 for (const [source, expected] of cases) {
