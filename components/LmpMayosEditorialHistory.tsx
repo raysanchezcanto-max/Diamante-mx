@@ -24,7 +24,7 @@ const seasons=["1978–79","1999–00"] as const;
 
 type Milestone={year:string;title:string;description:string;source:string};
 const timeline:readonly Milestone[]=[
- {year:"1959–60",title:"Primera aparición en la Invernal",description:"Navojoa ingresó a la Liga Invernal de Sonora al recibir el roster que dejó temporalmente Ciudad Obregón. La enciclopedia oficial de LMP registra esta participación.",source:timelineLmp},
+ {year:"1959–60",title:"Primera aparición en la Invernal",description:"Navojoa ingresó a la Liga Invernal de Sonora al recibir la plantilla que dejó temporalmente Ciudad Obregón. La enciclopedia oficial de LMP registra esta participación.",source:timelineLmp},
  {year:"1962–63",title:"El regreso en la expansión",description:"Mayos regresó en la expansión de la Liga Invernal de Sonora junto a Cañeros de Los Mochis; esta reaparición no reemplaza el debut de 1959.",source:timelineLmp},
  {year:"1970",title:"Se inaugura la casa de la Tribu",description:"El parque de Navojoa abrió sus puertas y se convirtió en símbolo del béisbol de la región.",source:stadium},
  {year:"1978",title:"El estadio recibe su nombre histórico",description:"La instalación fue dedicada al lanzador navojoense Manuel «Ciclón» Echeverría, figura de la antigua Liga de la Costa.",source:stadium},
