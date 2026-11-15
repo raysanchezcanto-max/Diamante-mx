@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 "use strict";
-// Inventario de 60 fichas + auditoría HTTP opcional de sus 300 vistas.
+// Inventario de 60 fichas + auditoría HTTP opcional de sus 360 vistas.
 // HTTP 200 no acredita biografías completas: se informa esa limitación.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
@@ -12,7 +12,7 @@ const { mlbEditorialHistory } = require("../lib/mlbHistoryEditorial.ts");
 
 const root = path.resolve(__dirname, "..");
 const read = file => fs.readFileSync(path.join(root, file), "utf8");
-const views = ["resumen", "plantilla", "movimientos", "grandes-ligas", "historia"];
+const views = ["resumen", "estadisticas", "plantilla", "movimientos", "grandes-ligas", "historia"];
 const clubs = [
   ...MLB_CLUBS.map(c => ({ league: "mlb", id: String(c.id), name: c.name,
     editorialHistory: !!mlbEditorialHistory(c.id) })),
@@ -41,13 +41,13 @@ assert(!read("components/MlbMexicanConnections.tsx").includes("Bateo colectivo")
   "las estadísticas no pertenecen a Grandes Ligas");
 
 const missing = clubs.filter(c => c.league === "mlb" && !c.editorialHistory);
-console.log("60 perfiles: MLB 30 · LMB 20 · LMP 10; cinco pestañas = 300 vistas.");
+console.log("60 perfiles: MLB 30 · LMB 20 · LMP 10; seis pestañas = 360 vistas.");
 console.log(`MLB · Historia editorial individual: ${30 - missing.length}/30. Pendientes: ${missing.length}.`);
 console.log("Por documentar:", missing.map(c => c.name).join("; "));
 console.log("LMB/LMP: las plantillas existen, pero debe verificarse la integridad de fuentes por equipo.");
 
 if (!process.argv.includes("--live")) {
-  console.log("Estructura verificada. Usar --live para auditar las 300 URL desplegadas.");
+  console.log("Estructura verificada. Usar --live para auditar las 360 URL desplegadas.");
   process.exit(0);
 }
 const selected = process.argv.find(arg => arg.startsWith("--league="))?.split("=")[1];

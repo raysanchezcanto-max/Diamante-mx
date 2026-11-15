@@ -21,10 +21,11 @@ Todas las fichas existentes siguen el mismo orden de pestañas:
 | Posición | Pestaña | Campos mínimos |
 |---|---|---|
 | 1 | **Resumen** | Identidad, estadio, récord de temporada cuando la liga lo proporcione, calendario real enlazado, noticias oficiales propias, videos oficiales atribuibles |
-| 2 | **Plantilla** | Foto oficial cuando exista, nombre correcto, dorsal, posición, agrupación consistente; sin cuerpo técnico mezclado con jugadores |
-| 3 | **Movimientos** | Fecha, tipo, nombres, **dirección** y fuente. Distinguir registro formal de una nota de prensa; no atribuir altas y bajas sin prueba |
-| 4 | **Grandes Ligas** | Misma introducción y jerarquía; diferenciar debut MLB posterior, experiencia anterior y Ligas Menores, siempre con evidencia cronológica |
-| 5 | **Historia** | Hero, tres indicadores, palmarés, línea del tiempo, figuras históricas, inmortales vinculados, casa del equipo y fuentes históricas |
+| 2 | **Estadísticas** | Temporada automática según la liga y los datos disponibles, puesto en la clasificación, tabla, bateo/pitcheo colectivos y líderes individuales; sin datos inventados |
+| 3 | **Plantilla** | Foto oficial cuando exista, nombre correcto, dorsal, posición, agrupación consistente; sin cuerpo técnico mezclado con jugadores |
+| 4 | **Movimientos** | Fecha, tipo, nombres, **dirección** y fuente. Distinguir registro formal de una nota de prensa; no atribuir altas y bajas sin prueba |
+| 5 | **Grandes Ligas** | Misma introducción y jerarquía; diferenciar debut MLB posterior, experiencia anterior y Ligas Menores, siempre con evidencia cronológica |
+| 6 | **Historia** | Hero, tres indicadores, palmarés, línea del tiempo, figuras históricas, inmortales vinculados, casa del equipo y fuentes históricas |
 
 ## Contrato exacto de Historia
 
@@ -58,7 +59,9 @@ Todas las fichas existentes siguen el mismo orden de pestañas:
 
 ## Contrato de datos y calidad de las demás secciones
 
-**Resumen:** misma estructura, posiciones y títulos; el récord viene de la liga/temporada correspondiente, el calendario usa juegos reales y URLs verificadas, fotografías oficiales de noticias cuando existan; no presentar vínculos genéricos como si fueran clips individuales de ese equipo.
+**Resumen:** noticias, calendario y contenido audiovisual tienen prioridad; el récord viene de la liga/temporada correspondiente. La tabla clasificatoria completa, los seis indicadores colectivos y los líderes individuales viven exclusivamente en **Estadísticas**. No presentar vínculos genéricos como si fueran clips individuales del equipo.
+
+**Estadísticas:** sección específica para las tres ligas, mismo orden visual (puesto y balance, tabla del grupo, bateo/pitcheo del equipo y líderes individuales). MLB y LMB presentan temporada por año natural; LMP usa temporada invernal como 2026–27. El rótulo sigue el año de la fuente o última temporada archivada confirmada, no un texto fijo; si la liga aún no publica cifras, mostrar indisponibilidad y su fuente. Nunca deducir una estadística colectiva de noticias, plantillas o temporadas diferentes.
 
 **Plantilla:** cuatro grupos comparables (lanzadores, receptores, cuadro, jardineros), nombres/dorsales/posición y retratos reales. Ante falta de foto, monograma neutro. La fecha y condición de activo corresponden a la fuente, no a una suposición.
 

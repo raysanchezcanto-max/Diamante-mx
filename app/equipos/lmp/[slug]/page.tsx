@@ -4,10 +4,12 @@ import {getLmpDirectoryClub} from "@/lib/lmpClubDirectory";
 import {getLmpDirectoryRoster,getLmpDirectoryFixtures,getLmpDirectoryStanding,getLmpDirectoryNews,getLmpDirectoryMovements,getLmpDirectoryMlbAlumni} from "@/lib/lmpClubDirectoryData";
 import LmpDirectoryClubProfile from "@/components/LmpDirectoryClubProfile";
 import type {LmbClubView} from "@/components/LmbClubTabs";
+import { getLmpSeasonYear } from "@/lib/lmp";
+import { getClubSeasonStandings, getLatestClubSeasonStatistics } from "@/lib/clubStatistics";
 
 export const revalidate=900;
 type Props={params:Promise<{slug:string}>;searchParams?:Promise<{vista?:string}>};
-const views:readonly LmbClubView[]=["resumen","plantilla","movimientos","grandes-ligas","historia"];
+const views:readonly LmbClubView[]=["resumen","estadisticas","plantilla","movimientos","grandes-ligas","historia"];
 export async function generateMetadata({params}:Pick<Props,"params">):Promise<Metadata>{
  const {slug}=await params;const club=getLmpDirectoryClub(slug);
  return {title:club?club.name+" | Equipos LMP | Diamante MX":"Equipos LMP | Diamante MX",
@@ -18,13 +20,16 @@ export default async function LmpClubDirectoryPage({params,searchParams}:Props){
  const club=getLmpDirectoryClub(slug);
  if(!club)notFound();
  const view:LmbClubView=views.includes(query?.vista as LmbClubView)?query!.vista as LmbClubView:"resumen";
- const [roster,fixtures,record,news,mlbAlumni,movements]=await Promise.all([
+ const season=view==="estadisticas"?await getLmpSeasonYear():null;
+ const [roster,fixtures,record,news,mlbAlumni,movements,standings,statistics]=await Promise.all([
   view==="plantilla"?getLmpDirectoryRoster(club.id):Promise.resolve([]),
   view==="resumen"?getLmpDirectoryFixtures(club.id):Promise.resolve([]),
   view==="resumen"?getLmpDirectoryStanding(club.id):Promise.resolve(null),
   view==="resumen"?getLmpDirectoryNews(club.id):Promise.resolve([]),
   view==="grandes-ligas"?getLmpDirectoryMlbAlumni(club.id):Promise.resolve([]),
-  view==="movimientos"?getLmpDirectoryMovements(club.id):Promise.resolve([])
+  view==="movimientos"?getLmpDirectoryMovements(club.id):Promise.resolve([]),
+  season!==null?getClubSeasonStandings("LMP",season):Promise.resolve([]),
+  season!==null?getLatestClubSeasonStatistics("LMP",club.id,season):Promise.resolve(null),
  ]);
- return <LmpDirectoryClubProfile club={club} view={view} roster={roster} fixtures={fixtures} record={record} news={news} mlbAlumni={mlbAlumni} movements={movements}/>;
+ return <LmpDirectoryClubProfile club={club} view={view} roster={roster} fixtures={fixtures} record={record} news={news} mlbAlumni={mlbAlumni} movements={movements} standings={standings} statistics={statistics} statsSeason={season}/>;
 }

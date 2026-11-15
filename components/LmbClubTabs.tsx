@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 export type LmbClubView =
   | "resumen"
+  | "estadisticas"
   | "plantilla"
   | "movimientos"
   | "grandes-ligas"
@@ -17,6 +18,7 @@ type Props = {
 
 const views: ReadonlyArray<{ id: LmbClubView; label: string }> = [
   { id: "resumen", label: "Resumen" },
+  { id: "estadisticas", label: "Estadísticas" },
   { id: "plantilla", label: "Plantilla" },
   { id: "movimientos", label: "Movimientos" },
   { id: "grandes-ligas", label: "Grandes Ligas" },

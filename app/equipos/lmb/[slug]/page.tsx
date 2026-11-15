@@ -10,9 +10,10 @@ import LmbToMlbClubProfile from "@/components/LmbToMlbClubProfile";
 import { lmbClubChampionships } from "@/lib/lmbClubHistory";
 import LmbClubEditorialHistory from "@/components/LmbClubEditorialHistory";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
-import LmbClubStatLeaders from "@/components/LmbClubStatLeaders";
+import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
 import LmbClubTabs from "@/components/LmbClubTabs";
-import { getLmbClubStatLeaders } from "@/lib/lmbClubLeaders";
+import { LMB_TEAM_IDS_2026 } from "@/lib/lmbClubLeaders";
+import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear } from "@/lib/clubStatistics";
 
 export const revalidate = 1800;
 type PageProps = {
@@ -21,6 +22,7 @@ type PageProps = {
 };
 const views = [
   {id:"resumen",label:"Resumen"},
+  {id:"estadisticas",label:"Estadísticas"},
   {id:"plantilla",label:"Plantilla"},
   {id:"movimientos",label:"Movimientos"},
   {id:"grandes-ligas",label:"Grandes Ligas"},
@@ -45,7 +47,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const club=getLmbClub(slug);
   if(!club)notFound();
   const view:View=views.some(v=>v.id===q?.vista)?(q?.vista as View):"resumen";
-  const [overview,standings,news,roster,movements,statLeaders,videos]=await Promise.all([
+  const [overview,summaryStandings,news,roster,movements,statistics,videos]=await Promise.all([
     getLmbClubOverview(club.slug),
     view==="resumen"?getLmbStandings():Promise.resolve([]),
     view==="resumen"?getLmbClubNews(club.slug):Promise.resolve(null),
@@ -56,9 +58,12 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
       clubName:club.name,
       archive:[],
     }):Promise.resolve(null),
-    view==="resumen"?getLmbClubStatLeaders(club.slug):Promise.resolve(null),
+    view==="estadisticas"?getLatestClubSeasonStatistics("LMB",LMB_TEAM_IDS_2026[club.slug],mexicoSeasonYear()):Promise.resolve(null),
     view==="resumen"?getLmbClubVideos(club.slug):Promise.resolve(null),
   ]);
+  const standings=view==="estadisticas"
+    ?await getClubSeasonStandings("LMB",statistics?.season??mexicoSeasonYear())
+    :summaryStandings;
   const logo=getTeamLogo("LMB",0,club.name);
   const home="/equipos/lmb/"+club.slug;
   const titleYears=lmbClubChampionships(club.slug);
@@ -235,38 +240,6 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   <p className="clubSmallNote">Sin titulares adicionales confirmados para este equipo.</p>
                 )}
               </section>
-              <section className="clubPanel" id="tabla-de-posiciones">
-                <div className="clubSideHeading"><h2>Posiciones</h2><span>{club.region.toUpperCase()}</span></div>
-                <p className="clubSmallNote">
-                  Última tabla de temporada regular disponible en LMB; no es marcador en vivo.
-                </p>
-                {zoneStandings.length>0?(
-                  <div className="clubStandingsScroll">
-                    <table className="clubStandingsTable">
-                      <thead><tr><th>Equipo</th><th>G</th><th>P</th><th>PCT</th></tr></thead>
-                      <tbody>
-                        {zoneStandings.map(team=>(
-                          <tr key={team.teamId||team.team}
-                            className={findLmbClubByName(team.team)?.slug===club.slug?"clubCurrentTeam":""}>
-                            <td>
-                              {getTeamLogo("LMB",0,team.team)&&(
-                                <img src={getTeamLogo("LMB",0,team.team)!} alt="" width={25} height={25}/>
-                              )}
-                              <span>{team.team}</span>
-                            </td>
-                            <td>{team.wins}</td><td>{team.losses}</td><td>{team.pct}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ):(
-                  <p className="clubSmallNote">
-                    La fuente no devolvió una tabla verificable para la zona.
-                  </p>
-                )}
-                <a className="clubStandingsLink" href="/?league=lmb#posiciones">Ver tabla completa ↗</a>
-              </section>
               <section className="clubPanel">
                 <div className="clubSideHeading"><h2>Legado del club</h2><span>LMB</span></div>
                 <p className="clubSmallNote">{titleYears.years.length}
@@ -278,12 +251,13 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   Salón de la Fama ↗
                 </a>
               </section>
-              {statLeaders && (
-                <LmbClubStatLeaders clubName={club.name} data={statLeaders} />
-              )}
             </aside>
           </div>
         )}
+
+        {view==="estadisticas"&&<ClubStatisticsProfile league="LMB" clubName={club.name}
+          teamId={LMB_TEAM_IDS_2026[club.slug]} season={statistics?.season??mexicoSeasonYear()}
+          standings={zoneStandings} statistics={statistics} standingsUrl="/?league=lmb#posiciones"/>}
 
         {view==="plantilla"&&(
           <section className="clubRosterContent">
