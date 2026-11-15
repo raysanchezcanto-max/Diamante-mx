@@ -19,6 +19,11 @@ const cases = [
   ["Tampa Bay Rays designated SS Joe Boyle for assignment.", "Status Change", "Joe Boyle", "Designación para asignación", "designó a Joe Boyle (campocorto)"],
   ["Tampa Bay Rays signed free agent C Kenny Piper to a minor league contract.", "Signing", "Kenny Piper", "Contratación", "agente libre"],
   ["Tampa Bay Rays claimed RHP Joe Boyle off waivers.", "Waiver", "Joe Boyle", "Incorporación", "lista de jugadores disponibles"],
+  ["3B Nick Madrigal elected free agency.", "Declared Free Agency", "Nick Madrigal", "Agencia libre", "optó por declararse agente libre"],
+  ["Tampa Bay Rays sent RHP Jonathan Heasley outright to Durham Bulls.", "Outrighted", "Jonathan Heasley", "Asignación definitiva", "de forma definitiva a Durham Bulls"],
+  ["Tampa Bay Rays traded RHP Evan Reifert to Houston Astros for cash.", "Trade", "Evan Reifert", "Intercambio", "con Houston Astros a cambio de dinero"],
+  ["Tampa Bay Rays traded RHP Evan Reifert to Houston Astros for cash.", "Trade", null, "Intercambio", "Evan Reifert (lanzador derecho)"],
+  ["Tampa Bay Rays selected the contract of RF Jack Suwinski from Durham Bulls.", "Selected", "Jack Suwinski", "Selección de contrato", "procedente de Durham Bulls"],
   ["Unknown MLB transaction that is not parsed.", "Status Change", "Joe Boyle", "Cambio de estatus", "movimiento de plantilla"],
   ["Unknown MLB transaction that is not parsed.", "Weird Unknown Type", null, "Movimiento de plantilla", "Consulta la fuente"],
 ];
