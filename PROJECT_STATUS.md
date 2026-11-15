@@ -2516,3 +2516,15 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Marca y atribución:** Diamante MX será la plataforma **oficial propia del proyecto**; no presentarlo como producto oficial, autorizado o afiliado a MLB/LMB/LMP sin acuerdos expresos. Comprobar derechos de uso de marcas, escudos, estadísticas y contenido antes de distribución comercial.
 
 **Regla de secuencia:** por ahora **SOLO avanzar y cerrar la prioridad 0**. Las prioridades 1, 2 y 3 quedan registradas como acuerdos/pendientes, **NO IMPLEMENTADAS**, sin iniciar publicaciones de APK/iOS ni selector de idioma. Mantener este orden en las futuras sesiones y actualizar el estado con evidencias al cerrar cada hito.
+
+## §175 · 15/nov/2026 — Prioridad 0: expediente histórico de Arizona Diamondbacks (MLB)
+
+**Equipo revisado:** Arizona Diamondbacks (`/equipos/mlb/109?vista=historia`). Se incorpora su primer expediente editorial individual en `lib/mlbHistoryEditorial.ts`, reutilizando exactamente la misma plantilla de Historia y el sistema de pestañas del resto de las 60 franquicias; no hay rediseños particulares ni cambios en LMB/LMP.
+
+- **Palmarés histórico:** debut MLB y estadio en **1998**; **una Serie Mundial ganada (2001)**, **dos banderines de la Liga Nacional (2001, 2023)** y **cinco títulos de la División Oeste (1999, 2001, 2002, 2007 y 2011)**. Se distingue deliberadamente un banderín de una corona de Serie Mundial. Archivo de postemporada y cronología oficiales de Arizona.
+- **Cronología propia (6 hitos):** expansión de 1995, primer juego de 1998, primer título divisional de 1999, campeonato de 2001, juego perfecto de Randy Johnson en 2004 y regreso a la Serie Mundial en 2023.
+- **Protagonistas vinculados a Arizona:** Randy Johnson, Luis González, Brandon Webb y Paul Goldschmidt, con sus respectivos hitos documentados y enlaces oficiales. Cooperstown contiene a Randy Johnson (entronizado en 2015) con enlace al Salón de la Fama; no atribuir ese honor a figuras que no fueron electas.
+- **Estadio y noticia editorial:** Chase Field abrió como Bank One Ballpark el 31 de marzo de 1998; la nota de portada recuerda el imparable de Luis González para decidir el séptimo juego de 2001. Todos los enlaces proceden de MLB o de `baseballhall.org`.
+- **Pruebas:** `scripts/mlb-club-profile-regression.cjs` amplía sus verificaciones para garantizar títulos, banderines, estadio, cronología, protagonistas y origen de las fuentes de Arizona. La prueba cubre estructura y datos congelados; no sustituye la revisión visual en teléfonos reales.
+
+**Cobertura editorial MLB ahora: 3/30 franquicias** (Arizona, Tampa Bay, Milwaukee); **27/30 pendientes**. La próxima entrada propuesta es **Atlanta Braves**. Las otras pestañas, los 20 equipos LMB y los 10 LMP continúan dentro de la auditoría de prioridad 0, sin declararlos completados. Las mejoras estadísticas integradas, elección de idioma y apps quedan todavía en prioridades 1–3.

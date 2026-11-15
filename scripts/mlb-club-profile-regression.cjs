@@ -51,6 +51,22 @@ for (const section of ["clubHistorySectionHead", "clubHistoryHall", "clubHistory
   verify(history.includes(section), "bloque de Historia " + section);
 }
 const { mlbEditorialHistory } = require("../lib/mlbHistoryEditorial.ts");
+const dbacksHistory = mlbEditorialHistory(109);
+verify(Boolean(dbacksHistory), "Arizona tiene historia documental propia");
+verify(dbacksHistory.debutYear === "1998" && dbacksHistory.stadiumOpened === "1998",
+  "debut y Chase Field documentados desde 1998");
+verify(dbacksHistory.worldSeriesTitles === 1 &&
+  dbacksHistory.worldSeriesWinningYears.join(",") === "2001",
+  "primer y unico campeonato de Serie Mundial de Arizona en 2001");
+verify(dbacksHistory.pennants.join(",") === "2001,2023" &&
+  dbacksHistory.divisionTitles.join(",") === "1999,2001,2002,2007,2011",
+  "Arizona distingue banderines y cinco titulos divisionales");
+verify(dbacksHistory.milestones.length >= 6 && dbacksHistory.legends.length >= 4 &&
+  dbacksHistory.immortals.some(person => person.name === "Randy Johnson" && person.year === "2015"),
+  "cronologia, protagonistas y Salon de la Fama de Arizona");
+verify(dbacksHistory.sources.every(source => source.url.startsWith("https://")) &&
+  dbacksHistory.featuredStory.url.startsWith("https://www.mlb.com/dbacks/"),
+  "fuentes oficiales de Arizona sin mezclar con otras franquicias");
 const raysHistory = mlbEditorialHistory(139);
 verify(Boolean(raysHistory), "Rays tienen historia documental propia");
 verify(raysHistory.debutYear === "1998", "Rays debutaron en 1998");
