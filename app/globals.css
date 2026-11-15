@@ -5505,9 +5505,20 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
   filter:drop-shadow(0 2px 5px rgba(0,0,0,.5)) drop-shadow(0 0 2px rgba(255,255,255,.24));
 }
 .clubDirectoryMlb--franchise .clubBigLeaguesHeaderMark{
-  min-width:130px;justify-content:flex-end;gap:12px;
+  min-width:220px;justify-content:flex-end;gap:12px;
 }
 .clubDirectoryMlb--franchise .clubBigLeaguesHeaderMark span{white-space:nowrap}
+.clubDirectoryMlb--franchise .clubMexicanLeaguesMark{font-size:16px;letter-spacing:.015em}
+.clubDirectoryMlb--franchise .clubBigLeaguesSummary{grid-template-columns:repeat(4,minmax(0,1fr))}
+.clubDirectoryMlb--franchise .clubBigLeaguesSummary>div{min-width:0;padding:18px 15px}
+.clubDirectoryMlb--franchise .clubBigLeaguesSummary strong{font-size:clamp(27px,2.5vw,36px)}
+@media(max-width:980px){
+  .clubDirectoryMlb--franchise .clubBigLeaguesSummary{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:430px){
+  .clubDirectoryMlb--franchise .clubBigLeaguesSummary>div{padding:12px 10px;gap:6px;align-items:flex-start}
+  .clubDirectoryMlb--franchise .clubBigLeaguesSummary strong{font-size:28px}
+}
 .clubMlbSeasonGrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
 .clubMlbSeasonGrid .clubDirectoryHistoryPanel{min-width:0}
 .clubMlbSeasonGrid .clubDirectoryHistoryPanel>p strong{color:#f5f2e9}
@@ -5602,4 +5613,27 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
  .clubStatsCollective .clubBigLeaguesSummary>div{padding:13px 8px}
  .clubStatsCollective .clubBigLeaguesSummary strong{font-size:25px}
  .clubStatsCollective .clubBigLeaguesSummary span{font-size:9px}
+}
+
+/* Auditoría Atlanta: videos reales en el resumen, sin paneles vacíos. */
+.clubProfile--all .clubVideoGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.clubProfile--all .clubVideoCard{display:flex;flex-direction:column;min-width:0;gap:10px;
+  padding:19px;border:1px solid #36513c;border-radius:13px;background:linear-gradient(155deg,#182b20,#0d1d15);
+  text-decoration:none;transition:border-color .2s,transform .2s}
+.clubProfile--all .clubVideoCard:hover{border-color:#caff66;transform:translateY(-2px)}
+.clubProfile--all .clubVideoCardKicker{display:flex;align-items:center;gap:8px;
+  color:#d6ff65;font-size:10px;font-weight:900;letter-spacing:.06em}
+.clubProfile--all .clubVideoCardKicker>span{display:grid;place-items:center;
+  border-radius:50%;height:32px;width:32px;background:#304b32;color:#d8ff69;font-size:14px}
+.clubProfile--all .clubVideoCard>strong{font-size:15px;color:#f8f9f2;line-height:1.35}
+.clubProfile--all .clubVideoCard>p{font-size:11px;color:#b3c5b6;line-height:1.55;margin:0;flex:1}
+.clubProfile--all .clubVideoCard>small{font-size:10px;color:#d4ff67;font-weight:800}
+.clubProfile--all .clubMovementsContent--mlb .clubMovementsTimeline{
+  grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+@media(max-width:900px){
+  .clubProfile--all .clubVideoGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .clubProfile--all .clubVideoGrid,
+  .clubProfile--all .clubMovementsContent--mlb .clubMovementsTimeline{grid-template-columns:minmax(0,1fr)}
 }

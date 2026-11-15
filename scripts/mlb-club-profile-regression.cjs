@@ -169,6 +169,45 @@ verify(connectionsSource.includes("getLmbToMlbClub") &&
   connectionsSource.includes("LMB_CLUB_DIRECTORY") &&
   connectionsSource.includes("ALGODONEROS_MLB_PLAYERS"),
   "MLB usa los mismos registros documentados de las fichas mexicanas");
+verify(connectionsSource.includes("MLB_MEXICO_VERIFIED_CONNECTIONS") &&
+  connectionsSource.includes("toMexico") &&
+  mexicoConnections.includes('person.league.toLowerCase()'),
+  "la ficha MLB incluye LMB y LMP en ambos sentidos con enlaces internos correctos");
+const { MLB_MEXICO_VERIFIED_CONNECTIONS } = require("../lib/mlbMexicoVerifiedConnections.ts");
+const { LMB_CLUB_DIRECTORY } = require("../lib/lmbClubs.ts");
+const { LMP_CLUB_DIRECTORY } = require("../lib/lmpClubDirectory.ts");
+const atlantaConnections = MLB_MEXICO_VERIFIED_CONNECTIONS.filter(x => x.mlbClubId === 144);
+const hasBridge = (group, name, league, slug) => atlantaConnections.some(x =>
+  x.group === group && x.connection.name === name && x.connection.league === league &&
+  (!slug || x.connection.mexicanSlug === slug));
+verify(hasBridge("debut", "Daniel Castro", "LMB", "saraperos"),
+  "Daniel Castro: Saltillo a debut MLB con Atlanta");
+verify(hasBridge("debut", "Daniel Castro", "LMP", "yaquis"),
+  "Daniel Castro: Yaquis a debut MLB con Atlanta");
+verify(hasBridge("toMexico", "Julio Teherán", "LMP", "charros") &&
+  hasBridge("toMexico", "Jesús Cruz", "LMP", "aguilas"),
+  "ex Braves jugaron realmente con Charros y Aguilas LMP");
+verify(hasBridge("toMexico", "Rio Ruiz", "LMB") &&
+  hasBridge("toMexico", "Luis Carlos Rivera", "LMB"),
+  "ex Braves vinculan tambien la Liga Mexicana de Beisbol");
+verify(hasBridge("prospect", "Anthony Vizcaya", "LMB") &&
+  hasBridge("previousExperience", "Josh Fuentes", "LMB"),
+  "firmas para MiLB y experiencia previa no se presentan como debuts Braves");
+verify(connectionsSource.includes("target.push(item.connection)") &&
+  connectionsSource.includes("item.mlbClubId !== club.id"),
+  "atlas verificado se aplica al club correcto y junto al archivo anterior");
+verify(MLB_MEXICO_VERIFIED_CONNECTIONS.every(item => {
+  const x = item.connection;
+  const directory = x.league === "LMB" ? LMB_CLUB_DIRECTORY : LMP_CLUB_DIRECTORY;
+  const path = directory.some(club => club.slug === x.mexicanSlug);
+  const direction = item.group === "toMexico" ? "mlb-to-mexico" : "mexico-to-mlb";
+  return getMlbClub(item.mlbClubId) && path && x.direction === direction &&
+    x.source.startsWith("https://") &&
+    (!x.verificationSource || x.verificationSource.startsWith("https://"));
+}), "puentes curatoriales tienen clubes existentes, direccion y fuentes verificables");
+verify(!mexicoConnections.includes('href={`/equipos/lmb/${person.mexicanSlug}') &&
+  mexicoConnections.includes("no jugadores únicos"),
+  "la ficha no presenta los conteos del archivo incompleto como total historico");
 verify(connectionsSource.includes("result.debuts.push") &&
   connectionsSource.includes("result.previousExperience") &&
   connectionsSource.includes("result.prospects"),

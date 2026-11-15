@@ -24,6 +24,7 @@ const cases = [
   ["Tampa Bay Rays traded RHP Evan Reifert to Houston Astros for cash.", "Trade", "Evan Reifert", "Intercambio", "con Houston Astros a cambio de dinero"],
   ["Tampa Bay Rays traded RHP Evan Reifert to Houston Astros for cash.", "Trade", null, "Intercambio", "Evan Reifert (lanzador derecho)"],
   ["Tampa Bay Rays selected the contract of RF Jack Suwinski from Durham Bulls.", "Selected", "Jack Suwinski", "Selección de contrato", "procedente de Durham Bulls"],
+  ["Atlanta Braves selected the contract of Danny Young from Gwinnett Stripers.", "Selected", "Danny Young", "Selección de contrato", "Danny Young para su plantilla"],
   ["Unknown MLB transaction that is not parsed.", "Status Change", "Joe Boyle", "Cambio de estatus", "movimiento de plantilla"],
   ["Unknown MLB transaction that is not parsed.", "Weird Unknown Type", null, "Movimiento de plantilla", "Consulta la fuente"],
 ];
@@ -34,6 +35,12 @@ for (const [source, type, person, expectedLabel, snippet] of cases) {
   verify(!/\b(activated|recalled|optioned|placed|status change|RHP|LHP|off waivers|free agent)\b/i.test(
     output.label + " " + output.description), "sin términos ingleses: " + source);
 }
+const missingPosition = translateMlbTransaction(
+  "Atlanta Braves selected the contract of Danny Young from Gwinnett Stripers.",
+  "Selected", "Danny Young", "Atlanta Braves",
+);
+verify(!missingPosition.description.includes("jardinero"),
+  "la preposición inglesa 'of' no se confunde con el código de posición OF");
 
 verify(MLB_CLUBS.length === 30, "catálogo MLB contiene 30 equipos");
 for (const club of MLB_CLUBS) {

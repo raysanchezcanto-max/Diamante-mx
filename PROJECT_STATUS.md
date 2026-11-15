@@ -2,13 +2,13 @@
 
 **Última revisión:** 15 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (15/nov/2026):** PRIORIDAD 0 (§174–§176): completar y verificar las 60 fichas de clubes de MLB, LMB y LMP, con seis pestañas y contenido propio, una por una. La revisión histórica individual de MLB avanza con Arizona, Tampa Bay, Milwaukee y Atlanta; permanecen 26 historias MLB y la auditoría editorial/visual completa de las otras vistas y ligas. Estadísticas integradas avanzadas, selector de idiomas y apps de tienda siguen pendientes en las prioridades 1–3.
+**Prioridad actual (15/nov/2026):** PRIORIDAD 0 (§174–§178): terminar y validar las seis pestañas de Atlanta Braves con contenido propio y fuentes reales antes de pasar a Baltimore; extender el mismo control a las 60 fichas de MLB/LMB/LMP. Hay cuatro historias MLB con expediente propio y 26 pendientes. La pestaña Grandes Ligas incluye ahora conexiones LMB/LMP en ambos sentidos; Atlanta es el primer expediente ampliado. Estadísticas internas avanzadas, selector de idiomas y apps de tienda quedan pendientes en prioridades 1–3.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (15/nov/2026):** seguir la prioridad 0 del §174 y el avance MLB del §176. **Siguiente equipo histórico:** Baltimore Orioles; completar su contenido y fuentes, comprobar las pruebas y publicar. Mantener las pendientes de pruebas en vivo LMB/LMP registradas en §164, sin darlas por cerradas.
+> **REANUDACIÓN INMEDIATA (15/nov/2026):** concluir la auditoría integral de **Atlanta Braves** según §178, verificar la publicación y sus seis pestañas en producción. **No comenzar Baltimore Orioles** hasta cerrar Atlanta con la misma exigencia de contenido que Valeria estableció. Después, continuar equipo por equipo con vínculos verificables a LMB y LMP en ambos sentidos; mantener las pendientes generales de §164 y §174.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2542,3 +2542,37 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Corrección tras revisión en producción:** en el componente compartido de Historia, un banderín anterior a 1903 (como el de Atlanta en 1877) ya no afirma que el club avanzó a una Serie Mundial inexistente; 1904 recibe el mismo cuidado por ser el año sin Serie Mundial. Se conserva la descripción correcta para banderines modernos. Prueba de regresión añadida.
 
 **Cobertura histórica individual MLB: 4/30 franquicias** (Arizona, Atlanta, Tampa Bay y Milwaukee), **26 pendientes**. **Siguiente candidato:** Baltimore Orioles. Se mantiene la prioridad 0 de auditar las 60 fichas × seis pestañas; las prioridades 1–3 siguen pendientes y no fueron implementadas aquí.
+
+## §177 · 15/nov/2026 — Prioridad 0: conexiones México ↔ MLB, ambas ligas y sentidos
+
+**Observación de la usuaria:** la pestaña «Grandes Ligas» de Atlanta mostraba tres contadores `00` y un estado vacío pese a existir peloteros que jugaron en México después de pasar por Atlanta. La implementación previa `lib/mlbMexicanConnections.ts` solo invertía fichas de LMB hacia organizaciones MLB; **no consultaba ni mostraba LMP ni movimientos MLB → México**. Los ceros reflejaban el archivo limitado y nunca constituían prueba de ausencia histórica.
+
+**Cambio de diseño compartido:** `components/MlbMexicanConnections.tsx` mantiene la **misma pestaña** de las 30 fichas MLB, ahora titulada «[equipo] y el béisbol mexicano», con LMB + LMP ↔ escudo y cuatro contadores de **vínculos documentados**: (1) debut MLB posterior a México, (2) participación en México tras MLB, (3) experiencia MLB previa y nueva firma, (4) contratos de sucursales. Cada tarjeta identifica liga, jugador, club mexicano, periodo, categoría, explicación y fuente primaria, más enlace a la ficha interna de ese club (`/equipos/lmb/...` o `/equipos/lmp/...`). Se avisa explícitamente que un jugador puede tener varios vínculos y que no son cifras absolutas.
+
+**Atlas editorial verificado inicial de Atlanta (`lib/mlbMexicoVerifiedConnections.ts`):**
+
+- **México → debut con Atlanta:** Daniel Castro, Saraperos de Saltillo (LMB 2012-13) y Yaquis de Obregón (LMP 2014-15), debut confirmado en MLB el 17/jun/2015. Pruebas: biografía y fecha MLB; nota MiLB de Saltillo; crónica de Yaquis del doblete del 16/dic/2014.
+- **México → nueva vinculación organizativa, sin nuevo debut con Atlanta:** Josh Fuentes, campeón con Leones de Yucatán (LMB 2022), firma/invitación Braves para 2023 y debut MLB anterior con Colorado (2019); Anthony Vizcaya, Tecos de Dos Laredos (LMB 2023), contrato para sucursales Braves en 2024 (sin atribuir debut MLB).
+- **MLB Atlanta → LMP:** Julio Teherán → Charros de Jalisco (lanzó en 2024-25; crónica de Charros ante Hermosillo); Jesús Cruz → Águilas de Mexicali (32 juegos en 2024-25 según LMP).
+- **MLB Atlanta → LMB:** Rio Ruiz → Conspiradores de Querétaro (2024, sin presentar como jugada la contratación futura de Veracruz 2027); Julio Teherán → Sultanes de Monterrey (2024); Luis Carlos Rivera → Pericos de Puebla (tras su debut MLB de 2000). Fuentes de LMB/LMP con referencias explícitas a sus etapas MLB.
+
+**Reglas:** conservar las entradas verificadas previas de LMB y Algodoneros, evitar duplicados por liga/club/persona, separar aparición MLB de contrato de sucursales, y jamás inferir «no existen jugadores» a partir de un archivo parcial. El nuevo atlas es **extensible a las 30 franquicias**, pero **solo Atlanta tiene expedientes añadidos en esta fase**; completar los otros 29 y fortalecer reversibilidad de las fichas LMB/LMP queda dentro de prioridad 0. No se implementa aún base de datos integral ni perfiles internos de jugador (prioridad 1).
+
+**Pruebas:** verificar liga y slug interno válidos para LMB/LMP, distinción de direcciones, dos debuts documentados de Castro en México antes de Braves, ejemplos de ex Braves en ambos circuitos y casos de firmantes que no se promocionan falsamente como debut MLB. La inspección visual de móviles físicos y auditoría editorial del resto de franquicias siguen pendientes.
+
+## §178 · 15/nov/2026 — Auditoría integral de las seis pestañas de Atlanta antes de avanzar
+
+**Nueva instrucción de Valeria:** no pasar al siguiente club hasta revisar el más mínimo detalle y cerrar las seis secciones con contenido propio. Inspección de Atlanta Braves (`/equipos/mlb/144`) directamente en la producción de Diamante MX más análisis de código. La revisión estructural no equivale a auditar los 59 clubes restantes ni a una prueba en cada dispositivo físico.
+
+| Sección | Evidencia y resultado | Mejora o reserva |
+| --- | --- | --- |
+| **Resumen** | Calendario del próximo juego, balance 2026, tres titulares MLB actuales en español y noticia destacada | Se da **prioridad a noticia reciente oficial** sobre el reportaje histórico de 2021; aquel reportaje solo actúa de respaldo si falla el canal de noticias. **Tres videos individuales verificados** (Chris Sale 2026, blanqueada 2026, título 2021) sustituyen el panel audiovisual vacío; ofrecen descripción, fecha, duración y enlaces a los clips exactos de MLB. |
+| **Estadísticas** | Tabla de cinco equipos de la División Este NL, puesto 1/5, 94–68 (.580), métricas colectivas de bateo/pitcheo 2026 y líderes individuales de ambas ramas | Estadísticas enlazadas a la página **humana en español** de MLB, no a JSON crudo. La disponibilidad y actualización dependen de MLB. |
+| **Plantilla** | La fuente MLB entrega 36 jugadores: lanzadores (25), receptores (2), cuadro (5), jardines (4), con retratos, números cuando MLB los informa y posiciones | Se conserva `—` para dorsales no anunciados, sin inventarlos. Comprueba agrupación y condición de plantilla actual de hasta 40, no pretende plantilla de todos los años. |
+| **Movimientos** | MLB entrega al menos 25 transacciones recientes (13/nov a 9/oct en la muestra), con nombres, fechas y explicaciones traducidas | Corregido fallo de traducción: el inglés **“of”** no debe convertirse en posición **OF (jardinero)**; antes, Danny Young aparecía erróneamente como jardinero. Diseño de dos columnas en escritorio y una en móvil. El enlace oficial es público. |
+| **Grandes Ligas** | El antiguo vacío de tres ceros queda reemplazado por conexiones reales de Atlanta con **LMB y LMP en ambas direcciones**, con nueve expedientes individuales por club/periodo y fuentes | Se separan debuts, experiencia MLB anterior, firmas de Ligas Menores y ex-Braves que jugaron en México; se evita contar personas únicas como si fueran vínculos únicos. Roles traducidos completamente a español. |
+| **Historia** | Orígenes Boston 1871/MLB 1876, cuatro Series Mundiales, 18 banderines, 23 divisiones, nueve hitos, seis figuras, ocho inmortales y Truist Park, con URLs a MLB/Cooperstown | Se conservan años y fuentes diferenciados; un banderín anterior a 1903 no implica participar en una Serie Mundial. |
+
+**Pruebas locales:** `scripts/atlanta-profile-completeness-regression.cjs`, `mlb-transactions-spanish-regression.cjs` y el conjunto de regresiones `npm run build -- --webpack`. **Verificación final pendiente de publicación:** contrastar la misma matriz contra la siguiente versión de producción (incluidos enlaces y visualización responsive del navegador). Móviles físicos siguen siendo una etapa separada.
+
+**Decisión operativa:** Atlanta debe permanecer como el club activo hasta validar esta entrega, sin iniciar Baltimore todavía. Este modelo de auditoría y documentación se repetirá equipo por equipo y circuito por circuito; no marcar otra ficha como completa por tener solo navegación o bloque de aviso.

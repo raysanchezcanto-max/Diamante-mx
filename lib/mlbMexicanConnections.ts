@@ -1,12 +1,15 @@
 import { ALGODONEROS_MLB_PLAYERS, ALGODONEROS_MLB_PROSPECTS } from "./algodonerosMlbPaths";
 import { LMB_CLUB_DIRECTORY } from "./lmbClubs";
 import { getLmbToMlbClub } from "./lmbToMlb";
+import { MLB_MEXICO_VERIFIED_CONNECTIONS } from "./mlbMexicoVerifiedConnections";
 import type { MlbClub } from "./mlbClubDirectory";
 
-// La vista MLB es el reverso documental de «De [club mexicano] a Grandes Ligas».
-// Una organización MLB puede contratar para MiLB: nunca equivale a un debut.
+// Las conexiones enlazan LMB y LMP en ambos sentidos. Debut, regreso y firma
+// de sucursales son hechos distintos; la ausencia de registros no significa cero.
 export type MexicanConnection = {
   name: string;
+  league: "LMB" | "LMP";
+  direction: "mexico-to-mlb" | "mlb-to-mexico";
   mexicanClub: string;
   mexicanSlug: string;
   role: string;
@@ -20,6 +23,7 @@ export type MlbMexicanConnections = {
   debuts: MexicanConnection[];
   previousExperience: MexicanConnection[];
   prospects: MexicanConnection[];
+  toMexico: MexicanConnection[];
 };
 
 const normalize = (value: string) => value.normalize("NFD")
@@ -38,7 +42,7 @@ const recentFirst = (a: MexicanConnection, b: MexicanConnection) => {
 
 export function getMlbMexicanConnections(club: MlbClub): MlbMexicanConnections {
   const result: MlbMexicanConnections = {
-    debuts: [], previousExperience: [], prospects: [],
+    debuts: [], previousExperience: [], prospects: [], toMexico: [],
   };
 
   for (const mexican of LMB_CLUB_DIRECTORY) {
@@ -48,7 +52,8 @@ export function getMlbMexicanConnections(club: MlbClub): MlbMexicanConnections {
     for (const debut of record.debuts) {
       if (!isOrganization(debut.mlbClub, club)) continue;
       result.debuts.push({
-        name: debut.title, mexicanClub: mexican.name, mexicanSlug: mexican.slug,
+        name: debut.title, league: "LMB", direction: "mexico-to-mlb",
+        mexicanClub: mexican.name, mexicanSlug: mexican.slug,
         role: "Pelotero", year: debut.debutDate, description: debut.description,
         source: debut.source,
       });
@@ -63,7 +68,8 @@ export function getMlbMexicanConnections(club: MlbClub): MlbMexicanConnections {
       const destination = prospect.priorMlbDebut
         ? result.previousExperience : result.prospects;
       destination.push({
-        name: prospect.name, mexicanClub: mexican.name, mexicanSlug: mexican.slug,
+        name: prospect.name, league: "LMB", direction: "mexico-to-mlb",
+        mexicanClub: mexican.name, mexicanSlug: mexican.slug,
         role: prospect.role, year: prospect.seasonLabel,
         description: prospect.note + (prospect.priorMlbDebut
           ? ` Debut anterior en MLB: ${prospect.priorMlbDebut}.` : ""),
@@ -79,7 +85,8 @@ export function getMlbMexicanConnections(club: MlbClub): MlbMexicanConnections {
     const destination = player.category === "mlb" ? result.debuts
       : player.category === "return" ? result.previousExperience : result.prospects;
     destination.push({
-      name: player.name, mexicanClub: "Algodoneros del Unión Laguna",
+      name: player.name, league: "LMB", direction: "mexico-to-mlb",
+      mexicanClub: "Algodoneros del Unión Laguna",
       mexicanSlug: "algodoneros", role: player.role, year: player.year,
       description: player.description, source: player.source,
     });
@@ -87,14 +94,30 @@ export function getMlbMexicanConnections(club: MlbClub): MlbMexicanConnections {
   for (const prospect of ALGODONEROS_MLB_PROSPECTS) {
     if (!isOrganization(prospect.organization, club)) continue;
     result.prospects.push({
-      name: prospect.name, mexicanClub: "Algodoneros del Unión Laguna",
+      name: prospect.name, league: "LMB", direction: "mexico-to-mlb",
+      mexicanClub: "Algodoneros del Unión Laguna",
       mexicanSlug: "algodoneros", role: prospect.role, year: prospect.year,
       description: prospect.detail, source: prospect.source,
     });
   }
 
+  // Expedientes verificados individualmente, sin extrapolar un caso a todas
+  // las franquicias ni equiparar una firma con una aparición en Grandes Ligas.
+  for (const item of MLB_MEXICO_VERIFIED_CONNECTIONS) {
+    if (item.mlbClubId !== club.id) continue;
+    const target = item.group === "debut" ? result.debuts
+      : item.group === "previousExperience" ? result.previousExperience
+      : item.group === "prospect" ? result.prospects : result.toMexico;
+    if (!target.some(person => person.league === item.connection.league &&
+      person.mexicanSlug === item.connection.mexicanSlug &&
+      normalize(person.name) === normalize(item.connection.name))) {
+      target.push(item.connection);
+    }
+  }
+
   result.debuts.sort(recentFirst);
   result.previousExperience.sort(recentFirst);
   result.prospects.sort(recentFirst);
+  result.toMexico.sort(recentFirst);
   return result;
 }
