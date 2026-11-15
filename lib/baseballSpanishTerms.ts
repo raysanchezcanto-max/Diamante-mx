@@ -16,6 +16,7 @@ export function localizeBaseballMovementTerms(text: string): string {
   return text
     .replace(/\bal roster\b/gi, "a la plantilla")
     .replace(/\bdel roster\b/gi, "de la plantilla")
+    .replace(/\bde roster\b/gi, "de la plantilla")
     .replace(/\ben el roster\b/gi, "en la plantilla")
     .replace(/\bun roster\b/gi, "una plantilla")
     .replace(/\brosters\b/gi, "plantillas")
@@ -29,6 +30,12 @@ export function localizeBaseballMovementTerms(text: string): string {
     .replace(/\bcoach\b/gi, "entrenador")
     .replace(/\bpitchers?\b/gi, "lanzador")
     .replace(/\bcatchers?\b/gi, "receptor")
+    .replace(/\bacademia rookie\b/gi, match => match[0] === "A" ? "Academia de novatos" : "academia de novatos")
+    .replace(/\brookie\b/gi, "novato")
+    .replace(/\bwaivers?\b/gi, "lista de jugadores disponibles")
+    .replace(/,\s*(IF|OF|SS|C)\s*,/g, (_, position: string) => ", " + ({
+      IF: "jugador de cuadro", OF: "jardinero", SS: "campocorto", C: "receptor",
+    } as Record<string, string>)[position] + ",")
     .replace(/\binactivanco\b/gi, "inactivando");
 }
 
