@@ -228,7 +228,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           <section className="clubPanel">
             <div className="clubSideHeading"><h2>Legado del club</h2><span>MLB</span></div>
             <p className="clubSmallNote">{editorial
-              ? editorial.pennants.length + " banderines de la Liga Americana y " +
+              ? editorial.pennants.length + " banderines de liga y " +
                 editorial.divisionTitles.length + " títulos divisionales hasta " +
                 editorial.titlesVerifiedThrough + "."
               : "Consulta el historial de la franquicia, sus figuras documentadas y el archivo de sus logros deportivos."}</p>
