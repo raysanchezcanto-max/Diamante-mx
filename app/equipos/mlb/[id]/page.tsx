@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Pick<PageProps, "params">): P
     title: club ? club.name + " | Equipos MLB | Diamante MX" : "Equipos MLB | Diamante MX",
     description: club
       ? "Noticias oficiales, plantilla, movimientos, historia y estadísticas de " + club.name + "."
-      : "Clubes de Major League Baseball",
+      : "Clubes de Grandes Ligas",
   };
 }
 
@@ -83,7 +83,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               : <span aria-hidden="true">⚾</span>}
           </div>
           <div className="clubHeroText">
-            <span className="clubKicker">EQUIPOS · MAJOR LEAGUE BASEBALL</span>
+            <span className="clubKicker">EQUIPOS · GRANDES LIGAS</span>
             <h1>{club.name}</h1>
             <p>{overview.division} · Temporada {new Date().getUTCFullYear()} y archivo histórico</p>
           </div>
@@ -97,7 +97,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           <div className="clubHeroLinks">
             <a href={official} target="_blank" rel="noopener noreferrer">Ficha MLB ↗</a>
             <a href={official + "/tickets"} target="_blank" rel="noopener noreferrer">Boletos ↗</a>
-            <a href={official + "/roster"} target="_blank" rel="noopener noreferrer">Roster oficial ↗</a>
+            <a href={official + "/roster"} target="_blank" rel="noopener noreferrer">Plantilla oficial ↗</a>
           </div>
         </div>
       </div>
@@ -250,8 +250,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             {COPY.roster.sourceLabel}</a>
         </div>
         <p className="clubSmallNote">{roster?.sourceStatus === "connected"
-          ? "Lista de 40 jugadores, posiciones y dorsales según la respuesta oficial de MLB. Las plantillas cambian durante la temporada y pueden estar sujetas a ajustes."
-          : "MLB no devolvió un roster válido en esta consulta; no añadimos jugadores inventados."}</p>
+          ? "Plantilla de hasta 40 jugadores, posiciones y dorsales según la respuesta oficial de MLB. Las plantillas cambian durante la temporada y pueden estar sujetas a ajustes."
+          : "MLB no devolvió una plantilla válida en esta consulta; no añadimos jugadores inventados."}</p>
         {roster?.groups.length ? <div className="clubRosterGrid">
           {roster.groups.map(group => <section className="clubRosterGroup" key={group.name}>
             <h3>{group.name} <span>{group.players.length}</span></h3>
@@ -267,7 +267,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
         </div>}
       </section>}
 
-      {view === "movimientos" && <section className="clubMovementsContent">
+      {view === "movimientos" && <section className="clubMovementsContent clubMovementsContent--mlb">
         <div className="clubSectionTitle">
           <div><span className="clubKicker">{COPY.movements.kicker("MLB")}</span>
             <h2>{COPY.movements.title(club.name)}</h2></div>
@@ -275,7 +275,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             Consultar movimientos MLB ↗</a>
         </div>
         <p className="clubSmallNote">{transactions?.sourceStatus === "connected"
-          ? "Movimientos oficiales MLB de los últimos 90 días. Se muestran las descripciones que provee la fuente; pueden estar en inglés."
+          ? "Movimientos oficiales MLB de los últimos 90 días, presentados en español. Cuando la fuente no permite identificar un detalle con seguridad, se muestra una descripción general."
           : "El historial oficial no estuvo disponible en esta consulta."}
           {" "}{COPY.movements.note}</p>
         {transactions?.items.length ? <div className="clubMovementsTimeline">
@@ -304,7 +304,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
       {view === "grandes-ligas" && <section className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"
         aria-labelledby="mlbTeamBigLeaguesTitle">
         <header className="clubBigLeaguesHeader">
-          <div><span className="clubKicker">LA FRANQUICIA · MAJOR LEAGUE BASEBALL</span>
+          <div><span className="clubKicker">LA FRANQUICIA · GRANDES LIGAS</span>
             <h2 id="mlbTeamBigLeaguesTitle">{club.name} en Grandes Ligas</h2>
             <p>Estadísticas de temporada regular, posición en su división y protagonistas
               de {club.name}. El mismo formato visual de nuestros perfiles LMB y LMP,
@@ -428,7 +428,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             target="_blank" rel="noopener noreferrer">
             <span className="clubKicker">PLANTILLA</span>
             <h3>Peloteros del club ↗</h3>
-            <p>Jugadores, posiciones y actualizaciones de su roster oficial.</p>
+            <p>Jugadores, posiciones y actualizaciones de su plantilla oficial.</p>
           </a>
           <a className="clubDirectoryHistoryPanel" href={official + "/schedule"}
             target="_blank" rel="noopener noreferrer">
