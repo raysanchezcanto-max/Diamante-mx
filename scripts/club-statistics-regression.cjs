@@ -19,6 +19,11 @@ const entries = [
   ["LMP", "app/equipos/lmp/[slug]/page.tsx", "components/LmpDirectoryClubProfile.tsx"],
   ["LMP", "app/equipos/lmp/algodoneros/page.tsx"],
 ];
+const publicStatsUrls = {
+  MLB: "https://www.mlb.com/es/${club.webSlug}/stats",
+  LMB: "https://lmb.com.mx/estadisticas",
+  LMP: "https://www.lmp.mx/estadisticas/general",
+};
 for (const [league, pagePath, delegatedPath] of entries) {
   const page = read(pagePath);
   const output = page + (delegatedPath ? read(delegatedPath) : "");
@@ -27,6 +32,9 @@ for (const [league, pagePath, delegatedPath] of entries) {
     `${league}: componente estadístico común en ${pagePath}`);
   check(page.includes("getClubSeasonStandings"), `${league}: tabla de la misma temporada`);
   check(page.includes("getLatestClubSeasonStatistics"), `${league}: cifras desde fuente oficial`);
+  check(output.includes(publicStatsUrls[league]),
+    `${league}: enlace público legible en ${pagePath}`);
+  check(output.includes("officialStatsUrl="), `${league}: enlace público explícito`);
 }
 
 const stats = read("lib/clubStatistics.ts");
@@ -36,6 +44,13 @@ for (const guard of [
 ]) check(stats.includes(guard), `estadísticas: ${guard}`);
 const view = read("components/ClubStatisticsProfile.tsx");
 const leaders = read("components/ClubStatisticsLeaders.tsx");
+check(view.includes('href={officialStatsUrl}'), "botón público apunta a una página oficial legible");
+check(!view.includes('href={statistics.source}') && !view.includes('href={statistics.dataEndpoint}'),
+  "el botón no lleva a la API de JSON");
+check(stats.includes('https://www.mlb.com/es/player/${id}'), "jugador MLB abre perfil en español");
+check(stats.includes('https://lmb.com.mx/jugador/${id}'), "jugador LMB abre perfil oficial");
+check(stats.includes('https://www.lmp.mx/jugadores/${id}/ficha-tecnica'),
+  "jugador LMP abre ficha oficial, no una respuesta JSON");
 for (const label of [
   "POSICIÓN EN", "JUEGOS GANADOS / PERDIDOS", "PORCENTAJE DE VICTORIAS",
   "Bateo colectivo", "Pitcheo colectivo", "Rendimiento de temporada regular",

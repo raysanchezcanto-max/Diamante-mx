@@ -63,6 +63,8 @@ Todas las fichas existentes siguen el mismo orden de pestañas:
 
 **Estadísticas:** sección específica para las tres ligas, mismo orden visual (puesto y balance, tabla del grupo, bateo/pitcheo del equipo y líderes individuales). MLB y LMB presentan temporada por año natural; LMP usa temporada invernal como 2026–27. El rótulo sigue el año de la fuente o última temporada archivada confirmada, no un texto fijo; si la liga aún no publica cifras, mostrar indisponibilidad y su fuente. Nunca deducir una estadística colectiva de noticias, plantillas o temporadas diferentes.
 
+**Enlaces públicos de estadísticas:** «Consultar estadísticas oficiales» abre una página navegable y legible para aficionados, nunca una respuesta JSON de MLB StatsAPI. Para MLB usar el sitio oficial en español de la franquicia (`mlb.com/es/{equipo}/stats`); para LMB la sección oficial de estadísticas (`lmb.com.mx/estadisticas`) y para LMP (`lmp.mx/estadisticas/general`). Los nombres de los líderes individuales también llevan a perfiles públicos de la liga, no al punto de acceso técnico utilizado para recopilar sus cifras. Mantener el servicio de datos exclusivamente para consultas internas.
+
 **Plantilla:** cuatro grupos comparables (lanzadores, receptores, cuadro, jardineros), nombres/dorsales/posición y retratos reales. Ante falta de foto, monograma neutro. La fecha y condición de activo corresponden a la fuente, no a una suposición.
 
 **Movimientos:** siempre separar alta, baja y transferencia, indicar **origen y destino desde la perspectiva correcta**, no confundir participación de MLB con movimiento a LMB o LMP. Una nota periodística no constituye por sí sola el registro completo de transacciones.

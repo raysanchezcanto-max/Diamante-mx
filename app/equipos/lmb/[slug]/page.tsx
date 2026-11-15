@@ -257,7 +257,8 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
 
         {view==="estadisticas"&&<ClubStatisticsProfile league="LMB" clubName={club.name}
           teamId={LMB_TEAM_IDS_2026[club.slug]} season={statistics?.season??mexicoSeasonYear()}
-          standings={zoneStandings} statistics={statistics} standingsUrl="/?league=lmb#posiciones"/>}
+          standings={zoneStandings} statistics={statistics} standingsUrl="/?league=lmb#posiciones"
+          officialStatsUrl="https://lmb.com.mx/estadisticas"/>}
 
         {view==="plantilla"&&(
           <section className="clubRosterContent">

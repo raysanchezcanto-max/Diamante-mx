@@ -14,7 +14,7 @@ export type ClubSeasonStatistics = {
   batting: { runs: string; homeRuns: string; avg: string } | null;
   pitching: { era: string; strikeOuts: string; whip: string } | null;
   leaders: { batting: ClubStatHighlight[]; pitching: ClubStatHighlight[] };
-  source: string;
+  dataEndpoint: string;
 };
 export type ClubStanding = Standing & { rank?: number };
 
@@ -165,9 +165,11 @@ export const getClubSeasonStatistics = cache(async (
       Boolean(row.player?.fullName?.trim()) && Boolean(row.stat)) : [];
   };
   const hitters = validated(hittingRows), pitchers = validated(pitchingRows);
-  const playerSource = (group: "hitting" | "pitching") => (id: number) =>
-    league === "MLB" ? `https://www.mlb.com/player/${id}` :
-    league === "LMB" ? `https://lmb.com.mx/jugador/${id}` : rosterStats(group);
+  // Estos enlaces llevan a fichas públicas legibles; la API solo abastece los datos.
+  const playerSource = (id: number) =>
+    league === "MLB" ? `https://www.mlb.com/es/player/${id}` :
+    league === "LMB" ? `https://lmb.com.mx/jugador/${id}` :
+    `https://www.lmp.mx/jugadores/${id}/ficha-tecnica`;
   const select = (items: (ClubStatHighlight | null)[]) =>
     items.filter((item): item is ClubStatHighlight => item !== null);
   return {
@@ -182,20 +184,20 @@ export const getClubSeasonStatistics = cache(async (
     } : null,
     leaders: {
       batting: select([
-        topPlayer(hitters, "Promedio de bateo · mín. 100 turnos", "avg", "PROM", playerSource("hitting"), { minAB: 100 }),
-        topPlayer(hitters, "Cuadrangulares", "homeRuns", "HR", playerSource("hitting")),
-        topPlayer(hitters, "Carreras producidas", "rbi", "CP", playerSource("hitting")),
-        topPlayer(hitters, "Carreras anotadas", "runs", "CA", playerSource("hitting")),
-        topPlayer(hitters, "Bases robadas", "stolenBases", "BR", playerSource("hitting")),
+        topPlayer(hitters, "Promedio de bateo · mín. 100 turnos", "avg", "PROM", playerSource, { minAB: 100 }),
+        topPlayer(hitters, "Cuadrangulares", "homeRuns", "HR", playerSource),
+        topPlayer(hitters, "Carreras producidas", "rbi", "CP", playerSource),
+        topPlayer(hitters, "Carreras anotadas", "runs", "CA", playerSource),
+        topPlayer(hitters, "Bases robadas", "stolenBases", "BR", playerSource),
       ]),
       pitching: select([
-        topPlayer(pitchers, "Efectividad · mín. 30 entradas", "era", "EFE", playerSource("pitching"), { minIP: 30, smallest: true }),
-        topPlayer(pitchers, "Juegos ganados", "wins", "JG", playerSource("pitching")),
-        topPlayer(pitchers, "Ponches", "strikeOuts", "P", playerSource("pitching")),
-        topPlayer(pitchers, "Salvamentos", "saves", "SV", playerSource("pitching")),
+        topPlayer(pitchers, "Efectividad · mín. 30 entradas", "era", "EFE", playerSource, { minIP: 30, smallest: true }),
+        topPlayer(pitchers, "Juegos ganados", "wins", "JG", playerSource),
+        topPlayer(pitchers, "Ponches", "strikeOuts", "P", playerSource),
+        topPlayer(pitchers, "Salvamentos", "saves", "SV", playerSource),
       ]),
     },
-    source: `${API}/teams/${teamId}/stats?stats=season&season=${requestedSeason}&group=hitting`,
+    dataEndpoint: `${API}/teams/${teamId}/stats?stats=season&season=${requestedSeason}&group=hitting`,
   };
 });
 
