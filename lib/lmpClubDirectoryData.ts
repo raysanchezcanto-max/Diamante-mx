@@ -1,5 +1,6 @@
 import {cache} from "react";
 import type { LmpClubNews, LmpClubPlayer, LmpClubRecord, AlgodonerosFixture } from "./lmpAlgodonerosContent";
+import { localizeLmpMovement, spanishBaseballRole } from "./baseballSpanishTerms";
 
 const API="https://statsapi.mlb.com/api/v1";
 async function officialJSON<T>(url:string):Promise<T|null>{
@@ -18,7 +19,7 @@ export const getLmpDirectoryRoster=cache(async(id:number):Promise<LmpClubPlayer[
   if(!group||!name||!Number.isFinite(mlbid)||mlbid<=0||item.playerStatus!=="active")return [];
   const thumb=item.thumb??"";
   const photo=/^https:\/\/images\.cloudgfx\.com\/player\/mugshot2\/\d+\?/.test(thumb)?thumb:null;
-  return [{id:mlbid,name,group,photo,number:String(item.playerNum??"—"),position:item.playerPosition??"",bats:item.playerHitting??"",throws:item.playerFielding??"",birthDate:item.playerBirthday??""}];
+  return [{id:mlbid,name,group,photo,number:String(item.playerNum??"—"),position:spanishBaseballRole(item.playerPosition??""),bats:item.playerHitting??"",throws:item.playerFielding??"",birthDate:item.playerBirthday??""}];
  });
 });
 type ScheduleGame={gamePk?:number;gameDate?:string;status?:{abstractGameState?:string};teams?:{home?:{team?:{id?:number;name?:string}};away?:{team?:{id?:number;name?:string}}};venue?:{name?:string}};
@@ -89,7 +90,7 @@ export const getLmpDirectoryMlbAlumni=cache(async(id:number):Promise<LmpMlbAlumn
  if(!ids.length)return [];
  const j=await officialJSON<{people?:MlbPerson[]}>(`${API}/people?personIds=${ids.join(",")}`);
  return (j?.people??[]).filter(p=>Boolean(p.mlbDebutDate)&&roster.some(r=>r.id===p.id))
-  .map(p=>({id:p.id,name:p.fullName??roster.find(r=>r.id===p.id)?.name??"Jugador",debut:p.mlbDebutDate!,role:p.primaryPosition?.name??"Jugador"}))
+  .map(p=>({id:p.id,name:p.fullName??roster.find(r=>r.id===p.id)?.name??"Jugador",debut:p.mlbDebutDate!,role:spanishBaseballRole(p.primaryPosition?.name??"Jugador")}))
   .sort((a,b)=>a.name.localeCompare(b.name,"es"));
 });
 // Registro de transacciones de la propia LMP (misma API que usa lmp.mx/rosters).
@@ -109,6 +110,6 @@ export const getLmpDirectoryMovements=cache(async(id:number):Promise<LmpDirector
   const key=date+"|"+description;
   if(seen.has(key))return [];
   seen.add(key);
-  return [{date,description}];
+  return [{date,description:localizeLmpMovement(description)}];
  }).sort((a,b)=>b.date.localeCompare(a.date));
 });
