@@ -4,6 +4,8 @@ import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import LmpAlgodonerosEditorialHistory from "@/components/LmpAlgodonerosEditorialHistory";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getAlgodonerosNews, getAlgodonerosRoster, getAlgodonerosStanding, getAlgodonerosFixtures } from "@/lib/lmpAlgodonerosContent";
+import { getLmpDirectoryMovements } from "@/lib/lmpClubDirectoryData";
+import LmpMovementTimeline from "@/components/LmpMovementTimeline";
 
 export const revalidate = 900;
 export const metadata: Metadata = {
@@ -16,24 +18,17 @@ const official = "https://losalgodoneros.com/";
 const rosterLink = "https://losalgodoneros.com/team/algodoneros/roster";
 const sections: LmbClubView[] = ["resumen","plantilla","movimientos","grandes-ligas","historia"];
 const groupOrder = ["Lanzadores", "Receptores", "Jugadores del cuadro", "Jardineros", "Otros jugadores"];
-const movements = [
-  { date: "10 de noviembre de 2026", text: "Algodoneros inactiva a Drew Avans y activa al infielder Dalton Guthrie." },
-  { date: "8 de noviembre de 2026", text: "Algodoneros activa a Adrián Gerardo Bojórquez y desactiva a José Álvarez." },
-  { date: "7 de noviembre de 2026", text: "El club anuncia las activaciones de José Julián Álvarez, Jorge Sánchez, Víctor Rodríguez y Adrián Gerardo Bojórquez, y las desactivaciones de Víctor Manuel Buelna, Josué Gómez, Heber Villalobos y Saúl Vázquez." },
-  { date: "5 de noviembre de 2026", text: "Algodoneros inactiva a Christian Isaías López y Víctor Rodríguez, y activa a Josué Gómez y Heber Villalobos." },
-  { date: "4 de noviembre de 2026", text: "El equipo desactiva a Carlos Garzón y Yael Romero, y activa a Alberto Barriga y Christian Isaías López." }
-] as const;
-
 type Props = { searchParams: Promise<{vista?: string}> };
 export default async function AlgodonerosLmpProfile({searchParams}:Props){
   const query=await searchParams;
   const view:LmbClubView = sections.includes(query.vista as LmbClubView)
     ? query.vista as LmbClubView : "resumen";
-  const [news,roster,record,fixtures] = await Promise.all([
+  const [news,roster,record,fixtures,movements] = await Promise.all([
     view==="resumen"?getAlgodonerosNews():Promise.resolve([]),
     view==="plantilla"?getAlgodonerosRoster():Promise.resolve([]),
     view==="resumen"?getAlgodonerosStanding():Promise.resolve(null),
-    view==="resumen"?getAlgodonerosFixtures():Promise.resolve([])
+    view==="resumen"?getAlgodonerosFixtures():Promise.resolve([]),
+    view==="movimientos"?getLmpDirectoryMovements(5482):Promise.resolve([])
   ]);
   const name="Algodoneros de Guasave";
   const logo=getTeamLogo("LMP",5482,name);
@@ -191,16 +186,8 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
       </section>}
 
       {view==="movimientos"&&<section className="clubMovementsContent">
-        <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(name)}</h2></div><a href={official} target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
-        <p className="clubSmallNote">Selección de comunicados publicados en «Últimos movimientos» por el club. Archivo verificado, no alimentación instantánea ni historial completo.</p>
-        <div className="clubMovementsTimeline">
-          {movements.map(item=><article className="clubMovementItem" key={item.date}>
-            <div className="clubMovementDate"><span>{item.date}</span><span className="clubMovementType">Registro del club</span></div>
-            <div className="clubMovementBody">{logo&&<img src={logo} alt="" width={53} height={53}/>}
-              <div><h3>Movimiento de plantilla</h3><p>{item.text}</p><a href={official} target="_blank" rel="noopener noreferrer">Consultar sitio oficial ↗</a></div>
-            </div>
-          </article>)}
-        </div>
+        <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(name)}</h2></div><a href="https://www.lmp.mx/rosters/algodoneros" target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
+        <LmpMovementTimeline movements={movements} logo={logo} sourceUrl="https://www.lmp.mx/rosters/algodoneros"/>
       </section>}
 
       {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb" aria-labelledby="lmpGuasaveMlbTitle">
