@@ -81,7 +81,7 @@ export const LMB_EDITORIAL_HISTORY:Record<string,EditorialHistory>={
       {year:"1983",title:"Primera corona corsaria",description:"Los Piratas conquistaron su primer campeonato de LMB, dirigidos por Francisco «Paquín» Estrada.",url:source.piratas},
       {year:"1985",title:"Juego perfecto de Herminio Domínguez",description:"El 14 de abril, Herminio Domínguez consiguió un juego perfecto frente a Cafeteros de Córdoba.",url:source.piratas},
       {year:"1992",title:"Otro juego perfecto",description:"Don Heinkel lanzó un juego perfecto frente a Diablos Rojos del México el 2 de junio.",url:source.piratas},
-      {year:"1999",title:"Dos juegos sin hit en una temporada",description:"Narciso Elvira se convirtió en el primer pitcher en la historia de LMB con dos juegos sin hit ni carrera en una temporada.",url:source.piratas},
+      {year:"1999",title:"Dos juegos sin hit en una temporada",description:"Narciso Elvira se convirtió en el primer lanzador en la historia de LMB con dos juegos sin hit ni carrera en una temporada.",url:source.piratas},
       {year:"2004",title:"Segunda estrella de Campeche",description:"Francisco «Paquín» Estrada volvió a conducir a Piratas al campeonato de la Liga Mexicana.",url:source.piratas},
     ],
     legends:[

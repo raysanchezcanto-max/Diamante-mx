@@ -8,7 +8,7 @@
     "start": "next start",
     "test:lmp-youtube": "node scripts/lmp-youtube-regression.cjs",
     "test:lmp-postgame": "node scripts/lmp-postgame-regression.cjs",
-    "test:club-profiles": "node scripts/club-profile-standard-regression.cjs",
+    "test:club-profiles": "node scripts/club-profile-standard-regression.cjs && node scripts/club-language-regression.cjs",
     "audit:lmp-profiles": "node scripts/lmp-profile-data-audit.cjs",
     "test:game-cards": "node scripts/game-card-status-regression.cjs",
     "test:mlb-profiles": "node scripts/mlb-club-profile-regression.cjs && node scripts/mlb-transactions-spanish-regression.cjs"

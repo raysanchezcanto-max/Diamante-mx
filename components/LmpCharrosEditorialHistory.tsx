@@ -44,7 +44,7 @@ const figures:readonly Figure[]=[
  {name:"José Manuel «Manny» Rodríguez",era:"2014–22 · LMP",role:"Capitán y figura albiazul",description:"Ganó las dos primeras coronas LMP de Charros y recibió tres premios al Jugador Más Valioso del circuito.",source:manny},
  {name:"Amadeo Zazueta",era:"2014–24 · LMP",role:"Infielder campeón y Guante de Oro",description:"Pieza de los títulos 2018–19 y 2021–22; recibió tres Guantes de Oro con el equipo.",source:zazueta},
  {name:"Benjamín «El Matador» Gil",era:"2024–26 · LMP",role:"Mánager bicampeón y monarca del Caribe",description:"Dirigió la tercera y cuarta corona LMP y el primer campeonato de Serie del Caribe de la organización.",source:fourth},
- {name:"Julio César «La Chiva» Miranda",era:"2016–26 · LMP",role:"Coach de pitcheo multicampeón",description:"El club lo identifica como su único coach presente en los cuatro campeonatos LMP.",source:julio},
+ {name:"Julio César «La Chiva» Miranda",era:"2016–26 · LMP",role:"Entrenador de lanzadores multicampeón",description:"El club lo identifica como su único entrenador presente en los cuatro campeonatos LMP.",source:julio},
  {name:"Michael Wielansky",era:"2025–26 · Caribe",role:"Protagonista de la corona caribeña",description:"Bateó .538 en seis juegos de la Serie del Caribe 2026 y anotó la carrera decisiva en la final.",source:michael}
 ];
 const immortals=[

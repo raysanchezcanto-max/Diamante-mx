@@ -37,7 +37,7 @@ export async function generateMetadata({params}:Pick<PageProps,"params">):Promis
   const club=getLmbClub(slug);
   return {
     title:club?club.name+" | Equipos LMB | Diamante MX":"Equipos LMB | Diamante MX",
-    description:club?"Noticias, roster, movimientos, historial y vínculos con Grandes Ligas de "+club.name+".":"Clubes de Liga Mexicana de Beisbol",
+    description:club?"Noticias, plantilla, movimientos, historial y vínculos con Grandes Ligas de "+club.name+".":"Clubes de Liga Mexicana de Beisbol",
   };
 }
 export default async function LmbClubProfile({params,searchParams}:PageProps){
@@ -293,7 +293,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
             </div>
             <p className="clubSmallNote">{roster?.sourceStatus==="connected"?
               "Nombres, dorsales, posiciones y fotografías vinculadas a la plantilla publicada por LMB. Consulta automática con caché aproximada de 30 minutos.":
-              "La fuente oficial no devolvió un roster válido. No se sustituyó por el de otro club ni por una lista inventada."}</p>
+              "La fuente oficial no devolvió una plantilla válida. No se sustituyó por la de otro club ni por una lista inventada."}</p>
             {roster?.roster.length?(
               <div className="clubRosterGrid">
                 {roster.roster.map(group=>(
@@ -322,7 +322,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
               {movements?.sourceStatus==="connected"?
                 "Consultas automáticas de comunicados vinculados por LMB a este club, con caché de 30 minutos.":
                 "La lista oficial no pudo verificarse recientemente. Consulta la fuente para confirmar movimientos."}
-              {" "}Las altas de academia, bajas y cesiones de derechos no implican necesariamente cambios del roster activo.
+              {" "}Las altas de academia, bajas y cesiones de derechos no implican necesariamente cambios de la plantilla activa.
             </p>
             {movements?.movements.length?(
               <div className="clubMovementsTimeline">

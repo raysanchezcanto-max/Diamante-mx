@@ -44,11 +44,11 @@ const figures:readonly Figure[]=[
  {name:"Aurelio Rodríguez",era:"1966–84",role:"Tercera base histórico",text:"Jugó con Los Mochis durante ambas primeras etapas campeonas, en 1968–69 y 1983–84.",source:legendsSource},
  {name:"Saúl Soto",era:"1999–2022",role:"Receptor y bateador emblemático",text:"El club retiró su dorsal 5 en 2019; fue parte del equipo campeón de 2002–03.",source:legendsSource},
  {name:"Ramón Orantes",era:"1998–2017",role:"Bateador de la tercera corona",text:"Integró el conjunto campeón de 2002–03 y recibió el retiro del número 24 en 2016.",source:legendsSource},
- {name:"Teodoro Higuera",era:"1995–2003",role:"Lanzador e inmortal",text:"Exligamayorista de Milwaukee, colaboró como coach de pitcheo en el campeonato 2002–03 y su número 49 está retirado.",source:legendsSource}
+ {name:"Teodoro Higuera",era:"1995–2003",role:"Lanzador e inmortal",text:"Exligamayorista de Milwaukee, colaboró como entrenador de lanzadores en el campeonato 2002–03 y su número 49 está retirado.",source:legendsSource}
 ];
 const immortals=[
  {name:"Gregorio Luque",year:"1999",role:"Receptor campeón de Cañeros en 1968–69",source:luque1999},
- {name:"Teodoro Higuera",year:"2011",role:"Lanzador y coach campeón con Los Mochis",source:legendsSource},
+ {name:"Teodoro Higuera",year:"2011",role:"Lanzador y entrenador campeón con Los Mochis",source:legendsSource},
  {name:"Juan Francisco «Chico» Rodríguez",year:"2012",role:"Jugador campeón y mánager del título 2002–03",source:chico2012}
 ] as const;
 function monogram(name:string){return name.replace(/[«»]/g,"").split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0]).join("").toLocaleUpperCase("es");}

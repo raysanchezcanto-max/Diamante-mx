@@ -65,7 +65,7 @@ const documented: Record<string,LmbToMlbClub> = {
       {
         name:"Jesús Manuel Broca",initials:"JB",role:"Lanzador zurdo",
         organization:"Milwaukee Brewers",seasonLabel:"2023",
-        note:"El pitcher tabasqueño, formado en la granja de Olmecas, firmó con Milwaukee en julio de 2023.",
+        note:"El lanzador tabasqueño, formado en la granja de Olmecas, firmó con Milwaukee en julio de 2023.",
         source:olmecasSources.jesus,
       },
       {
