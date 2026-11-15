@@ -1,5 +1,6 @@
 import { ALGODONEROS_MOVEMENTS } from "./algodonerosProfile";
 import { LMB_CLUB_DIRECTORY } from "./lmbClubs";
+import { localizeBaseballMovementTerms } from "./baseballSpanishTerms";
 
 // Datos públicos de LMB. No hay API oficial de movimientos documentada
 // para este uso: se leen enlaces y comunicados publicados en lmb.com.mx.
@@ -173,14 +174,14 @@ function rightsTransfer(entry: string, headingAliases: readonly string[]): {
 }
 
 function classification(text: string): string {
-  if (/academia rookie/i.test(text)) return "Academia rookie";
+  if (/academia rookie/i.test(text)) return "Academia de novatos";
   if (/ced[ei]|cesi[oó]n|derechos|pr[eé]stamo/i.test(text)) return "Traspaso o derechos";
   if (/cuerpo t[eé]cnico|m[aá]nager|coach|trainers?|batboys?|clubby|traductor/i.test(text)) return "Cuerpo técnico";
   if (/da de baja|waiver/i.test(text)) return "Baja de lista";
   if (/lesionados/i.test(text)) return "Lista de lesionados";
   if (/da de alta.*activ[a-zá]* en roster/i.test(text)) return "Alta y activación";
-  if (/activa en roster/i.test(text)) return "Activación de roster";
-  if (/desactiva/i.test(text)) return "Desactivación de roster";
+  if (/activa en roster/i.test(text)) return "Activación en plantilla";
+  if (/desactiva/i.test(text)) return "Desactivación de plantilla";
   if (/da de alta|registra/i.test(text)) return "Alta de lista";
   if (/m[aá]nager|coach|cuerpo t[eé]cnico/i.test(text)) return "Cuerpo técnico";
   return "Operación oficial";
@@ -262,7 +263,11 @@ function recentSlugs(now: Date): string[] {
 export async function getLmbClubMovements(
   config: LmbClubMovementSource, now = new Date()
 ): Promise<MovementResult> {
-  const fallback = config.archive.map(item => ({ ...item, automatic: false }));
+  const fallback = config.archive.map(item => ({ ...item,
+    type: localizeBaseballMovementTerms(item.type),
+    title: localizeBaseballMovementTerms(item.title),
+    description: localizeBaseballMovementTerms(item.description),
+    automatic: false }));
   // Los enlaces de la ficha del equipo pueden quedarse en julio/agosto. La
   // portada de Noticias sí presenta boletines recientes (p.ej. noviembre).
   const [html, newsIndex] = await Promise.all([
@@ -289,9 +294,9 @@ export async function getLmbClubMovements(
       const transfer = rightsTransfer(entry, config.headingAliases);
       return {
         date,
-        type: classification(entry),
-        title: transfer?.title ?? operationTitle(entry),
-        description: shortExcerpt(entry),
+        type: localizeBaseballMovementTerms(classification(entry)),
+        title: localizeBaseballMovementTerms(transfer?.title ?? operationTitle(entry)),
+        description: localizeBaseballMovementTerms(shortExcerpt(entry)),
         url,
         automatic: true,
         ...(transfer ? {

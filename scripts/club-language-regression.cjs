@@ -13,6 +13,7 @@ const cases = [
   ["El coach Edgar Osuna fue activado", "El entrenador Edgar Osuna fue activado"],
   ["inactivanco a Rubén Reyes", "inactivando a Rubén Reyes"],
   ["El pitcher zurdo y catcher participaron", "El lanzador zurdo y receptor participaron"],
+  ["toma su lugar en roster de activos", "toma su lugar en la plantilla de activos"],
 ];
 let count = 0;
 for (const [source, expected] of cases) {

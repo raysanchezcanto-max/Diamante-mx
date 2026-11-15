@@ -211,7 +211,7 @@ export const LMB_TO_MLB_DOCUMENTED: Record<string, LmbToMlbClub> =
         "role": "Jugador de cuadro",
         "organization": "Texas Rangers",
         "seasonLabel": "2015",
-        "note": "La directiva de los Rojos del Águila comunicó la negociación del infielder con Rangers tras el seguimiento de buscadores de talento.",
+        "note": "La directiva de los Rojos del Águila comunicó la negociación del jugador de cuadro con Rangers tras el seguimiento de buscadores de talento.",
         "source": "https://www.milb.com/news/gcs-159458572",
         "initials": "UV"
       }
@@ -297,7 +297,7 @@ export const LMB_TO_MLB_DOCUMENTED: Record<string, LmbToMlbClub> =
         "role": "Jugador de cuadro",
         "organization": "New York Yankees",
         "seasonLabel": "2022",
-        "note": "Pericos y el scout de Yankees anunciaron la firma del infielder surgido de la Academia poblana.",
+        "note": "Pericos y el buscador de talento de Yankees anunciaron la firma del jugador de cuadro surgido de la Academia poblana.",
         "source": "https://www.milb.com/news/pericos-santiago-gomez-firma-con-los-yankees",
         "initials": "SG"
       },
@@ -323,7 +323,7 @@ export const LMB_TO_MLB_DOCUMENTED: Record<string, LmbToMlbClub> =
         "role": "Lanzador",
         "organization": "Cincinnati Reds",
         "seasonLabel": "2025",
-        "note": "Después de cuatro temporadas con Piratas, el pitcher firmó con los Reds en enero de 2025; no se afirma que debutó en MLB.",
+        "note": "Después de cuatro temporadas con Piratas, el lanzador firmó con los Reds en enero de 2025; no se afirma que debutó en MLB.",
         "source": "https://www.milb.com/news/piratas-irvin-machuca-parte-rumbo-a-cincinnati",
         "initials": "IM"
       }

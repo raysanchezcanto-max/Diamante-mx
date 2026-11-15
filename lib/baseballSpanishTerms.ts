@@ -12,7 +12,7 @@ export function spanishBaseballRole(role: string): string {
 }
 
 /** Conserva nombres propios y hechos del comunicado oficial de la LMP. */
-export function localizeLmpMovement(text: string): string {
+export function localizeBaseballMovementTerms(text: string): string {
   return text
     .replace(/\bal roster\b/gi, "a la plantilla")
     .replace(/\bdel roster\b/gi, "de la plantilla")
@@ -20,6 +20,7 @@ export function localizeLmpMovement(text: string): string {
     .replace(/\bun roster\b/gi, "una plantilla")
     .replace(/\brosters\b/gi, "plantillas")
     .replace(/\broster\b/gi, "plantilla")
+    .replace(/\ben plantilla\b/gi, "en la plantilla")
     .replace(/\binfielders?\b/gi, "jugador de cuadro")
     .replace(/\binfields?\b/gi, "jugador de cuadro")
     .replace(/\boutfielders?\b/gi, "jardinero")
@@ -30,3 +31,5 @@ export function localizeLmpMovement(text: string): string {
     .replace(/\bcatchers?\b/gi, "receptor")
     .replace(/\binactivanco\b/gi, "inactivando");
 }
+
+export const localizeLmpMovement = localizeBaseballMovementTerms;

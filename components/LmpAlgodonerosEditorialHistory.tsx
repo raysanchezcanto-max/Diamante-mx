@@ -24,7 +24,7 @@ const legends:readonly Figure[] = [
   {name:"Vinicio García",role:"Mánager del campeonato",year:"1971–72",highlight:"Dirigió la primera y, hasta el palmarés consultado, única corona de LMP de Algodoneros.",url:managers},
   {name:"Tony Oliva",role:"Mánager y figura de MLB",year:"1980–81",highlight:"Condujo al equipo a semifinales; también es una figura histórica de los Minnesota Twins.",url:managers},
   {name:"Noé Muñoz",role:"Receptor histórico e inmortal",year:"Trayectoria histórica",highlight:"El club documenta su relación con Guasave y su entronización en el Salón de la Fama del Beisbol Mexicano en 2023.",url:noe},
-  {name:"Édgar Leyva",role:"Lanzador histórico",year:"Primera etapa",highlight:"Pitcher sinaloense recordado por sus temporadas con los Algodoneros y su vínculo con la afición de Guasave.",url:"https://losalgodoneros.com/edgar-leyva-un-profeta-en-su-tierra/"},
+  {name:"Édgar Leyva",role:"Lanzador histórico",year:"Primera etapa",highlight:"Lanzador sinaloense recordado por sus temporadas con los Algodoneros y su vínculo con la afición de Guasave.",url:"https://losalgodoneros.com/edgar-leyva-un-profeta-en-su-tierra/"},
   {name:"Óscar Robles",role:"Jugador y mánager",year:"2019–21",highlight:"Fue jugador del club y, tras el retorno de 2019, también dirigió a los Algodoneros.",url:"https://losalgodoneros.com/un-elemento-historico-para-algodoneros/"},
   {name:"Jesse Castillo",role:"Bateador de la final",year:"2023",highlight:"Conectó un jonrón importante durante la Serie Final de 2023 contra Cañeros de Los Mochis.",url:"https://losalgodoneros.com/solido-pitcheo-y-bateo-de-poder-llevan-a-algodoneros-a-la-victoria/"},
 ];

@@ -72,21 +72,21 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> =
       },
       {
         "name": "Vicente Romo",
-        "role": "Coach asistente de bullpen e inmortal",
+        "role": "Entrenador asistente de relevistas e inmortal",
         "year": "2014–2023",
         "highlight": "Miembro del Salón de la Fama desde 1992 y colaborador de largo recorrido en el cuerpo técnico tijuanense.",
         "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
       },
       {
         "name": "Alonso Téllez",
-        "role": "Coach asistente de bateo e inmortal",
+        "role": "Entrenador asistente de bateo e inmortal",
         "year": "2023",
         "highlight": "Entronizado en 2010, formó parte del cuerpo técnico del equipo como especialista de bateo.",
         "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
       },
       {
         "name": "Isidro Márquez",
-        "role": "Coach de pitcheo e inmortal",
+        "role": "Entrenador de lanzadores e inmortal",
         "year": "2022–2023",
         "highlight": "Miembro de la Clase 2020 del Salón de la Fama; llegó al cuerpo técnico de Toros como instructor de lanzadores.",
         "url": "https://deportres.com/toros-de-tijuana-con-alta-representacion-en-el-salon-de-la-fama-del-beisbol-mexicano/"
@@ -96,17 +96,17 @@ export const LMB_HISTORY_NORTH_B: Record<string, EditorialHistory> =
       {
         "name": "Vicente Romo",
         "year": 1992,
-        "role": "Coach asistente de bullpen de Toros en 2023"
+        "role": "Entrenador asistente de relevistas de Toros en 2023"
       },
       {
         "name": "Alonso Téllez",
         "year": 2010,
-        "role": "Coach asistente de bateo de Toros en 2023"
+        "role": "Entrenador asistente de bateo de Toros en 2023"
       },
       {
         "name": "Isidro Márquez",
         "year": 2020,
-        "role": "Coach de pitcheo de Toros en 2023"
+        "role": "Entrenador de lanzadores de Toros en 2023"
       }
     ],
     "sources": [
