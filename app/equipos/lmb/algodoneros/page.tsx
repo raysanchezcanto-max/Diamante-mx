@@ -22,7 +22,7 @@ import {
 export const revalidate = 1800;
 export const metadata: Metadata = {
   title: "Algodoneros del Unión Laguna | Equipos LMB | Diamante MX",
-  description: "Perfil de Algodoneros, noticias destacadas, videos oficiales, roster y posiciones LMB 2026.",
+  description: "Perfil de Algodoneros, noticias destacadas, videos oficiales, plantilla y posiciones LMB 2026.",
 };
 type PageProps = { searchParams?: Promise<{ vista?: string }> };
 
@@ -117,12 +117,12 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                 <span className="clubKicker">{rosterConnected ? "PLANTILLA · FUENTE OFICIAL LMB" : "PLANTILLA · ARCHIVO 2026"}</span>
                 <h2>{COPY.roster.title("Algodoneros del Unión Laguna")}</h2>
               </div>
-              <a href={club.lmbRoster} target="_blank" rel="noopener noreferrer">Ver roster oficial ↗</a>
+              <a href={club.lmbRoster} target="_blank" rel="noopener noreferrer">Ver plantilla oficial ↗</a>
             </div>
             <p className="clubSmallNote">
               {rosterConnected
                 ? "Roster obtenido de LMB. Se consulta automáticamente al visitar la página, con caché aproximada de 30 minutos. Los cambios aparecen cuando la liga actualiza su lista."
-                : "Archivo de respaldo 2026. La fuente oficial no pudo verificarse o no devolvió un roster válido; este listado no debe interpretarse como plantilla actual."}
+                : "Archivo de respaldo 2026. La fuente oficial no pudo verificarse o no devolvió una plantilla válida; este listado no debe interpretarse como plantilla actual."}
             </p>
             <div className="clubRosterGrid">
               {displayedRoster.map(group=>(
