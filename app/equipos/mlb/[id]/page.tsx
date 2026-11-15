@@ -194,6 +194,33 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                 No insertamos transmisiones o clips sin un enlace verificable.</p>
             </div>
           </section>
+          {seasonStats && <section className="clubEditorialSection clubMlbSeasonStats"
+            aria-label={`Rendimiento de temporada regular de ${club.name}`}>
+            <div className="clubBigLeaguesSectionHead">
+              <span className="clubKicker">ESTADÍSTICAS DEL EQUIPO · TEMPORADA {seasonLabel}</span>
+              <h2>Rendimiento de temporada regular</h2>
+            </div>
+            {seasonStats.batting && <>
+              <h3>Bateo colectivo</h3>
+              <div className="clubBigLeaguesSummary" aria-label="Estadísticas de bateo">
+                <div><strong>{seasonStats.batting.runs}</strong><span>Carreras anotadas</span></div>
+                <div><strong>{seasonStats.batting.homeRuns}</strong><span>Cuadrangulares</span></div>
+                <div><strong>{seasonStats.batting.avg}</strong><span>Promedio de bateo</span></div>
+              </div>
+            </>}
+            {seasonStats.pitching && <>
+              <h3>Pitcheo colectivo</h3>
+              <div className="clubBigLeaguesSummary" aria-label="Estadísticas de pitcheo">
+                <div><strong>{seasonStats.pitching.era}</strong><span>Efectividad</span></div>
+                <div><strong>{seasonStats.pitching.strikeOuts}</strong><span>Ponches recetados</span></div>
+                <div><strong>{seasonStats.pitching.whip}</strong><span>Corredores permitidos por entrada</span></div>
+              </div>
+            </>}
+            <p className="clubSmallNote">Cifras de la temporada regular en la fuente oficial MLB;
+              no corresponden al apartado de trayectorias hacia Grandes Ligas.</p>
+            <a href={official + "/stats/team"} target="_blank" rel="noopener noreferrer">
+              Consultar estadísticas oficiales ↗</a>
+          </section>}
         </div>
         <aside className="clubSideRight">
           <section className="clubPanel">
@@ -240,34 +267,6 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           </section>
         </aside>
       </div>}
-
-      {view === "resumen" && seasonStats && <section className="clubEditorialSection"
-        aria-label={`Rendimiento de temporada regular de ${club.name}`}>
-        <div className="clubBigLeaguesSectionHead">
-          <span className="clubKicker">ESTADÍSTICAS DEL EQUIPO · TEMPORADA {seasonLabel}</span>
-          <h2>Rendimiento de temporada regular</h2>
-        </div>
-        {seasonStats.batting && <>
-          <h3>Bateo colectivo</h3>
-          <div className="clubBigLeaguesSummary" aria-label="Estadísticas de bateo">
-            <div><strong>{seasonStats.batting.runs}</strong><span>Carreras anotadas</span></div>
-            <div><strong>{seasonStats.batting.homeRuns}</strong><span>Cuadrangulares</span></div>
-            <div><strong>{seasonStats.batting.avg}</strong><span>Promedio de bateo</span></div>
-          </div>
-        </>}
-        {seasonStats.pitching && <>
-          <h3>Pitcheo colectivo</h3>
-          <div className="clubBigLeaguesSummary" aria-label="Estadísticas de pitcheo">
-            <div><strong>{seasonStats.pitching.era}</strong><span>Efectividad</span></div>
-            <div><strong>{seasonStats.pitching.strikeOuts}</strong><span>Ponches recetados</span></div>
-            <div><strong>{seasonStats.pitching.whip}</strong><span>Corredores permitidos por entrada</span></div>
-          </div>
-        </>}
-        <p className="clubSmallNote">Cifras de la temporada regular en la fuente oficial MLB;
-          no corresponden al apartado de trayectorias hacia Grandes Ligas.</p>
-        <a href={official + "/stats/team"} target="_blank" rel="noopener noreferrer">
-          Consultar estadísticas oficiales ↗</a>
-      </section>}
 
       {view === "plantilla" && <section className="clubRosterContent">
         <div className="clubSectionTitle">
