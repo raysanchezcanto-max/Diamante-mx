@@ -100,6 +100,12 @@ const css = read("app/globals.css");
 for (const panel of [
   "Bateo colectivo", "Pitcheo colectivo", "Rendimiento de temporada regular",
 ]) verify(page.includes(panel), "Resumen incluye " + panel);
+verify(page.includes('className="clubEditorialSection clubMlbSeasonStats"') &&
+  page.indexOf('className="clubEditorialSection clubMlbSeasonStats"') <
+  page.indexOf('<aside className="clubSideRight">'),
+  "estadisticas MLB permanecen en la columna central, con ancho de tarjetas de noticias");
+verify((page.match(/<h2>Rendimiento de temporada regular<\/h2>/g) ?? []).length === 1,
+  "un unico bloque de estadisticas de temporada en Resumen");
 verify(page.includes('view === "resumen" ? getMlbClubSeasonStats(club)'),
   "las estadisticas se consultan solo en Resumen");
 for (const label of [
