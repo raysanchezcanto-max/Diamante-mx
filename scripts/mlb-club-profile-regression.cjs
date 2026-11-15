@@ -67,6 +67,29 @@ verify(dbacksHistory.milestones.length >= 6 && dbacksHistory.legends.length >= 4
 verify(dbacksHistory.sources.every(source => source.url.startsWith("https://")) &&
   dbacksHistory.featuredStory.url.startsWith("https://www.mlb.com/dbacks/"),
   "fuentes oficiales de Arizona sin mezclar con otras franquicias");
+const bravesHistory = mlbEditorialHistory(144);
+verify(Boolean(bravesHistory), "Atlanta tiene expediente historico propio");
+verify(bravesHistory.debutYear === "1876" && bravesHistory.intro.includes("1871") &&
+  bravesHistory.intro.includes("Milwaukee") && bravesHistory.intro.includes("Atlanta"),
+  "origen 1871 separado del debut en la Liga Nacional 1876 y de sus tres ciudades");
+verify(bravesHistory.worldSeriesTitles === 4 &&
+  bravesHistory.worldSeriesWinningYears.join(",") === "1914,1957,1995,2021",
+  "cuatro Series Mundiales por franquicia, no solo en Atlanta");
+verify(bravesHistory.pennants.length === 18 &&
+  bravesHistory.pennants[0] === "1877" && bravesHistory.pennants.at(-1) === "2021",
+  "18 banderines de la Nacional sin confundir titulos de la National Association");
+verify(bravesHistory.divisionTitles.length === 23 &&
+  bravesHistory.divisionTitles.includes("2013") && !bravesHistory.divisionTitles.includes("1994"),
+  "23 titulos de division comprobados de Atlanta");
+verify(bravesHistory.stadiumOpened === "2017" &&
+  bravesHistory.stadiumOpenedNote.includes("SunTrust Park"),
+  "Truist Park inaugurado en 2017 bajo su nombre original");
+verify(bravesHistory.milestones.length >= 8 && bravesHistory.legends.length >= 6 &&
+  bravesHistory.immortals.some(person => person.name === "Andruw Jones" && person.year === "2026"),
+  "cronologia, figuras e ingreso de Andruw Jones a Cooperstown 2026");
+verify(bravesHistory.sources.every(source => source.url.startsWith("https://")) &&
+  bravesHistory.featuredStory.url.startsWith("https://www.mlb.com/braves/"),
+  "fuentes de Atlanta sin mezclar con otras franquicias");
 const raysHistory = mlbEditorialHistory(139);
 verify(Boolean(raysHistory), "Rays tienen historia documental propia");
 verify(raysHistory.debutYear === "1998", "Rays debutaron en 1998");

@@ -57,6 +57,12 @@ const DBACKS_POSTSEASON = "https://www.mlb.com/dbacks/history/postseason-results
 const DBACKS_AWARDS = "https://www.mlb.com/dbacks/history/awards";
 const DBACKS_RETIRED = "https://www.mlb.com/dbacks/history/retired-numbers";
 const DBACKS_STADIUM = "https://www.mlb.com/dbacks/ballpark";
+const BRAVES_TIMELINE = "https://www.mlb.com/braves/history/timeline";
+const BRAVES_STORY = "https://www.mlb.com/braves/history/story-of-the-braves";
+const BRAVES_POSTSEASON = "https://www.mlb.com/braves/history/postseason-results";
+const BRAVES_RETIRED = "https://www.mlb.com/braves/history/retired-numbers";
+const BRAVES_HOF = "https://www.mlb.com/braves/history/hall-of-famers";
+const BRAVES_BALLPARKS = "https://www.mlb.com/braves/history/ballpark";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
   109: {
@@ -160,6 +166,150 @@ const histories: Readonly<Record<number, MlbEditorialHistory>> = {
       { label: "Dorsales retirados", url: DBACKS_RETIRED },
       { label: "Historia de Chase Field", url: DBACKS_STADIUM },
       { label: "Cooperstown: Randy Johnson", url: "https://baseballhall.org/hall-of-famers/johnson-randy" },
+    ],
+  },
+  144: {
+    intro: "La historia de los Braves comenzó en Boston en 1871 con los Red Stockings, que entraron a la Liga Nacional en 1876. La franquicia se trasladó a Milwaukee en 1953 y a Atlanta en 1966. Ganó la Serie Mundial en las tres ciudades: Boston (1914), Milwaukee (1957) y Atlanta (1995 y 2021).",
+    featuredStory: {
+      kicker: "REPORTAJE · CAMPEONES DE MLB 2021",
+      title: "ATLANTA VOLVIÓ A SER CAMPEÓN DE LA SERIE MUNDIAL",
+      excerpt: "Los Braves derrotaron 7-0 a Houston en el sexto juego de 2021 y consiguieron el cuarto título mundial de su histórica franquicia, el segundo desde que juega en Atlanta.",
+      url: "https://www.mlb.com/braves/news/braves-win-world-series-2021",
+    },
+    // 1871 es el origen profesional en la National Association; 1876 es el debut en la National League.
+    debutYear: "1876",
+    worldSeriesTitles: 4,
+    worldSeriesWinningYears: ["1914", "1957", "1995", "2021"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1877", "1878", "1883", "1891", "1892", "1893", "1897", "1898",
+      "1914", "1948", "1957", "1958", "1991", "1992", "1995", "1996", "1999", "2021"],
+    postseasonSource: BRAVES_POSTSEASON,
+    divisionTitles: ["1969", "1982", "1991", "1992", "1993", "1995", "1996", "1997",
+      "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2013",
+      "2018", "2019", "2020", "2021", "2022", "2023"],
+    divisionTitlesLabel: "Títulos divisionales (23, sin contar la campaña inconclusa de 1994)",
+    stadiumOpened: "2017",
+    stadiumOpenedNote: "Truist Park abrió el 14 de abril de 2017 con el nombre SunTrust Park. Reemplazó a Turner Field y adoptó su denominación actual en 2020. El club jugó anteriormente en estadios de Boston, Milwaukee y Atlanta.",
+    stadiumSource: "https://www.mlb.com/braves/news/truist-park-best-moments",
+    milestones: [
+      {
+        year: "1871",
+        title: "Nacen los Boston Red Stockings",
+        description: "El club se constituye en Boston y participa como fundador de la National Association, antecedente de la Liga Nacional.",
+        url: BRAVES_STORY,
+      },
+      {
+        year: "1876",
+        title: "Debut en la Liga Nacional",
+        description: "Boston se incorpora a la nueva Liga Nacional y gana su primer partido, el 22 de abril, ante Philadelphia Athletics.",
+        url: BRAVES_TIMELINE,
+      },
+      {
+        year: "1914",
+        title: "El milagro de Boston",
+        description: "Tras una notable remontada en la temporada, los llamados Miracle Braves barren 4-0 a los Athletics en la Serie Mundial.",
+        url: "https://www.mlb.com/postseason/history/1914",
+      },
+      {
+        year: "1953–1957",
+        title: "Milwaukee recibe a los Braves y celebra un título",
+        description: "La franquicia deja Boston en 1953. Cuatro años después, con Hank Aaron y Warren Spahn, supera a los Yankees en siete juegos.",
+        url: BRAVES_STORY,
+      },
+      {
+        year: "1966–1974",
+        title: "Atlanta y el histórico jonrón 715",
+        description: "El equipo se muda a Atlanta en 1966; el 8 de abril de 1974 Hank Aaron conecta el cuadrangular 715 y supera la marca de Babe Ruth.",
+        url: "https://baseballhall.org/hall-of-famers/aaron-hank",
+      },
+      {
+        year: "1995",
+        title: "Primera Serie Mundial ganada en Atlanta",
+        description: "Con la rotación liderada por Greg Maddux, Tom Glavine y John Smoltz, derrota 4-2 a Cleveland y termina una larga espera.",
+        url: "https://www.mlb.com/postseason/history/1995",
+      },
+      {
+        year: "2017",
+        title: "Inauguración de Truist Park",
+        description: "El 14 de abril abre SunTrust Park, hoy Truist Park, con una victoria 5-2 ante San Diego.",
+        url: "https://www.mlb.com/braves/news/truist-park-best-moments",
+      },
+      {
+        year: "2021",
+        title: "Cuarta corona de Serie Mundial",
+        description: "Atlanta conquista su segundo campeonato desde la mudanza de 1966 al vencer 4-2 a Houston en el Clásico de Otoño.",
+        url: "https://www.mlb.com/braves/news/braves-win-world-series-2021",
+      },
+      {
+        year: "2026",
+        title: "Andruw Jones entra a Cooperstown",
+        description: "El histórico jardinero central, ganador de diez Guantes de Oro, ingresa al Salón de la Fama del Béisbol.",
+        url: "https://baseballhall.org/hall-of-famers/jones-andruw",
+      },
+    ],
+    legends: [
+      {
+        name: "Hank Aaron",
+        era: "1954–1974",
+        role: "Jardinero · MVP de la Liga Nacional 1957",
+        highlight: "Ganó la Serie Mundial de 1957 en Milwaukee y rompió el récord de Babe Ruth con su jonrón 715 en Atlanta en 1974.",
+        url: "https://baseballhall.org/hall-of-famers/aaron-hank",
+      },
+      {
+        name: "Warren Spahn",
+        era: "1942 y 1946–1964",
+        role: "Lanzador zurdo · campeón en Milwaukee",
+        highlight: "Figura central de la rotación de los Braves durante sus etapas en Boston y Milwaukee; obtuvo el Cy Young en 1957.",
+        url: "https://baseballhall.org/hall-of-famers/spahn-warren",
+      },
+      {
+        name: "Greg Maddux",
+        era: "1993–2003",
+        role: "Lanzador · cuatro Cy Young consecutivos en total",
+        highlight: "Lideró el pitcheo de la dinastía de los años noventa. En 1995 registró 19 victorias y efectividad de 1.63.",
+        url: "https://baseballhall.org/hall-of-famers/maddux-greg",
+      },
+      {
+        name: "Chipper Jones",
+        era: "1993 y 1995–2012",
+        role: "Tercera base · MVP de la Nacional 1999",
+        highlight: "Dedicó toda su carrera de Grandes Ligas a Atlanta, fue ocho veces convocado al Juego de Estrellas y obtuvo un título de bateo.",
+        url: "https://baseballhall.org/hall-of-famers/jones-chipper",
+      },
+      {
+        name: "John Smoltz",
+        era: "1988–2008",
+        role: "Lanzador · abridor y cerrador",
+        highlight: "Pieza clave de la rotación de los noventa y el título de 1995; destacó tanto en aperturas como en labores de relevo.",
+        url: "https://baseballhall.org/hall-of-famers/smoltz-john",
+      },
+      {
+        name: "Andruw Jones",
+        era: "1996–2007",
+        role: "Jardinero central · diez Guantes de Oro",
+        highlight: "Defensor emblemático de Atlanta, conectó dos jonrones en el primer juego de la Serie Mundial de 1996 e ingresó a Cooperstown en 2026.",
+        url: "https://baseballhall.org/hall-of-famers/jones-andruw",
+      },
+    ],
+    immortals: [
+      { name: "Warren Spahn", year: "1973", role: "Cooperstown · lanzador · Boston/Milwaukee", url: "https://baseballhall.org/hall-of-famers/spahn-warren" },
+      { name: "Eddie Mathews", year: "1978", role: "Cooperstown · tercera base · Boston/Milwaukee/Atlanta", url: "https://baseballhall.org/hall-of-famers/mathews-eddie" },
+      { name: "Hank Aaron", year: "1982", role: "Cooperstown · jardinero · Milwaukee/Atlanta", url: "https://baseballhall.org/hall-of-famers/aaron-hank" },
+      { name: "Greg Maddux", year: "2014", role: "Cooperstown · lanzador de Atlanta", url: "https://baseballhall.org/hall-of-famers/maddux-greg" },
+      { name: "Tom Glavine", year: "2014", role: "Cooperstown · lanzador de Atlanta", url: "https://baseballhall.org/hall-of-famers/glavine-tom" },
+      { name: "John Smoltz", year: "2015", role: "Cooperstown · lanzador de Atlanta", url: "https://baseballhall.org/hall-of-famers/smoltz-john" },
+      { name: "Chipper Jones", year: "2018", role: "Cooperstown · tercera base de Atlanta", url: "https://baseballhall.org/hall-of-famers/jones-chipper" },
+      { name: "Andruw Jones", year: "2026", role: "Cooperstown · jardinero central de Atlanta", url: "https://baseballhall.org/hall-of-famers/jones-andruw" },
+    ],
+    sources: [
+      { label: "Origen y etapas de la franquicia", url: BRAVES_STORY },
+      { label: "Cronología oficial", url: BRAVES_TIMELINE },
+      { label: "Palmarés de postemporada", url: BRAVES_POSTSEASON },
+      { label: "Campeonato mundial de 2021", url: "https://www.mlb.com/braves/news/braves-win-world-series-2021" },
+      { label: "Estadios y mudanzas", url: BRAVES_BALLPARKS },
+      { label: "Dorsales retirados", url: BRAVES_RETIRED },
+      { label: "Leyendas en Cooperstown", url: BRAVES_HOF },
+      { label: "Entronización de Andruw Jones 2026", url: "https://baseballhall.org/hall-of-famers/jones-andruw" },
     ],
   },
   139: {

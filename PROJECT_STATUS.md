@@ -1,14 +1,14 @@
 # Diamante MX — Estado del proyecto
 
-**Última revisión:** 14 de noviembre de 2026
+**Última revisión:** 15 de noviembre de 2026
 **Repositorio:** `raysanchezcanto-max/Diamante-mx` (`main`)  
-**Prioridad actual (13/nov/2026):** §164 auditoría transversal de tarjetas de juegos LMB/LMP: ambas comparten el componente GameCards; LMP EN VIVO y PRÓXIMO más detalle en vivo observados en producción, con cinco encuentros reales y sin error. Se corrigió la etiqueta de última mitad confirmada en LMB (9867a0d) y el texto de respaldo que decía falsamente «Serie del Rey» (93f6236). **Vercel READY** en commit 93f6236. Fuera de temporada LMB no pudo probarse EN VIVO. Pendientes: casos reales FINAL, doble cartelera, pospuesto/reprogramado, cruce de medianoche y móvil físico. Las diez fichas LMP constan en §154–§163.
+**Prioridad actual (15/nov/2026):** PRIORIDAD 0 (§174–§176): completar y verificar las 60 fichas de clubes de MLB, LMB y LMP, con seis pestañas y contenido propio, una por una. La revisión histórica individual de MLB avanza con Arizona, Tampa Bay, Milwaukee y Atlanta; permanecen 26 historias MLB y la auditoría editorial/visual completa de las otras vistas y ligas. Estadísticas integradas avanzadas, selector de idiomas y apps de tienda siguen pendientes en las prioridades 1–3.
 **Propósito de este archivo:** retomar el proyecto desde cualquier conversación sin repetir pasos ni asumir que una función está lista solamente porque compila.
 
 > **Cómo usarlo en una nueva conversación:** “Amistad, continuemos Diamante MX. Lee `PROJECT_STATUS.md` y consulta el código actual de GitHub antes de indicarme el siguiente cambio. Vamos uno por uno, compilando después de cada paso”.
 
 
-> **REANUDACIÓN INMEDIATA (13/nov/2026):** §164 registra la primera comparación de tarjetas compartidas y LMP en vivo tras publicar ajustes, con Vercel READY. **Siguiente paso:** pruebas de regresión reproducibles para tarjetas HOY/PRÓXIMO/EN VIVO/FINAL y estados especiales (doble cartelera, pospuestos, cruce de medianoche); verificar con datos reales cuando se presenten. Las fichas LMP 10/10 ya constan en §154–§163.
+> **REANUDACIÓN INMEDIATA (15/nov/2026):** seguir la prioridad 0 del §174 y el avance MLB del §176. **Siguiente equipo histórico:** Baltimore Orioles; completar su contenido y fuentes, comprobar las pruebas y publicar. Mantener las pendientes de pruebas en vivo LMB/LMP registradas en §164, sin darlas por cerradas.
 
 ### Lectura rápida vigente — actualización 114 (7/nov/2026)
 
@@ -2528,3 +2528,16 @@ Componentes migrados: `LmbClubEditorialHistory.tsx` (19 fichas genéricas), `Alg
 - **Pruebas:** `scripts/mlb-club-profile-regression.cjs` amplía sus verificaciones para garantizar títulos, banderines, estadio, cronología, protagonistas y origen de las fuentes de Arizona. La prueba cubre estructura y datos congelados; no sustituye la revisión visual en teléfonos reales.
 
 **Cobertura editorial MLB ahora: 3/30 franquicias** (Arizona, Tampa Bay, Milwaukee); **27/30 pendientes**. La próxima entrada propuesta es **Atlanta Braves**. Las otras pestañas, los 20 equipos LMB y los 10 LMP continúan dentro de la auditoría de prioridad 0, sin declararlos completados. Las mejoras estadísticas integradas, elección de idioma y apps quedan todavía en prioridades 1–3.
+
+## §176 · 15/nov/2026 — Prioridad 0: expediente histórico de Atlanta Braves (MLB)
+
+**Equipo revisado:** Atlanta Braves (`/equipos/mlb/144?vista=historia`). Se incorpora su historia editorial individual usando el mismo `MlbClubEditorialHistory` que emplean Arizona, Tampa Bay y Milwaukee. La sección «Resumen» comparte el reportaje destacado de 2021, sin sustituir las noticias actuales del club. No se modifica la interfaz de LMB ni LMP.
+
+- **Orígenes sin confundir ligas:** fundación como Boston Red Stockings en **1871**, integrantes de la National Association; incorporación a la Liga Nacional en **1876** (año que muestra el KPI «debut histórico MLB»). Mudanzas de Boston a Milwaukee (**1953**) y Atlanta (**1966**).
+- **Palmarés del conjunto de la franquicia:** **4 Series Mundiales** (Boston 1914, Milwaukee 1957, Atlanta 1995 y 2021); **18 banderines de la Liga Nacional** — sin mezclar los títulos de la National Association — y **23 campeonatos divisionales** hasta 2026, con sus años documentados. La fuente institucional del club y su archivo oficial corroboran los totales; la ficha conserva las cuatro etapas.
+- **Historia propia:** nueve hitos de 1871 a 2026, entre ellos los Miracle Braves, Hank Aaron y su jonrón 715, la dinastía de los años noventa, inauguración del estadio y regreso al campeonato en 2021.
+- **Protagonistas:** Hank Aaron, Warren Spahn, Greg Maddux, Chipper Jones, John Smoltz y Andruw Jones, con referencias oficiales de MLB o Cooperstown; ocho inmortales históricos seleccionados, incluido **Andruw Jones (entronizado en 2026)**. No confundir el Salón de la Fama de Cooperstown con los reconocimientos particulares del club.
+- **Estadio:** Truist Park, inaugurado el **14/abril/2017** como SunTrust Park, renombrado en 2020. Se documenta la trayectoria de recintos anteriores sin presentar la apertura del estadio actual como fundación de la franquicia.
+- **Validación:** `scripts/mlb-club-profile-regression.cjs` comprueba los cuatro campeonatos, 18 banderines, 23 divisiones, fechas históricas diferenciadas, seis protagonistas, ingreso de Andruw Jones y fuentes enlazadas. La compilación/verificación técnica y la revisión de producción se informan al finalizar la publicación; la inspección en teléfono físico queda pendiente.
+
+**Cobertura histórica individual MLB: 4/30 franquicias** (Arizona, Atlanta, Tampa Bay y Milwaukee), **26 pendientes**. **Siguiente candidato:** Baltimore Orioles. Se mantiene la prioridad 0 de auditar las 60 fichas × seis pestañas; las prioridades 1–3 siguen pendientes y no fueron implementadas aquí.
