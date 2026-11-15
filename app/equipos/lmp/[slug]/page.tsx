@@ -24,7 +24,7 @@ export default async function LmpClubDirectoryPage({params,searchParams}:Props){
   view==="resumen"?getLmpDirectoryStanding(club.id):Promise.resolve(null),
   view==="resumen"?getLmpDirectoryNews(club.id):Promise.resolve([]),
   view==="grandes-ligas"?getLmpDirectoryMlbAlumni(club.id):Promise.resolve([]),
-  view==="movimientos"?getLmpDirectoryMovements(club):Promise.resolve([])
+  view==="movimientos"?getLmpDirectoryMovements(club.id):Promise.resolve([])
  ]);
  return <LmpDirectoryClubProfile club={club} view={view} roster={roster} fixtures={fixtures} record={record} news={news} mlbAlumni={mlbAlumni} movements={movements}/>;
 }
