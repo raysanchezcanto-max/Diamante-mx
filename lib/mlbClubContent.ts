@@ -1,4 +1,6 @@
 import { mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory";
+import { translateMlbTransaction } from "./mlbTransactionSpanish";
+import { translateBaseballText } from "./translateBaseball";
 
 const API = "https://statsapi.mlb.com/api/v1";
 const mxDate = (date = new Date()) =>
@@ -43,7 +45,7 @@ export async function getMlbClubOverview(club: MlbClub): Promise<MlbClubOverview
     division: divisions[Number(t?.division?.id)] ??
       (typeof t?.division?.name === "string" ? t.division.name : "División por verificar"),
     league: leagues[Number(t?.league?.id)] ??
-      (typeof t?.league?.name === "string" ? t.league.name : "Major League Baseball"),
+      "Grandes Ligas",
     stadium: typeof t?.venue?.name === "string" ? t.venue.name : null,
     capacity: Number.isInteger(capacity) && capacity > 0 ? capacity : null,
     firstYear,
@@ -104,10 +106,16 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return [];
     const desc = typeof row?.description === "string" ? row.description.trim() : "";
     const player = typeof row?.person?.fullName === "string" ? row.person.fullName : null;
+    const translated = translateMlbTransaction(
+      desc,
+      String(row?.typeDesc ?? row?.type?.description ?? ""),
+      player,
+      club.name,
+    );
     return [{
       key: String(row?.id ?? index) + "-" + date, date,
-      label: String(row?.typeDesc ?? row?.type?.description ?? "Movimiento oficial"),
-      description: desc,
+      label: translated.label,
+      description: translated.description,
       player,
     } satisfies MlbClubTransaction];
   });
@@ -201,6 +209,15 @@ export type MlbClubNews = {
   sourceStatus: "connected" | "unavailable";
   items: MlbClubNewsStory[];
 };
+const englishHeadlineWords = /\b(the|with|after|before|from|about|for|into|will|could|would|should|against|wins|win|loses|loss|deal|signs|signed|named|latest|best|highlights|update|ahead|behind|rookie|pitcher|season|spring|game|series|trade|injury|report)\b/i;
+async function spanishHeadline(title: string, clubName: string, order: number): Promise<string> {
+  // DeepL es opcional. Sin traducción verificable se evita publicar inglés sin traducir.
+  const translated = await translateBaseballText(title, 1800);
+  if (translated.trim() !== title.trim() && !englishHeadlineWords.test(translated)) {
+    return translated;
+  }
+  return "Actualidad de " + clubName + " · Nota oficial " + order;
+}
 function rssText(value: string): string {
   const plain = value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
     .replace(/<[^>]*>/g, "").trim();
@@ -244,7 +261,10 @@ export async function getMlbClubNews(club: MlbClub): Promise<MlbClubNews> {
         ? new Date(published).toISOString() : null });
       if (items.length === 6) break;
     }
-    return { sourceStatus: "connected", items };
+    const localized = await Promise.all(items.map(async (item, index) => ({
+      ...item, title: await spanishHeadline(item.title, club.name, index + 1),
+    })));
+    return { sourceStatus: "connected", items: localized };
   } catch {
     return { sourceStatus: "unavailable", items: [] };
   }
