@@ -6,6 +6,9 @@ import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getAlgodonerosNews, getAlgodonerosRoster, getAlgodonerosStanding, getAlgodonerosFixtures } from "@/lib/lmpAlgodonerosContent";
 import { getLmpDirectoryMovements } from "@/lib/lmpClubDirectoryData";
 import LmpMovementTimeline from "@/components/LmpMovementTimeline";
+import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
+import { getLmpSeasonYear } from "@/lib/lmp";
+import { getClubSeasonStandings, getLatestClubSeasonStatistics } from "@/lib/clubStatistics";
 
 export const revalidate = 900;
 export const metadata: Metadata = {
@@ -16,19 +19,22 @@ export const metadata: Metadata = {
 const home = "/equipos/lmp/algodoneros";
 const official = "https://losalgodoneros.com/";
 const rosterLink = "https://losalgodoneros.com/team/algodoneros/roster";
-const sections: LmbClubView[] = ["resumen","plantilla","movimientos","grandes-ligas","historia"];
+const sections: LmbClubView[] = ["resumen","estadisticas","plantilla","movimientos","grandes-ligas","historia"];
 const groupOrder = ["Lanzadores", "Receptores", "Jugadores del cuadro", "Jardineros", "Otros jugadores"];
 type Props = { searchParams: Promise<{vista?: string}> };
 export default async function AlgodonerosLmpProfile({searchParams}:Props){
   const query=await searchParams;
   const view:LmbClubView = sections.includes(query.vista as LmbClubView)
     ? query.vista as LmbClubView : "resumen";
-  const [news,roster,record,fixtures,movements] = await Promise.all([
+  const statsSeason=view==="estadisticas"?await getLmpSeasonYear():null;
+  const [news,roster,record,fixtures,movements,standings,statistics] = await Promise.all([
     view==="resumen"?getAlgodonerosNews():Promise.resolve([]),
     view==="plantilla"?getAlgodonerosRoster():Promise.resolve([]),
     view==="resumen"?getAlgodonerosStanding():Promise.resolve(null),
     view==="resumen"?getAlgodonerosFixtures():Promise.resolve([]),
-    view==="movimientos"?getLmpDirectoryMovements(5482):Promise.resolve([])
+    view==="movimientos"?getLmpDirectoryMovements(5482):Promise.resolve([]),
+    statsSeason!==null?getClubSeasonStandings("LMP",statsSeason):Promise.resolve([]),
+    statsSeason!==null?getLatestClubSeasonStatistics("LMP",5482,statsSeason):Promise.resolve(null),
   ]);
   const name="Algodoneros de Guasave";
   const logo=getTeamLogo("LMP",5482,name);
@@ -164,6 +170,10 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
           </section>
         </aside>
       </div>}
+
+      {view==="estadisticas"&&<ClubStatisticsProfile league="LMP"
+        clubName={name} teamId={5482} season={statistics?.season??statsSeason??new Date().getUTCFullYear()}
+        standings={standings} statistics={statistics} standingsUrl="/?league=lmp#posiciones"/>}
 
       {view==="plantilla"&&<section className="clubRosterContent">
         <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · 2026–27</span><h2>{COPY.roster.title(name)}</h2></div>

@@ -6,6 +6,9 @@ import type {LmpMlbAlumnus,LmpDirectoryMovement} from "@/lib/lmpClubDirectoryDat
 import {CLUB_PROFILE_COPY as COPY} from "@/lib/clubProfileCopy";
 import {getTeamLogo} from "@/lib/teamLogos";
 import LmbClubTabs, {type LmbClubView} from "./LmbClubTabs";
+import ClubStatisticsProfile from "./ClubStatisticsProfile";
+import type { ClubSeasonStatistics } from "@/lib/clubStatistics";
+import type { Standing } from "@/lib/mlb";
 import LmpMovementTimeline from "./LmpMovementTimeline";
 import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
 import LmpAguilasEditorialHistory from "./LmpAguilasEditorialHistory";
@@ -17,7 +20,7 @@ import LmpJaguaresEditorialHistory from "./LmpJaguaresEditorialHistory";
 import LmpCharrosEditorialHistory from "./LmpCharrosEditorialHistory";
 import LmpMayosEditorialHistory from "./LmpMayosEditorialHistory";
 
-type Props={club:LmpClubDefinition;view:LmbClubView;roster:LmpClubPlayer[];news:LmpClubNews[];record:LmpClubRecord|null;fixtures:AlgodonerosFixture[];mlbAlumni:LmpMlbAlumnus[];movements:LmpDirectoryMovement[]};
+type Props={club:LmpClubDefinition;view:LmbClubView;roster:LmpClubPlayer[];news:LmpClubNews[];record:LmpClubRecord|null;fixtures:AlgodonerosFixture[];mlbAlumni:LmpMlbAlumnus[];movements:LmpDirectoryMovement[];standings:Standing[];statistics:ClubSeasonStatistics|null;statsSeason:number|null};
 const groups=["Lanzadores","Receptores","Jugadores del cuadro","Jardineros"];
 const dateTime=(iso:string)=>new Intl.DateTimeFormat("es-MX",{timeZone:"America/Mexico_City",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:true}).format(new Date(iso));
 const year=(season:string)=>season.slice(0,4);
@@ -25,7 +28,7 @@ const titleYear=(season:string)=>season.replace("–","-");
 const initial=(name:string)=>name.split(/\s+/).slice(0,2).map(s=>s[0]??"").join("").toLocaleUpperCase("es");
 const source="https://www.baseball-reference.com/bullpen/LMP";
 
-export default function LmpDirectoryClubProfile({club,view,roster,news,record,fixtures,mlbAlumni,movements}:Props){
+export default function LmpDirectoryClubProfile({club,view,roster,news,record,fixtures,mlbAlumni,movements,standings,statistics,statsSeason}:Props){
  const logo=getTeamLogo("LMP",club.id,club.name);
  const home="/equipos/lmp/"+club.slug;
  const first=club.championships[0],last=club.championships[club.championships.length-1];
@@ -98,6 +101,10 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
      <section className="clubPanel"><div className="clubSideHeading"><h2>Historia</h2><span>LMP</span></div><p>Palmarés histórico de {club.name}, títulos y sede actual.</p><a className="clubDirectoryDetailLink" href={home+"?vista=historia"}>Historia del equipo ↗</a></section>
     </aside>
    </div>}
+
+   {view==="estadisticas"&&<ClubStatisticsProfile league="LMP" clubName={club.name}
+    teamId={club.id} season={statistics?.season??statsSeason??new Date().getUTCFullYear()}
+    standings={standings} statistics={statistics} standingsUrl="/?league=lmp#posiciones"/>}
 
    {view==="plantilla"&&<section className="clubRosterContent">
      <div className="clubSectionTitle"><div><span className="clubKicker">PLANTILLA · FUENTE OFICIAL LMP · TEMPORADA 2026–27</span><h2>{COPY.roster.title(club.name)}</h2></div><a href="https://www.lmp.mx/rosters" target="_blank" rel="noopener noreferrer">Plantillas oficiales ↗</a></div>

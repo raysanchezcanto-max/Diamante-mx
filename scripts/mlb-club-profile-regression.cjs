@@ -40,7 +40,7 @@ verify(page.includes('<MlbMexicanConnections club={club} logo={logo}/>') &&
   mexicoConnections.includes('className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"'),
   "Grandes Ligas reutiliza layout para trayectorias mexico-MLB");
 verify(history.includes('className="clubHistory clubDirectoryHistory"'), "historia compartida");
-for (const view of ["resumen", "plantilla", "movimientos", "grandes-ligas", "historia"]) {
+for (const view of ["resumen", "estadisticas", "plantilla", "movimientos", "grandes-ligas", "historia"]) {
   verify(page.includes('"' + view + '"') && tabs.includes('id: "' + view + '"'),
     "pestana compartida " + view);
 }
@@ -97,17 +97,18 @@ verify(history.includes("mlbEditorialHistory") && history.includes("clubHistoryL
   "mismo esquema histórico visual LMB/LMP");
 
 const css = read("app/globals.css");
-for (const panel of [
-  "Bateo colectivo", "Pitcheo colectivo", "Rendimiento de temporada regular",
-]) verify(page.includes(panel), "Resumen incluye " + panel);
-verify(page.includes('className="clubEditorialSection clubMlbSeasonStats"') &&
-  page.indexOf('className="clubEditorialSection clubMlbSeasonStats"') <
-  page.indexOf('<aside className="clubSideRight">'),
-  "estadisticas MLB permanecen en la columna central, con ancho de tarjetas de noticias");
-verify((page.match(/<h2>Rendimiento de temporada regular<\/h2>/g) ?? []).length === 1,
-  "un unico bloque de estadisticas de temporada en Resumen");
-verify(page.includes('view === "resumen" ? getMlbClubSeasonStats(club)'),
-  "las estadisticas se consultan solo en Resumen");
+verify(page.includes('view === "estadisticas" && <ClubStatisticsProfile') &&
+  !page.includes('className="clubEditorialSection clubMlbSeasonStats"'),
+  "estadisticas MLB tienen pestaña propia y Resumen se centra en noticias");
+const statisticsView = read("components/ClubStatisticsProfile.tsx");
+for (const panel of ["Bateo colectivo", "Pitcheo colectivo", "Rendimiento de temporada regular",
+  "Líderes del equipo", "Tabla general de posiciones"]) {
+  verify(statisticsView.includes(panel) || read("components/ClubStatisticsLeaders.tsx").includes(panel),
+    "pestana Estadisticas incluye " + panel);
+}
+verify(page.includes('view === "estadisticas" ? getLatestClubSeasonStatistics("MLB", club.id, mexicoSeasonYear())') &&
+  !page.includes('view === "resumen" ? getMlbClubSeasonStats(club)'),
+  "las estadisticas se consultan solo en su pestaña independiente");
 for (const label of [
   "DEL BÉISBOL MEXICANO AL DIAMANTE INTERNACIONAL",
   "Debutaron en MLB después de su paso por México",

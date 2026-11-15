@@ -5,7 +5,8 @@ import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
 import { getAlgodonerosNews, getAlgodonerosRoster, getLmbClubVideos } from "@/lib/lmbClubContent";
-import AlgodonerosLeaders from "@/components/AlgodonerosLeaders";
+import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
+import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear } from "@/lib/clubStatistics";
 import AlgodonerosHistory from "@/components/AlgodonerosHistory";
 import AlgodonerosGrandesLigas from "@/components/AlgodonerosGrandesLigas";
 import LmbClubTabs from "@/components/LmbClubTabs";
@@ -43,15 +44,21 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const movementsView = params?.vista === "movimientos";
   const historyView = params?.vista === "historia";
   const grandesLigasView = params?.vista === "grandes-ligas";
+  const statisticsView = params?.vista === "estadisticas";
   const currentView = rosterView ? "plantilla" : movementsView ? "movimientos"
-    : grandesLigasView ? "grandes-ligas" : historyView ? "historia" : "resumen";
-  const [officialStandings, newsResult, rosterResult, movementResult, videoResult] = await Promise.all([
-    getLmbStandings(),
-    !rosterView && !movementsView && !historyView && !grandesLigasView ? getAlgodonerosNews() : Promise.resolve(null),
+    : grandesLigasView ? "grandes-ligas" : historyView ? "historia"
+    : statisticsView ? "estadisticas" : "resumen";
+  const [officialStandings, newsResult, rosterResult, movementResult, videoResult, statistics] = await Promise.all([
+    currentView==="resumen" ? getLmbStandings() : Promise.resolve([]),
+    currentView==="resumen" ? getAlgodonerosNews() : Promise.resolve(null),
     rosterView ? getAlgodonerosRoster() : Promise.resolve(null),
     movementsView ? getAlgodonerosMovements() : Promise.resolve(null),
     currentView==="resumen" ? getLmbClubVideos("algodoneros") : Promise.resolve(null),
+    statisticsView ? getLatestClubSeasonStatistics("LMB",447,mexicoSeasonYear()) : Promise.resolve(null),
   ]);
+  const statisticsStandings=statisticsView
+    ?await getClubSeasonStandings("LMB",statistics?.season??mexicoSeasonYear())
+    :[];
   const displayedStories = newsResult?.stories ?? stories.map(story => ({
     ...story, imageUrl: null as string | null,
   }));
@@ -197,6 +204,11 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               Los registros anteriores no garantizan el estado actual del roster.
             </p>
           </section>
+        ) : statisticsView ? (
+          <ClubStatisticsProfile league="LMB" clubName={club.name} teamId={447}
+            season={statistics?.season??mexicoSeasonYear()}
+            standings={statisticsStandings.filter(s=>s.division==="Zona Norte")}
+            statistics={statistics} standingsUrl="/?league=lmb#posiciones"/>
         ) : grandesLigasView ? (
           <AlgodonerosGrandesLigas />
         ) : historyView ? (
@@ -296,28 +308,6 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   <p className="clubSmallNote">Sin titulares adicionales confirmados para este equipo.</p>
                 )}
               </section>
-              <section className="clubPanel" id="tabla-de-posiciones">
-                <div className="clubSideHeading"><h2>Posiciones</h2><span>NORTE</span></div>
-                <p className="clubSmallNote">{seasonLabel}{liveDataPresent ? " · fuente API LMB" : " · corte oficial LMB"}</p>
-                <div className="clubStandingsScroll">
-                  <table className="clubStandingsTable">
-                    <thead><tr><th>Equipo</th><th>G</th><th>P</th><th>PCT</th></tr></thead>
-                    <tbody>
-                      {north.map(s=>(
-                        <tr key={s.team} className={isAlgodoneros(s.team) ? "clubCurrentTeam":""}>
-                          <td>
-                            {getTeamLogo("LMB",0,s.team) && <img src={getTeamLogo("LMB",0,s.team) ?? PLAYER_LOGO} alt="" width={25} height={25}/>}
-                            <span>{s.team}</span>
-                          </td>
-                          <td>{s.wins}</td><td>{s.losses}</td><td>{formatPct(s.pct)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <a className="clubStandingsLink" href="/?league=lmb#posiciones">Ver tabla completa ↗</a>
-              </section>
-              <AlgodonerosLeaders />
             </aside>
           </div>
         )}
