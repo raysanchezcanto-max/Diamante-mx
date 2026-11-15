@@ -8,6 +8,7 @@ const { getMlbClubVerifiedVideos } = require("../lib/mlbClubVideos.ts");
 const { MLB_MEXICO_VERIFIED_CONNECTIONS } = require("../lib/mlbMexicoVerifiedConnections.ts");
 const page = fs.readFileSync(path.join(__dirname, "../app/equipos/mlb/[id]/page.tsx"), "utf8");
 const css = fs.readFileSync(path.join(__dirname, "../app/globals.css"), "utf8");
+const mexicoCards = fs.readFileSync(path.join(__dirname, "../components/MlbMexicanConnections.tsx"), "utf8");
 const videoList = getMlbClubVerifiedVideos(144);
 let count = 0;
 function check(yes, message) { assert.ok(yes, message); count++; }
@@ -36,6 +37,9 @@ check(MLB_MEXICO_VERIFIED_CONNECTIONS.some(row => row.connection.league === "LMP
   "conexiones de Atlanta incluyen LMP");
 check(MLB_MEXICO_VERIFIED_CONNECTIONS.some(row => row.connection.direction === "mlb-to-mexico" && row.mlbClubId === 144),
   "conexiones incluyen exjugadores de Atlanta que jugaron en México");
+check(mexicoCards.includes("Visitar perfil de {person.mexicanClub}") &&
+  !mexicoCards.includes("Ver trayectoria en {person.mexicanClub}"),
+  "enlace al club mexicano no promete una ficha individual recíproca aún no incorporada");
 check(css.includes(".clubVideoCard") && css.includes(".clubMovementsContent--mlb .clubMovementsTimeline"),
   "videos y movimientos cuentan con estilos responsivos");
 

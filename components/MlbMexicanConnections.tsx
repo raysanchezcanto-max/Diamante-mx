@@ -88,8 +88,8 @@ export default function MlbMexicanConnections({ club, logo }: {
             Consultar fuente documentada ↗</a>
           {person.verificationSource && <a href={person.verificationSource}
             target="_blank" rel="noopener noreferrer">Ver segunda fuente ↗</a>}
-          <a href={`/equipos/${person.league.toLowerCase()}/${person.mexicanSlug}?vista=grandes-ligas`}>
-            Ver trayectoria en {person.mexicanClub} ↗</a>
+          <a href={`/equipos/${person.league.toLowerCase()}/${person.mexicanSlug}`}>
+            Visitar perfil de {person.mexicanClub} ↗</a>
         </article>)}
       </div>
     </div>) : <div className="clubDirectoryNotice">
