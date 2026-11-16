@@ -105,6 +105,15 @@ assert(movementData.includes("/teams/${id}/movements?limit=50"),"LMP must use th
 assert(!movementData.includes("getLmpDirectoryNews(club.id)"),"LMP transactions must not be inferred from club news");n++;
 const movementComponent=read("components/LmpMovementTimeline.tsx");
 const {describeLmpMovement}=require("../lib/lmpMovementPresentation.ts");
+const {lmbMovementPlayerTitle}=require("../lib/lmbMovementPresentation.ts");
+for(const [before,after] of [
+ ["Derechos recibidos: Richard Reyes Martínez","Richard Reyes Martínez"],
+ ["Alta y activación: Ricardo Alejandro Chapa Garza","Ricardo Alejandro Chapa Garza"],
+ ["Alta de Jesús Antonio Hernández Villegas","Jesús Antonio Hernández Villegas"],
+ ["Dos lanzadores cedidos a Leones","Dos lanzadores cedidos a Leones"]
+]){
+ assert(lmbMovementPlayerTitle(before)===after,"LMB player-first movement title: "+before);n++;
+}
 const samples=[
  ["Naranjeros informa la activación de Raúl Barrón y Omar Muñoz. Desactivando a Ángel Camacho.","Altas y bajas","Raúl Barrón y Omar Muñoz"],
  ["Cañeros informa la activación de Luis Roberto Urías, desactivando a Jayson Bass.","Altas y bajas","Luis Roberto Urías"],
