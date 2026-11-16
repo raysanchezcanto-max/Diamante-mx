@@ -1,8 +1,6 @@
 /** El tipo de operación vive en la etiqueta de la tarjeta, como en MLB. */
 export function lmbMovementPlayerTitle(title:string):string {
   const cleaned=title.trim();
-  // Las cesiones conservan deliberadamente el formato especial LMB aprobado.
-  if(/^(?:Derechos (?:cedidos|recibidos)|Traspaso):\s+/i.test(cleaned))return cleaned;
   // Los titulares creados a partir de boletines suelen ser «Operación: Jugador».
   const colon=cleaned.indexOf(": ");
   if(colon>=0){
