@@ -18,6 +18,7 @@ import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
 import { mlbTransferPresentation } from "@/lib/movementTransferPresentation";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
+import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 
 export const revalidate = 1800;
 type PageProps = {
@@ -295,7 +296,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               {logo && <img src={logo} alt="" width={53} height={53}/>}
               <div><h3>{item.player ?? "Transacción registrada por MLB"}</h3>
                 {q?.estilo!=="original"?<MovementGeminiDetails text={item.description || item.label}/>:<p>{item.description || item.label}</p>}
-                {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span><strong>{transfer.otherClub}</strong></div>}
+                {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span>{q?.estilo!=="original"&&<MovementCounterpartLogo league="MLB" name={transfer.otherClub}/>}<strong>{transfer.otherClub}</strong></div>}
                 <a href={official + "/roster/transactions"} target="_blank"
                   rel="noopener noreferrer">Consultar fuente oficial MLB ↗</a>
               </div>
