@@ -106,9 +106,9 @@ assert(!movementData.includes("getLmpDirectoryNews(club.id)"),"LMP transactions 
 const movementComponent=read("components/LmpMovementTimeline.tsx");
 const {describeLmpMovement}=require("../lib/lmpMovementPresentation.ts");
 const {lmbMovementPlayerTitle}=require("../lib/lmbMovementPresentation.ts");
-const {mlbTransferPresentation,lmpTransferPresentation}=require("../lib/movementTransferPresentation.ts");
+const {mlbTransferPresentation,lmpTransferPresentation,lmpTransferTitle}=require("../lib/movementTransferPresentation.ts");
 for(const [before,after] of [
- ["Derechos recibidos: Richard Reyes Martínez","Derechos recibidos: Richard Reyes Martínez"],
+ ["Derechos recibidos: Richard Reyes Martínez","Richard Reyes Martínez"],
  ["Alta y activación: Ricardo Alejandro Chapa Garza","Ricardo Alejandro Chapa Garza"],
  ["Alta de Jesús Antonio Hernández Villegas","Jesús Antonio Hernández Villegas"],
  ["Dos lanzadores cedidos a Leones","Dos lanzadores cedidos a Leones"]
@@ -118,6 +118,7 @@ for(const [before,after] of [
 assert(mlbTransferPresentation("Intercambio","Boston intercambió a Juan García con New York Yankees a cambio de dinero.")?.otherClub==="New York Yankees","MLB verified trade counterpart");n++;
 assert(mlbTransferPresentation("Intercambio","Boston registró un intercambio relacionado con Juan García.")===null,"MLB unknown counterparty must remain hidden");n++;
 assert(lmpTransferPresentation("Naranjeros ceden los derechos de Gabriel Gutiérrez a Yaquis de Obregón, recibiendo a cambio un turno.")?.otherClub==="Yaquis de Obregón","LMP verified destination");n++;
+assert(lmpTransferTitle("Naranjeros ceden los derechos de Gabriel Gutiérrez a Yaquis de Obregón.")==="Gabriel Gutiérrez","LMP transfer title displays player only");n++;
 const samples=[
  ["Naranjeros informa la activación de Raúl Barrón y Omar Muñoz. Desactivando a Ángel Camacho.","Altas y bajas","Raúl Barrón y Omar Muñoz"],
  ["Cañeros informa la activación de Luis Roberto Urías, desactivando a Jayson Bass.","Altas y bajas","Luis Roberto Urías"],
