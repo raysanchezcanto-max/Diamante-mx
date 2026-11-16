@@ -1180,3 +1180,13 @@ Total output lines: 2623
 - Se limita el ancho de lectura de la descripción a unos `68ch` en escritorio. Los textos extensos se despliegan mediante `Ver más/Ver menos`, conservando íntegro el original y el enlace oficial siempre visible; las notas cortas se muestran completas.
 - Se incrementa el área táctil del enlace de cada movimiento, mantiene foco visible y se adapta la franja a móvil. Las fechas siguen en lima, nombres blancos y enlaces grises, respetando las preferencias ya aprobadas.
 - **Pendiente:** revisión comparada en producción y móvil, ajuste editorial de comunicados compuestos y decisión explícita de Valeria antes de convertir Gemini en el estilo predeterminado. La opción es experimental, no una aprobación definitiva.
+
+## §188 · 16/nov/2026 — Gemini aprobado como base y franja de contraparte en dos niveles
+
+**Decisión de Valeria:** adoptar la presentación Gemini como estilo predeterminado de Movimientos en las tres ligas (MLB, LMB y LMP), tras comparar con el formato anterior. El parámetro `estilo=original` permite conservar temporalmente la comparación; `estilo=gemini` y las rutas habituales muestran Gemini.
+
+- **Jerarquía:** tarjetas de una columna, fecha lima, nombre protagonista sin insignia propia repetida, texto de lectura limitada, fuentes oficiales grises, tipo discreto. El cambio se aplica a las 60 fichas, incluidas las páginas especiales de Algodoneros.
+- **Franja de derechos:** se adopta la disposición de dos renglones: primero flecha + «DERECHOS CEDIDOS A / RECIBIDOS DE» en durazno/turquesa, después escudo de la contraparte de 32 px en recuadro claro y nombre del club. Si no se conoce el escudo se muestra solo el nombre; si no hay contraparte verificada no se crea franja. La disposición es igual en escritorio y móvil.
+- **Intercambios MLB:** se conserva el color neutro para una franja «INTERCAMBIO CON» sin inferir dirección de entrada/salida.
+- **Pendientes de contenido:** investigar el asterisco inicial en boletines, las descripciones ya abreviadas por la fuente y las operaciones dobles en un mismo comunicado antes de afirmar que una franja refleja exhaustivamente el intercambio. No alterar hechos oficiales ni inventar el segundo club.
+- **Verificación:** pruebas automatizadas de perfiles, compilación y contraste visual en producción; QA físico móvil y revisión cruzada de escudos variados de LMB/LMP pendientes de aprobación final.
