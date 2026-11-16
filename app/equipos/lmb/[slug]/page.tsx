@@ -6,6 +6,8 @@ import { getTeamLogo } from "@/lib/teamLogos";
 import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
 import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview, getLmbClubVideos } from "@/lib/lmbClubContent";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
+import MovementGeminiDetails from "@/components/MovementGeminiDetails";
+import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
 import LmbToMlbClubProfile from "@/components/LmbToMlbClubProfile";
 import { lmbClubChampionships } from "@/lib/lmbClubHistory";
@@ -19,7 +21,7 @@ import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear
 export const revalidate = 1800;
 type PageProps = {
   params: Promise<{slug: string}>;
-  searchParams?: Promise<{vista?: string}>;
+  searchParams?: Promise<{vista?: string;estilo?:string}>;
 };
 const views = [
   {id:"resumen",label:"Resumen"},
@@ -289,7 +291,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         )}
 
         {view==="movimientos"&&(
-          <section className="clubMovementsContent">
+          <section className={"clubMovementsContent"+(q?.estilo==="gemini"?" clubMovementsContent--gemini":"")}>
             <div className="clubSectionTitle">
               <div><span className="clubKicker">{COPY.movements.kicker("LMB")}</span><h2>{COPY.movements.title(club.name)}</h2></div>
               <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Ver equipo en LMB ↗</a>
@@ -307,10 +309,11 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <div className="clubMovementDate"><span>{formatDate(item.date)}</span><span className="clubMovementType">{item.type}</span></div>
                     <div className="clubMovementBody">
                       {logo&&<img src={logo} alt="" width={53} height={53}/>}
-                      <div><h3>{lmbMovementPlayerTitle(item.title)}</h3><p>{item.description}</p>
+                      <div><h3>{lmbMovementPlayerTitle(item.title)}</h3>{q?.estilo==="gemini"?<MovementGeminiDetails text={item.description}/>:<p>{item.description}</p>}
                         {item.direction && item.otherClub && (
-                          <div className="clubMovementDirection">
-                            <span>{item.direction === "out" ? "DERECHOS CEDIDOS A" : "DERECHOS RECIBIDOS DE"}</span>
+                          <div className="clubMovementDirection" data-direction={item.direction}>
+                            <span>{item.direction === "out" ? (q?.estilo==="gemini"?"→ ":"")+"DERECHOS CEDIDOS A" : (q?.estilo==="gemini"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
+                            {q?.estilo==="gemini"&&<MovementCounterpartLogo league="LMB" name={item.otherClub}/>}
                             <strong>{item.otherClub}</strong>
                           </div>
                         )}
