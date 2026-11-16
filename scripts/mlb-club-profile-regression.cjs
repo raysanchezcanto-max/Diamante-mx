@@ -34,8 +34,8 @@ verify(page.includes('className="clubHero clubDirectoryHero"'), "cabecera comun"
 verify(page.includes('className="clubContentGrid"'), "tres columnas en Resumen");
 verify(page.includes('className="clubRosterContent"'), "plantilla compartida");
 verify(page.includes('clubMovementsContent clubMovementsContent--mlb') &&
-  page.includes('clubMovementsContent--gemini') && page.includes('estilo==="gemini"'),
-  "movimientos compartidos y comparativa Gemini optativa");
+  page.includes('clubMovementsContent--gemini') && page.includes('estilo!=="original"'),
+  "movimientos compartidos con Gemini por defecto y alternativa original");
 const mexicoConnections = read("components/MlbMexicanConnections.tsx");
 verify(page.includes('<MlbMexicanConnections club={club} logo={logo}/>') &&
   mexicoConnections.includes('className="clubBigLeagues clubDirectoryMlb clubDirectoryMlb--franchise"'),
