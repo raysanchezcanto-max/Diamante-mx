@@ -1190,3 +1190,12 @@ Total output lines: 2623
 - **Intercambios MLB:** se conserva el color neutro para una franja «INTERCAMBIO CON» sin inferir dirección de entrada/salida.
 - **Pendientes de contenido:** investigar el asterisco inicial en boletines, las descripciones ya abreviadas por la fuente y las operaciones dobles en un mismo comunicado antes de afirmar que una franja refleja exhaustivamente el intercambio. No alterar hechos oficiales ni inventar el segundo club.
 - **Verificación:** pruebas automatizadas de perfiles, compilación y contraste visual en producción; QA físico móvil y revisión cruzada de escudos variados de LMB/LMP pendientes de aprobación final.
+
+## §189 · 16/nov/2026 — Operaciones recíprocas LMB y pulido de franja Gemini
+
+**Confirmación del boletín oficial LMB del 10/nov/2026:** Caliente de Durango cedió a Conspiradores de Querétaro los derechos de Nicholas Billy Williams y, en la misma operación, Querétaro cedió los derechos de Arturo Omar Rodríguez Macías a Durango. La franja de una sola dirección era incompleta.
+
+- `lib/lmbMovements.ts` detecta ahora cesiones recíprocas únicamente cuando el mismo comunicado documenta ambas direcciones entre exactamente los mismos clubes. La tarjeta se etiqueta **«INTERCAMBIO DE DERECHOS CON [club]»** en tono neutro; no afirma que solo se cedieron derechos. Los casos de una única cesión mantienen durazno/turquesa y sus flechas.
+- El extracto LMB deja de cortarse a 35 palabras: conserva el texto de cada movimiento que la fuente entrega (el parser ya limita su longitud de forma preventiva a 1200 caracteres). Se retira el asterisco inicial de viñetas del boletín; las descripciones largas pueden expandirse en la vista Gemini.
+- Franja más compacta respecto del enlace oficial, etiqueta ligeramente más legible, escudos con 2 px de relleno interno y tratamiento de 44×32 px exclusivamente para Conspiradores de Querétaro, cuya insignia es horizontal.
+- Pruebas de regresión añadidas para no volver a ocultar la segunda mitad de intercambios. **Pendiente:** revisar otros boletines compuestos, comparar escudos en los 20 clubes LMB, realizar QA físico móvil y confirmar presentación de entradas turquesa.
