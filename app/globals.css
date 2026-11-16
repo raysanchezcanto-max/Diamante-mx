@@ -5701,3 +5701,11 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
   .clubProfile .clubHeroKickerDesktop{display:none}
   .clubProfile .clubHeroKickerMobile{display:inline}
 }
+
+/* Las gorras oficiales MLB “team-cap-on-dark” tienen trazos claros
+   (p. ej. Detroit). Fondo oscuro exclusivo para evitar blancos sobre blanco. */
+.clubMovementsContent--gemini .geminiCounterpartLogo--mlb{
+  background:#263c34;
+  border-color:#557267;
+  padding:3px;
+}
