@@ -104,7 +104,19 @@ const movementData=read("lib/lmpClubDirectoryData.ts");
 assert(movementData.includes("/teams/${id}/movements?limit=50"),"LMP must use the official team transactions API");n++;
 assert(!movementData.includes("getLmpDirectoryNews(club.id)"),"LMP transactions must not be inferred from club news");n++;
 const movementComponent=read("components/LmpMovementTimeline.tsx");
-for(const label of ["clubMovementsTimeline","clubMovementItem","clubMovementDate","clubMovementBody","Registro oficial LMP"]){
+const {describeLmpMovement}=require("../lib/lmpMovementPresentation.ts");
+const samples=[
+ ["Naranjeros informa la activación de Raúl Barrón y Omar Muñoz. Desactivando a Ángel Camacho.","Altas y bajas","Altas y bajas: Raúl Barrón y Omar Muñoz"],
+ ["Cañeros informa la activación de Luis Roberto Urías, desactivando a Jayson Bass.","Altas y bajas","Altas y bajas: Luis Roberto Urías"],
+ ["El equipo desactiva a Juan Pérez.","Baja de plantilla","Baja de plantilla: Juan Pérez"],
+ ["El club anuncia la firma de Pedro Pérez.","Contratación","Contratación"],
+ ["El club informa ajustes administrativos sin detalle.","Actualización de plantilla","Actualización de plantilla"]
+];
+for(const [description,type,title] of samples){
+ const actual=describeLmpMovement(description);
+ assert(actual.type===type&&actual.title===title,"LMP movement title/category regression: "+description);n++;
+}
+for(const label of ["clubMovementsTimeline","clubMovementItem","clubMovementDate","clubMovementBody","describeLmpMovement"]){
  assert(movementComponent.includes(label),"Shared LMP movement design missing "+label);n++;
 }
 assert(read("components/LmpDirectoryClubProfile.tsx").includes("<LmpMovementTimeline"),"The nine directory profiles must use the shared timeline");n++;
