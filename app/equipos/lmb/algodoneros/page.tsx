@@ -154,7 +154,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
             </div>
           </section>
         ) : movementsView ? (
-          <section className={"clubMovementsContent"+(params?.estilo==="gemini"?" clubMovementsContent--gemini":"")} aria-label="Movimientos de Algodoneros">
+          <section className={"clubMovementsContent"+(params?.estilo!=="original"?" clubMovementsContent--gemini":"")} aria-label="Movimientos de Algodoneros">
             <div className="clubSectionTitle">
               <div>
                 <span className="clubKicker">{COPY.movements.kicker("LMB")}</span>
@@ -185,11 +185,11 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                     <img src={logo} alt="" width={53} height={53} />
                     <div>
                       <h3>{lmbMovementPlayerTitle(event.title)}</h3>
-                      {params?.estilo==="gemini"?<MovementGeminiDetails text={event.description}/>:<p>{event.description}</p>}
+                      {params?.estilo!=="original"?<MovementGeminiDetails text={event.description}/>:<p>{event.description}</p>}
                       {"direction" in event && "otherClub" in event && event.direction && event.otherClub && (
                         <div className="clubMovementDirection" data-direction={event.direction}>
-                          <span>{event.direction === "out" ? (params?.estilo==="gemini"?"→ ":"")+"DERECHOS CEDIDOS A" : (params?.estilo==="gemini"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
-                          {params?.estilo==="gemini"&&<MovementCounterpartLogo league="LMB" name={event.otherClub}/>}
+                          <span>{event.direction === "out" ? (params?.estilo!=="original"?"→ ":"")+"DERECHOS CEDIDOS A" : (params?.estilo!=="original"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
+                          {params?.estilo!=="original"&&<MovementCounterpartLogo league="LMB" name={event.otherClub}/>}
                           <strong>{event.otherClub}</strong>
                         </div>
                       )}
