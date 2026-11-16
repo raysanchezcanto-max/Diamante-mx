@@ -196,9 +196,9 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         </div>:<div className="clubDirectoryNotice"><p>La API no devolvió una plantilla válida. No se agregaron jugadores de otros equipos.</p><a href={rosterLink} target="_blank" rel="noopener noreferrer">Ver plantilla oficial ↗</a></div>}
       </section>}
 
-      {view==="movimientos"&&<section className={"clubMovementsContent"+(query.estilo==="gemini"?" clubMovementsContent--gemini":"")}>
+      {view==="movimientos"&&<section className={"clubMovementsContent"+(query.estilo!=="original"?" clubMovementsContent--gemini":"")}>
         <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(name)}</h2></div><a href="https://www.lmp.mx/rosters/algodoneros" target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
-        <LmpMovementTimeline movements={movements} logo={logo} sourceUrl="https://www.lmp.mx/rosters/algodoneros" gemini={query.estilo==="gemini"}/>
+        <LmpMovementTimeline movements={movements} logo={logo} sourceUrl="https://www.lmp.mx/rosters/algodoneros" gemini={query.estilo!=="original"}/>
       </section>}
 
       {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb" aria-labelledby="lmpGuasaveMlbTitle">
