@@ -1199,3 +1199,11 @@ Total output lines: 2623
 - El extracto LMB deja de cortarse a 35 palabras: conserva el texto de cada movimiento que la fuente entrega (el parser ya limita su longitud de forma preventiva a 1200 caracteres). Se retira el asterisco inicial de viñetas del boletín; las descripciones largas pueden expandirse en la vista Gemini.
 - Franja más compacta respecto del enlace oficial, etiqueta ligeramente más legible, escudos con 2 px de relleno interno y tratamiento de 44×32 px exclusivamente para Conspiradores de Querétaro, cuya insignia es horizontal.
 - Pruebas de regresión añadidas para no volver a ocultar la segunda mitad de intercambios. **Pendiente:** revisar otros boletines compuestos, comparar escudos en los 20 clubes LMB, realizar QA físico móvil y confirmar presentación de entradas turquesa.
+
+## §190 · 16/nov/2026 — Franja Gemini oscura, consistente con Serie del Rey
+
+**Ajuste solicitado por Valeria:** el recuadro anidado de contraparte en Movimientos debe ser algo más oscuro que la tarjeta principal, como las tarjetas internas de «Camino a la Serie del Rey» y «Detalle de la Serie del Rey»; no modificar el fondo general de Movimientos.
+
+- En `app/globals.css`, solo para `.clubMovementsContent--gemini .clubMovementDirection`, se utiliza negro translúcido al 20 %, borde fino blanco al 7 % y esquinas derechas de 10 px; la barra lateral semántica (durazno, turquesa o gris), nombre del club y escudo claro se conservan.
+- «Ver más/Ver menos» gana tamaño y aire vertical; el resumen completo sigue siendo pulsable, ahora con indicador de foco visible. El contenido oficial y la lógica del intercambio Williams/Querétaro no cambian.
+- **Pendiente:** QA visual móvil y en tarjeta de derechos recibidos turquesa; ajustar si el contraste resulta excesivo en pantallas pequeñas. La modificación es de estilo, sin cambios de datos.
