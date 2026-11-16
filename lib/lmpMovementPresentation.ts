@@ -3,7 +3,7 @@ export function describeLmpMovement(description: string): {title:string;type:str
   const active = /\bactiv(?:a|an|ado|ados|aci[oó]n|aciones|ando|ar|aci[oó]n de|aci[oó]n a)\b/i.test(description)
     || /\b(?:da(?:n)? de alta|alta de|altas de|incorpora(?:n|ci[oó]n)?)\b/i.test(description);
   const inactive = /\b(?:desactiv(?:a|an|ado|ados|ando|ar|aci[oó]n)|inactiv(?:a|an|ando|aci[oó]n)|bajas? de|da(?:n)? de baja)\b/i.test(description);
-  const transfer = /\b(?:traspas(?:a|o|ado)|ced(?:e|i[oó]|idos?)|derechos|intercambio)\b/i.test(description);
+  const transfer = /\b(?:traspas(?:a|o|ado)|ced(?:e[n]?|i[oó]|idos?)|derechos|intercambio|pr[eé]stamo)\b/i.test(description);
   const signed = /\b(?:contrat(?:a|aci[oó]n)|firma(?:n|do)?|agente libre)\b/i.test(description);
 
   let type = "Actualización de plantilla";
@@ -22,8 +22,8 @@ export function describeLmpMovement(description: string): {title:string;type:str
     ? actorNames.split(/,\s*/)[0]?.trim() + " y otros"
     : actorNames;
   const names = shortNames && !/\b(?:plantilla|jugadores|lanzadores|receptores)\b/i.test(shortNames) ? shortNames : null;
-  // La categoría ya aparece en la etiqueta superior; no repetirla en el título.
-  // Sin nombres identificables, no se muestra un encabezado genérico.
+  // La categoría ya aparece en la píldora superior; el título no debe repetirla.
+  // Si la fuente no permite extraer nombres sin ambigüedad, se omite el título.
   const title = names ?? "";
   return {title,type};
 }
