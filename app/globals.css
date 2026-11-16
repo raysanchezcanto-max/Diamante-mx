@@ -4673,6 +4673,32 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 }
 .clubMovementDirection span{color:#9eb9aa;font-size:10px;letter-spacing:.055em;font-weight:850}
 .clubMovementDirection strong{font-size:12px;font-weight:800}
+.clubMovementsContent--gemini .clubMovementBody>img{display:none}
+.clubMovementsContent--gemini .clubMovementBody{gap:0}
+.clubMovementsContent--gemini .clubMovementBody h3{font-size:18px}
+.clubMovementsContent--gemini .clubMovementBody p{max-width:68ch;font-size:14px}
+.clubMovementsContent--gemini .clubMovementDirection{background:rgba(255,255,255,.025);border-left:3px solid var(--movement-direction-color,#9fa9a3);padding:9px 12px;border-radius:0 7px 7px 0;max-width:max-content}
+.clubMovementsContent--gemini .clubMovementDirection span{color:var(--movement-direction-color,#9fa9a3)}
+.clubMovementsContent--gemini .clubMovementDirection strong{color:#f3f4f6}
+.clubMovementsContent--gemini .geminiCounterpartLogo{width:24px;height:24px;object-fit:contain;flex:0 0 24px}
+.clubMovementsContent--gemini .clubMovementDirection[data-direction="in"]{--movement-direction-color:#34d399}
+.clubMovementsContent--gemini .clubMovementDirection[data-direction="out"]{--movement-direction-color:#fdba74}
+.clubMovementsContent--gemini .clubMovementBody a{display:inline-flex;align-items:center;min-height:44px;color:#c6d2cb;text-decoration:none}
+.clubMovementsContent--gemini .clubMovementBody a:hover,.clubMovementsContent--gemini .clubMovementBody a:focus-visible{text-decoration:underline;color:#deff87}
+.clubMovementsContent--gemini .clubMovementBody a:focus-visible{outline:2px solid #d7ff4f;outline-offset:3px}
+.clubMovementsContent--gemini .clubMovementDate{font-variant-numeric:tabular-nums}
+.clubMovementsContent--gemini .clubMovementType{font-size:12px}
+.clubMovementsContent--gemini>.clubSmallNote{font-size:12px;line-height:1.6;border:1px solid #294235;border-radius:8px;padding:10px 12px;color:#9fa9a3}
+.geminiMovementDetails{max-width:68ch;font-size:14px;color:#c9d1cc;margin:0 0 8px}
+.geminiMovementDetails summary{cursor:pointer;list-style:none}
+.geminiMovementDetails summary::-webkit-details-marker{display:none}
+.geminiMovementExcerpt{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55}
+.geminiMovementMore,.geminiMovementLess{display:block;color:#c6d2cb;font-size:12px;font-weight:750;margin-top:4px;text-decoration:underline;text-underline-offset:3px}
+.geminiMovementLess{display:none}
+.geminiMovementDetails[open] .geminiMovementExcerpt,.geminiMovementDetails[open] .geminiMovementMore{display:none}
+.geminiMovementDetails[open] .geminiMovementLess{display:block}
+.geminiMovementDetails p{margin:7px 0 0;max-width:68ch}
+@media(max-width:600px){.clubMovementsContent--gemini .clubMovementItem{padding:16px}.clubMovementsContent--gemini .clubMovementDirection{align-items:flex-start;flex-direction:column;gap:4px}.clubMovementsContent--gemini .clubMovementDate{align-items:flex-start}}
 .clubMovementBody a{font-size:12px;color:var(--accent);font-weight:800}
 @media(max-width:600px){
  .clubMovementsContent .clubSectionTitle{align-items:flex-start}
