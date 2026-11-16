@@ -42,7 +42,8 @@ for(const heading of ["EL PALMARÉS","Línea del tiempo","Figuras históricas de
 }
 const contract=read("CLUB_PROFILE_STANDARD.md");
 assert(contract.includes("APERTURA DEL ESTADIO")&&contract.includes("AÑO DE INAUGURACIÓN"),"Design contract missing");n++;
-// Additional profile pages must share copy AND column order (calendar before record).
+// Additional profile pages share copy; LMB/MLB show the record before the calendar,
+// while LMP retains its own existing order until its summary is revised.
 const pages=[
  "app/equipos/lmb/[slug]/page.tsx",
  "app/equipos/lmp/algodoneros/page.tsx",
@@ -67,13 +68,20 @@ for(const p of pages){
  }
  const calendar=text.indexOf("clubCalendarPanel");
  const record=text.indexOf("clubRecordPanel");
- assert(calendar>=0 && record>calendar,p+" must show calendar before standings record");n++;
+ assert(calendar>=0 && record>=0,p+" must include both calendar and standings record");n++;
+ if(p.startsWith("app/equipos/lmb/")){
+  assert(record<calendar,p+" must show standings record before calendar");n++;
+ } else {
+  assert(calendar<record,p+" must preserve LMP calendar before standings record");n++;
+ }
 }
 const special=read("app/equipos/lmb/algodoneros/page.tsx");
 for(const symbol of ["COPY.summary.calendarKicker","COPY.summary.calendarTitle","COPY.summary.recordTitle","COPY.summary.newsTitle","COPY.summary.videosKicker","COPY.summary.videosTitle","COPY.summary.headlineTitle","COPY.roster.title","COPY.movements.kicker","COPY.movements.title"]){
  assert(special.includes(symbol),"Union Laguna bespoke page must use "+symbol);n++;
 }
-assert(special.indexOf("clubCalendarPanel")<special.indexOf("clubRecordPanel"),"Union Laguna must show calendar before record");n++;
+assert(special.indexOf("clubRecordPanel")<special.indexOf("clubCalendarPanel"),"Union Laguna must show standings record before calendar");n++;
+const mlbSummary=read("app/equipos/mlb/[id]/page.tsx");
+assert(mlbSummary.indexOf("clubRecordPanel")<mlbSummary.indexOf("clubCalendarPanel"),"MLB must show standings record before calendar");n++;
 const specialMlb=read("components/AlgodonerosGrandesLigas.tsx");
 for(const symbol of ["COPY.mlb.kicker","COPY.mlb.title","COPY.mlb.intro","COPY.mlb.minorKicker","COPY.mlb.minorTitle"]){
  assert(specialMlb.includes(symbol),"Union Laguna MLB page must use "+symbol);n++;
