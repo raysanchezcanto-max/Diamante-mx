@@ -4677,7 +4677,7 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 .clubMovementsContent--gemini .clubMovementBody{gap:0}
 .clubMovementsContent--gemini .clubMovementBody h3{font-size:18px}
 .clubMovementsContent--gemini .clubMovementBody p{max-width:68ch;font-size:14px}
-.clubMovementsContent--gemini .clubMovementDirection{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;column-gap:10px;row-gap:7px;background:rgba(255,255,255,.025);border-left:3px solid var(--movement-direction-color,#9fa9a3);padding:10px 12px;border-radius:0 7px 7px 0;max-width:min(100%,520px);margin-bottom:0}
+.clubMovementsContent--gemini .clubMovementDirection{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;column-gap:10px;row-gap:7px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.07);border-left:3px solid var(--movement-direction-color,#9fa9a3);padding:10px 12px;border-radius:0 10px 10px 0;max-width:min(100%,520px);margin-bottom:0}
 .clubMovementsContent--gemini .clubMovementDirection span{color:var(--movement-direction-color,#9fa9a3)}
 .clubMovementsContent--gemini .clubMovementDirection span{grid-column:1/-1;font-size:11px}
 .clubMovementsContent--gemini .clubMovementDirection:not(:has(.geminiCounterpartLogo)) strong{grid-column:1/-1}
@@ -4696,8 +4696,9 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 .geminiMovementDetails{max-width:68ch;font-size:14px;color:#c9d1cc;margin:0 0 8px}
 .geminiMovementDetails summary{cursor:pointer;list-style:none}
 .geminiMovementDetails summary::-webkit-details-marker{display:none}
+.geminiMovementDetails summary:focus-visible{outline:2px solid #d7ff4f;outline-offset:3px;border-radius:4px}
 .geminiMovementExcerpt{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55}
-.geminiMovementMore,.geminiMovementLess{display:block;color:#c6d2cb;font-size:12px;font-weight:750;margin-top:4px;text-decoration:underline;text-underline-offset:3px}
+.geminiMovementMore,.geminiMovementLess{display:inline-flex;align-items:center;min-height:36px;color:#c6d2cb;font-size:13px;font-weight:750;margin:5px 0 6px;text-decoration:underline;text-underline-offset:3px}
 .geminiMovementLess{display:none}
 .geminiMovementDetails[open] .geminiMovementExcerpt,.geminiMovementDetails[open] .geminiMovementMore{display:none}
 .geminiMovementDetails[open] .geminiMovementLess{display:block}
