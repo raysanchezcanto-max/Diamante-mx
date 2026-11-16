@@ -106,11 +106,11 @@ assert(!movementData.includes("getLmpDirectoryNews(club.id)"),"LMP transactions 
 const movementComponent=read("components/LmpMovementTimeline.tsx");
 const {describeLmpMovement}=require("../lib/lmpMovementPresentation.ts");
 const samples=[
- ["Naranjeros informa la activación de Raúl Barrón y Omar Muñoz. Desactivando a Ángel Camacho.","Altas y bajas","Altas y bajas: Raúl Barrón y Omar Muñoz"],
- ["Cañeros informa la activación de Luis Roberto Urías, desactivando a Jayson Bass.","Altas y bajas","Altas y bajas: Luis Roberto Urías"],
- ["El equipo desactiva a Juan Pérez.","Baja de plantilla","Baja de plantilla: Juan Pérez"],
- ["El club anuncia la firma de Pedro Pérez.","Contratación","Contratación"],
- ["El club informa ajustes administrativos sin detalle.","Actualización de plantilla","Actualización de plantilla"]
+ ["Naranjeros informa la activación de Raúl Barrón y Omar Muñoz. Desactivando a Ángel Camacho.","Altas y bajas","Raúl Barrón y Omar Muñoz"],
+ ["Cañeros informa la activación de Luis Roberto Urías, desactivando a Jayson Bass.","Altas y bajas","Luis Roberto Urías"],
+ ["El equipo desactiva a Juan Pérez.","Baja de plantilla","Juan Pérez"],
+ ["El club anuncia la firma de Pedro Pérez.","Contratación",""],
+ ["El club informa ajustes administrativos sin detalle.","Actualización de plantilla",""]
 ];
 for(const [description,type,title] of samples){
  const actual=describeLmpMovement(description);
