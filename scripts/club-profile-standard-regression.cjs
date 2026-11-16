@@ -42,8 +42,7 @@ for(const heading of ["EL PALMARÉS","Línea del tiempo","Figuras históricas de
 }
 const contract=read("CLUB_PROFILE_STANDARD.md");
 assert(contract.includes("APERTURA DEL ESTADIO")&&contract.includes("AÑO DE INAUGURACIÓN"),"Design contract missing");n++;
-// Additional profile pages share copy; LMB/MLB show the record before the calendar,
-// while LMP retains its own existing order until its summary is revised.
+// All profile summaries share copy and show the record before the calendar.
 const pages=[
  "app/equipos/lmb/[slug]/page.tsx",
  "app/equipos/lmp/algodoneros/page.tsx",
@@ -69,11 +68,7 @@ for(const p of pages){
  const calendar=text.indexOf("clubCalendarPanel");
  const record=text.indexOf("clubRecordPanel");
  assert(calendar>=0 && record>=0,p+" must include both calendar and standings record");n++;
- if(p.startsWith("app/equipos/lmb/")){
-  assert(record<calendar,p+" must show standings record before calendar");n++;
- } else {
-  assert(calendar<record,p+" must preserve LMP calendar before standings record");n++;
- }
+ assert(record<calendar,p+" must show standings record before calendar");n++;
 }
 const special=read("app/equipos/lmb/algodoneros/page.tsx");
 for(const symbol of ["COPY.summary.calendarKicker","COPY.summary.calendarTitle","COPY.summary.recordTitle","COPY.summary.newsTitle","COPY.summary.videosKicker","COPY.summary.videosTitle","COPY.summary.headlineTitle","COPY.roster.title","COPY.movements.kicker","COPY.movements.title"]){
