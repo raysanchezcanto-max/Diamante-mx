@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
+import MovementGeminiDetails from "@/components/MovementGeminiDetails";
+import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
 import { getAlgodonerosNews, getAlgodonerosRoster, getLmbClubVideos } from "@/lib/lmbClubContent";
 import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
   title: "Algodoneros del Unión Laguna | Equipos LMB | Diamante MX",
   description: "Perfil de Algodoneros, noticias destacadas, videos oficiales, plantilla y posiciones LMB 2026.",
 };
-type PageProps = { searchParams?: Promise<{ vista?: string }> };
+type PageProps = { searchParams?: Promise<{ vista?: string;estilo?:string }> };
 
 function normalize(name: string) {
   return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -152,7 +154,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
             </div>
           </section>
         ) : movementsView ? (
-          <section className="clubMovementsContent" aria-label="Movimientos de Algodoneros">
+          <section className={"clubMovementsContent"+(params?.estilo==="gemini"?" clubMovementsContent--gemini":"")} aria-label="Movimientos de Algodoneros">
             <div className="clubSectionTitle">
               <div>
                 <span className="clubKicker">{COPY.movements.kicker("LMB")}</span>
@@ -183,10 +185,11 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                     <img src={logo} alt="" width={53} height={53} />
                     <div>
                       <h3>{lmbMovementPlayerTitle(event.title)}</h3>
-                      <p>{event.description}</p>
+                      {params?.estilo==="gemini"?<MovementGeminiDetails text={event.description}/>:<p>{event.description}</p>}
                       {"direction" in event && "otherClub" in event && event.direction && event.otherClub && (
-                        <div className="clubMovementDirection">
-                          <span>{event.direction === "out" ? "DERECHOS CEDIDOS A" : "DERECHOS RECIBIDOS DE"}</span>
+                        <div className="clubMovementDirection" data-direction={event.direction}>
+                          <span>{event.direction === "out" ? (params?.estilo==="gemini"?"→ ":"")+"DERECHOS CEDIDOS A" : (params?.estilo==="gemini"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
+                          {params?.estilo==="gemini"&&<MovementCounterpartLogo league="LMB" name={event.otherClub}/>}
                           <strong>{event.otherClub}</strong>
                         </div>
                       )}
