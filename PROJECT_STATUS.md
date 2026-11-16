@@ -1161,3 +1161,12 @@ Total output lines: 2623
 - **LMP:** `lmpTransferPresentation` reconoce cesiones y préstamos expresos, extrae la contraparte identificada y muestra la misma franja `clubMovementDirection`; `lmpTransferTitle` conserva el prefijo especial en esas tarjetas. Cuando el club contraparte no está acreditado en el texto, se omite la franja.
 - **MLB:** `mlbTransferPresentation` reconoce un intercambio y solo muestra la franja `INTERCAMBIO CON [club]` si la descripción traducida incluye expresamente el nombre de la contraparte. Las operaciones genéricas como «intercambio relacionado con [jugador]» no afirman destino ni contraparte desconocidos.
 - **Verificación:** regresiones de cesión LMB, intercambio MLB con y sin contraparte y cesión LMP; pruebas de tipos superadas. Inspección visual en producción y teléfonos reales todavía pendiente.
+
+## §186 · 16/nov/2026 — Corrección visual definitiva de los traspasos: primera fotografía
+
+**Aclaración expresa de Valeria:** tomar **la primera captura de Caliente de Durango**, no la segunda. El título debe mostrar **solo el nombre del jugador** (ej.: «Nicholas Billy Williams», «Devin Paul Smeltzer», «Gabriel Noriega Mussa»); la franja inferior **sí permanece** con «DERECHOS CEDIDOS A» o «DERECHOS RECIBIDOS DE» y el otro equipo. El tipo de movimiento sigue en la insignia superior. Nunca repetir «Derechos cedidos/recibidos» en el título.
+
+- **LMB:** se quita la excepción anterior de `lmbMovementPlayerTitle`, por lo que los títulos de cesiones vuelven a mostrar el nombre solo. Se conserva la dirección y contraparte de la cesión en la franja lime original.
+- **MLB:** los intercambios muestran el jugador solamente; la franja `INTERCAMBIO CON [club]` permanece cuando la fuente declara esa contraparte. No se inventa cuando es desconocida.
+- **LMP:** `lmpTransferTitle` devuelve únicamente el nombre reconocible sin anteponer la operación, y conserva la franja de contraparte verificada. Si el nombre no se identifica confiablemente, se muestra la descripción original sin título genérico.
+- **Pruebas:** regresión explícita de cesión LMB y nombre LMP sin prefijo; verificar compilación y publicación visual por liga, además de QA físico pendiente.
