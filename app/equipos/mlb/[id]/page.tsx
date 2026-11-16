@@ -17,11 +17,12 @@ import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
 import { mlbTransferPresentation } from "@/lib/movementTransferPresentation";
+import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 
 export const revalidate = 1800;
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{ vista?: string }>;
+  searchParams?: Promise<{ vista?: string;estilo?:string }>;
 };
 const views: LmbClubView[] = ["resumen", "estadisticas", "plantilla", "movimientos", "grandes-ligas", "historia"];
 const dateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
@@ -273,7 +274,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
         </div>}
       </section>}
 
-      {view === "movimientos" && <section className="clubMovementsContent clubMovementsContent--mlb">
+      {view === "movimientos" && <section className={"clubMovementsContent clubMovementsContent--mlb"+(q?.estilo==="gemini"?" clubMovementsContent--gemini":"")}>
         <div className="clubSectionTitle">
           <div><span className="clubKicker">{COPY.movements.kicker("MLB")}</span>
             <h2>{COPY.movements.title(club.name)}</h2></div>
@@ -293,8 +294,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             <div className="clubMovementBody">
               {logo && <img src={logo} alt="" width={53} height={53}/>}
               <div><h3>{item.player ?? "Transacción registrada por MLB"}</h3>
-                <p>{item.description || item.label}</p>
-                {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span><strong>{transfer.otherClub}</strong></div>}
+                {q?.estilo==="gemini"?<MovementGeminiDetails text={item.description || item.label}/>:<p>{item.description || item.label}</p>}
+                {transfer&&<div className="clubMovementDirection" data-direction="out"><span>{transfer.label}</span><strong>{transfer.otherClub}</strong></div>}
                 <a href={official + "/roster/transactions"} target="_blank"
                   rel="noopener noreferrer">Consultar fuente oficial MLB ↗</a>
               </div>
