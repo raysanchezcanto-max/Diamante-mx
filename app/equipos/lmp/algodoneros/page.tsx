@@ -49,7 +49,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         <div className="clubHeroIdentity">
           <div className="clubHeroLogo">{logo?<img src={logo} width={108} height={108} alt="" />:<span aria-hidden="true">⚾</span>}</div>
           <div className="clubHeroText">
-            <span className="clubKicker">EQUIPOS · LIGA MEXICANA DEL PACÍFICO</span>
+            <span className="clubKicker"><span className="clubHeroKickerDesktop">EQUIPOS · LIGA MEXICANA DEL PACÍFICO</span><span className="clubHeroKickerMobile">LMP · EQUIPOS</span></span>
             <h1>{name}</h1>
             <p>Guasave, Sinaloa · Temporada 2026–27 · Béisbol invernal</p>
           </div>
@@ -69,6 +69,17 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
 
       {view==="resumen"&&<div className="clubContentGrid">
         <aside className="clubSideLeft">
+          <section className="clubPanel clubRecordPanel">
+            <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span>
+            <h2>{COPY.summary.recordTitle}</h2>
+            <div className="clubRecordGrid">
+              <div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div>
+              <div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div>
+              <div><strong>{record?.pct??"—"}</strong><span>PCT</span></div>
+            </div>
+            <p>Registro oficial de temporada 2026; consulta automática. No representa el marcador de un juego en vivo.</p>
+            {record&&<p>Posición calculada por porcentaje de victorias: {record.standing}.ª</p>}
+          </section>
           <section className="clubPanel clubCalendarPanel">
             <span className="clubKicker">{COPY.summary.calendarKicker("LMP")}</span>
             <h2>{COPY.summary.calendarTitle}</h2>
@@ -98,18 +109,6 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
                 <a href="/?league=lmp#juegos">Calendario completo LMP ↗</a>
               </div>
             </details>
-          </section>
-
-          <section className="clubPanel clubRecordPanel">
-            <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span>
-            <h2>{COPY.summary.recordTitle}</h2>
-            <div className="clubRecordGrid">
-              <div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div>
-              <div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div>
-              <div><strong>{record?.pct??"—"}</strong><span>PCT</span></div>
-            </div>
-            <p>Registro oficial de temporada 2026; consulta automática. No representa el marcador de un juego en vivo.</p>
-            {record&&<p>Posición calculada por porcentaje de victorias: {record.standing}.ª</p>}
           </section>
         </aside>
         <div className="clubMainColumn">
