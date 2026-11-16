@@ -4677,12 +4677,14 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 .clubMovementsContent--gemini .clubMovementBody{gap:0}
 .clubMovementsContent--gemini .clubMovementBody h3{font-size:18px}
 .clubMovementsContent--gemini .clubMovementBody p{max-width:68ch;font-size:14px}
-.clubMovementsContent--gemini .clubMovementDirection{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;column-gap:10px;row-gap:7px;background:rgba(255,255,255,.025);border-left:3px solid var(--movement-direction-color,#9fa9a3);padding:10px 12px;border-radius:0 7px 7px 0;max-width:min(100%,520px)}
+.clubMovementsContent--gemini .clubMovementDirection{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;column-gap:10px;row-gap:7px;background:rgba(255,255,255,.025);border-left:3px solid var(--movement-direction-color,#9fa9a3);padding:10px 12px;border-radius:0 7px 7px 0;max-width:min(100%,520px);margin-bottom:0}
 .clubMovementsContent--gemini .clubMovementDirection span{color:var(--movement-direction-color,#9fa9a3)}
-.clubMovementsContent--gemini .clubMovementDirection span{grid-column:1/-1}
+.clubMovementsContent--gemini .clubMovementDirection span{grid-column:1/-1;font-size:11px}
 .clubMovementsContent--gemini .clubMovementDirection:not(:has(.geminiCounterpartLogo)) strong{grid-column:1/-1}
+.clubMovementsContent--gemini .clubMovementDirection[data-direction] span::first-letter{font-size:13px}
 .clubMovementsContent--gemini .clubMovementDirection strong{color:#f3f4f6;grid-column:2;overflow-wrap:anywhere}
-.clubMovementsContent--gemini .geminiCounterpartLogo{width:32px;height:32px;box-sizing:border-box;padding:4px;object-fit:contain;grid-column:1;background:#e0e8df;border:1px solid #b3c8b8;border-radius:6px}
+.clubMovementsContent--gemini .geminiCounterpartLogo{width:32px;height:32px;box-sizing:border-box;padding:2px;object-fit:contain;grid-column:1;background:#e0e8df;border:1px solid #b3c8b8;border-radius:6px}
+.clubMovementsContent--gemini .geminiCounterpartLogo--wide{width:44px}
 .clubMovementsContent--gemini .clubMovementDirection[data-direction="in"]{--movement-direction-color:#34d399}
 .clubMovementsContent--gemini .clubMovementDirection[data-direction="out"]{--movement-direction-color:#fdba74}
 .clubMovementsContent--gemini .clubMovementBody a{display:inline-flex;align-items:center;min-height:44px;color:#c6d2cb;text-decoration:none}
