@@ -97,7 +97,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
           <div className="clubHeroIdentity">
             <div className="clubHeroLogo">{logo?<img src={logo} alt="" width={108} height={108}/>:<span aria-hidden="true">⚾</span>}</div>
             <div className="clubHeroText">
-              <span className="clubKicker">EQUIPOS · LIGA MEXICANA DE BEISBOL</span>
+              <span className="clubKicker"><span className="clubHeroKickerDesktop">EQUIPOS · LIGA MEXICANA DE BEISBOL</span><span className="clubHeroKickerMobile">LMB · EQUIPOS</span></span>
               <h1>{club.name}</h1>
               <p>Zona {club.region} · Temporada 2026 y archivo histórico</p>
             </div>
