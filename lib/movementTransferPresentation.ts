@@ -21,7 +21,7 @@ export function lmpTransferPresentation(description:string):MovementTransfer|nul
     :{heading:"Derechos recibidos",label:"DERECHOS RECIBIDOS DE",otherClub:club};
 }
 
-export function lmpTransferTitle(description:string,heading:string):string {
+export function lmpTransferTitle(description:string):string {
   const player=description.match(/\b(?:derechos (?:definitivos )?de|pr[eé]stamo(?:, exclusivamente para la Temporada \d{4}-\d{2},)?\s+al\s+(?:lanzador|jardinero|receptor|jugador de cuadro))\s+(.+?)\s+(?:al club|a los|a las|a)\s+/i)?.[1]?.trim();
-  return player?`${heading}: ${player}`:heading;
+  return player??"";
 }
