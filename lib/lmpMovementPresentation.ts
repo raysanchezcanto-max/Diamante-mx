@@ -17,7 +17,11 @@ export function describeLmpMovement(description: string): {title:string;type:str
   const actor = description.match(/\b(?:activaci[oó]n de|activ(?:a|an|ando)\s+(?:a|al|en su lugar a)|desactiv(?:a|an|ando)\s+(?:a|al)|inactiv(?:a|an|ando)\s+(?:a|al)|alta de|baja de)\s+([^.;]+)/i)?.[1]
     ?.split(/,\s*desactivando|,\s*inactivando|\s+desactivando|\s+inactivando|\s+para\s+/i)[0]
     ?.trim();
-  const names = actor && actor.length <= 75 && !/\b(?:plantilla|jugadores|lanzadores|receptores)\b/i.test(actor) ? actor : null;
+  const actorNames=actor?.replace(/^(?:los|las|el|la)\s+(?:lanzadores?|jugadores? de cuadro|receptores?|jardineros?)\s+/i,"").trim();
+  const shortNames=actorNames && actorNames.length>75
+    ? actorNames.split(/,\s*/)[0]?.trim() + " y otros"
+    : actorNames;
+  const names = shortNames && !/\b(?:plantilla|jugadores|lanzadores|receptores)\b/i.test(shortNames) ? shortNames : null;
   // La categoría ya aparece en la etiqueta superior; no repetirla en el título.
   // Sin nombres identificables, no se muestra un encabezado genérico.
   const title = names ?? "";
