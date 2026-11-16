@@ -1170,3 +1170,13 @@ Total output lines: 2623
 - **MLB:** los intercambios muestran el jugador solamente; la franja `INTERCAMBIO CON [club]` permanece cuando la fuente declara esa contraparte. No se inventa cuando es desconocida.
 - **LMP:** `lmpTransferTitle` devuelve únicamente el nombre reconocible sin anteponer la operación, y conserva la franja de contraparte verificada. Si el nombre no se identifica confiablemente, se muestra la descripción original sin título genérico.
 - **Pruebas:** regresión explícita de cesión LMB y nombre LMP sin prefijo; verificar compilación y publicación visual por liga, además de QA físico pendiente.
+
+## §187 · 16/nov/2026 — Prueba visual Gemini opcional para Movimientos
+
+**Autorización de Valeria:** probar una variante visual basada en la propuesta de Gemini antes de decidir si reemplaza el diseño aprobado. Se implementa exclusivamente en las vistas `Movimientos` de MLB/LMB/LMP cuando la URL incluye `estilo=gemini` (por ejemplo, `/equipos/lmb/caliente?vista=movimientos&estilo=gemini`). Sin este parámetro permanece la versión anterior, por lo que se puede comparar sin una adopción global.
+
+- Se elimina visualmente el escudo repetido del club propio solo en esta variante; el nombre del jugador conserva el protagonismo.
+- Las franjas verificadas de salida/entrada utilizan durazno `#FDBA74` y turquesa `#34D399`, respectivamente. Texto y dirección explícitos permanecen; los escudos de contraparte LMB/LMP se muestran solo con imagen oficial disponible, sin iniciales inventadas.
+- Se limita el ancho de lectura de la descripción a unos `68ch` en escritorio. Los textos extensos se despliegan mediante `Ver más/Ver menos`, conservando íntegro el original y el enlace oficial siempre visible; las notas cortas se muestran completas.
+- Se incrementa el área táctil del enlace de cada movimiento, mantiene foco visible y se adapta la franja a móvil. Las fechas siguen en lima, nombres blancos y enlaces grises, respetando las preferencias ya aprobadas.
+- **Pendiente:** revisión comparada en producción y móvil, ajuste editorial de comunicados compuestos y decisión explícita de Valeria antes de convertir Gemini en el estilo predeterminado. La opción es experimental, no una aprobación definitiva.
