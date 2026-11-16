@@ -292,7 +292,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             </div>
             <div className="clubMovementBody">
               {logo && <img src={logo} alt="" width={53} height={53}/>}
-              <div><h3>{transfer?`${transfer.heading}: ${item.player ?? "Jugador no identificado"}`:item.player ?? "Transacción registrada por MLB"}</h3>
+              <div><h3>{item.player ?? "Transacción registrada por MLB"}</h3>
                 <p>{item.description || item.label}</p>
                 {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span><strong>{transfer.otherClub}</strong></div>}
                 <a href={official + "/roster/transactions"} target="_blank"
