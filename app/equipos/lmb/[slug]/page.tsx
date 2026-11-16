@@ -124,14 +124,6 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         {view==="resumen"&&(
           <div className="clubContentGrid">
             <aside className="clubSideLeft">
-              <section className="clubPanel clubCalendarPanel">
-                <span className="clubKicker">{COPY.summary.calendarKicker("LMB")}</span>
-                <h2>{COPY.summary.calendarTitle}</h2>
-                <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
-                <strong>Próxima fecha por confirmar</strong>
-                <p>No mostramos el siguiente encuentro hasta contar con un calendario verificable del club.</p>
-                <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Consultar programación en LMB ↗</a>
-              </section>
               <section className="clubPanel clubRecordPanel">
                 <span className="clubKicker">ÚLTIMA TABLA LMB DISPONIBLE</span>
                 <h2>{COPY.summary.recordTitle}</h2>
@@ -141,6 +133,14 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   <div><strong>{teamRecord?.pct??"—"}</strong><span>PCT</span></div>
                 </div>
                 <p>Datos de la tabla oficial disponible; no son un marcador en directo.</p>
+              </section>
+              <section className="clubPanel clubCalendarPanel">
+                <span className="clubKicker">{COPY.summary.calendarKicker("LMB")}</span>
+                <h2>{COPY.summary.calendarTitle}</h2>
+                <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
+                <strong>Próxima fecha por confirmar</strong>
+                <p>No mostramos el siguiente encuentro hasta contar con un calendario verificable del club.</p>
+                <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Consultar programación en LMB ↗</a>
               </section>
             </aside>
             <div className="clubMainColumn">
