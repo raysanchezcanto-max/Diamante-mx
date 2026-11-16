@@ -16,6 +16,7 @@ import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear
 import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
+import { mlbTransferPresentation } from "@/lib/movementTransferPresentation";
 
 export const revalidate = 1800;
 type PageProps = {
@@ -284,20 +285,21 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           : "El historial oficial no estuvo disponible en esta consulta."}
           {" "}{COPY.movements.note}</p>
         {transactions?.items.length ? <div className="clubMovementsTimeline">
-          {transactions.items.map(item => <article className="clubMovementItem" key={item.key}>
+          {transactions.items.map(item => {const transfer=mlbTransferPresentation(item.label,item.description);return <article className="clubMovementItem" key={item.key}>
             <div className="clubMovementDate">
               <span>{dateLabel(item.date + "T12:00:00Z")}</span>
               <span className="clubMovementType">{item.label}</span>
             </div>
             <div className="clubMovementBody">
               {logo && <img src={logo} alt="" width={53} height={53}/>}
-              <div><h3>{item.player ?? "Transacción registrada por MLB"}</h3>
+              <div><h3>{transfer?`${transfer.heading}: ${item.player ?? "Jugador no identificado"}`:item.player ?? "Transacción registrada por MLB"}</h3>
                 <p>{item.description || item.label}</p>
+                {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span><strong>{transfer.otherClub}</strong></div>}
                 <a href={official + "/roster/transactions"} target="_blank"
                   rel="noopener noreferrer">Consultar fuente oficial MLB ↗</a>
               </div>
             </div>
-          </article>)}
+          </article>})}
         </div> : <div className="clubDirectoryNotice">
           <h3>{COPY.movements.noneTitle}</h3>
           <p>Una consulta vacía no demuestra que no hayan existido movimientos.</p>
