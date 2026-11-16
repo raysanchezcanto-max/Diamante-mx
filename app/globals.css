@@ -4683,7 +4683,7 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 .clubMovementsContent--gemini .clubMovementDirection:not(:has(.geminiCounterpartLogo)) strong{grid-column:1/-1}
 .clubMovementsContent--gemini .clubMovementDirection[data-direction] span::first-letter{font-size:13px}
 .clubMovementsContent--gemini .clubMovementDirection strong{color:#f3f4f6;grid-column:2;overflow-wrap:anywhere}
-.clubMovementsContent--gemini .geminiCounterpartLogo{width:32px;height:32px;box-sizing:border-box;padding:2px;object-fit:contain;grid-column:1;background:#e0e8df;border:1px solid #b3c8b8;border-radius:6px}
+.clubMovementsContent--gemini .geminiCounterpartLogo{width:32px;height:32px;box-sizing:border-box;padding:3px;object-fit:contain;grid-column:1;background:#263c34;border:1px solid #557267;border-radius:6px}
 .clubMovementsContent--gemini .geminiCounterpartLogo--wide{width:44px}
 .clubMovementsContent--gemini .clubMovementDirection[data-direction="in"]{--movement-direction-color:#34d399}
 .clubMovementsContent--gemini .clubMovementDirection[data-direction="out"]{--movement-direction-color:#fdba74}
@@ -5702,8 +5702,8 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
   .clubProfile .clubHeroKickerMobile{display:inline}
 }
 
-/* Las gorras oficiales MLB “team-cap-on-dark” tienen trazos claros
-   (p. ej. Detroit). Fondo oscuro exclusivo para evitar blancos sobre blanco. */
+/* Las gorras MLB con trazos claros (p. ej. Detroit) comparten ahora
+   el fondo oscuro de la franja con los escudos LMB y LMP. */
 .clubMovementsContent--gemini .geminiCounterpartLogo--mlb{
   background:#263c34;
   border-color:#557267;
