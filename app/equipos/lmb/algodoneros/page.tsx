@@ -221,14 +221,6 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
         ) : (
           <div className="clubContentGrid">
             <aside className="clubSideLeft">
-              <section className="clubPanel clubCalendarPanel">
-                <span className="clubKicker">{COPY.summary.calendarKicker("LMB")}</span>
-                <h2>{COPY.summary.calendarTitle}</h2>
-                <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
-                <strong>Temporada 2026 finalizada</strong>
-                <p>El próximo encuentro de Algodoneros todavía no está confirmado.</p>
-                <a href={club.lmbPage} target="_blank" rel="noopener noreferrer">Consultar calendario oficial ↗</a>
-              </section>
               <section className="clubPanel clubRecordPanel">
                 <span className="clubKicker">{seasonLabel}</span>
                 <h2>{COPY.summary.recordTitle}</h2>
@@ -237,6 +229,14 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   <div><strong>{record?.losses ?? "—"}</strong><span>PERDIDOS</span></div>
                   <div><strong>{record?.pct ?? "—"}</strong><span>PCT</span></div>
                 </div>
+              </section>
+              <section className="clubPanel clubCalendarPanel">
+                <span className="clubKicker">{COPY.summary.calendarKicker("LMB")}</span>
+                <h2>{COPY.summary.calendarTitle}</h2>
+                <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
+                <strong>Temporada 2026 finalizada</strong>
+                <p>El próximo encuentro de Algodoneros todavía no está confirmado.</p>
+                <a href={club.lmbPage} target="_blank" rel="noopener noreferrer">Consultar calendario oficial ↗</a>
               </section>
             </aside>
 
