@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
+import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
 import { getAlgodonerosNews, getAlgodonerosRoster, getLmbClubVideos } from "@/lib/lmbClubContent";
 import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
 import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear } from "@/lib/clubStatistics";
@@ -181,7 +182,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   <div className="clubMovementBody">
                     <img src={logo} alt="" width={53} height={53} />
                     <div>
-                      <h3>{event.title}</h3>
+                      <h3>{lmbMovementPlayerTitle(event.title)}</h3>
                       <p>{event.description}</p>
                       {"direction" in event && "otherClub" in event && event.direction && event.otherClub && (
                         <div className="clubMovementDirection">
