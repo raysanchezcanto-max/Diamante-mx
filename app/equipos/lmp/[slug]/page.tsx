@@ -8,7 +8,7 @@ import { getLmpSeasonYear } from "@/lib/lmp";
 import { getClubSeasonStandings, getLatestClubSeasonStatistics } from "@/lib/clubStatistics";
 
 export const revalidate=900;
-type Props={params:Promise<{slug:string}>;searchParams?:Promise<{vista?:string}>};
+type Props={params:Promise<{slug:string}>;searchParams?:Promise<{vista?:string;estilo?:string}>};
 const views:readonly LmbClubView[]=["resumen","estadisticas","plantilla","movimientos","grandes-ligas","historia"];
 export async function generateMetadata({params}:Pick<Props,"params">):Promise<Metadata>{
  const {slug}=await params;const club=getLmpDirectoryClub(slug);
@@ -31,5 +31,5 @@ export default async function LmpClubDirectoryPage({params,searchParams}:Props){
   season!==null?getClubSeasonStandings("LMP",season):Promise.resolve([]),
   season!==null?getLatestClubSeasonStatistics("LMP",club.id,season):Promise.resolve(null),
  ]);
- return <LmpDirectoryClubProfile club={club} view={view} roster={roster} fixtures={fixtures} record={record} news={news} mlbAlumni={mlbAlumni} movements={movements} standings={standings} statistics={statistics} statsSeason={season}/>;
+ return <LmpDirectoryClubProfile club={club} view={view} roster={roster} fixtures={fixtures} record={record} news={news} mlbAlumni={mlbAlumni} movements={movements} standings={standings} statistics={statistics} statsSeason={season} gemini={query?.estilo==="gemini"}/>;
 }
