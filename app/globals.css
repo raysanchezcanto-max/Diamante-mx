@@ -5028,16 +5028,23 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 }
 
 
-/* 67 · Historias editoriales y movimientos legibles para cada club LMB. */
+/* 67 · Historias editoriales y movimientos legibles para todas las ligas. */
 .clubProfile .clubMovementDate{text-transform:none}
-.clubProfile--all .clubMovementBody>img{
+.clubProfile .clubMovementsContent .clubMovementBody>img{
   width:55px;height:55px;object-fit:contain;flex:0 0 55px;
-  background:#e9efe7;border-radius:12px;padding:7px;
-}
-/* MLB: insignia flotante sobre fondo oscuro, sin la placa clara de LMB/LMP. */
-.clubProfile--all .clubMovementsContent--mlb .clubMovementBody>img{
+  /* Los archivos de escudos transparentes no necesitan una placa blanca. */
   background:transparent;border:0;border-radius:0;padding:0;
   filter:drop-shadow(0 2px 4px rgba(0,0,0,.5)) drop-shadow(0 0 1px rgba(255,255,255,.25));
+}
+.clubProfile .clubMovementsContent a{
+  /* Primero destaca la fecha; los enlaces siguen reconocibles sin tanto lima. */
+  color:#c6d2cb;text-decoration:underline;text-decoration-color:#71877a;text-underline-offset:3px;
+}
+.clubProfile .clubMovementsContent a:hover,
+.clubProfile .clubMovementsContent a:focus-visible{color:#e2ff9b;text-decoration-color:currentColor}
+.clubProfile .clubMovementsContent a:focus-visible{outline:2px solid #d8ff73;outline-offset:3px}
+@media(max-width:600px){
+  .clubProfile .clubMovementsContent .clubMovementBody>img{width:42px;height:42px;flex-basis:42px}
 }
 .clubProfile--all .clubHistoryStats>div{min-width:0}
 .clubProfile--all .clubHistoryStats strong{overflow-wrap:anywhere}
@@ -5631,11 +5638,6 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 .clubProfile--all .clubMovementsContent--mlb .clubMovementsTimeline{
   /* Una ficha por fila, igual que las listas de LMB y LMP. */
   grid-template-columns:minmax(0,1fr);align-items:stretch}
-.clubProfile--all .clubMovementsContent--mlb .clubMovementDate{
-  /* Las fechas se repiten a menudo: el lima queda reservado para las acciones. */
-  color:#cfdfd2;font-weight:800}
-.clubProfile--all .clubMovementsContent--mlb .clubMovementBody a{
-  color:#deff87}
 @media(max-width:900px){
   .clubProfile--all .clubVideoGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
