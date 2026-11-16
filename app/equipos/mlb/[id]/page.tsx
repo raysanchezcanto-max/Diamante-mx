@@ -93,7 +93,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               : <span aria-hidden="true">⚾</span>}
           </div>
           <div className="clubHeroText">
-            <span className="clubKicker">EQUIPOS · GRANDES LIGAS</span>
+            <span className="clubKicker"><span className="clubHeroKickerDesktop">EQUIPOS · GRANDES LIGAS</span><span className="clubHeroKickerMobile">MLB · EQUIPOS</span></span>
             <h1>{club.name}</h1>
             <p>{overview.division} · Temporada {new Date().getUTCFullYear()} y archivo histórico</p>
           </div>
