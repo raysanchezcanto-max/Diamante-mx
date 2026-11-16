@@ -311,8 +311,8 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                       {logo&&<img src={logo} alt="" width={53} height={53}/>}
                       <div><h3>{lmbMovementPlayerTitle(item.title)}</h3>{q?.estilo!=="original"?<MovementGeminiDetails text={item.description}/>:<p>{item.description}</p>}
                         {item.direction && item.otherClub && (
-                          <div className="clubMovementDirection" data-direction={item.direction}>
-                            <span>{item.direction === "out" ? (q?.estilo!=="original"?"→ ":"")+"DERECHOS CEDIDOS A" : (q?.estilo!=="original"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
+                          <div className="clubMovementDirection" data-direction={item.exchange?undefined:item.direction}>
+                            <span>{item.exchange?"INTERCAMBIO DE DERECHOS CON":item.direction === "out" ? (q?.estilo!=="original"?"→ ":"")+"DERECHOS CEDIDOS A" : (q?.estilo!=="original"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
                             {q?.estilo!=="original"&&<MovementCounterpartLogo league="LMB" name={item.otherClub}/>}
                             <strong>{item.otherClub}</strong>
                           </div>
