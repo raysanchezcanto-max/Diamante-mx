@@ -291,7 +291,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
         )}
 
         {view==="movimientos"&&(
-          <section className={"clubMovementsContent"+(q?.estilo==="gemini"?" clubMovementsContent--gemini":"")}>
+          <section className={"clubMovementsContent"+(q?.estilo!=="original"?" clubMovementsContent--gemini":"")}>
             <div className="clubSectionTitle">
               <div><span className="clubKicker">{COPY.movements.kicker("LMB")}</span><h2>{COPY.movements.title(club.name)}</h2></div>
               <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Ver equipo en LMB ↗</a>
@@ -309,11 +309,11 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <div className="clubMovementDate"><span>{formatDate(item.date)}</span><span className="clubMovementType">{item.type}</span></div>
                     <div className="clubMovementBody">
                       {logo&&<img src={logo} alt="" width={53} height={53}/>}
-                      <div><h3>{lmbMovementPlayerTitle(item.title)}</h3>{q?.estilo==="gemini"?<MovementGeminiDetails text={item.description}/>:<p>{item.description}</p>}
+                      <div><h3>{lmbMovementPlayerTitle(item.title)}</h3>{q?.estilo!=="original"?<MovementGeminiDetails text={item.description}/>:<p>{item.description}</p>}
                         {item.direction && item.otherClub && (
                           <div className="clubMovementDirection" data-direction={item.direction}>
-                            <span>{item.direction === "out" ? (q?.estilo==="gemini"?"→ ":"")+"DERECHOS CEDIDOS A" : (q?.estilo==="gemini"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
-                            {q?.estilo==="gemini"&&<MovementCounterpartLogo league="LMB" name={item.otherClub}/>}
+                            <span>{item.direction === "out" ? (q?.estilo!=="original"?"→ ":"")+"DERECHOS CEDIDOS A" : (q?.estilo!=="original"?"← ":"")+"DERECHOS RECIBIDOS DE"}</span>
+                            {q?.estilo!=="original"&&<MovementCounterpartLogo league="LMB" name={item.otherClub}/>}
                             <strong>{item.otherClub}</strong>
                           </div>
                         )}
