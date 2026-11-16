@@ -21,7 +21,7 @@ const official = "https://losalgodoneros.com/";
 const rosterLink = "https://losalgodoneros.com/team/algodoneros/roster";
 const sections: LmbClubView[] = ["resumen","estadisticas","plantilla","movimientos","grandes-ligas","historia"];
 const groupOrder = ["Lanzadores", "Receptores", "Jugadores del cuadro", "Jardineros", "Otros jugadores"];
-type Props = { searchParams: Promise<{vista?: string}> };
+type Props = { searchParams: Promise<{vista?: string;estilo?:string}> };
 export default async function AlgodonerosLmpProfile({searchParams}:Props){
   const query=await searchParams;
   const view:LmbClubView = sections.includes(query.vista as LmbClubView)
@@ -196,9 +196,9 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
         </div>:<div className="clubDirectoryNotice"><p>La API no devolvió una plantilla válida. No se agregaron jugadores de otros equipos.</p><a href={rosterLink} target="_blank" rel="noopener noreferrer">Ver plantilla oficial ↗</a></div>}
       </section>}
 
-      {view==="movimientos"&&<section className="clubMovementsContent">
+      {view==="movimientos"&&<section className={"clubMovementsContent"+(query.estilo==="gemini"?" clubMovementsContent--gemini":"")}>
         <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.movements.kicker("LMP")}</span><h2>{COPY.movements.title(name)}</h2></div><a href="https://www.lmp.mx/rosters/algodoneros" target="_blank" rel="noopener noreferrer">Fuente oficial ↗</a></div>
-        <LmpMovementTimeline movements={movements} logo={logo} sourceUrl="https://www.lmp.mx/rosters/algodoneros"/>
+        <LmpMovementTimeline movements={movements} logo={logo} sourceUrl="https://www.lmp.mx/rosters/algodoneros" gemini={query.estilo==="gemini"}/>
       </section>}
 
       {view==="grandes-ligas"&&<section className="clubBigLeagues clubDirectoryMlb" aria-labelledby="lmpGuasaveMlbTitle">
