@@ -18,6 +18,8 @@ export function describeLmpMovement(description: string): {title:string;type:str
     ?.split(/,\s*desactivando|,\s*inactivando|\s+desactivando|\s+inactivando|\s+para\s+/i)[0]
     ?.trim();
   const names = actor && actor.length <= 75 && !/\b(?:plantilla|jugadores|lanzadores|receptores)\b/i.test(actor) ? actor : null;
-  const title = names ? `${type}: ${names}` : type;
+  // La categoría ya aparece en la etiqueta superior; no repetirla en el título.
+  // Sin nombres identificables, no se muestra un encabezado genérico.
+  const title = names ?? "";
   return {title,type};
 }
