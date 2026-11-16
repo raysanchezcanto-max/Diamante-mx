@@ -116,7 +116,17 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
 
       {view === "resumen" && <div className="clubContentGrid">
         <aside className="clubSideLeft">
-          <section className="clubPanel clubCalendarPanel">
+          <section className="clubPanel clubRecordPanel">
+            <span className="clubKicker">ÚLTIMA TABLA MLB DISPONIBLE</span>
+            <h2>{COPY.summary.recordTitle}</h2>
+            <div className="clubRecordGrid">
+              <div><strong>{record?.wins ?? "—"}</strong><span>GANADOS</span></div>
+              <div><strong>{record?.losses ?? "—"}</strong><span>PERDIDOS</span></div>
+              <div><strong>{record?.pct ?? "—"}</strong><span>PCT</span></div>
+            </div>
+            <p>Datos de temporada regular publicados por MLB; no son un marcador en vivo.</p>
+          </section>
+              <section className="clubPanel clubCalendarPanel">
             <span className="clubKicker">{COPY.summary.calendarKicker("MLB")}</span>
             <h2>{COPY.summary.calendarTitle}</h2>
             <div className="clubCalendarEmblem" aria-hidden="true">⚾</div>
@@ -130,16 +140,6 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               <a href={official + "/schedule"} target="_blank" rel="noopener noreferrer">
                 Consultar programación MLB ↗</a>
             </>}
-          </section>
-          <section className="clubPanel clubRecordPanel">
-            <span className="clubKicker">ÚLTIMA TABLA MLB DISPONIBLE</span>
-            <h2>{COPY.summary.recordTitle}</h2>
-            <div className="clubRecordGrid">
-              <div><strong>{record?.wins ?? "—"}</strong><span>GANADOS</span></div>
-              <div><strong>{record?.losses ?? "—"}</strong><span>PERDIDOS</span></div>
-              <div><strong>{record?.pct ?? "—"}</strong><span>PCT</span></div>
-            </div>
-            <p>Datos de temporada regular publicados por MLB; no son un marcador en vivo.</p>
           </section>
         </aside>
         <div className="clubMainColumn">
