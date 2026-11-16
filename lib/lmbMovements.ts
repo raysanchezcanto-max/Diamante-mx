@@ -14,6 +14,8 @@ export type ClubMovement = {
   // Solo las cesiones explícitas permiten afirmar quién entrega o recibe derechos.
   direction?: "out" | "in";
   otherClub?: string;
+  // Solo si el mismo boletín confirma cesiones recíprocas entre ambos clubes.
+  exchange?: boolean;
 };
 
 export type MovementResult = {
@@ -137,6 +139,7 @@ function rightsTransfer(entry: string, headingAliases: readonly string[]): {
   title: string;
   direction: "out" | "in";
   otherClub: string;
+  exchange: boolean;
 } | null {
   const content = stripTags(entry).replace(/^[*•·–—\s]+/, "").trim();
   const match = content.match(
@@ -163,6 +166,12 @@ function rightsTransfer(entry: string, headingAliases: readonly string[]): {
   if (outgoing === incoming) return null;
 
   const counterparty = outgoing ? to : from;
+  // Un comunicado puede registrar dos derechos cedidos en sentidos opuestos.
+  // El primer nombre no debe presentarse como si fuera toda la operación.
+  const transfers = [...content.matchAll(/\bel club\s+(.+?)\s+(?:cede|cedió|cedio)\s+(?:de manera definitiva\s+)?(?:los\s+)?derechos\s+de\s+(.+?)\s+al club\s+(.+?)(?:\.|$)/gi)];
+  const exchange = transfers.some(transfer =>
+    normalizedClub(transfer[1]) === destination && normalizedClub(transfer[3]) === origin
+  );
   const heading = outgoing ? "Derechos cedidos" : "Derechos recibidos";
   const words = playerNames.split(/\s+/);
   const concise = words.slice(0, 14).join(" ") + (words.length > 14 ? "…" : "");
@@ -170,6 +179,7 @@ function rightsTransfer(entry: string, headingAliases: readonly string[]): {
     title: heading + ": " + concise,
     direction: outgoing ? "out" : "in",
     otherClub: counterparty,
+    exchange,
   };
 }
 
@@ -223,9 +233,11 @@ function operationTitle(text: string): string {
 function shortExcerpt(text: string): string {
   const clean = text
     .replace(/\\[rn]\b/g, " ")
+    .replace(/^[*•·–—\s]+/, "")
     .replace(/\s+/g, " ").trim();
-  const words = clean.split(/\s+/);
-  return words.slice(0, 35).join(" ") + (words.length > 35 ? "…" : "");
+  // El parser ya acota cada operación a 1200 caracteres; no recortar aquí
+  // porque podríamos ocultar la segunda mitad de un intercambio de derechos.
+  return clean;
 }
 
 async function officialHtml(url: string): Promise<string | null> {
@@ -302,6 +314,7 @@ export async function getLmbClubMovements(
         ...(transfer ? {
           direction: transfer.direction,
           otherClub: transfer.otherClub,
+          exchange: transfer.exchange,
         } : {}),
       };
     });
