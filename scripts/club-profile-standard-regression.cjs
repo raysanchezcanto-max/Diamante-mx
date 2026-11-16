@@ -119,6 +119,11 @@ assert(mlbTransferPresentation("Intercambio","Boston intercambió a Juan García
 assert(mlbTransferPresentation("Intercambio","Boston registró un intercambio relacionado con Juan García.")===null,"MLB unknown counterparty must remain hidden");n++;
 assert(lmpTransferPresentation("Naranjeros ceden los derechos de Gabriel Gutiérrez a Yaquis de Obregón, recibiendo a cambio un turno.")?.otherClub==="Yaquis de Obregón","LMP verified destination");n++;
 assert(lmpTransferTitle("Naranjeros ceden los derechos de Gabriel Gutiérrez a Yaquis de Obregón.")==="Gabriel Gutiérrez","LMP transfer title displays player only");n++;
+const lmbSource=read("lib/lmbMovements.ts");
+const lmbPage=read("app/equipos/lmb/[slug]/page.tsx");
+assert(lmbSource.includes("normalizedClub(transfer[1]) === destination")&&lmbSource.includes("normalizedClub(transfer[3]) === origin"),"LMB reciprocal rights must be detected in both directions");n++;
+assert(lmbSource.includes("exchange: transfer.exchange")&&lmbPage.includes("INTERCAMBIO DE DERECHOS CON"),"LMB reciprocal rights use a neutral counterpart strip");n++;
+assert(!lmbSource.includes("words.slice(0, 35)"),"LMB official descriptions must not be silently shortened to 35 words");n++;
 const samples=[
  ["Naranjeros informa la activación de Raúl Barrón y Omar Muñoz. Desactivando a Ángel Camacho.","Altas y bajas","Raúl Barrón y Omar Muñoz"],
  ["Cañeros informa la activación de Luis Roberto Urías, desactivando a Jayson Bass.","Altas y bajas","Luis Roberto Urías"],
