@@ -119,8 +119,22 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
       player,
     } satisfies MlbClubTransaction];
   });
-  items.sort((a: MlbClubTransaction, b: MlbClubTransaction) => b.date.localeCompare(a.date));
-  return { sourceStatus: "connected", items: items.slice(0, 25) };
+  // StatsAPI puede incluir la misma operación como registro general y como
+  // registro individual del jugador. Preferimos la ficha con jugador identificado.
+  // No unificamos movimientos genéricos sin jugador: podrían ser hechos distintos.
+  const unique = new Map<string, MlbClubTransaction>();
+  for (const item of items) {
+    const identity = item.date + "|" + item.label + "|" + item.description;
+    const prior = unique.get(identity);
+    if (prior && (prior.player || item.player)) {
+      if (!prior.player && item.player) unique.set(identity, item);
+      continue;
+    }
+    unique.set(prior ? identity + "|" + item.key : identity, item);
+  }
+  const distinct = [...unique.values()];
+  distinct.sort((a: MlbClubTransaction, b: MlbClubTransaction) => b.date.localeCompare(a.date));
+  return { sourceStatus: "connected", items: distinct.slice(0, 25) };
 }
 
 export type MlbClubFixture = {
