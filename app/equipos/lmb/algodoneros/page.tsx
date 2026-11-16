@@ -103,7 +103,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
           <div className="clubHeroIdentity">
             <div className="clubHeroLogo"><img src={logo} alt="" width={108} height={108}/></div>
             <div className="clubHeroText">
-              <span className="clubKicker">EQUIPOS · LIGA MEXICANA DE BEISBOL</span>
+              <span className="clubKicker"><span className="clubHeroKickerDesktop">EQUIPOS · LIGA MEXICANA DE BEISBOL</span><span className="clubHeroKickerMobile">LMB · EQUIPOS</span></span>
               <h1>{club.name}</h1>
               <p>{club.nickname} <span aria-hidden="true">·</span> {club.zone}</p>
             </div>
