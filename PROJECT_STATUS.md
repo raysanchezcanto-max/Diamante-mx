@@ -1207,3 +1207,12 @@ Total output lines: 2623
 - En `app/globals.css`, solo para `.clubMovementsContent--gemini .clubMovementDirection`, se utiliza negro translúcido al 20 %, borde fino blanco al 7 % y esquinas derechas de 10 px; la barra lateral semántica (durazno, turquesa o gris), nombre del club y escudo claro se conservan.
 - «Ver más/Ver menos» gana tamaño y aire vertical; el resumen completo sigue siendo pulsable, ahora con indicador de foco visible. El contenido oficial y la lógica del intercambio Williams/Querétaro no cambian.
 - **Pendiente:** QA visual móvil y en tarjeta de derechos recibidos turquesa; ajustar si el contraste resulta excesivo en pantallas pequeñas. La modificación es de estilo, sin cambios de datos.
+
+
+### 191. Fichas de equipos LMB y MLB: orden del calendario y escudos en móvil (16-nov-2026)
+
+- Ajuste solicitado tras revisar capturas reales de Android en los clubes Caliente de Durango, Acereros, Saraperos, Dorados, Diablos, Piratas, Pericos, Guerreros y Conspiradores.
+- **Resumen:** la tarjeta de «ÚLTIMA TABLA [liga] DISPONIBLE / Balance del equipo» aparece antes de «CALENDARIO OFICIAL / Próximos juegos». Se aplica a las fichas LMB generales, a la ficha especial de Algodoneros de Unión Laguna y a las fichas de MLB, para móvil y escritorio. No cambia la fuente ni las cifras.
+- **Cabecera de equipos en móvil:** la imagen del escudo queda contenida en una caja fija de 66×66 px con `object-fit: contain`; se corrige el conflicto de especificidad que hacía que varios logotipos LMB de 96 px invadieran el nombre o la etiqueta. El texto puede ocupar el ancho restante y partir a varias líneas sin solaparse. Diseño de escritorio preservado.
+- Archivos: `app/equipos/lmb/[slug]/page.tsx`, `app/equipos/lmb/algodoneros/page.tsx`, `app/equipos/mlb/[id]/page.tsx`, `app/globals.css`.
+- Verificación: lectura posterior de los tres componentes confirma un único bloque de tabla y calendario en el orden solicitado; **pendiente QA visual físico en Android, revisión desktop y resultado del build Vercel**, ya que la sesión no dispone de ejecución ni navegador automatizado.
