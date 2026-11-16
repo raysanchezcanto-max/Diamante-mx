@@ -42,7 +42,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
   <div className="clubShell">
    <div className="clubHero clubDirectoryHero">
     <div className="clubHeroIdentity"><div className="clubHeroLogo">{logo?<img src={logo} width={108} height={108} alt=""/>:<span aria-hidden="true">⚾</span>}</div>
-     <div className="clubHeroText"><span className="clubKicker">EQUIPOS · LIGA MEXICANA DEL PACÍFICO</span><h1>{club.name}</h1><p>{club.city} · Temporada 2026–27 y archivo histórico</p></div>
+     <div className="clubHeroText"><span className="clubKicker"><span className="clubHeroKickerDesktop">EQUIPOS · LIGA MEXICANA DEL PACÍFICO</span><span className="clubHeroKickerMobile">LMP · EQUIPOS</span></span><h1>{club.name}</h1><p>{club.city} · Temporada 2026–27 y archivo histórico</p></div>
     </div>
     <div className="clubHeroMeta">
      <div><span>ESTADIO</span><strong>{club.stadium}</strong></div>
@@ -54,7 +54,12 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
 
    {view==="resumen"&&<div className="clubContentGrid">
     <aside className="clubSideLeft">
-     <section className="clubPanel clubCalendarPanel">
+     <section className="clubPanel clubRecordPanel">
+      <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span><h2>{COPY.summary.recordTitle}</h2>
+      <div className="clubRecordGrid"><div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div><div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div><div><strong>{record?.pct??"—"}</strong><span>PCT</span></div></div>
+      <p>Registro oficial de temporada, sujeto a actualización. No corresponde al marcador en vivo.</p>
+     </section>
+          <section className="clubPanel clubCalendarPanel">
       <span className="clubKicker">{COPY.summary.calendarKicker("LMP")}</span><h2>{COPY.summary.calendarTitle}</h2>
       <div className="lmpClubCalendarDesktop">
        <div className="lmpClubUpcomingList">{fixtures.map(g=><a key={g.id} className="lmpClubUpcomingGame" href={"/game/lmp/"+g.id}><span>{dateTime(g.startTime)}</span><strong>{g.home?"vs. ":"@ "}{g.opponent}</strong><small>{g.home?"LOCAL":"VISITANTE"} · {g.venue}</small></a>)}</div>
@@ -67,12 +72,6 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
         <a href="/?league=lmp#juegos">Calendario completo LMP ↗</a>
        </div>
       </details>
-     </section>
-
-     <section className="clubPanel clubRecordPanel">
-      <span className="clubKicker">TEMPORADA REGULAR 2026–27 · LMP</span><h2>{COPY.summary.recordTitle}</h2>
-      <div className="clubRecordGrid"><div><strong>{record?.wins??"—"}</strong><span>GANADOS</span></div><div><strong>{record?.losses??"—"}</strong><span>PERDIDOS</span></div><div><strong>{record?.pct??"—"}</strong><span>PCT</span></div></div>
-      <p>Registro oficial de temporada, sujeto a actualización. No corresponde al marcador en vivo.</p>
      </section>
     </aside>
     <div className="clubMainColumn">
