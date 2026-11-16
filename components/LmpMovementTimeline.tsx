@@ -14,7 +14,7 @@ export default function LmpMovementTimeline({movements,logo,sourceUrl}:Props){
    {movements.map((item,index)=>{const presentation=describeLmpMovement(item.description);return <article className="clubMovementItem" key={item.date+"-"+index}>
     <div className="clubMovementDate"><span>{spanishDate(item.date)}</span><span className="clubMovementType">{presentation.type}</span></div>
     <div className="clubMovementBody">{logo&&<img src={logo} alt="" width={53} height={53}/>}
-     <div><h3>{presentation.title}</h3><p>{item.description}</p><a href={sourceUrl} target="_blank" rel="noopener noreferrer">Consultar registro oficial LMP ↗</a></div>
+     <div>{presentation.title&&<h3>{presentation.title}</h3>}<p>{item.description}</p><a href={sourceUrl} target="_blank" rel="noopener noreferrer">Consultar registro oficial LMP ↗</a></div>
     </div>
    </article>})}
   </div>:<div className="clubDirectoryNotice">
