@@ -6,6 +6,7 @@ import { getTeamLogo } from "@/lib/teamLogos";
 import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
 import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview, getLmbClubVideos } from "@/lib/lmbClubContent";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
+import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
 import LmbToMlbClubProfile from "@/components/LmbToMlbClubProfile";
 import { lmbClubChampionships } from "@/lib/lmbClubHistory";
 import LmbClubEditorialHistory from "@/components/LmbClubEditorialHistory";
@@ -306,7 +307,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <div className="clubMovementDate"><span>{formatDate(item.date)}</span><span className="clubMovementType">{item.type}</span></div>
                     <div className="clubMovementBody">
                       {logo&&<img src={logo} alt="" width={53} height={53}/>}
-                      <div><h3>{item.title}</h3><p>{item.description}</p>
+                      <div><h3>{lmbMovementPlayerTitle(item.title)}</h3><p>{item.description}</p>
                         {item.direction && item.otherClub && (
                           <div className="clubMovementDirection">
                             <span>{item.direction === "out" ? "DERECHOS CEDIDOS A" : "DERECHOS RECIBIDOS DE"}</span>
