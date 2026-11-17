@@ -11,6 +11,29 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  112: [
+    {
+      title: "Los Cubs conquistan la Serie Mundial después de 108 años",
+      date: "3 nov 2016",
+      duration: "1:31",
+      description: "MLB resume el campeonato de Chicago en siete juegos ante Cleveland, con remontada desde una desventaja de 1-3.",
+      url: "https://www.mlb.com/cubs/video/cubs-win-ws-in-seven-games-c1211088483",
+    },
+    {
+      title: "Los diez momentos inolvidables de Chicago en 2016",
+      date: "4 may 2020",
+      duration: "3:59",
+      description: "Selección oficial del club con las diez jugadas y momentos que definieron su temporada campeona.",
+      url: "https://www.mlb.com/cubs/video/cubs-top-10-moments-of-2016",
+    },
+    {
+      title: "La celebración del campeonato de los Cubs",
+      date: "11 nov 2016",
+      duration: "4:19",
+      description: "Video oficial del club sobre la histórica Serie Mundial de 2016 y su celebración.",
+      url: "https://www.mlb.com/cubs/video/2016-world-champion-chicago-cubs-c1211980383",
+    },
+  ],
   111: [
     {
       title: "Boston rompe la sequía de 86 años en 2004",
