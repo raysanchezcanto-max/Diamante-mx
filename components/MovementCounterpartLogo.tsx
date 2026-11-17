@@ -1,23 +1,38 @@
-import {getTeamLogo,type LeagueCode} from "@/lib/teamLogos";
+import {getTeamDisplayName,getTeamLogo,type LeagueCode} from "@/lib/teamLogos";
 import {MLB_CLUBS} from "@/lib/mlbClubDirectory";
 
-/** Solo muestra escudos de contrapartes que coinciden con un club verificado. */
+const normalize=(name:string)=>name.normalize("NFD")
+ .replace(/[\u0300-\u036f]/g,"").replace(/[.]+$/g,"").trim().toLowerCase();
+const lightSurface:Record<LeagueCode,Set<string>>={
+ MLB:new Set(),
+ LMB:new Set([
+  "rieleros de aguascalientes","conspiradores de queretaro",
+  "algodoneros de union laguna","algodoneros del union laguna",
+  "algodoneros union laguna","sultanes de monterrey"
+ ]),
+ // Revisión inicial de escudos de trazos oscuros en la LMP.
+ LMP:new Set(["yaquis de obregon","charros de jalisco","aguilas de mexicali"]),
+};
+
+/** Todos los movimientos comparten la misma escala, borde y selección estable de fondo. */
 export default function MovementCounterpartLogo({league,name}:{league:LeagueCode;name:string}){
- const normalized=name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
+ const original=name.replace(/\s+/g," ").trim().replace(/[.]+$/g,"");
+ const normalized=normalize(original);
+ const cleanName=original.replace(/^(?:club(?: de beisbol)?|equipo)\s+/i,"");
+ const canonical=getTeamDisplayName(league,cleanName);
  const mlbClub=league==="MLB"?MLB_CLUBS.find(club=>
-   club.name.toLowerCase()===normalized
+   normalize(club.name)===normalized
+   || normalize(club.name)===normalize(cleanName)
    || (club.name==="Athletics"&&normalized==="oakland athletics")
  ):null;
  const logo=league==="MLB"
    ?mlbClub?getTeamLogo("MLB",mlbClub.id,mlbClub.name):null
-   :getTeamLogo(league,0,name);
- const wide=league==="LMB"&&/conspiradores de quer[eé]taro/i.test(name);
- // Prueba visual controlada: fondos claros solo para tres escudos LMB oscuros.
- const lightPreview=league==="LMB"&&(
-  normalized.includes("rieleros")&&normalized.includes("aguascalientes")
-  || normalized.includes("conspiradores")&&normalized.includes("queretaro")
-  || normalized.includes("algodoneros")&&normalized.includes("laguna")
-  || normalized.includes("sultanes")&&normalized.includes("monterrey")
- );
- return logo?<img className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(lightPreview?" geminiCounterpartLogo--light":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")} src={logo} width={wide?44:32} height={32} alt={"Escudo de "+name} loading="lazy"/>:null;
+   :getTeamLogo(league,0,cleanName)??getTeamLogo(league,0,canonical);
+ const normalizedCanonical=normalize(canonical);
+ const wide=league==="LMB"&&normalizedCanonical.includes("conspiradores");
+ const light=lightSurface[league].has(normalizedCanonical)||lightSurface[league].has(normalize(cleanName));
+ return logo?<img
+   className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(light?" geminiCounterpartLogo--light":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")}
+   src={logo} width={wide?44:32} height={32} alt={"Escudo de "+name} loading="lazy"
+ />:null;
 }
