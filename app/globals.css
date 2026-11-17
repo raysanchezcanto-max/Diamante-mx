@@ -5717,16 +5717,6 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
   border-color:rgba(7,17,13,.22);
 }
 
-/* Movimientos: ancho de lectura equilibrado en escritorio para las tres ligas.
-   La sección y sus enlaces conservan el ancho existente; solo se centra el feed. */
-@media(min-width:1000px){
- .clubMovementsContent--gemini .clubMovementsTimeline{
-   width:100%;
-   max-width:980px;
-   margin-inline:auto;
- }
-}
-
 /* En la LMP, los emblemas con relleno de color conservan sus píxeles originales
    y respiran dentro del mismo marco oscuro de 32px. */
 .clubMovementsContent--gemini .geminiCounterpartLogo--lmp{
