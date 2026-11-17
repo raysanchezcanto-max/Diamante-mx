@@ -52,6 +52,21 @@ for (const section of ["clubHistorySectionHead", "clubHistoryHall", "clubHistory
   verify(history.includes(section), "bloque de Historia " + section);
 }
 const { mlbEditorialHistory } = require("../lib/mlbHistoryEditorial.ts");
+const cubsHistory = mlbEditorialHistory(112);
+verify(Boolean(cubsHistory) && cubsHistory.debutYear === "1876", "Chicago Cubs tiene historia propia desde 1876");
+verify(cubsHistory.worldSeriesTitles === 3 &&
+  cubsHistory.worldSeriesWinningYears.join(",") === "1907,1908,2016",
+  "Cubs distingue tres Series Mundiales y el final de la espera en 2016");
+verify(cubsHistory.pennants.length === 17 && cubsHistory.divisionTitles.length === 8,
+  "Chicago diferencia banderines de liga y ocho titulos divisionales");
+verify(cubsHistory.stadiumOpened === "1914" && cubsHistory.stadiumOpenedNote.includes("1916"),
+  "Wrigley abrio en 1914 y Chicago Cubs comenzo a jugar alli en 1916");
+verify(cubsHistory.milestones.length >= 10 && cubsHistory.legends.length >= 6 &&
+  cubsHistory.immortals.some(person => person.name === "Ryne Sandberg" && person.year === "2005"),
+  "Chicago tiene hitos, figuras y fechas de Cooperstown verificadas");
+verify(cubsHistory.sources.every(source => source.url.startsWith("https://")),
+  "Chicago cita fuentes comprobables de su historia");
+
 const redSoxHistory = mlbEditorialHistory(111);
 verify(Boolean(redSoxHistory), "Boston tiene expediente historico propio");
 verify(redSoxHistory.debutYear === "1901" && redSoxHistory.stadiumOpened === "1912",
@@ -202,6 +217,16 @@ verify(bostonConnections.some(x => x.connection.name === "Luis Urías" && x.grou
 verify(bostonConnections.filter(x => x.connection.name === "Esteban Quiroz").every(x => x.group === "prospect"),
   "Esteban Quiroz fue jugador de sucursales de Boston, no debut de Red Sox");
 const { getMlbClubVerifiedVideos } = require("../lib/mlbClubVideos.ts");
+const cubsConnections = MLB_MEXICO_VERIFIED_CONNECTIONS.filter(x => x.mlbClubId === 112);
+verify(cubsConnections.length >= 3 && cubsConnections.every(x => x.group === "debut"),
+  "Chicago distingue debuts posteriores a participacion real en LMB");
+verify(cubsConnections.some(x => x.connection.name === "Manuel Rodríguez" && x.connection.mexicanSlug === "leones") &&
+  cubsConnections.filter(x => x.connection.name === "Esteban Quiroz").length === 2,
+  "Chicago incluye a Manuel Rodriguez y dos clubes mexicanos de Esteban Quiroz");
+verify(getMlbClubVerifiedVideos(112).length === 3 &&
+  getMlbClubVerifiedVideos(112).every(video => video.url.startsWith("https://www.mlb.com/") && video.duration.includes(":")),
+  "Chicago Resumen incorpora tres videos oficiales con duraciones verificadas");
+
 verify(getMlbClubVerifiedVideos(111).length === 3 &&
   getMlbClubVerifiedVideos(111).every(video => video.url.startsWith("https://www.mlb.com/")),
   "Boston Resumen incluye tres videos oficiales y duraciones comprobables");
