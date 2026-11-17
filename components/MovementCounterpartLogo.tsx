@@ -32,7 +32,7 @@ export default function MovementCounterpartLogo({league,name}:{league:LeagueCode
  const wide=league==="LMB"&&normalizedCanonical.includes("conspiradores");
  const light=lightSurface[league].has(normalizedCanonical)||lightSurface[league].has(normalize(cleanName));
  return logo?<img
-   className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(light?" geminiCounterpartLogo--light":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")}
+   className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(light?" geminiCounterpartLogo--light":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")+(league==="LMP"?" geminiCounterpartLogo--lmp":"")}
    src={logo} width={wide?44:32} height={32} alt={"Escudo de "+name} loading="lazy"
  />:null;
 }
