@@ -5709,3 +5709,10 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
   border-color:#557267;
   padding:3px;
 }
+
+/* Prueba controlada de contraste: superficie clara para escudos LMB oscuros.
+   Detroit y el resto mantienen el fondo oscuro hasta la validación visual. */
+.clubMovementsContent--gemini .geminiCounterpartLogo--light{
+  background:#d8e0db;
+  border-color:rgba(7,17,13,.22);
+}
