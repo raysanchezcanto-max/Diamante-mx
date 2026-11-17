@@ -1259,3 +1259,10 @@ Total output lines: 2623
 - **Historia:** expediente específico con fundación NL 1876, tres títulos mundiales (1907, 1908, 2016), 17 banderines de la Nacional, ocho campeonatos divisionales, once hitos, siete figuras, seis perfiles de Cooperstown, Wrigley Field (abrió en 1914; los Cubs llegaron en 1916) y fuentes oficiales enlazadas.
 - **Verificación:** seis pestañas abiertas y revisadas en producción mediante navegador, con inspección visual de Historia. Vercel producción **READY**, pruebas de perfiles MLB **207/207**, traducciones **87/87**, y auditorías Atlanta/Baltimore **18/18 y 56/56**; TypeScript sin errores. No se comprobó aún en teléfono físico.
 - **Siguiente franquicia:** Chicago White Sox (ID 145), siguiendo el orden del directorio. Mantener prioridad MLB antes de los movimientos LMB/LMP y, finalmente, Estadísticas.
+
+### 196. MLB Historia: campeonatos compactos sin tarjeta redundante — 17/11/2026
+
+- Por petición de Valeria se elimina **solo en fichas MLB verificadas** el recuadro inferior que repetía «[equipo]: N campeonatos de Serie Mundial (años)» y el enlace al historial; el apartado Palmarés y las fuentes oficiales del pie de Historia permanecen.
+- La tarjeta numérica **CAMPEONATOS MLB** ahora muestra los años verificados de las Series Mundiales bajo el número (por ejemplo Cubs 1907 · 1908 · 2016, Boston nueve años). Las franquicias sin coronas muestran «Sin títulos de Serie Mundial» y las aún sin datos conservan «Por verificar».
+- El componente compartido `ClubHistoryMetrics` recibe una propiedad opcional `championshipYears`, suministrada **solo desde MLB**; LMB/LMP conservan su texto y sus diseños actuales. Sin cambios de CSS, dimensiones ni distribución.
+- Verificaciones locales: TypeScript sin errores; perfiles MLB 209 pruebas, español 87, Atlanta 18 y Baltimore 56. Pendiente: confirmación del despliegue de producción y comprobación visual.
