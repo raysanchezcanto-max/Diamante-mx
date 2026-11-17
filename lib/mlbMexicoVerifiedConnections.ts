@@ -11,6 +11,50 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 111, group: "previousExperience",
+    connection: {
+      name: "Adrián González", league: "LMP", mexicanClub: "Venados de Mazatlán",
+      mexicanSlug: "venados", direction: "mexico-to-mlb", role: "Primera base",
+      year: "LMP 2005–07 · Boston 2011–12",
+      description: "Jugó con Venados después de debutar en MLB con Texas, y años más tarde vistió el uniforme de Boston. No fue un debut en Grandes Ligas provocado por su etapa con Venados.",
+      source: "https://www.mlb.com/es/news/adrian-gonzalez-firmo-con-mariachis-de-lmb",
+      verificationSource: "https://www.mlb.com/es/player/adrian-gonzalez-408236",
+    },
+  },
+  {
+    mlbClubId: 111, group: "toMexico",
+    connection: {
+      name: "Luis Urías", league: "LMP", mexicanClub: "Yaquis de Obregón",
+      mexicanSlug: "yaquis", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "Boston 2023 · LMP 2026–27",
+      description: "Después de participar en Boston durante 2023, apareció en el encuentro inaugural de Yaquis en octubre de 2026, con un sencillo productor ante Mayos.",
+      source: "https://editor.lmp.mx/con-el-pie-derecho-arranca-yaquis/",
+      verificationSource: "https://www.mlb.com/es/player/luis-urias-649966",
+    },
+  },
+  {
+    mlbClubId: 111, group: "prospect",
+    connection: {
+      name: "Esteban Quiroz", league: "LMB", mexicanClub: "Tigres de Quintana Roo",
+      mexicanSlug: "tigres", direction: "mexico-to-mlb", role: "Jugador de cuadro · sucursales de Boston",
+      year: "LMB 2011–16 · MiLB Boston 2018",
+      description: "Jugó con Tigres antes de ingresar al sistema de Ligas Menores de Boston en 2018. El club lo traspasó como jugador de sucursales; no debutó con Red Sox en MLB.",
+      source: "https://baseballsavant.mlb.com/savant-player/esteban-quiroz-606019",
+      verificationSource: "https://www.mlb.com/amp/press-release/red-sox-announce-roster-moves-300983648.html",
+    },
+  },
+  {
+    mlbClubId: 111, group: "prospect",
+    connection: {
+      name: "Esteban Quiroz", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mexico-to-mlb", role: "Jugador de cuadro · sucursales de Boston",
+      year: "LMB 2017 · MiLB Boston 2018",
+      description: "Tras jugar con Yucatán en 2017 pasó por las sucursales de los Red Sox en 2018. Su debut posterior en MLB fue con Chicago Cubs, no con Boston.",
+      source: "https://baseballsavant.mlb.com/savant-player/esteban-quiroz-606019",
+      verificationSource: "https://www.mlb.com/amp/press-release/red-sox-announce-roster-moves-300983648.html",
+    },
+  },
+  {
     mlbClubId: 110, group: "debut",
     connection: {
       name: "Ramón Urías", league: "LMB", mexicanClub: "Diablos Rojos del México",
