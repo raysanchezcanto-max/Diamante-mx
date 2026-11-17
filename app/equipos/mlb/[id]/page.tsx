@@ -29,6 +29,14 @@ const views: LmbClubView[] = ["resumen", "estadisticas", "plantilla", "movimient
 const dateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
   timeZone: "America/Mexico_City", day: "numeric", month: "long", year: "numeric",
 }).format(new Date(value));
+// Titular breve solo cuando MLB identifica explícitamente a la persona.
+const movementPlayerTitle=(player:string|null|undefined,description:string):string|null=>{
+ if(player?.trim())return player.trim();
+ const found=description.match(
+  /\b(?:intercambi[oó]|activ[oó]|desactiv[oó]|contrat[oó]|adquiri[oó])\s+a\s+([A-ZÁÉÍÓÚÑ][\p{L}.'-]+(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}.'-]+){1,3})(?=\s*\(|\s+(?:con|a cambio|de|desde|por|tras)|[.;]|$)/u
+ )?.[1]?.trim();
+ return found??null;
+};
 const gameDateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
   timeZone: "America/Mexico_City",
   weekday: "long", day: "numeric", month: "long",
@@ -294,7 +302,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             </div>
             <div className="clubMovementBody">
               {logo && <img src={logo} alt="" width={53} height={53}/>}
-              <div><h3>{item.player ?? "Transacción registrada por MLB"}</h3>
+              <div>{movementPlayerTitle(item.player,item.description||"")&&<h3>{movementPlayerTitle(item.player,item.description||"")}</h3>}
                 {q?.estilo!=="original"?<MovementGeminiDetails text={item.description || item.label}/>:<p>{item.description || item.label}</p>}
                 {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span>{q?.estilo!=="original"&&<MovementCounterpartLogo league="MLB" name={transfer.otherClub}/>}<strong>{transfer.otherClub}</strong></div>}
                 <a href={official + "/roster/transactions"} target="_blank"
