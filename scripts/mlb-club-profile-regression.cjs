@@ -193,6 +193,18 @@ verify(connectionsSource.includes("MLB_MEXICO_VERIFIED_CONNECTIONS") &&
 const { MLB_MEXICO_VERIFIED_CONNECTIONS } = require("../lib/mlbMexicoVerifiedConnections.ts");
 const { LMB_CLUB_DIRECTORY } = require("../lib/lmbClubs.ts");
 const { LMP_CLUB_DIRECTORY } = require("../lib/lmpClubDirectory.ts");
+const bostonConnections = MLB_MEXICO_VERIFIED_CONNECTIONS.filter(x => x.mlbClubId === 111);
+verify(bostonConnections.length >= 4 && bostonConnections.every(x => x.connection.source.startsWith("https://")),
+  "Boston muestra vínculos mexicanos documentados y no contadores vacíos");
+verify(bostonConnections.some(x => x.connection.name === "Luis Urías" && x.group === "toMexico" && x.connection.mexicanSlug === "yaquis") &&
+  bostonConnections.some(x => x.connection.name === "Adrián González" && x.group === "previousExperience" && x.connection.mexicanSlug === "venados"),
+  "Boston diferencia experiencia previa en México y retorno posterior a LMP");
+verify(bostonConnections.filter(x => x.connection.name === "Esteban Quiroz").every(x => x.group === "prospect"),
+  "Esteban Quiroz fue jugador de sucursales de Boston, no debut de Red Sox");
+const { getMlbClubVerifiedVideos } = require("../lib/mlbClubVideos.ts");
+verify(getMlbClubVerifiedVideos(111).length === 3 &&
+  getMlbClubVerifiedVideos(111).every(video => video.url.startsWith("https://www.mlb.com/")),
+  "Boston Resumen incluye tres videos oficiales y duraciones comprobables");
 const atlantaConnections = MLB_MEXICO_VERIFIED_CONNECTIONS.filter(x => x.mlbClubId === 144);
 const hasBridge = (group, name, league, slug) => atlantaConnections.some(x =>
   x.group === group && x.connection.name === name && x.connection.league === league &&
