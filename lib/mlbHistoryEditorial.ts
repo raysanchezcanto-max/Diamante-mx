@@ -76,7 +76,71 @@ const REDSOX_HOF = "https://www.mlb.com/redsox/history/hall-of-famers";
 const REDSOX_RETIRED = "https://www.mlb.com/redsox/history/retired-numbers";
 const REDSOX_FENWAY = "https://www.mlb.com/redsox/ballpark/facts-figures";
 
+const CUBS_TIMELINE = "https://www.mlb.com/cubs/history/timeline";
+const CUBS_HISTORY = "https://www.mlb.com/cubs/history";
+const CUBS_BALLPARKS = "https://www.mlb.com/cubs/history/ballparks";
+const CUBS_HALL = "https://www.mlb.com/cubs/history/hall-of-fame-players";
+const CUBS_POSTSEASON = "https://www.mlb.com/postseason/history";
+
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  112: {
+    intro: "Chicago participa en la Liga Nacional desde su fundación en 1876, cuando era conocido como White Stockings. Después de conquistar las Series Mundiales de 1907 y 1908, vivió una espera de 108 años hasta su inolvidable campeonato de 2016. Desde 1916 juega en Wrigley Field, un parque inaugurado dos años antes para otro equipo.",
+    featuredStory: {
+      kicker: "HISTORIA · SERIE MUNDIAL 2016",
+      title: "108 AÑOS DE ESPERA, SIETE JUEGOS Y UNA DÉCIMA ENTRADA",
+      excerpt: "Tras remontar una desventaja de 1-3 en la serie ante Cleveland, los Cubs ganaron 8-7 el séptimo encuentro, en diez entradas. Ben Zobrist impulsó la carrera de la ventaja después de una pausa por lluvia.",
+      url: "https://www.mlb.com/news/chicago-cubs-win-2016-world-series-c207938228",
+    },
+    debutYear: "1876",
+    worldSeriesTitles: 3,
+    worldSeriesWinningYears: ["1907", "1908", "2016"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1876", "1880", "1881", "1882", "1885", "1886", "1906", "1907", "1908", "1910", "1918", "1929", "1932", "1935", "1938", "1945", "2016"],
+    pennantClubNames: {"1876": "Chicago White Stockings", "1880": "Chicago White Stockings", "1881": "Chicago White Stockings", "1882": "Chicago White Stockings", "1885": "Chicago White Stockings", "1886": "Chicago White Stockings"},
+    postseasonSource: CUBS_POSTSEASON,
+    divisionTitles: ["1984", "1989", "2003", "2007", "2008", "2016", "2017", "2020"],
+    stadiumOpened: "1914",
+    stadiumOpenedNote: "El estadio abrió el 23 de abril de 1914 como Weeghman Park, sede de los Chicago Whales de la Federal League. Los Cubs llegaron en 1916 y el nombre Wrigley Field se adoptó en 1926: 1914 es la inauguración del recinto, no el debut del club allí.",
+    stadiumSource: "https://www.mlb.com/cubs/ballpark/information/history",
+    milestones: [
+      {year: "1876", title: "Fundadores de la Liga Nacional", description: "La franquicia comienza como Chicago White Stockings y gana el campeonato inaugural del nuevo circuito.", url: CUBS_TIMELINE},
+      {year: "1906", title: "Una temporada de 116 victorias", description: "Chicago alcanza 116 triunfos y el banderín de la Nacional; pierde la Serie Mundial ante sus vecinos White Sox.", url: CUBS_TIMELINE},
+      {year: "1907", title: "Primera corona de Serie Mundial", description: "Los Cubs superan a Detroit Tigers y consiguen su primer título de la Serie Mundial moderna.", url: "https://www.mlb.com/postseason/history/1907"},
+      {year: "1908", title: "Bicampeonato frente a Detroit", description: "Repite la victoria sobre los Tigers y empieza una larga sequía de títulos mundiales.", url: "https://www.mlb.com/postseason/history/1908"},
+      {year: "1916", title: "La llegada a Wrigley", description: "El club disputa su primer juego de la Liga Nacional en el parque construido en 1914, todavía conocido como Weeghman Park.", url: "https://www.mlb.com/cubs/ballpark/information/history"},
+      {year: "1945", title: "Última Serie Mundial antes de 2016", description: "Chicago gana el banderín de la Nacional y disputa la Serie Mundial frente a Detroit, que se lleva el campeonato.", url: CUBS_TIMELINE},
+      {year: "1984", title: "Regreso a octubre", description: "El equipo de Ryne Sandberg gana su división y regresa a la postemporada después de décadas de ausencia.", url: CUBS_TIMELINE},
+      {year: "2003", title: "A un paso de la Serie Mundial", description: "Los Cubs llegan a la Serie de Campeonato de la Nacional, en la que caen ante Florida Marlins.", url: CUBS_TIMELINE},
+      {year: "2016", title: "Se termina la espera de 108 años", description: "Chicago vence a Cleveland 8-7 en diez entradas del séptimo juego y obtiene su tercera Serie Mundial.", url: "https://www.mlb.com/news/chicago-cubs-win-2016-world-series-c207938228"},
+      {year: "2020", title: "Título de la División Central", description: "En la temporada acortada, Chicago conquista el Centro de la Liga Nacional; su camino termina ante Miami en la ronda de comodines.", url: "https://www.mlb.com/cubs/news/cubs-2020-season-ends-with-loss-to-marlins"},
+      {year: "2026", title: "Nueva participación en octubre", description: "Los Cubs clasifican como comodín en la Liga Nacional, pero San Diego los elimina en su primera serie de postemporada.", url: "https://www.mlb.com/cubs/news/cubs-lose-2026-nl-wild-card-series"},
+    ],
+    legends: [
+      {name: "Mordecai ‘Three Finger’ Brown", era: "1904–1912, 1916", role: "Lanzador · campeón en 1907 y 1908", highlight: "As del montículo durante la época de las dos primeras coronas de la franquicia.", url: CUBS_HALL},
+      {name: "Ernie Banks", era: "1953–1971", role: "Campocorto y primera base · ‘Mr. Cub’", highlight: "Ícono de Chicago, dos veces Jugador Más Valioso de la Nacional y autor de más de 500 jonrones.", url: "https://baseballhall.org/hall-of-famers/banks-ernie"},
+      {name: "Billy Williams", era: "1959–1974", role: "Jardinero · bateador emblemático", highlight: "Una de las figuras ofensivas más constantes de la historia de los Cubs.", url: "https://baseballhall.org/hall-of-famers/williams-billy"},
+      {name: "Ron Santo", era: "1960–1973", role: "Tercera base · nueve Juegos de Estrellas", highlight: "Fue parte del núcleo histórico de los años sesenta y continuó ligado al club como cronista.", url: "https://baseballhall.org/hall-of-famers/santo-ron"},
+      {name: "Ferguson Jenkins", era: "1966–1973, 1982–1983", role: "Lanzador · ganador del Cy Young de 1971", highlight: "Dominó en la rotación de Chicago y se convirtió en una referencia del pitcheo de la franquicia.", url: "https://baseballhall.org/hall-of-famers/jenkins-ferguson"},
+      {name: "Ryne Sandberg", era: "1982–1994, 1996–1997", role: "Segunda base · Jugador Más Valioso en 1984", highlight: "Lideró el regreso a octubre de 1984 y marcó una época en la segunda base de Wrigley Field.", url: "https://baseballhall.org/hall-of-famers/sandberg-ryne"},
+      {name: "Anthony Rizzo", era: "2012–2021", role: "Primera base · campeón de 2016", highlight: "Una de las caras del equipo que puso fin a la sequía de 108 años.", url: CUBS_TIMELINE},
+    ],
+    immortals: [
+      {name: "Mordecai Brown", year: "1949", role: "Cooperstown · lanzador", url: "https://baseballhall.org/hall-of-famers/brown-mordecai"},
+      {name: "Ernie Banks", year: "1977", role: "Cooperstown · campocorto y primera base", url: "https://baseballhall.org/hall-of-famers/banks-ernie"},
+      {name: "Billy Williams", year: "1987", role: "Cooperstown · jardinero", url: "https://baseballhall.org/hall-of-famers/williams-billy"},
+      {name: "Ferguson Jenkins", year: "1991", role: "Cooperstown · lanzador", url: "https://baseballhall.org/hall-of-famers/jenkins-ferguson"},
+      {name: "Ryne Sandberg", year: "2005", role: "Cooperstown · segunda base", url: "https://baseballhall.org/hall-of-famers/sandberg-ryne"},
+      {name: "Ron Santo", year: "2012", role: "Cooperstown · tercera base", url: "https://baseballhall.org/hall-of-famers/santo-ron"},
+    ],
+    sources: [
+      {label: "Cronología oficial de los Cubs", url: CUBS_TIMELINE},
+      {label: "Archivo histórico del club", url: CUBS_HISTORY},
+      {label: "Estadios de 1876 al presente", url: CUBS_BALLPARKS},
+      {label: "Origen y apertura de Wrigley Field", url: "https://www.mlb.com/cubs/ballpark/information/history"},
+      {label: "Jugadores de Cooperstown", url: CUBS_HALL},
+      {label: "Historial oficial de postemporadas", url: CUBS_POSTSEASON},
+    ],
+  },
   111: {
     intro: "Fundado en 1901 como uno de los clubes originales de la Liga Americana, Boston conquistó la primera Serie Mundial moderna en 1903. Ganó cinco campeonatos antes de 1919 y, después de una espera de 86 años, volvió a coronarse en 2004; añadió otros tres títulos en 2007, 2013 y 2018. Fenway Park es su hogar desde 1912.",
     featuredStory: {
