@@ -22,8 +22,4 @@ export function ClubHistoryStadiumYear({stadiumOpened}:{stadiumOpened:string|nul
  return <div className="clubHistoryStadiumMark" aria-label={"Estadio · Año de inauguración: "+(stadiumOpened||"por verificar")}>
   <span>ESTADIO</span><strong>{stadiumOpened||"—"}</strong><span>AÑO DE INAUGURACIÓN</span>
  </div>;
-export function ClubHistoryStadiumYear({stadiumOpened}:{stadiumOpened:string|null|undefined}){
- return <div className="clubHistoryStadiumMark" aria-label={"Estadio · Año de inauguración: "+(stadiumOpened||"por verificar")}>
-  <span>ESTADIO</span><strong>{stadiumOpened||"—"}</strong><span>AÑO DE INAUGURACIÓN</span>
- </div>;
 }
