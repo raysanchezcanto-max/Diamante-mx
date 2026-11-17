@@ -58,6 +58,9 @@ const LMP_LOGOS: Record<string, string> = {
   "algodoneros de union laguna":
     "/logos/lmb/nav/algodoneros-cap.svg",
 
+  "algodoneros del union laguna":
+    "/logos/lmb/nav/algodoneros-cap.svg",
+
   "rieleros de aguascalientes":
     "/logos/lmb/rieleros-aguascalientes.png",
 
