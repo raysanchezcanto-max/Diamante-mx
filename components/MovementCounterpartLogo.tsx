@@ -17,6 +17,7 @@ export default function MovementCounterpartLogo({league,name}:{league:LeagueCode
   normalized.includes("rieleros")&&normalized.includes("aguascalientes")
   || normalized.includes("conspiradores")&&normalized.includes("queretaro")
   || normalized.includes("algodoneros")&&normalized.includes("laguna")
+  || normalized.includes("sultanes")&&normalized.includes("monterrey")
  );
  return logo?<img className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(lightPreview?" geminiCounterpartLogo--light":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")} src={logo} width={wide?44:32} height={32} alt={"Escudo de "+name} loading="lazy"/>:null;
 }
