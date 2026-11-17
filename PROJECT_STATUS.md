@@ -1216,3 +1216,13 @@ Total output lines: 2623
 - **Cabecera de equipos en móvil:** la imagen del escudo queda contenida en una caja fija de 66×66 px con `object-fit: contain`; se corrige el conflicto de especificidad que hacía que varios logotipos LMB de 96 px invadieran el nombre o la etiqueta. El texto puede ocupar el ancho restante y partir a varias líneas sin solaparse. Diseño de escritorio preservado.
 - Archivos: `app/equipos/lmb/[slug]/page.tsx`, `app/equipos/lmb/algodoneros/page.tsx`, `app/equipos/mlb/[id]/page.tsx`, `app/globals.css`.
 - Verificación: lectura posterior de los tres componentes confirma un único bloque de tabla y calendario en el orden solicitado; **pendiente QA visual físico en Android, revisión desktop y resultado del build Vercel**, ya que la sesión no dispone de ejecución ni navegador automatizado.
+
+
+### 192. Auditoría estructural de Movimientos LMP: diez equipos, un mismo componente (17-nov-2026)
+
+- **Cobertura revisada en código:** los nueve clubes del directorio LMP (Águilas, Naranjeros, Yaquis, Cañeros, Tomateros, Venados, Jaguares, Charros y Mayos) usan `app/equipos/lmp/[slug]/page.tsx` y `LmpDirectoryClubProfile`. Algodoneros de Guasave mantiene su ficha especial. Ambos recorridos renderizan el mismo `LmpMovementTimeline`, con el mismo tratamiento de fechas, categorías, títulos, cuerpo, enlaces y contraparte cuando el comunicado permite identificarla.
+- **Origen de datos:** cada equipo consulta sus propios registros oficiales LMP mediante `getLmpDirectoryMovements(club.id)`; Guasave usa el ID 5482. No se fabrican transacciones con noticias ni se inventan contrapartes que no constan en el texto.
+- **Ajuste puntual:** el título de un traspaso ahora vuelve al título identificado del comunicado cuando el extractor de traspasos no encuentra un nombre de jugador; se añadió una aserción a `scripts/club-profile-standard-regression.cjs` para impedir regresiones.
+- **Diseño preservado:** esta auditoría **no modifica CSS, tamaños ni ancho de las tarjetas**. Se mantiene el ancho original que Valeria pidió recuperar, las fechas amarillas, enlaces discretos y recuadros oscuros de contraparte.
+- **Estado real de verificación:** uniformidad estructural confirmada para los diez perfiles. Aún falta QA visual individual en escritorio y móvil, así como contrastar escudos reales y variantes de comunicados con traspasos, altas, bajas y listas múltiples; no marcar estas verificaciones como cerradas sin evidencia.
+- **Siguiente foco:** terminar QA visual de Movimientos y pasar, con aprobación de Valeria, a mejorar las tarjetas de Estadísticas sin alterar los diseños de Movimientos.
