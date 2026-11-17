@@ -142,6 +142,7 @@ for(const label of ["clubMovementsTimeline","clubMovementItem","clubMovementDate
  assert(movementComponent.includes(label),"Shared LMP movement design missing "+label);n++;
 }
 assert(read("components/LmpDirectoryClubProfile.tsx").includes("<LmpMovementTimeline"),"The nine directory profiles must use the shared timeline");n++;
+assert(movementComponent.includes("const title=(transfer?lmpTransferTitle(item.description):null)||presentation.title"),"LMP transfer headings must fall back to a verified player title");n++;
 const guasave=read("app/equipos/lmp/algodoneros/page.tsx");
 assert(guasave.includes("<LmpMovementTimeline")&&guasave.includes("getLmpDirectoryMovements(5482)"),"Algodoneros must use the same live LMP transaction source");n++;
 assert(read("app/equipos/lmp/[slug]/page.tsx").includes("getLmpDirectoryMovements(club.id)"),"Every LMP directory club must fetch its own transactions");n++;
