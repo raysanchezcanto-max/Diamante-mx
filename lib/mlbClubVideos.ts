@@ -11,6 +11,29 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  111: [
+    {
+      title: "Boston rompe la sequía de 86 años en 2004",
+      date: "15 nov 2004",
+      duration: "1:02:02",
+      description: "Documental oficial de MLB sobre la Serie Mundial de 2004 y el campeonato de Boston ante San Luis.",
+      url: "https://www.mlb.com/video/2004-world-series-film",
+    },
+    {
+      title: "Koji Uehara asegura la Serie Mundial de 2013",
+      date: "30 oct 2013",
+      duration: "3:05",
+      description: "El último ponche de Boston en el sexto juego contra St. Louis Cardinals y su octavo título de Serie Mundial.",
+      url: "https://www.mlb.com/es/video/red-sox-are-2013-champs-c31197263",
+    },
+    {
+      title: "El camino de Boston al título de 2018",
+      date: "30 oct 2018",
+      duration: "5:06",
+      description: "MLB repasa la temporada que culminó con la novena Serie Mundial de los Red Sox ante Dodgers.",
+      url: "https://www.mlb.com/video/how-they-got-there-red-sox-c2518426383",
+    },
+  ],
   110: [
     {
       title: "Gunnar Henderson decide un triunfo sobre los Mets",
