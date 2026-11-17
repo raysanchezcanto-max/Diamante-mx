@@ -70,7 +70,69 @@ const ORIOLES_RETIRED = "https://www.mlb.com/orioles/history/retired-numbers";
 const ORIOLES_BALLPARKS = "https://www.mlb.com/orioles/history/ballparks";
 const ORIOLES_HOF = "https://www.mlb.com/orioles/history/hall-of-fame-players";
 
+const REDSOX_TIMELINE = "https://www.mlb.com/redsox/history/timeline";
+const REDSOX_POSTSEASON = "https://www.mlb.com/redsox/history/postseason-results";
+const REDSOX_HOF = "https://www.mlb.com/redsox/history/hall-of-famers";
+const REDSOX_RETIRED = "https://www.mlb.com/redsox/history/retired-numbers";
+const REDSOX_FENWAY = "https://www.mlb.com/redsox/ballpark/facts-figures";
+
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  111: {
+    intro: "Fundado en 1901 como uno de los clubes originales de la Liga Americana, Boston conquistó la primera Serie Mundial moderna en 1903. Ganó cinco campeonatos antes de 1919 y, después de una espera de 86 años, volvió a coronarse en 2004; añadió otros tres títulos en 2007, 2013 y 2018. Fenway Park es su hogar desde 1912.",
+    featuredStory: {
+      kicker: "HISTORIA · SERIE MUNDIAL 2004",
+      title: "DE LA REMONTADA IMPOSIBLE AL FIN DE 86 AÑOS DE ESPERA",
+      excerpt: "Boston remontó una desventaja de tres juegos frente a los Yankees en la Serie de Campeonato de la Americana y después barrió a San Luis en la Serie Mundial de 2004.",
+      url: "https://www.mlb.com/redsox/history/timeline/2000s",
+    },
+    debutYear: "1901",
+    worldSeriesTitles: 9,
+    worldSeriesWinningYears: ["1903", "1912", "1915", "1916", "1918", "2004", "2007", "2013", "2018"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1903", "1904", "1912", "1915", "1916", "1918", "1946", "1967", "1975", "1986", "2004", "2007", "2013", "2018"],
+    pennantSources: {"1904": "https://www.mlb.com/redsox/history/timeline/1900s"},
+    postseasonSource: REDSOX_POSTSEASON,
+    divisionTitles: ["1975", "1986", "1988", "1990", "1995", "2007", "2013", "2016", "2017", "2018"],
+    stadiumOpened: "1912",
+    stadiumOpenedNote: "Fenway Park estrenó un juego de temporada regular el 20 de abril de 1912 ante los entonces New York Highlanders. Su longevidad es una parte fundamental de la identidad de Boston.",
+    stadiumSource: REDSOX_FENWAY,
+    milestones: [
+      {year: "1901", title: "Nace el club de la Liga Americana", description: "Boston inicia su historia como una de las franquicias fundadoras del nuevo circuito americano.", url: "https://www.mlb.com/redsox/history/timeline/1900s"},
+      {year: "1903", title: "Primera Serie Mundial moderna", description: "Boston derrota a Pittsburgh en ocho juegos y gana la primera edición del campeonato entre las ligas Americana y Nacional.", url: REDSOX_POSTSEASON},
+      {year: "1904", title: "Un banderín sin Serie Mundial", description: "Boston vuelve a ganar la Liga Americana, pero ese año no se disputa el enfrentamiento por el campeonato entre ambas ligas.", url: "https://www.mlb.com/redsox/history/timeline/1900s"},
+      {year: "1912", title: "Se inaugura Fenway Park", description: "El equipo estrena su nueva casa el 20 de abril y termina el año como campeón de la Serie Mundial.", url: REDSOX_FENWAY},
+      {year: "1918", title: "Quinto campeonato de la era temprana", description: "Los Red Sox superan a Chicago Cubs y consiguen un título que sería el último de la franquicia durante 86 años.", url: REDSOX_POSTSEASON},
+      {year: "1941", title: "Ted Williams batea .406", description: "Williams cierra la campaña con promedio de .406, una de las marcas más reconocidas de la historia del bateo.", url: "https://www.mlb.com/redsox/history/timeline/1940s"},
+      {year: "1967", title: "El Sueño Imposible", description: "Carl Yastrzemski lidera la sorprendente carrera de Boston al banderín de la Liga Americana.", url: "https://www.mlb.com/redsox/history/timeline/1960s"},
+      {year: "2004", title: "Se rompe la sequía histórica", description: "Tras remontar 0-3 a los Yankees en la Serie de Campeonato, Boston barre a San Luis y vuelve a ganar la Serie Mundial.", url: "https://www.mlb.com/redsox/history/timeline/2000s"},
+      {year: "2013", title: "Campeonato en Fenway Park", description: "Boston vence a St. Louis Cardinals y celebra su octavo título de Serie Mundial.", url: REDSOX_POSTSEASON},
+      {year: "2018", title: "Novena corona de la franquicia", description: "Los Red Sox superan a Los Angeles Dodgers por cuatro juegos a uno para sumar otro campeonato.", url: REDSOX_POSTSEASON},
+    ],
+    legends: [
+      {name: "Cy Young", era: "1901–1908", role: "Lanzador · campeón de 1903", highlight: "Figura del primer campeonato de la franquicia y uno de los lanzadores emblemáticos de los comienzos de la Americana.", url: REDSOX_HOF},
+      {name: "Babe Ruth", era: "1914–1919", role: "Lanzador y bateador", highlight: "Antes de su etapa con los Yankees, participó en la dinastía campeona de Boston durante la década de 1910.", url: "https://baseballhall.org/hall-of-famers/ruth-babe"},
+      {name: "Ted Williams", era: "1939–1960", role: "Jardinero · promedio .406 en 1941", highlight: "Su histórica campaña de 1941 sigue siendo una referencia central de la historia ofensiva de los Red Sox.", url: "https://baseballhall.org/hall-of-famers/williams-ted"},
+      {name: "Carl Yastrzemski", era: "1961–1983", role: "Jardinero · líder del Sueño Imposible", highlight: "Fue la figura central del banderín de 1967 y permaneció toda su carrera de Grandes Ligas con Boston.", url: "https://baseballhall.org/hall-of-famers/yastrzemski-carl"},
+      {name: "Pedro Martínez", era: "1998–2004", role: "Lanzador · figura del título de 2004", highlight: "Su dominio desde la lomita marcó una época en Fenway Park y fue parte del equipo que rompió la sequía en 2004.", url: "https://baseballhall.org/hall-of-famers/martinez-pedro"},
+      {name: "David Ortiz", era: "2003–2016", role: "Bateador designado · tres Series Mundiales", highlight: "Big Papi tuvo un papel decisivo en los campeonatos de 2004, 2007 y 2013; ingresó a Cooperstown en 2022.", url: "https://baseballhall.org/hall-of-famers/ortiz-david"},
+    ],
+    immortals: [
+      {name: "Cy Young", year: "1937", role: "Cooperstown · lanzador de Boston", url: "https://baseballhall.org/hall-of-famers/young-cy"},
+      {name: "Babe Ruth", year: "1936", role: "Cooperstown · campeón con Boston", url: "https://baseballhall.org/hall-of-famers/ruth-babe"},
+      {name: "Ted Williams", year: "1966", role: "Cooperstown · bateador de Boston", url: "https://baseballhall.org/hall-of-famers/williams-ted"},
+      {name: "Carl Yastrzemski", year: "1989", role: "Cooperstown · jardinero de Boston", url: "https://baseballhall.org/hall-of-famers/yastrzemski-carl"},
+      {name: "Pedro Martínez", year: "2015", role: "Cooperstown · lanzador de Boston", url: "https://baseballhall.org/hall-of-famers/martinez-pedro"},
+      {name: "David Ortiz", year: "2022", role: "Cooperstown · bateador designado", url: "https://baseballhall.org/hall-of-famers/ortiz-david"},
+    ],
+    sources: [
+      {label: "Cronología del club", url: REDSOX_TIMELINE},
+      {label: "Postemporada y títulos", url: REDSOX_POSTSEASON},
+      {label: "Estadios históricos", url: "https://www.mlb.com/redsox/history/ballparks"},
+      {label: "Fenway Park: datos oficiales", url: REDSOX_FENWAY},
+      {label: "Dorsales retirados", url: REDSOX_RETIRED},
+      {label: "Jugadores de Cooperstown", url: REDSOX_HOF},
+    ],
+  },
   109: {
     intro: "Arizona debutó en Grandes Ligas en 1998 como franquicia de expansión. Ganó la División Oeste de la Liga Nacional en su segunda temporada y conquistó la Serie Mundial de 2001 ante los Yankees. En 2023 volvió al Clásico de Otoño, esta vez como subcampeón ante Texas.",
     featuredStory: {
