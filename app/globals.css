@@ -5733,3 +5733,13 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
  padding:5px;
  border-color:rgba(245,242,233,.18);
 }
+
+/* Un solo estándar de marco para contrapartes MLB/LMB/LMP en Movimientos.
+   Se conserva la base clara u oscura ya asignada a cada escudo. */
+.clubMovementsContent--gemini .geminiCounterpartLogo{
+ padding:4px;
+ border-color:rgba(245,242,233,.18);
+}
+.clubMovementsContent--gemini .geminiCounterpartLogo--light{
+ border-color:rgba(7,17,13,.22);
+}
