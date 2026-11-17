@@ -12,5 +12,13 @@ export default function MovementCounterpartLogo({league,name}:{league:LeagueCode
    ?mlbClub?getTeamLogo("MLB",mlbClub.id,mlbClub.name):null
    :getTeamLogo(league,0,name);
  const wide=league==="LMB"&&/conspiradores de quer[eé]taro/i.test(name);
- return logo?<img className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")} src={logo} width={wide?44:32} height={32} alt={"Escudo de "+name} loading="lazy"/>:null;
+ // Prueba visual controlada: fondos claros solo para tres escudos LMB oscuros.
+ const lightPreview=league==="LMB"&&new Set([
+  "rieleros de aguascalientes",
+  "conspiradores de queretaro",
+  "algodoneros de union laguna",
+  "algodoneros del union laguna",
+  "algodoneros union laguna",
+ ]).has(normalized);
+ return logo?<img className={"geminiCounterpartLogo"+(wide?" geminiCounterpartLogo--wide":"")+(lightPreview?" geminiCounterpartLogo--light":"")+(league==="MLB"?" geminiCounterpartLogo--mlb":"")} src={logo} width={wide?44:32} height={32} alt={"Escudo de "+name} loading="lazy"/>:null;
 }
