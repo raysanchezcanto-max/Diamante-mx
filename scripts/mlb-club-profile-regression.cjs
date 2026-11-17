@@ -26,6 +26,12 @@ verify(strip.includes("lmbClubHref(team.name)") && strip.includes("lmpClubHref(t
 
 const page = read("app/equipos/mlb/[id]/page.tsx");
 const history = read("components/MlbClubEditorialHistory.tsx");
+const facts = read("components/ClubHistoryFacts.tsx");
+verify(history.includes("championshipYears={editorial?.worldSeriesWinningYears}") &&
+  facts.includes('championshipYears.join(" · ")'),
+  "MLB muestra los años de sus titulos dentro de la tarjeta de campeonatos");
+verify(!history.includes('<div className="clubDirectoryNotice">\\n        {editorial.worldSeriesTitles > 0'),
+  "MLB elimina el recuadro redundante de palmares debajo de las tarjetas");
 const tabs = read("components/LmbClubTabs.tsx");
 verify(page.includes('import LmbClubTabs'), "mismo componente de pestañas");
 verify(page.includes("CLUB_PROFILE_COPY as COPY"), "misma terminologia editorial");
@@ -157,7 +163,9 @@ verify(brewersHistory.stadiumOpened === "2001", "estadio Milwaukee abre en 2001"
 verify(brewersHistory.milestones.length >= 6 &&
   brewersHistory.legends.length >= 4 && brewersHistory.immortals.length >= 3,
   "cronologia, figuras y Cooperstown de Milwaukee completos");
-verify(history.includes("pennantLeague(year)") && history.includes("editorial.worldSeriesTitles > 0"),
+verify(history.includes("pennantLeague(year)") &&
+  history.includes("editorial?.worldSeriesTitles === 0") &&
+  history.includes("championshipYears={editorial?.worldSeriesWinningYears}"),
   "Historia distingue ligas antiguas y campeonatos de Serie Mundial");
 verify(history.includes("Number(year) >= 1903") && history.includes('year !== "1904"') &&
   history.includes("La Serie Mundial moderna todavía no existía."),
