@@ -50,6 +50,7 @@ export default function MlbClubEditorialHistory({
 
     <ClubHistoryMetrics league="MLB" debutYear={documentedDebut}
       championships={editorial?.worldSeriesTitles ?? null}
+      championshipYears={editorial?.worldSeriesWinningYears}
       seasonLabel={editorial?.titlesVerifiedThrough ?? String(new Date().getUTCFullYear())}
       stadiumName={overview.stadium} stadiumOpened={documentedStadiumOpened}/>
 
@@ -81,20 +82,7 @@ export default function MlbClubEditorialHistory({
       </div>
       <p className="clubSmallNote">Banderines de liga: {editorial.pennants
         .map(year => year + " (" + pennantLeague(year) + ")").join(" · ")}.
-        {" "}{editorial.divisionTitlesLabel ?? "Títulos divisionales"}: {
-          editorial.divisionTitles.join(" · ")}.</p>
-      <div className="clubDirectoryNotice">
-        {editorial.worldSeriesTitles > 0
-          ? <p><strong>{club.name}: {editorial.worldSeriesTitles} campeonato{
-            editorial.worldSeriesTitles === 1 ? "" : "s"} de Serie Mundial</strong>{
-              editorial.worldSeriesWinningYears?.length
-                ? " (" + editorial.worldSeriesWinningYears.join(" · ") + ")" : ""}.
-              Los banderines de liga se registran por separado.</p>
-          : <p>Hasta {editorial.titlesVerifiedThrough}, {club.name} no registra coronas de Serie Mundial.
-              Los banderines de liga son logros diferentes del campeonato de MLB.</p>}
-        <a href={postseasonUrl} target="_blank"
-          rel="noopener noreferrer">Historial oficial de postemporada ↗</a>
-      </div>
+        {" "}{editorial.divisionTitlesLabel ?? "Títulos divisional
     </> : <div className="clubDirectoryNotice">
       <p>El historial de campeonatos de Serie Mundial de {club.name} está pendiente de cotejo
         franquicia por franquicia. No publicamos cifras ni años sin confirmar el palmarés.</p>
