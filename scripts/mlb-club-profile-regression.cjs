@@ -52,6 +52,22 @@ for (const section of ["clubHistorySectionHead", "clubHistoryHall", "clubHistory
   verify(history.includes(section), "bloque de Historia " + section);
 }
 const { mlbEditorialHistory } = require("../lib/mlbHistoryEditorial.ts");
+const redSoxHistory = mlbEditorialHistory(111);
+verify(Boolean(redSoxHistory), "Boston tiene expediente historico propio");
+verify(redSoxHistory.debutYear === "1901" && redSoxHistory.stadiumOpened === "1912",
+  "debut Boston 1901 y primer partido en Fenway 1912");
+verify(redSoxHistory.worldSeriesTitles === 9 &&
+  redSoxHistory.worldSeriesWinningYears.join(",") === "1903,1912,1915,1916,1918,2004,2007,2013,2018",
+  "nueve titulos de Serie Mundial Boston, separados de los banderines");
+verify(redSoxHistory.pennants.includes("1904") &&
+  redSoxHistory.pennants.length === 14 && redSoxHistory.divisionTitles.length === 10,
+  "banderin de 1904 sin Serie Mundial y diez campeonatos divisionales");
+verify(redSoxHistory.milestones.length >= 9 && redSoxHistory.legends.length >= 6 &&
+  redSoxHistory.immortals.some(person => person.name === "David Ortiz" && person.year === "2022"),
+  "cronologia, protagonistas y Cooperstown de Boston");
+verify(redSoxHistory.sources.every(source => source.url.startsWith("https://")) &&
+  redSoxHistory.featuredStory.url.startsWith("https://www.mlb.com/redsox/"),
+  "enlaces de Boston pertenecen a fuentes oficiales");
 const dbacksHistory = mlbEditorialHistory(109);
 verify(Boolean(dbacksHistory), "Arizona tiene historia documental propia");
 verify(dbacksHistory.debutYear === "1998" && dbacksHistory.stadiumOpened === "1998",
