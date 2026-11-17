@@ -11,6 +11,39 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 112, group: "debut",
+    connection: {
+      name: "Esteban Quiroz", league: "LMB", mexicanClub: "Tigres de Quintana Roo",
+      mexicanSlug: "tigres", direction: "mexico-to-mlb", role: "Jugador de cuadro",
+      year: "LMB 2011–2016 → Chicago 2022",
+      description: "Jugó en la Liga Mexicana con Tigres antes de llegar a Grandes Ligas. Después de pasar por otras organizaciones, debutó en MLB con Chicago Cubs en septiembre de 2022.",
+      source: "https://baseballsavant.mlb.com/savant-player/esteban-quiroz-606019",
+      verificationSource: "https://www.mlb.com/news/esteban-quiroz-impresses-cubs-in-first-start",
+    },
+  },
+  {
+    mlbClubId: 112, group: "debut",
+    connection: {
+      name: "Esteban Quiroz", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mexico-to-mlb", role: "Jugador de cuadro",
+      year: "LMB 2017 → Chicago 2022",
+      description: "También participó con Yucatán antes de su paso por sucursales de Boston, San Diego y Tampa Bay. Su primer equipo en Grandes Ligas fue Chicago en 2022.",
+      source: "https://baseballsavant.mlb.com/savant-player/esteban-quiroz-606019",
+      verificationSource: "https://www.mlb.com/news/esteban-quiroz-impresses-cubs-in-first-start",
+    },
+  },
+  {
+    mlbClubId: 112, group: "debut",
+    connection: {
+      name: "Manuel Rodríguez", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mexico-to-mlb", role: "Lanzador derecho",
+      year: "LMB 2014–2016 → Chicago 2021",
+      description: "Lanzó tres campañas para Leones y fue Novato del Año de LMB en 2015. Firmó con Chicago en 2016 y se convirtió en el primer yucateco en debutar en Grandes Ligas en 2021.",
+      source: "https://www.milb.com/news/lmb-conocidos-nuestros-llegan-al-entrenamiento-de-primavera",
+      verificationSource: "https://www.milb.com/news/leones-melenudos-en-la-liga-invernal-mexicana",
+    },
+  },
+  {
     mlbClubId: 111, group: "previousExperience",
     connection: {
       name: "Adrián González", league: "LMP", mexicanClub: "Venados de Mazatlán",
