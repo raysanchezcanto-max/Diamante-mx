@@ -14,10 +14,10 @@ export default function LmpMovementTimeline({movements,logo,sourceUrl,gemini=fal
  return <>
   <p className="clubSmallNote">Registro de altas, bajas y otros cambios publicado por la Liga Mexicana del Pacífico. Se muestran los {movements.length} movimientos recientes disponibles en esta consulta; el historial completo está en la fuente oficial. Los datos se actualizan periódicamente.</p>
   {movements.length?<div className="clubMovementsTimeline">
-   {movements.map((item,index)=>{const presentation=describeLmpMovement(item.description);const transfer=lmpTransferPresentation(item.description);return <article className="clubMovementItem" key={item.date+"-"+index}>
+   {movements.map((item,index)=>{const presentation=describeLmpMovement(item.description);const transfer=lmpTransferPresentation(item.description);const title=(transfer?lmpTransferTitle(item.description):null)||presentation.title;return <article className="clubMovementItem" key={item.date+"-"+index}>
     <div className="clubMovementDate"><span>{spanishDate(item.date)}</span><span className="clubMovementType">{presentation.type}</span></div>
     <div className="clubMovementBody">{logo&&<img src={logo} alt="" width={53} height={53}/>}
-     <div>{(transfer?lmpTransferTitle(item.description):presentation.title)&&<h3>{transfer?lmpTransferTitle(item.description):presentation.title}</h3>}{gemini?<MovementGeminiDetails text={item.description}/>:<p>{item.description}</p>}{transfer&&<div className="clubMovementDirection" data-direction={transfer.label.includes("CEDIDOS")?"out":"in"}><span>{gemini?(transfer.label.includes("CEDIDOS")?"→ ":"← ")+transfer.label:transfer.label}</span>{gemini&&<MovementCounterpartLogo league="LMP" name={transfer.otherClub}/>}<strong>{transfer.otherClub}</strong></div>}<a href={sourceUrl} target="_blank" rel="noopener noreferrer">Consultar registro oficial LMP ↗</a></div>
+     <div>{title&&<h3>{title}</h3>}{gemini?<MovementGeminiDetails text={item.description}/>:<p>{item.description}</p>}{transfer&&<div className="clubMovementDirection" data-direction={transfer.label.includes("CEDIDOS")?"out":"in"}><span>{gemini?(transfer.label.includes("CEDIDOS")?"→ ":"← ")+transfer.label:transfer.label}</span>{gemini&&<MovementCounterpartLogo league="LMP" name={transfer.otherClub}/>}<strong>{transfer.otherClub}</strong></div>}<a href={sourceUrl} target="_blank" rel="noopener noreferrer">Consultar registro oficial LMP ↗</a></div>
     </div>
    </article>})}
   </div>:<div className="clubDirectoryNotice">
