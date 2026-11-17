@@ -82,7 +82,8 @@ export default function MlbClubEditorialHistory({
       </div>
       <p className="clubSmallNote">Banderines de liga: {editorial.pennants
         .map(year => year + " (" + pennantLeague(year) + ")").join(" · ")}.
-        {" "}{editorial.divisionTitlesLabel ?? "Títulos divisional
+        {" "}{editorial.divisionTitlesLabel ?? "Títulos divisionales"}: {
+          editorial.divisionTitles.join(" · ")}.</p>
     </> : <div className="clubDirectoryNotice">
       <p>El historial de campeonatos de Serie Mundial de {club.name} está pendiente de cotejo
         franquicia por franquicia. No publicamos cifras ni años sin confirmar el palmarés.</p>
