@@ -14,6 +14,14 @@ export function describeLmpMovement(description: string): {title:string;type:str
   else if(signed) type="Contratación";
 
   // Primer nombre o grupo mencionado, sin recortar la descripción oficial.
+  // En bajas expresas, rescatar el nombre sin convertir la descripción en un título genérico.
+  // Ejemplo: «da de baja al lanzador derecho Jorge Pérez de su reserva extranjera».
+  const explicitDeparture=description.match(
+    /\b(?:da(?:n)? de baja|desactiv(?:a|an)|inactiv(?:a|an))\s+(?:al?|a la)\s+(?:(?:lanzador(?:a)?|jardinero|receptor|jugador(?:a)? de cuadro)\s+)?(?:(?:derecho|zurdo|derecha|zurda)\s+)?(.+?)(?=\s+de su\b|\s+de la\b|[.;,]|$)/i
+  )?.[1]?.trim();
+  const departureName=explicitDeparture&&/^[A-ZÁÉÍÓÚÑ][\p{L}.'-]+(?:\s+[A-ZÁÉÍÓÚÑ][\p{L}.'-]+){1,3}$/u.test(explicitDeparture)
+    ?explicitDeparture:null;
+
   const actor = description.match(/\b(?:activaci[oó]n de|activ(?:a|an|ando)\s+(?:a|al|en su lugar a)|desactiv(?:a|an|ando)\s+(?:a|al)|inactiv(?:a|an|ando)\s+(?:a|al)|alta de|baja de)\s+([^.;]+)/i)?.[1]
     ?.split(/,\s*desactivando|,\s*inactivando|\s+desactivando|\s+inactivando|\s+para\s+/i)[0]
     ?.trim();
@@ -24,6 +32,6 @@ export function describeLmpMovement(description: string): {title:string;type:str
   const names = shortNames && !/\b(?:plantilla|jugadores|lanzadores|receptores)\b/i.test(shortNames) ? shortNames : null;
   // La categoría ya aparece en la píldora superior; el título no debe repetirla.
   // Si la fuente no permite extraer nombres sin ambigüedad, se omite el título.
-  const title = names ?? "";
+  const title = names ?? departureName ?? "";
   return {title,type};
 }
