@@ -1,6 +1,7 @@
 import { getMlbPostseason } from "@/lib/mlbPostseason";
 import { getMlbWorldSeriesStats } from "@/lib/mlbWorldSeriesStats";
 import { getMlbPlayState } from "@/lib/mlbLive";
+import { getLmpPlayState } from "@/lib/lmpLive";
 import {
   getMlbWorldSeries,
 } from "@/lib/mlbWorldSeries";
@@ -150,6 +151,14 @@ const [games, standings, leaders] = lmbData
   : lmpData
     ? [lmpData[1], lmpData[2], lmpData[3]]
     : [mlbData![1], mlbData![2], mlbData![3]];
+
+// Piloto: consultar las bases únicamente al comenzar Charros–Venados LMP 850421.
+const lmpCardPilotGame = selectedLeague === "LMP"
+  ? games.find(game => game.id === 850421 && game.status === "Live" && game.firstPitchRecorded === true)
+  : null;
+const lmpCardPilotState = lmpCardPilotGame
+  ? await getLmpPlayState(lmpCardPilotGame.id)
+  : null;
 
 const nextGames = lmbData
   ? lmbData[4]
@@ -643,6 +652,7 @@ const daysUntilLmp =
 
  <Games
    games={games}
+  lmpCardPilotState={lmpCardPilotState}
   nextGames={nextGames}
   recentGames={recentGames}
   lmbChampion={lmbChampion}
