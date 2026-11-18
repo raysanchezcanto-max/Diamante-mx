@@ -184,9 +184,6 @@ function GameCards({
           : "";
         const awayDisplayName = getTeamDisplayName(league, game.away);
         const homeDisplayName = getTeamDisplayName(league, game.home);
-        // Ensayo visual solo para los Charros: lógica y navegación intactas.
-        const previewCharrosCard = league === "LMP" && /charros/i.test(`${game.away} ${game.home}`);
-        const charrosLiveCard = previewCharrosCard && game.status === "Live" && game.firstPitchRecorded === true;
 
         const awayLogo = getTeamLogo(
           league,
@@ -236,6 +233,11 @@ const isMlbWarmup =
       
 
 
+        // Antes del juego, el marcador permanece vacío en todas las ligas.
+        // Ya en vivo, un resultado aún no disponible se representa con un guion.
+        const showGameScore = !specialStatus && !isMlbWarmup &&
+          (game.status === "Live" || game.status === "Final");
+
         // Ventaja real: solo EN VIVO/FINAL, sin estado especial ni empate.
         const hasDecisiveScore =
           (game.status === "Live" || game.status === "Final") &&
@@ -265,7 +267,7 @@ const showMlbRegularPitchers =
           <Link
             href={`/game/${league.toLowerCase()}/${game.id}`}
             prefetch={league !== "LMP"}
-            className={`gameCard gameCardLink${charrosLiveCard ? " gameCardCharrosLiveTrial" : ""}`}
+            className="gameCard gameCardLink"
             key={game.id}
           >
            <div
@@ -516,12 +518,6 @@ marginTop: "5px",
       )}
     </div>
   )}
-            {charrosLiveCard && (
-              <div className="charrosLiveTrialMeta" aria-label="Estado del encuentro">
-                <span>MARCADOR EN VIVO</span>
-                <strong>{liveInningLabel || "EN JUEGO"}</strong>
-              </div>
-            )}
             <div className="teamRow">
               <div className="teamIdentity">
                 {awayLogo && (
@@ -553,11 +549,7 @@ marginTop: "5px",
 
  
 
-{previewCharrosCard && game.status === "Preview" ? "" : game.status === "Preview" ||
-isMlbWarmup ||
-specialStatus === "POSPUESTO"
-  ? "–"
-  : game.awayRuns ?? "–"}
+{showGameScore ? game.awayRuns ?? "–" : ""}
 
 
 </strong>
@@ -627,11 +619,7 @@ specialStatus === "POSPUESTO"
 
 
 
-{previewCharrosCard && game.status === "Preview" ? "" : game.status === "Preview" ||
-isMlbWarmup ||
-specialStatus === "POSPUESTO"
-  ? "–"
-  : game.homeRuns ?? "–"}
+{showGameScore ? game.homeRuns ?? "–" : ""}
 
 
 </strong>
