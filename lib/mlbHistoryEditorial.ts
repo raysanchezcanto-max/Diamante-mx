@@ -82,7 +82,69 @@ const CUBS_BALLPARKS = "https://www.mlb.com/cubs/history/ballparks";
 const CUBS_HALL = "https://www.mlb.com/cubs/history/hall-of-fame-players";
 const CUBS_POSTSEASON = "https://www.mlb.com/postseason/history";
 
+const WHITE_SOX_TIMELINE = "https://www.mlb.com/whitesox/history/timeline";
+const WHITE_SOX_HALL = "https://www.mlb.com/whitesox/history/hall-of-famers";
+const WHITE_SOX_STADIUM = "https://www.mlb.com/whitesox/ballpark/information/history-and-dimensions";
+const WHITE_SOX_2005 = "https://www.mlb.com/whitesox/news/2005-world-series-recap";
+
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  145: {
+    intro: "Chicago White Sox es una franquicia fundadora de la Liga Americana como circuito mayor en 1901. Conquistó las Series Mundiales de 1906 y 1917, ganó el banderín de 1959 y rompió una sequía de 88 años al barrer a Houston en la Serie Mundial de 2005. Su estadio actual, Rate Field, abrió en 1991.",
+    featuredStory: {
+      kicker: "HISTORIA · SERIE MUNDIAL 2005",
+      title: "88 AÑOS DESPUÉS, CHICAGO VUELVE A SER CAMPEÓN",
+      excerpt: "Con Ozzie Guillén como mánager, los White Sox terminaron la postemporada de 2005 con marca de 11-1 y barrieron a Houston Astros para conquistar su tercera Serie Mundial.",
+      url: WHITE_SOX_2005,
+    },
+    debutYear: "1901",
+    worldSeriesTitles: 3,
+    worldSeriesWinningYears: ["1906", "1917", "2005"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1901", "1906", "1917", "1919", "1959", "2005"],
+    postseasonSource: WHITE_SOX_TIMELINE,
+    divisionTitles: ["1983", "1993", "2000", "2005", "2008", "2021"],
+    stadiumOpened: "1991",
+    stadiumOpenedNote: "El parque abrió el 18 de abril de 1991 como nuevo Comiskey Park, después fue U.S. Cellular Field y Guaranteed Rate Field. Hoy se conoce como Rate Field.",
+    stadiumSource: WHITE_SOX_STADIUM,
+    milestones: [
+      {year: "1901", title: "Fundadores de la Liga Americana", description: "Los White Stockings de Chicago compiten en la primera temporada de la Liga Americana reconocida como liga mayor y ganan el banderín.", url: WHITE_SOX_TIMELINE},
+      {year: "1906", title: "Campeones en el clásico de Chicago", description: "Los llamados Hitless Wonders sorprenden a sus vecinos Cubs y conquistan su primera Serie Mundial por cuatro juegos a dos.", url: "https://www.mlb.com/postseason/history/1906"},
+      {year: "1917", title: "Segunda Serie Mundial", description: "Con Red Faber como figura del pitcheo, los White Sox vencen a New York Giants en seis encuentros.", url: WHITE_SOX_TIMELINE},
+      {year: "1919", title: "Un banderín marcado por el escándalo", description: "Chicago llega a la Serie Mundial ante Cincinnati; el arreglo del resultado por integrantes del club desencadena el escándalo Black Sox y expulsiones de por vida.", url: WHITE_SOX_TIMELINE},
+      {year: "1959", title: "Los Go-Go Sox llegan a la Serie Mundial", description: "Con Nellie Fox, Luis Aparicio y el mánager Al López, Chicago gana la Americana, aunque Dodgers se impone en el Clásico de Otoño.", url: WHITE_SOX_TIMELINE},
+      {year: "1991", title: "Se estrena el nuevo Comiskey Park", description: "La franquicia inaugura el estadio que hoy recibe el nombre de Rate Field, frente al antiguo parque del South Side.", url: WHITE_SOX_STADIUM},
+      {year: "2005", title: "Se rompe la sequía de 88 años", description: "El conjunto dirigido por Ozzie Guillén gana 11 de sus 12 juegos de postemporada y barre a Houston en la Serie Mundial.", url: WHITE_SOX_2005},
+      {year: "2009", title: "Juego perfecto de Mark Buehrle", description: "El zurdo retira a los 27 bateadores de Tampa Bay en una de las grandes hazañas individuales de la franquicia.", url: WHITE_SOX_TIMELINE},
+      {year: "2021", title: "Campeones de la División Central", description: "Chicago se corona en el Centro de la Liga Americana y regresa a octubre; su participación termina ante Houston en la Serie Divisional.", url: WHITE_SOX_TIMELINE},
+    ],
+    legends: [
+      {name: "Luke Appling", era: "1930–1950", role: "Campocorto · ícono de la franquicia", highlight: "Disputó toda su carrera con Chicago y acumuló 2,749 imparables.", url: WHITE_SOX_HALL},
+      {name: "Nellie Fox", era: "1950–1963", role: "Segunda base · MVP de 1959", highlight: "Fue pieza central de los Go-Go Sox que ganaron el banderín de la Liga Americana.", url: WHITE_SOX_HALL},
+      {name: "Luis Aparicio", era: "1956–1962, 1968–1970", role: "Campocorto · defensa y velocidad", highlight: "El venezolano fue Novato del Año en 1956 y miembro del equipo campeón de la Americana en 1959.", url: WHITE_SOX_HALL},
+      {name: "Minnie Miñoso", era: "1951–1957, 1960–1961 y regresos", role: "Jardinero · pionero del béisbol latino", highlight: "Una figura histórica de la afición del South Side, exaltada a Cooperstown en 2022.", url: WHITE_SOX_HALL},
+      {name: "Frank Thomas", era: "1990–2005", role: "Bateador designado y primera base · dos MVP", highlight: "Conocido como The Big Hurt, fue dos veces MVP de la Americana y uno de los grandes bateadores del club.", url: WHITE_SOX_HALL},
+      {name: "Paul Konerko", era: "1999–2014", role: "Primera base · capitán y campeón de 2005", highlight: "Su grand slam en el segundo juego de 2005 es uno de los momentos más recordados de esa Serie Mundial.", url: "https://www.mlb.com/whitesox/news/top-moments-in-white-sox-history"},
+      {name: "Mark Buehrle", era: "2000–2011", role: "Lanzador · campeón de 2005", highlight: "Lanzó un juego sin hit en 2007 y un juego perfecto en 2009.", url: WHITE_SOX_TIMELINE},
+    ],
+    immortals: [
+      {name: "Eddie Collins", year: "1939", role: "Cooperstown · segunda base", url: WHITE_SOX_HALL},
+      {name: "Luke Appling", year: "1964", role: "Cooperstown · campocorto", url: WHITE_SOX_HALL},
+      {name: "Red Faber", year: "1964", role: "Cooperstown · lanzador", url: WHITE_SOX_HALL},
+      {name: "Nellie Fox", year: "1997", role: "Cooperstown · segunda base", url: WHITE_SOX_HALL},
+      {name: "Luis Aparicio", year: "1984", role: "Cooperstown · campocorto", url: WHITE_SOX_HALL},
+      {name: "Carlton Fisk", year: "2000", role: "Cooperstown · receptor", url: WHITE_SOX_HALL},
+      {name: "Frank Thomas", year: "2014", role: "Cooperstown · primera base", url: WHITE_SOX_HALL},
+      {name: "Harold Baines", year: "2019", role: "Cooperstown · bateador designado", url: WHITE_SOX_HALL},
+      {name: "Minnie Miñoso", year: "2022", role: "Cooperstown · jardinero", url: WHITE_SOX_HALL},
+    ],
+    sources: [
+      {label: "Cronología oficial de White Sox", url: WHITE_SOX_TIMELINE},
+      {label: "Historia del estadio Rate Field", url: WHITE_SOX_STADIUM},
+      {label: "Exaltados al Salón de la Fama", url: WHITE_SOX_HALL},
+      {label: "Crónica oficial de la Serie Mundial de 2005", url: WHITE_SOX_2005},
+      {label: "Números retirados por la franquicia", url: "https://www.mlb.com/whitesox/history/retired-numbers"},
+    ],
+  },
   112: {
     intro: "Chicago participa en la Liga Nacional desde su fundación en 1876, cuando era conocido como White Stockings. Después de conquistar las Series Mundiales de 1907 y 1908, vivió una espera de 108 años hasta su inolvidable campeonato de 2016. Desde 1916 juega en Wrigley Field, un parque inaugurado dos años antes para otro equipo.",
     featuredStory: {
