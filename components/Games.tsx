@@ -184,6 +184,9 @@ function GameCards({
           : "";
         const awayDisplayName = getTeamDisplayName(league, game.away);
         const homeDisplayName = getTeamDisplayName(league, game.home);
+        // Ensayo visual solo para los Charros: lógica y navegación intactas.
+        const previewCharrosCard = league === "LMP" && /charros/i.test(`${game.away} ${game.home}`);
+        const charrosLiveCard = previewCharrosCard && game.status === "Live" && game.firstPitchRecorded === true;
 
         const awayLogo = getTeamLogo(
           league,
@@ -262,7 +265,7 @@ const showMlbRegularPitchers =
           <Link
             href={`/game/${league.toLowerCase()}/${game.id}`}
             prefetch={league !== "LMP"}
-            className="gameCard gameCardLink"
+            className={`gameCard gameCardLink${charrosLiveCard ? " gameCardCharrosLiveTrial" : ""}`}
             key={game.id}
           >
            <div
@@ -513,6 +516,12 @@ marginTop: "5px",
       )}
     </div>
   )}
+            {charrosLiveCard && (
+              <div className="charrosLiveTrialMeta" aria-label="Estado del encuentro">
+                <span>MARCADOR EN VIVO</span>
+                <strong>{liveInningLabel || "EN JUEGO"}</strong>
+              </div>
+            )}
             <div className="teamRow">
               <div className="teamIdentity">
                 {awayLogo && (
@@ -544,7 +553,7 @@ marginTop: "5px",
 
  
 
-{game.status === "Preview" ||
+{previewCharrosCard && game.status === "Preview" ? "" : game.status === "Preview" ||
 isMlbWarmup ||
 specialStatus === "POSPUESTO"
   ? "–"
@@ -618,7 +627,7 @@ specialStatus === "POSPUESTO"
 
 
 
-{game.status === "Preview" ||
+{previewCharrosCard && game.status === "Preview" ? "" : game.status === "Preview" ||
 isMlbWarmup ||
 specialStatus === "POSPUESTO"
   ? "–"
