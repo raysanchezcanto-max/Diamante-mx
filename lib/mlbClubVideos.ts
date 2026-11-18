@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  145: [
+    {title: "El último out de la Serie Mundial de 2005", date: "26 oct 2005", duration: "0:32", description: "Juan Uribe asegura el último out ante Houston y Chicago conquista su primera Serie Mundial en 88 años.", url: "https://www.mlb.com/whitesox/video/white-sox-are-world-champions-c3461473"},
+    {title: "Película oficial de la Serie Mundial de 2005", date: "29 nov 2005", duration: "1:15:01", description: "Documental de MLB sobre el barrido de los White Sox a Houston y la actuación de Jermaine Dye.", url: "https://www.mlb.com/video/2005-world-series-film"},
+    {title: "Los White Sox celebran 20 años del campeonato", date: "12 jul 2025", duration: "4:07", description: "Ceremonia oficial para recordar a los campeones de la Serie Mundial de 2005 ante su afición.", url: "https://www.mlb.com/whitesox/video/white-sox-celebrate-2005-world-series-championship"},
+  ],
   112: [
     {
       title: "Los Cubs conquistan la Serie Mundial después de 108 años",
