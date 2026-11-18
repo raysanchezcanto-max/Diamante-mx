@@ -184,6 +184,9 @@ function GameCards({
           : "";
         const awayDisplayName = getTeamDisplayName(league, game.away);
         const homeDisplayName = getTeamDisplayName(league, game.home);
+        // Ensayo solo en Charros–Venados LMP del 18 de noviembre.
+        const liveCardPilot = league === "LMP" && game.id === 850421 &&
+          game.status === "Live" && game.firstPitchRecorded === true;
 
         const awayLogo = getTeamLogo(
           league,
@@ -267,7 +270,7 @@ const showMlbRegularPitchers =
           <Link
             href={`/game/${league.toLowerCase()}/${game.id}`}
             prefetch={league !== "LMP"}
-            className="gameCard gameCardLink"
+            className={`gameCard gameCardLink${liveCardPilot ? " gameCardLivePilot" : ""}`}
             key={game.id}
           >
            <div
