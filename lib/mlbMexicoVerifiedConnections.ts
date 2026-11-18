@@ -11,6 +11,28 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 145, group: "previousExperience",
+    connection: {
+      name: "Esteban Loaiza", league: "LMP", mexicanClub: "Tomateros de Culiacán",
+      mexicanSlug: "tomateros", direction: "mexico-to-mlb", role: "Lanzador derecho",
+      year: "Tomateros 1995–96 · White Sox 2003–04",
+      description: "El tijuanense integró a los Tomateros campeones de la Serie del Caribe de 1996 y, años después, ganó 21 juegos con los White Sox en 2003. Su debut en MLB había ocurrido antes, con Pittsburgh.",
+      source: "https://www.mlb.com/es/news/gil-recuerda-la-sorpresa-que-dio-culiacan-en-1996/c-108431194",
+      verificationSource: "https://www.mlb.com/es/player/esteban-loaiza-117842",
+    },
+  },
+  {
+    mlbClubId: 145, group: "toMexico",
+    connection: {
+      name: "Manny Bañuelos", league: "LMB", mexicanClub: "Sultanes de Monterrey",
+      mexicanSlug: "sultanes", direction: "mlb-to-mexico", role: "Lanzador zurdo",
+      year: "White Sox 2019 · Sultanes 2021 y 2025",
+      description: "Tras lanzar en Grandes Ligas con Chicago en 2019, el zurdo mexicano jugó con Sultanes en la Liga Mexicana en 2021 y volvió a formar parte de su plantilla en 2025. Su debut de MLB fue con Atlanta en 2015.",
+      source: "https://www.mlb.com/press-release/press-release-additional-yankees-roster-moves-5-26-22",
+      verificationSource: "https://www.mlb.com/player/manny-banuelos-544365",
+    },
+  },
+  {
     mlbClubId: 112, group: "debut",
     connection: {
       name: "Esteban Quiroz", league: "LMB", mexicanClub: "Tigres de Quintana Roo",
