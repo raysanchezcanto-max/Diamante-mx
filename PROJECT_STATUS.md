@@ -1272,3 +1272,9 @@ Total output lines: 2623
 - Rate Field: apertura del inmueble en 1991 y sucesión de nombres documentada. El módulo compacto «Campeonatos MLB» conserva el diseño y presenta los años 1906 · 1917 · 2005.
 - Tres videos oficiales MLB con fechas y duraciones comprobadas; vínculos mexicanos verificados: Esteban Loaiza/Tomateros (LMP) y Manny Bañuelos/Sultanes (LMB), diferenciando la experiencia previa de un debut MLB.
 - Pruebas locales: `npm run test:mlb-profiles` (209 + 87 + 18 + 56 verificaciones) y `npx tsc --noEmit` sin errores. Se conservan íntegros tamaños y estilos de tarjetas. Pendiente revisar publicación final en Vercel y continuar franquicia por franquicia. LMB/LMP Movimientos y rediseño de Estadísticas continúan aplazados.
+
+### Ajuste de marcadores antes del primer lanzamiento · 18 nov 2026
+- Las tarjetas principales de MLB, LMB y LMP mantienen sin cambios tamaño, colores, orden de equipos, estados y vínculo a detalles.
+- En PRÓXIMO, HOY, POR COMENZAR y otros estados previos no se renderizan guiones de marcador: ambos espacios permanecen vacíos.
+- EN VIVO y FINAL muestran sus carreras; cuando una fuente todavía no informa carreras en juego, mantienen «–» como señal de dato pendiente, sin sustituir ceros válidos.
+- Se retiró la maqueta compacta exclusiva de Charros de Jalisco y todos sus estilos. Las 24 pruebas de estados y TypeScript pasaron. La idea de una presentación en vivo más elaborada queda para una propuesta futura sin alterar las dimensiones establecidas.
