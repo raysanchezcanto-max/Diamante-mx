@@ -1266,3 +1266,9 @@ Total output lines: 2623
 - La tarjeta numérica **CAMPEONATOS MLB** ahora muestra los años verificados de las Series Mundiales bajo el número (por ejemplo Cubs 1907 · 1908 · 2016, Boston nueve años). Las franquicias sin coronas muestran «Sin títulos de Serie Mundial» y las aún sin datos conservan «Por verificar».
 - El componente compartido `ClubHistoryMetrics` recibe una propiedad opcional `championshipYears`, suministrada **solo desde MLB**; LMB/LMP conservan su texto y sus diseños actuales. Sin cambios de CSS, dimensiones ni distribución.
 - Verificaciones locales: TypeScript sin errores; perfiles MLB 209 pruebas, español 87, Atlanta 18 y Baltimore 56. Pendiente: confirmación del despliegue de producción y comprobación visual.
+
+### Auditoría MLB — Chicago White Sox (ID 145) · 18 nov 2026
+- Ficha histórica editorial incorporada: fundación MLB en 1901; tres Series Mundiales (1906, 1917, 2005); banderines, títulos divisionales, hitos, leyendas y nueve integrantes de Cooperstown con fuentes oficiales.
+- Rate Field: apertura del inmueble en 1991 y sucesión de nombres documentada. El módulo compacto «Campeonatos MLB» conserva el diseño y presenta los años 1906 · 1917 · 2005.
+- Tres videos oficiales MLB con fechas y duraciones comprobadas; vínculos mexicanos verificados: Esteban Loaiza/Tomateros (LMP) y Manny Bañuelos/Sultanes (LMB), diferenciando la experiencia previa de un debut MLB.
+- Pruebas locales: `npm run test:mlb-profiles` (209 + 87 + 18 + 56 verificaciones) y `npx tsc --noEmit` sin errores. Se conservan íntegros tamaños y estilos de tarjetas. Pendiente revisar publicación final en Vercel y continuar franquicia por franquicia. LMB/LMP Movimientos y rediseño de Estadísticas continúan aplazados.
