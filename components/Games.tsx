@@ -11,6 +11,7 @@ import type {
   MlbWorldSeriesStats,
 } from "@/lib/mlbWorldSeriesStats";
 import Link from "next/link";
+import BaseDiamond from "@/components/BaseDiamond";
 import type { Game } from "@/lib/mlb";
 import { getGameSpecialStatus } from "@/lib/gameSpecialStatus";
 import { getLmpInningLabel } from "@/lib/lmpInningLabel";
@@ -170,9 +171,11 @@ function dateLabel(game: Game) {
 function GameCards({
   games,
   league,
+  pilotState = null,
 }: {
   games: Game[];
   league: LeagueCode;
+  pilotState?: { first: number; second: number; third: number; outs: number; inningState?: string } | null;
 }) {
   return (
     <div className="gamesGrid">
@@ -187,6 +190,13 @@ function GameCards({
         // Ensayo solo en Charros–Venados LMP del 18 de noviembre.
         const liveCardPilot = league === "LMP" && game.id === 850421 &&
           game.status === "Live" && game.firstPitchRecorded === true;
+        const pilotInningTransition = ["middle", "end"].includes((pilotState?.inningState ?? "").toLowerCase());
+        const pilotSituation = liveCardPilot && pilotState ? {
+          first: pilotInningTransition ? 0 : pilotState.first,
+          second: pilotInningTransition ? 0 : pilotState.second,
+          third: pilotInningTransition ? 0 : pilotState.third,
+          outs: pilotInningTransition ? 0 : pilotState.outs,
+        } : null;
 
         const awayLogo = getTeamLogo(
           league,
@@ -482,6 +492,12 @@ marginTop: "5px",
 
 
 </div>
+{pilotSituation && (
+  <div className="pilotBasesOuts" aria-label={`Corredores en bases y ${pilotSituation.outs} outs`}>
+    <BaseDiamond first={pilotSituation.first} second={pilotSituation.second} third={pilotSituation.third} />
+    <span>{pilotSituation.outs} {pilotSituation.outs === 1 ? "OUT" : "OUTS"}</span>
+  </div>
+)}
 {league === "MLB" &&
   (game.seriesDescription ||
     game.seriesGameNumber ||
@@ -668,6 +684,7 @@ marginTop: "5px",
 }
 export default function Games({
   games,
+  lmpCardPilotState = null,
   nextGames = [],
   recentGames = [],
   lmbChampion = null,
@@ -685,6 +702,7 @@ export default function Games({
   league = "MLB",
 }: {
   games: Game[];
+  lmpCardPilotState?: { first: number; second: number; third: number; outs: number; inningState?: string } | null;
   nextGames?: Game[];
   recentGames?: Game[];
  lmbChampion?: {
@@ -1828,6 +1846,7 @@ const hasAnyGames =
           <GameCards
            games={sortedTodayGames}
             league={league}
+            pilotState={lmpCardPilotState}
           />
         </section>
       )}
