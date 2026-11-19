@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  117: [
+    {title: "Houston llega a su primera Serie Mundial", date: "19 oct 2005", duration: "0:55", description: "Dan Wheeler obtiene el último out de la Serie de Campeonato ante St. Louis y los Astros ganan su primer banderín de la Liga Nacional.", url: "https://www.mlb.com/video/astros-advance-to-world-series-c20047525"},
+    {title: "Los Astros ganan su primera Serie Mundial en 2017", date: "1 nov 2017", duration: "0:28", description: "José Altuve completa la jugada final del séptimo partido ante Los Angeles Dodgers para asegurar la primera corona de la franquicia.", url: "https://www.mlb.com/astros/video/astros-win-the-world-series-c1866378083"},
+    {title: "Houston se corona campeón mundial de 2022", date: "5 nov 2022", duration: "0:29", description: "Kyle Tucker captura el último out del sexto juego ante Philadelphia y los Astros celebran su segunda Serie Mundial.", url: "https://www.mlb.com/astros/video/astros-win-the-world-series"},
+  ],
   116: [
     {title: "Detroit conquista la Serie Mundial de 1968", date: "10 oct 1968", duration: "1:08", description: "El último out del séptimo juego ante St. Louis completa el tercer campeonato mundial de los Tigers.", url: "https://www.mlb.com/video/tigers-win-the-series-c19973569"},
     {title: "El último out de la Serie Mundial de 1984", date: "14 oct 1984", duration: "0:23", description: "La narración de Ernie Harwell acompaña el último out ante San Diego y el cuarto título de Detroit.", url: "https://www.mlb.com/tigers/video/tigers-win-the-1984-world-series-c7839515"},
