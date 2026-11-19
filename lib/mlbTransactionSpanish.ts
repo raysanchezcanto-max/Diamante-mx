@@ -141,8 +141,14 @@ export function translateMlbTransaction(
       const deal = original.match(/\btraded\b.*?\bto\s+(.+?)\s+for\s+cash(?: considerations)?\.?$/i);
       const inferred = !person ? original.match(/\btraded\s+(?:(RHP|LHP|C|1B|2B|3B|SS|LF|CF|RF|OF|IF|DH|P)\s+)?(.+?)\s+to\b/i) : null;
       const playerName = person ?? (inferred ? inferred[2] + (inferred[1] ? " (" + POSITIONS[inferred[1].toUpperCase()] + ")" : "") : subject);
+      const destination = deal?.[1]?.trim() ?? "";
+      // StatsAPI incluye transacciones tanto en la ficha del club de origen como
+      // en la del receptor. "Traded X to [este club]" significa adquisición.
+      const receivedHere = destination.localeCompare(clubName, "en", { sensitivity: "base" }) === 0;
       return { label, description: deal
-        ? clubName + " intercambió a " + playerName + " con " + deal[1].trim() + " a cambio de dinero."
+        ? receivedHere
+          ? clubName + " adquirió a " + playerName + " mediante un intercambio a cambio de dinero."
+          : clubName + " intercambió a " + playerName + " con " + destination + " a cambio de dinero."
         : clubName + " registró un intercambio relacionado con " + playerName + "." };
     }
     case "assigned": return { label, description: clubName + " asignó a " + subject + "." };
