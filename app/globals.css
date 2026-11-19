@@ -51,10 +51,10 @@ nav a:hover { color: var(--text); }
 .gamesGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px; }
 .gameCard, .tableCard, .leaderCard { background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line); border-radius: 16px; }
 .gameCard { padding: 18px; }
-/* Ensayo únicamente para LMP 850421, sin cambiar dimensiones ni paleta. */
+/* Pizarra compartida por las tres ligas. */
 /* Colores discretos de ALTA/BAJA en tarjetas principales de las tres ligas. */
 .gamesGrid .liveInningText { color: var(--muted); background: rgba(255,255,255,.045); border-radius: 5px; padding-inline: 5px; }
-/* Diamante experimental solo para LMP 850421, sin alterar tamaño ni colores de la tarjeta. */
+/* Diamante y jugada actual solo con datos confirmados. */
 .gameCardLivePilot { position: relative; }
 .gameCardLivePilot .pilotBasesOuts {
   position: absolute;
@@ -635,7 +635,7 @@ max-width: 1152px;
 }
 
 .liveGameInning {
-  color: var(--accent);
+  color: var(--muted);
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
