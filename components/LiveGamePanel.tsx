@@ -180,7 +180,7 @@ const battingTeam =
 
     {!isInningTransition && batterName && (
       <span className="liveGameAtBat">
-        AL BAT · {batterName}
+        AL BATE · {batterName}
       </span>
     )}
 
@@ -253,7 +253,7 @@ const battingTeam =
         ) : (
           <p>
             {description?.toLowerCase() === "al bat" && batterName
-              ? `Al bat: ${batterName}`
+              ? `Al bate: ${batterName}`
               : description}
           </p>
         )}
