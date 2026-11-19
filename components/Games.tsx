@@ -175,7 +175,7 @@ function GameCards({
 }: {
   games: Game[];
   league: LeagueCode;
-  pilotState?: { first: number; second: number; third: number; outs: number; inningState?: string } | null;
+  pilotState?: { first: number; second: number; third: number; outs: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
 }) {
   return (
     <div className="gamesGrid">
@@ -676,6 +676,14 @@ marginTop: "5px",
   </div>
 )}
 
+{pilotSituation && !pilotInningTransition &&
+  (pilotState?.batterName || pilotState?.pitcherName) && (
+    <div className="pilotMatchupNames">
+      {pilotState.batterName && <span><b>AL BATE</b> {pilotState.batterName}</span>}
+      {pilotState.pitcherName && <span><b>LANZA</b> {pilotState.pitcherName}</span>}
+    </div>
+  )}
+
           </Link>
         );
       })}
@@ -702,7 +710,7 @@ export default function Games({
   league = "MLB",
 }: {
   games: Game[];
-  lmpCardPilotState?: { first: number; second: number; third: number; outs: number; inningState?: string } | null;
+  lmpCardPilotState?: { first: number; second: number; third: number; outs: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
   nextGames?: Game[];
   recentGames?: Game[];
  lmbChampion?: {
