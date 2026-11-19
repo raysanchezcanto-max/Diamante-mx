@@ -11,6 +11,38 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 119, group: "debut",
+    connection: {
+      name: "Fernando Valenzuela", league: "LMP", mexicanClub: "Mayos de Navojoa",
+      mexicanSlug: "mayos", direction: "mexico-to-mlb", role: "Lanzador zurdo",
+      year: "Mayos 1977 · Dodgers 1980",
+      description: "El Toro comenzó su carrera profesional en los Mayos de Navojoa antes de llegar a Los Ángeles; con los Dodgers desató la Fernandomanía y ganó la Serie Mundial de 1981.",
+      source: "https://www.milb.com/news/gcs-45364868",
+      verificationSource: "https://www.milb.com/news/lmb-fernando-valenzuela-la-leyenda-del-hombre-del-tirabuzon",
+    },
+  },
+  {
+    mlbClubId: 119, group: "debut",
+    connection: {
+      name: "Fernando Valenzuela", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mexico-to-mlb", role: "Lanzador zurdo",
+      year: "Leones 1979 · Dodgers 1980",
+      description: "Con Yucatán fue Novato del Año de la LMB en 1979; los Dodgers compraron su contrato y debutó en Grandes Ligas en 1980. Leones retiró su número 34 en 2013.",
+      source: "https://www.milb.com/news/lmb-fernando-valenzuela-la-leyenda-del-hombre-del-tirabuzon",
+      verificationSource: "https://www.milb.com/news/gcs-45364868",
+    },
+  },
+  {
+    mlbClubId: 119, group: "toMexico",
+    connection: {
+      name: "Yasiel Puig", league: "LMB", mexicanClub: "El Águila de Veracruz",
+      mexicanSlug: "el-aguila", direction: "mlb-to-mexico", role: "Jardinero",
+      year: "Dodgers 2013–2018 · El Águila 2021 y 2024",
+      description: "El jardinero cubano brilló con Los Ángeles entre 2013 y 2018; posteriormente jugó en Veracruz y regresó para la campaña de 2024.",
+      source: "https://www.milb.com/news/el-aguila-yasiel-puig-ya-esta-en-suelo-mexicano",
+    },
+  },
+  {
     mlbClubId: 108, group: "toMexico",
     connection: {
       name: "Efrén Navarro", league: "LMB", mexicanClub: "Acereros de Monclova",
