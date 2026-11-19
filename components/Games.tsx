@@ -13,6 +13,7 @@ import type {
 import Link from "next/link";
 import BaseDiamond from "@/components/BaseDiamond";
 import type { Game } from "@/lib/mlb";
+import type { MlbPlayState } from "@/lib/mlbLive";
 import { getGameSpecialStatus } from "@/lib/gameSpecialStatus";
 import { getLmpInningLabel } from "@/lib/lmpInningLabel";
 import type { LmpChampion } from "@/lib/lmpChampion";
@@ -171,11 +172,11 @@ function dateLabel(game: Game) {
 function GameCards({
   games,
   league,
-  pilotState = null,
+  liveCardStates = {},
 }: {
   games: Game[];
   league: LeagueCode;
-  pilotState?: { first: number; second: number; third: number; outs: number; inning?: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
+  liveCardStates?: Record<number, MlbPlayState | null>;
 }) {
   return (
     <div className="gamesGrid">
@@ -187,22 +188,22 @@ function GameCards({
           : "";
         const awayDisplayName = getTeamDisplayName(league, game.away);
         const homeDisplayName = getTeamDisplayName(league, game.home);
-        // Ensayo solo en Charros–Venados LMP del 18 de noviembre.
-        const liveCardPilot = league === "LMP" && game.id === 850421 &&
-          game.status === "Live" && game.firstPitchRecorded === true;
-        const pilotHalf = (pilotState?.inningState ?? "").trim().toLowerCase();
+        const liveCardPilot = game.status === "Live" && game.firstPitchRecorded === true;
+        const liveState = liveCardStates[game.id] ?? null;
+        const pilotHalf = (liveState?.inningState ?? "").trim().toLowerCase();
         const cardHalf = (game.inningState ?? "").trim().toLowerCase();
-        const pilotFeedAligned = Boolean(pilotState && pilotState.inning === game.inning && pilotHalf === cardHalf && (pilotHalf === "top" || pilotHalf === "bottom"));
-        const pilotInningTransition = ["middle", "end"].includes(pilotHalf);
-        const pilotSituation = liveCardPilot && pilotState && pilotFeedAligned ? {
-          first: pilotInningTransition ? 0 : pilotState.first,
-          second: pilotInningTransition ? 0 : pilotState.second,
-          third: pilotInningTransition ? 0 : pilotState.third,
-          outs: pilotInningTransition ? 0 : pilotState.outs,
+        const pilotFeedAligned = Boolean(liveState && liveState.inning === game.inning && pilotHalf === cardHalf && (pilotHalf === "top" || pilotHalf === "bottom"));
+        const pilotSituation = liveCardPilot && liveState && pilotFeedAligned ? {
+          first: liveState.first, second: liveState.second, third: liveState.third, outs: liveState.outs,
         } : null;
-        // La mitad de entrada confirma a qué equipo pertenecen bateador y lanzador.
-        const pilotBattingTeam = pilotHalf === "top" ? "JAL" : pilotHalf === "bottom" ? "VEN" : "";
-        const pilotPitchingTeam = pilotHalf === "top" ? "VEN" : pilotHalf === "bottom" ? "JAL" : "";
+        const pilotInningTransition = pilotHalf === "middle" || pilotHalf === "end";
+        const teamCode = (team: string) => {
+          const known: Record<string, string> = { "Charros de Jalisco": "JAL", "Venados de Mazatlán": "VEN" };
+          return known[team] ?? team.split(/\s+/)[0].slice(0, 3).toLocaleUpperCase("es-MX");
+        };
+        const pilotBattingTeam = pilotHalf === "top" ? teamCode(awayDisplayName) : pilotHalf === "bottom" ? teamCode(homeDisplayName) : "";
+        const pilotPitchingTeam = pilotHalf === "top" ? teamCode(homeDisplayName) : pilotHalf === "bottom" ? teamCode(awayDisplayName) : "";
+
 
         const awayLogo = getTeamLogo(
           league,
@@ -683,10 +684,10 @@ marginTop: "5px",
 )}
 
 {pilotSituation && !pilotInningTransition &&
-  (pilotState?.batterName || pilotState?.pitcherName) && (
+  (liveState?.batterName || liveState?.pitcherName) && (
     <div className="pilotMatchupNames">
-      {pilotState.batterName && <span><b>AL BATE</b><strong title={pilotState.batterName}>{pilotState.batterName}</strong>{pilotBattingTeam && <em>{pilotBattingTeam}</em>}</span>}
-      {pilotState.pitcherName && <span><b>LANZA</b><strong title={pilotState.pitcherName}>{pilotState.pitcherName}</strong>{pilotPitchingTeam && <em>{pilotPitchingTeam}</em>}</span>}
+      {liveState.batterName && <span><b>AL BATE</b><strong title={liveState.batterName}>{liveState.batterName}</strong>{pilotBattingTeam && <em>{pilotBattingTeam}</em>}</span>}
+      {liveState.pitcherName && <span><b>LANZA</b><strong title={liveState.pitcherName}>{liveState.pitcherName}</strong>{pilotPitchingTeam && <em>{pilotPitchingTeam}</em>}</span>}
     </div>
   )}
 
@@ -698,7 +699,7 @@ marginTop: "5px",
 }
 export default function Games({
   games,
-  lmpCardPilotState = null,
+  liveCardStates = {},
   nextGames = [],
   recentGames = [],
   lmbChampion = null,
@@ -716,7 +717,7 @@ export default function Games({
   league = "MLB",
 }: {
   games: Game[];
-  lmpCardPilotState?: { first: number; second: number; third: number; outs: number; inning?: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
+  liveCardStates?: Record<number, MlbPlayState | null>;
   nextGames?: Game[];
   recentGames?: Game[];
  lmbChampion?: {
@@ -1860,7 +1861,7 @@ const hasAnyGames =
           <GameCards
            games={sortedTodayGames}
             league={league}
-            pilotState={lmpCardPilotState}
+            liveCardStates={liveCardStates}
           />
         </section>
       )}
