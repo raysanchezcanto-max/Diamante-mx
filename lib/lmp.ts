@@ -1,4 +1,5 @@
 import { getScheduleCardMeta } from "./gameScheduleMeta";
+import { isLmpOvernightLiveGame } from "./lmpOvernightLive";
 import { cache } from "react";
 import type { Game, Standing, Leader } from "./mlb";
 
@@ -235,8 +236,12 @@ const todayGames =
       return (
         scheduledDay === date ||
         (
-          scheduledDay === yesterday &&
-          g.status?.abstractGameState === "Live"
+          isLmpOvernightLiveGame({
+            scheduledDay,
+            yesterday,
+            status: g.status?.abstractGameState,
+            startTime: g.gameDate,
+          })
         )
       );
     })
