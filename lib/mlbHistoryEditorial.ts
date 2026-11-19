@@ -101,7 +101,66 @@ const GUARDIANS_RETIRED = "https://www.mlb.com/guardians/history/retired-numbers
 const GUARDIANS_BALLPARK = "https://www.mlb.com/guardians/ballpark/information/history";
 const GUARDIANS_DIVISION_2026 = "https://www.mlb.com/guardians/news/guardians-clinch-2026-al-central-title";
 
+const ROCKIES_TIMELINE = "https://www.mlb.com/rockies/history/timeline";
+const ROCKIES_BALLPARK = "https://www.mlb.com/rockies/ballpark/history";
+const ROCKIES_RETIRED = "https://www.mlb.com/rockies/history/retired-numbers";
+const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-results";
+const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
+
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  115: {
+    intro: "Colorado Rockies debutó en Grandes Ligas en 1993 como franquicia de expansión de la Liga Nacional. En 1995 alcanzó su primera postemporada y estrenó Coors Field. Su momento cumbre llegó en 2007: la célebre racha Rocktober condujo al primer banderín de la Liga Nacional de su historia. Los Rockies aún no han ganado la Serie Mundial ni un título de división.",
+    featuredStory: {
+      kicker: "HISTORIA · ROCKTOBER 2007",
+      title: "DE UNA RACHA INCREÍBLE A LA SERIE MUNDIAL",
+      excerpt: "Colorado ganó 14 de sus últimos 15 encuentros de la temporada regular de 2007, sobrevivió al desempate de comodín ante San Diego y barrió las dos primeras series de postemporada para alcanzar el Clásico de Otoño.",
+      url: ROCKIES_TIMELINE,
+    },
+    debutYear: "1993",
+    worldSeriesTitles: 0,
+    worldSeriesWinningYears: [],
+    titlesVerifiedThrough: "2026",
+    pennants: ["2007"],
+    postseasonSource: ROCKIES_POSTSEASON,
+    divisionTitles: [],
+    divisionTitlesLabel: "Sin títulos divisionales hasta 2026",
+    stadiumOpened: "1995",
+    stadiumOpenedNote: "Coors Field abrió el 26 de abril de 1995 con una victoria 11-9 sobre New York Mets en catorce entradas. Antes, Colorado jugaba en Mile High Stadium.",
+    stadiumSource: ROCKIES_BALLPARK,
+    milestones: [
+      {year: "1993", title: "Colorado debuta en las Grandes Ligas", description: "La franquicia de expansión inicia su camino en Mile High Stadium y despierta un gran entusiasmo de asistencia en Denver.", url: ROCKIES_TIMELINE},
+      {year: "1995", title: "Un estadio y la primera postemporada", description: "Se inaugura Coors Field y los Rockies consiguen su primera clasificación a los playoffs por la vía del comodín.", url: ROCKIES_BALLPARK},
+      {year: "1997", title: "Larry Walker es el Jugador Más Valioso", description: "El jardinero canadiense gana el premio MVP de la Liga Nacional tras una temporada extraordinaria.", url: ROCKIES_TIMELINE},
+      {year: "2000", title: "Todd Helton firma una campaña histórica", description: "El primera base lidera la Liga Nacional en promedio de bateo e impulsadas y se consolida como ídolo del club.", url: ROCKIES_TIMELINE},
+      {year: "2007", title: "Rocktober: primer banderín", description: "Colorado gana 14 de los últimos 15 juegos de temporada regular, supera el desempate por el comodín y barre a Filadelfia y Arizona para conquistar la Liga Nacional.", url: ROCKIES_TIMELINE},
+      {year: "2007", title: "Primera Serie Mundial", description: "Boston Red Sox derrota a Colorado en cuatro encuentros; sigue siendo su única aparición en el Clásico de Otoño.", url: ROCKIES_POSTSEASON},
+      {year: "2009", title: "Regreso a octubre", description: "Los Rockies clasifican nuevamente como comodines, aunque Philadelphia gana la Serie Divisional.", url: ROCKIES_TIMELINE},
+      {year: "2010", title: "El juego sin hit de Ubaldo Jiménez", description: "El lanzador dominicano consigue el primer no-hitter en la historia de la franquicia, ante Atlanta.", url: ROCKIES_TIMELINE},
+      {year: "2018", title: "Una noche de trece entradas en Chicago", description: "Colorado vence a los Cubs en el Juego del Comodín de la Liga Nacional y avanza a la Serie Divisional.", url: ROCKIES_TIMELINE},
+      {year: "2020", title: "Larry Walker llega a Cooperstown", description: "Walker se convierte en el primer pelotero identificado con los Rockies en ingresar al Salón de la Fama.", url: ROCKIES_RETIRED},
+      {year: "2024", title: "Todd Helton ingresa al Salón de la Fama", description: "El histórico primera base se suma a Walker como representante de la franquicia en Cooperstown.", url: ROCKIES_HELTON},
+    ],
+    legends: [
+      {name: "Larry Walker", era: "1995–2004", role: "Jardinero · MVP 1997", highlight: "Primer representante de los Rockies elegido al Salón de la Fama; su dorsal 33 está retirado.", url: ROCKIES_RETIRED},
+      {name: "Todd Helton", era: "1997–2013", role: "Primera base · campeón de bateo", highlight: "Jugó toda su trayectoria profesional en Colorado; su dorsal 17 fue retirado y entró a Cooperstown en 2024.", url: ROCKIES_HELTON},
+      {name: "Dante Bichette", era: "1993–1999", role: "Jardinero · Blake Street Bombers", highlight: "Figura ofensiva de la etapa fundacional y protagonista del primer triunfo en Coors Field.", url: ROCKIES_BALLPARK},
+      {name: "Andrés Galarraga", era: "1993–1997", role: "Primera base · campeón de bateo 1993", highlight: "El venezolano integró el poderoso núcleo inicial de la franquicia.", url: ROCKIES_TIMELINE},
+      {name: "Troy Tulowitzki", era: "2006–2015", role: "Campocorto · líder defensivo", highlight: "Pieza fundamental del equipo que ganó la Liga Nacional en 2007.", url: ROCKIES_TIMELINE},
+      {name: "Nolan Arenado", era: "2013–2020", role: "Tercera base · Guantes de Oro", highlight: "Referente de bateo y defensa de la década de 2010 en Coors Field.", url: ROCKIES_TIMELINE},
+    ],
+    immortals: [
+      {name: "Larry Walker", year: "2020", role: "Cooperstown · jardinero", url: "https://baseballhall.org/hall-of-famers/walker-larry"},
+      {name: "Todd Helton", year: "2024", role: "Cooperstown · primera base", url: "https://baseballhall.org/hall-of-famers/helton-todd"},
+    ],
+    sources: [
+      {label: "Cronología oficial de Colorado", url: ROCKIES_TIMELINE},
+      {label: "Historial de postemporada", url: ROCKIES_POSTSEASON},
+      {label: "Historia de Coors Field", url: ROCKIES_BALLPARK},
+      {label: "Dorsales retirados", url: ROCKIES_RETIRED},
+      {label: "Todd Helton en Cooperstown", url: ROCKIES_HELTON},
+    ],
+  },
+
   114: {
     intro: "Cleveland forma parte de la Liga Americana desde su temporada inaugural de 1901. La franquicia ha competido bajo distintos nombres, incluido Indians hasta 2021; desde 2022 se llama Guardians. Conquistó dos Series Mundiales, en 1920 y 1948, y seis banderines de la Liga Americana. Progressive Field es su hogar desde 1994.",
     featuredStory: {
