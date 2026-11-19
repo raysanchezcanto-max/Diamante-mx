@@ -108,6 +108,59 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  118: {
+    intro: "Kansas City debutó como franquicia de expansión de la Liga Americana en 1969. Tras sus primeras temporadas en Municipal Stadium, estrenó en 1973 el actual Kauffman Stadium, una de las señas de identidad del club. La época de George Brett convirtió a los Royals en protagonistas de octubre; ganaron las Series Mundiales de 1985 y 2015, además de disputar los clásicos de 1980 y 2014.",
+    featuredStory: {
+      kicker: "HISTORIA · LA CORONA DE 2015",
+      title: "TREINTA AÑOS DESPUÉS, KANSAS CITY VOLVIÓ A REINAR",
+      excerpt: "Después de quedarse a un triunfo del campeonato en 2014, los Royals regresaron a la Serie Mundial de 2015 y derrotaron a New York Mets en cinco juegos. Salvador Pérez fue nombrado Jugador Más Valioso de la serie.",
+      url: "https://www.mlb.com/royals/video/royals-win-the-2015-world-series-c527664183",
+    },
+    debutYear: "1969",
+    worldSeriesTitles: 2,
+    worldSeriesWinningYears: ["1985", "2015"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1980", "1985", "2014", "2015"],
+    pennantLeagues: {"1980": "Liga Americana", "1985": "Liga Americana", "2014": "Liga Americana", "2015": "Liga Americana"},
+    postseasonSource: "https://www.mlb.com/royals/history/timeline-2010s",
+    divisionTitles: ["1976", "1977", "1978", "1980", "1981", "1984", "1985", "2015"],
+    stadiumOpened: "1973",
+    stadiumOpenedNote: "El estadio abrió el 10 de abril de 1973 como Royals Stadium y fue renombrado Kauffman Stadium el 2 de julio de 1993 en honor al fundador Ewing Kauffman. El club había jugado en Municipal Stadium entre 1969 y 1972.",
+    stadiumSource: "https://www.mlb.com/royals/history/ballparks",
+    milestones: [
+      {year: "1969", title: "Debut de una nueva franquicia", description: "Los Royals juegan su primer partido de Grandes Ligas en Municipal Stadium como nuevo club de expansión de la Liga Americana.", url: "https://www.mlb.com/royals/history/timeline-1960s"},
+      {year: "1973", title: "Se inaugura el estadio de los Royals", description: "Abre Royals Stadium, hoy Kauffman Stadium, que se convertirá en el hogar permanente del equipo.", url: "https://www.mlb.com/royals/history/ballparks"},
+      {year: "1976–1978", title: "Primera gran dinastía divisional", description: "Bajo Whitey Herzog, Kansas City conquista tres veces consecutivas el Oeste de la Americana, con George Brett como referente.", url: "https://www.mlb.com/royals/history/timeline-1970s"},
+      {year: "1980", title: "Primer banderín de la Americana", description: "George Brett conecta un histórico jonrón ante los Yankees y los Royals llegan a su primera Serie Mundial; Philadelphia gana en seis partidos.", url: "https://www.mlb.com/royals/history/timeline-1980s"},
+      {year: "1985", title: "Primer campeonato del mundo", description: "Kansas City remonta la Serie Mundial contra St. Louis después de ir abajo 3–1; Bret Saberhagen blanquea el séptimo juego.", url: "https://www.mlb.com/royals/video/royals-win-1985-world-series-c20084983"},
+      {year: "1993", title: "El estadio recibe el nombre Kauffman", description: "La organización honra a su fundador Ewing M. Kauffman al renombrar oficialmente el parque.", url: "https://www.mlb.com/royals/history/ballparks"},
+      {year: "2014", title: "Una remontada que desata la magia de octubre", description: "Kansas City supera 9–8 a Oakland en doce entradas en el Juego de Comodines y vuelve a la Serie Mundial, donde cae ante San Francisco en siete partidos.", url: "https://www.mlb.com/video/royals-win-2014-al-wild-card-game"},
+      {year: "2015", title: "Segunda corona mundial", description: "Los Royals vencen a New York Mets en cinco partidos y Salvador Pérez se lleva el premio al Jugador Más Valioso de la Serie Mundial.", url: "https://www.mlb.com/royals/video/royals-win-the-2015-world-series-c527664183"},
+      {year: "2024", title: "Regreso a postemporada", description: "Con Bobby Witt Jr. y Salvador Pérez como figuras, el equipo regresa a octubre y supera a Baltimore en la Serie de Comodines.", url: "https://www.mlb.com/royals/history/timeline-2020s"},
+      {year: "2026", title: "Una campaña de reconstrucción", description: "Los Royals concluyen la fase regular con marca de 69–93 en la División Central de la Liga Americana.", url: "https://www.mlb.com/royals/standings/2026"},
+    ],
+    legends: [
+      {name: "George Brett", era: "1973–1993", role: "Tercera base · Cooperstown 1999", highlight: "El gran símbolo de Kansas City: 3,154 imparables, tres títulos de bateo y el MVP de la Americana en 1980.", url: "https://baseballhall.org/hall-of-famers/brett-george"},
+      {name: "Frank White", era: "1973–1990", role: "Segunda base · ocho Guantes de Oro", highlight: "Figura defensiva emblemática y pieza fundamental del campeonato de 1985.", url: "https://www.mlb.com/royals/hall-of-fame/members"},
+      {name: "Bret Saberhagen", era: "1984–1991", role: "Lanzador · dos premios Cy Young", highlight: "MVP de la Serie Mundial de 1985 gracias a su dominio desde la lomita, incluido el cierre del séptimo juego.", url: "https://www.mlb.com/royals/history/timeline-1980s"},
+      {name: "Bo Jackson", era: "1986–1990", role: "Jardinero · estrella de dos deportes", highlight: "Una de las figuras atléticas más espectaculares de la franquicia y del deporte estadounidense.", url: "https://www.mlb.com/royals/hall-of-fame/members"},
+      {name: "Salvador Pérez", era: "2011–presente", role: "Receptor · MVP Serie Mundial 2015", highlight: "Líder del equipo campeón de 2015 y referente de la franquicia durante más de una década.", url: "https://www.mlb.com/royals/history/timeline-2010s"},
+      {name: "Bobby Witt Jr.", era: "2022–presente", role: "Campocorto · generación actual", highlight: "Talento central del regreso a postemporada en 2024 y del futuro deportivo de Kansas City.", url: "https://www.mlb.com/royals/history/timeline-2020s"},
+    ],
+    immortals: [
+      {name: "George Brett", year: "1999", role: "Cooperstown · tercera base; toda su carrera en Kansas City", url: "https://baseballhall.org/hall-of-famers/brett-george"},
+      {name: "Whitey Herzog", year: "2010", role: "Cooperstown · mánager de los Royals de 1975 a 1979", url: "https://baseballhall.org/hall-of-famers/herzog-whitey"},
+    ],
+    sources: [
+      {label: "Cronología oficial de los sesenta", url: "https://www.mlb.com/royals/history/timeline-1960s"},
+      {label: "Cronología oficial de los ochenta", url: "https://www.mlb.com/royals/history/timeline-1980s"},
+      {label: "Cronología oficial de la era campeona moderna", url: "https://www.mlb.com/royals/history/timeline-2010s"},
+      {label: "Historia de Kauffman Stadium", url: "https://www.mlb.com/royals/history/ballparks"},
+      {label: "Salón de la Fama de los Royals", url: "https://www.mlb.com/royals/hall-of-fame/members"},
+      {label: "Clasificación 2026 en MLB", url: "https://www.mlb.com/royals/standings/2026"},
+    ],
+  },
+
   117: {
     intro: "Houston comenzó su historia de Grandes Ligas en 1962 como los Colt .45s y adoptó el nombre Astros en 1965 al mudarse al innovador Astrodome. Compitió en la Liga Nacional hasta 2012 y pasó a la Americana en 2013, convirtiéndose en una de las pocas franquicias con banderines en ambas ligas. Ganó las Series Mundiales de 2017 y 2022 y juega en Daikin Park desde 2000, cuando el inmueble abrió como Enron Field.",
     featuredStory: {
