@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  116: [
+    {title: "Detroit conquista la Serie Mundial de 1968", date: "10 oct 1968", duration: "1:08", description: "El último out del séptimo juego ante St. Louis completa el tercer campeonato mundial de los Tigers.", url: "https://www.mlb.com/video/tigers-win-the-series-c19973569"},
+    {title: "El último out de la Serie Mundial de 1984", date: "14 oct 1984", duration: "0:23", description: "La narración de Ernie Harwell acompaña el último out ante San Diego y el cuarto título de Detroit.", url: "https://www.mlb.com/tigers/video/tigers-win-the-1984-world-series-c7839515"},
+    {title: "Miguel Cabrera alcanza los 3,000 hits", date: "23 abr 2022", duration: "2:13", description: "El inolvidable imparable 3,000 de Miguel Cabrera ante Colorado y la ovación del público de Comerica Park.", url: "https://www.mlb.com/tigers/video/cabrera-reaches-3-000th-hit"},
+  ],
   114: [
     {title: "Cleveland conquista la Serie Mundial de 1948", date: "11 oct 1948", duration: "0:33", description: "Gene Bearden consigue el último out ante Boston Braves para asegurar el segundo título mundial del club.", url: "https://www.mlb.com/video/indians-win-world-series-c1208509483"},
     {title: "Rajai Davis empata el séptimo juego de 2016", date: "2 nov 2016", duration: "0:30", description: "Narración histórica del cuadrangular de dos carreras de Davis en la octava entrada frente a Cubs.", url: "https://www.mlb.com/video/davis-clutch-game-tying-homer-c1211132983"},
