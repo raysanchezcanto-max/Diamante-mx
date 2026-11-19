@@ -108,6 +108,60 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  119: {
+    intro: "La franquicia nació en Brooklyn en 1884 y se incorporó a la Liga Nacional en 1890. Con Jackie Robinson rompió la barrera racial de Grandes Ligas en 1947, ganó su primera Serie Mundial en Brooklyn en 1955 y se trasladó a Los Ángeles en 1958. Desde 1962 juega en Dodger Stadium. Sus nueve coronas, la Fernandomanía y el bicampeonato de 2024–2025 marcan una de las historias más influyentes del béisbol.",
+    featuredStory: {
+      kicker: "HISTORIA · BICAMPEONES 2024–2025",
+      title: "NUEVE CORONAS Y UNA HISTORIA QUE UNE BROOKLYN, LOS ÁNGELES Y MÉXICO",
+      excerpt: "Los Dodgers conquistaron la Serie Mundial de 2025 en siete juegos frente a Toronto: Yoshinobu Yamamoto provocó una doble matanza para sellar el bicampeonato. Décadas antes, Fernando Valenzuela había unido a generaciones de aficionados mexicanos y angelinos con la Fernandomanía de 1981.",
+      url: "https://www.mlb.com/dodgers/video/yoshinobu-yamamoto-in-play-out-s-to-alejandro-kirk",
+    },
+    debutYear: "1890",
+    worldSeriesTitles: 9,
+    worldSeriesWinningYears: ["1955", "1959", "1963", "1965", "1981", "1988", "2020", "2024", "2025"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1916", "1920", "1941", "1947", "1949", "1952", "1953", "1955", "1956", "1959", "1963", "1965", "1966", "1974", "1977", "1978", "1981", "1988", "2017", "2018", "2020", "2024", "2025"],
+    postseasonSource: "https://www.mlb.com/dodgers/history/postseason-results",
+    divisionTitles: ["1974", "1977", "1978", "1981", "1983", "1985", "1988", "1995", "1996", "2004", "2006", "2008", "2009", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2022", "2023", "2024", "2025"],
+    divisionTitlesLabel: "Títulos divisionales históricos documentados",
+    stadiumOpened: "1962",
+    stadiumOpenedNote: "Dodger Stadium abrió en 1962 en Chavez Ravine y es el hogar de la franquicia desde entonces. Antes del traslado de 1958, Brooklyn jugó durante décadas en Ebbets Field.",
+    stadiumSource: "https://www.mlb.com/dodgers/history/ballparks",
+    milestones: [
+      {year: "1884–1890", title: "Las raíces de Brooklyn", description: "La franquicia comienza en Brooklyn en 1884 y entra en la Liga Nacional en 1890; décadas después quedaría identificada con el nombre Dodgers.", url: "https://www.mlb.com/dodgers/history/ballparks"},
+      {year: "1947", title: "Jackie Robinson transforma el deporte", description: "Robinson rompe la barrera racial de la era moderna de MLB con Brooklyn, cambiando la historia deportiva y social de Estados Unidos.", url: "https://baseballhall.org/hall-of-famers/robinson-jackie"},
+      {year: "1955", title: "Brooklyn conquista su primera Serie Mundial", description: "Los Dodgers derrotan a los Yankees y festejan la corona que tanto había esperado Brooklyn.", url: "https://www.mlb.com/dodgers/history/postseason-results"},
+      {year: "1958–1962", title: "Nuevo capítulo en Los Ángeles", description: "La organización se muda al oeste en 1958 y estrena Dodger Stadium en 1962.", url: "https://www.mlb.com/dodgers/history/ballparks"},
+      {year: "1963–1965", title: "La era de Sandy Koufax", description: "El extraordinario zurdo encabeza una generación que gana las Series Mundiales de 1963 y 1965.", url: "https://baseballhall.org/hall-of-famers/koufax-sandy"},
+      {year: "1981", title: "Fernandomanía y campeonato", description: "Fernando Valenzuela, formado en México, gana el premio Cy Young y el de Novato del Año en una temporada que culmina con la Serie Mundial.", url: "https://www.milb.com/news/lmb-fernando-valenzuela-la-leyenda-del-hombre-del-tirabuzon"},
+      {year: "1988", title: "El jonrón imposible de Kirk Gibson", description: "Lesionado y como emergente, Gibson conecta un cuadrangular para dejar en el terreno a Oakland en el Juego 1; los Dodgers ganan la Serie Mundial.", url: "https://www.mlb.com/video/gibson-s-pinch-hit-hr-c3731660"},
+      {year: "2020", title: "El regreso a la cima", description: "Los Dodgers vencen a Tampa Bay y rompen una sequía de 32 años sin Serie Mundial.", url: "https://www.mlb.com/dodgers/history/postseason-results"},
+      {year: "2024", title: "Octava corona ante los Yankees", description: "Los Ángeles remonta una desventaja de cinco carreras en el quinto juego y cierra la Serie Mundial contra Nueva York.", url: "https://www.mlb.com/video/dodgers-overcome-5-run-deficit-to-win-world-series"},
+      {year: "2025", title: "Bicampeonato de película", description: "En once entradas del séptimo juego frente a Toronto, los Dodgers sellan su novena corona y su segundo campeonato consecutivo.", url: "https://www.mlb.com/dodgers/video/yoshinobu-yamamoto-in-play-out-s-to-alejandro-kirk"},
+    ],
+    legends: [
+      {name: "Jackie Robinson", era: "1947–1956", role: "Segunda base · pionero histórico", highlight: "Abrió las puertas del béisbol de Grandes Ligas a una nueva generación al debutar con Brooklyn en 1947.", url: "https://baseballhall.org/hall-of-famers/robinson-jackie"},
+      {name: "Sandy Koufax", era: "1955–1966", role: "Lanzador zurdo · tres premios Cy Young", highlight: "Su dominio en la lomita definió a los Dodgers campeones de la década de 1960.", url: "https://baseballhall.org/hall-of-famers/koufax-sandy"},
+      {name: "Fernando Valenzuela", era: "1980–1990", role: "Lanzador mexicano · Cy Young y Novato del Año 1981", highlight: "Desde Etchohuaquila y los diamantes de Yucatán hasta Los Ángeles: la Fernandomanía trascendió el deporte.", url: "https://www.milb.com/news/lmb-fernando-valenzuela-la-leyenda-del-hombre-del-tirabuzon"},
+      {name: "Kirk Gibson", era: "1988–1990", role: "Jardinero · héroe de la Serie Mundial de 1988", highlight: "Su jonrón como bateador emergente es una de las imágenes más inolvidables de octubre.", url: "https://www.mlb.com/video/gibson-s-pinch-hit-hr-c3731660"},
+      {name: "Clayton Kershaw", era: "2008–2025", role: "Lanzador zurdo · tres Cy Young", highlight: "Figura central de la era moderna y de los campeonatos de 2020, 2024 y 2025.", url: "https://www.mlb.com/dodgers/history/postseason-results"},
+      {name: "Shohei Ohtani", era: "2024–presente", role: "Bateador y lanzador · figura contemporánea", highlight: "Su llegada impulsó una nueva etapa de talento internacional y un histórico bicampeonato.", url: "https://www.mlb.com/dodgers/history/postseason-results"},
+    ],
+    immortals: [
+      {name: "Jackie Robinson", year: "1962", role: "Cooperstown · segunda base; Brooklyn 1947–1956", url: "https://baseballhall.org/hall-of-famers/robinson-jackie"},
+      {name: "Sandy Koufax", year: "1972", role: "Cooperstown · lanzador; Dodgers 1955–1966", url: "https://baseballhall.org/hall-of-famers/koufax-sandy"},
+      {name: "Roy Campanella", year: "1969", role: "Cooperstown · receptor; Brooklyn 1948–1957", url: "https://baseballhall.org/hall-of-famers/campanella-roy"},
+      {name: "Duke Snider", year: "1980", role: "Cooperstown · jardinero; Dodgers 1947–1962", url: "https://baseballhall.org/hall-of-famers/snider-duke"},
+      {name: "Don Drysdale", year: "1984", role: "Cooperstown · lanzador; Dodgers 1956–1969", url: "https://baseballhall.org/hall-of-famers/drysdale-don"},
+      {name: "Don Sutton", year: "1998", role: "Cooperstown · lanzador; Dodgers 1966–1980 y 1988", url: "https://baseballhall.org/hall-of-famers/sutton-don"},
+    ],
+    sources: [
+      {label: "Historial oficial de postemporadas de los Dodgers", url: "https://www.mlb.com/dodgers/history/postseason-results"},
+      {label: "Estadios de Brooklyn y Los Ángeles", url: "https://www.mlb.com/dodgers/history/ballparks"},
+      {label: "MLB: novena Serie Mundial y bicampeonato de 2025", url: "https://www.mlb.com/dodgers/video/yoshinobu-yamamoto-in-play-out-s-to-alejandro-kirk"},
+      {label: "LMB: trayectoria mexicana de Fernando Valenzuela", url: "https://www.milb.com/news/lmb-fernando-valenzuela-la-leyenda-del-hombre-del-tirabuzon"},
+    ],
+  },
   108: {
     intro: "Los Angels nacieron en 1961 como franquicia de expansión de la Liga Americana y han representado a Los Ángeles y Anaheim bajo varios nombres. Desde 1966 juegan en Angel Stadium, inaugurado como Anaheim Stadium. Su primer título divisional llegó en 1979 y el mayor logro de la organización fue la Serie Mundial de 2002, ganada en siete juegos a San Francisco.",
     featuredStory: {
