@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  113: [
+    {title: "Johnny Bench lidera a Cincinnati en 1975", date: "7 dic 2020", duration: "1:15", description: "MLB recuerda la actuación del receptor durante la Serie Mundial de 1975 ante Boston.", url: "https://www.mlb.com/reds/video/johnny-bench-leads-reds-in-75-ws"},
+    {title: "El último out del bicampeonato de 1976", date: "21 oct 1976", duration: "0:44", description: "Will McEnaney completa el último out ante Yankees y los Reds celebran la corona de 1976.", url: "https://www.mlb.com/video/reds-win-the-1976-series-c19970319"},
+    {title: "Cincinnati gana el primer juego de la Serie Mundial de 1990", date: "16 oct 1990", duration: "0:29", description: "Randy Myers asegura el último out del triunfo 7–0 sobre Oakland en el primer juego de la Serie Mundial de 1990.", url: "https://www.mlb.com/video/reds-win-game-1-of-90-ws-c1451560183"},
+  ],
   145: [
     {title: "El último out de la Serie Mundial de 2005", date: "26 oct 2005", duration: "0:32", description: "Juan Uribe asegura el último out ante Houston y Chicago conquista su primera Serie Mundial en 88 años.", url: "https://www.mlb.com/whitesox/video/white-sox-are-world-champions-c3461473"},
     {title: "Película oficial de la Serie Mundial de 2005", date: "29 nov 2005", duration: "1:15:01", description: "Documental de MLB sobre el barrido de los White Sox a Houston y la actuación de Jermaine Dye.", url: "https://www.mlb.com/video/2005-world-series-film"},
