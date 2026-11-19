@@ -11,6 +11,76 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "Efrén Navarro", league: "LMB", mexicanClub: "Acereros de Monclova",
+      mexicanSlug: "acereros", direction: "mlb-to-mexico", role: "Primera base y jardinero",
+      year: "Angels 2011, 2013–2015 · Acereros 2023",
+      description: "El bateador estadounidense con raíces mexicanas jugó con los Angels y posteriormente participó con Acereros en la Liga Mexicana de Beisbol de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "Fernando Salas", league: "LMB", mexicanClub: "Olmecas de Tabasco",
+      mexicanSlug: "olmecas", direction: "mlb-to-mexico", role: "Lanzador relevista",
+      year: "Angels 2014–2017 · Olmecas 2023",
+      description: "El relevista mexicano jugó con Anaheim durante cuatro temporadas antes de continuar su carrera, entre otros destinos, en los Olmecas de Tabasco.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "JC Ramírez", league: "LMB", mexicanClub: "Saraperos de Saltillo",
+      mexicanSlug: "saraperos", direction: "mlb-to-mexico", role: "Lanzador",
+      year: "Angels 2016–2019 · Saraperos 2023",
+      description: "El lanzador nicaragüense pasó por los Angels en MLB y más tarde lanzó en la campaña de 2023 con Saltillo.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "JC Ramírez", league: "LMB", mexicanClub: "Sultanes de Monterrey",
+      mexicanSlug: "sultanes", direction: "mlb-to-mexico", role: "Lanzador",
+      year: "Angels 2016–2019 · Sultanes 2023",
+      description: "La misma fuente oficial de LMB documenta también su participación con Sultanes de Monterrey durante 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "Jonathan Villar", league: "LMB", mexicanClub: "Algodoneros del Unión Laguna",
+      mexicanSlug: "algodoneros", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "Angels 2022 · Algodoneros 2023",
+      description: "Tras jugar para los Angels en 2022, Villar participó en 2023 con Algodoneros del Unión Laguna.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "Mike Morin", league: "LMB", mexicanClub: "Guerreros de Oaxaca",
+      mexicanSlug: "guerreros", direction: "mlb-to-mexico", role: "Lanzador relevista",
+      year: "Angels 2014–2017 · Guerreros 2023",
+      description: "El relevista tuvo cuatro temporadas con los Angels y posteriormente apareció con Guerreros de Oaxaca en la LMB de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 108, group: "toMexico",
+    connection: {
+      name: "Jefry Marte", league: "LMB", mexicanClub: "Generales de Durango",
+      mexicanSlug: "generales", direction: "mlb-to-mexico", role: "Primera y tercera base",
+      year: "Angels 2016–2018 · Generales 2023",
+      description: "El dominicano vistió el uniforme de los Angels entre 2016 y 2018 y jugó posteriormente con Generales de Durango.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
     mlbClubId: 118, group: "debut",
     connection: {
       name: "Joakim Soria", league: "LMP", mexicanClub: "Yaquis de Ciudad Obregón",
