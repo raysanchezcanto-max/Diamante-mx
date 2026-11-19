@@ -620,6 +620,40 @@ const firstPitchRecorded =
           }
         : undefined;
 
+    // El calendario oficial puede confirmar FINAL antes que /feed/live.
+    // Reconciliar únicamente el mismo gamePk evita mantener EN VIVO en detalles.
+    let confirmedScheduleFinal: { awayRuns?: number; homeRuns?: number } | null = null;
+    if ((league === "LMP" || league === "MLB") &&
+        gameData?.status?.abstractGameState !== "Final") {
+      const officialDate = gameData?.datetime?.officialDate;
+      if (typeof officialDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(officialDate)) {
+        try {
+          const sportId = league === "LMP" ? 17 : 1;
+          const query = league === "LMP" ? "&leagueId=132" : "";
+          const scheduleResponse = await fetch(
+            `${MLB_API}/schedule?sportId=${sportId}${query}&startDate=${officialDate}&endDate=${officialDate}`,
+            { next: { revalidate: 10 } }
+          );
+          if (scheduleResponse.ok) {
+            const schedule = await scheduleResponse.json();
+            const scheduledGame = (Array.isArray(schedule?.dates) ? schedule.dates : [])
+              .flatMap((day: any) => Array.isArray(day?.games) ? day.games : [])
+              .find((candidate: any) => candidate?.gamePk === gameId);
+            if (scheduledGame?.status?.abstractGameState === "Final") {
+              confirmedScheduleFinal = {
+                awayRuns: typeof scheduledGame?.teams?.away?.score === "number"
+                  ? scheduledGame.teams.away.score : undefined,
+                homeRuns: typeof scheduledGame?.teams?.home?.score === "number"
+                  ? scheduledGame.teams.home.score : undefined,
+              };
+            }
+          }
+        } catch {
+          // Si el calendario falla, conservar el estado de la fuente del juego.
+        }
+      }
+    }
+
     const gameState = gameData?.status?.abstractGameState;
     const isBeforeFirstPitch =
       gameState === "Preview" ||
@@ -711,16 +745,11 @@ const firstPitchRecorded =
       
 
 
-      status:
+      status: confirmedScheduleFinal ? "Final" :
+        gameData?.status?.abstractGameState ?? "Preview",
 
-        gameData?.status
-          ?.abstractGameState ??
-        "Preview",
-
-      detailedState:
-        gameData?.status
-          ?.detailedState ??
-        "Programado",
+      detailedState: confirmedScheduleFinal ? "Final" :
+        gameData?.status?.detailedState ?? "Programado",
       firstPitchRecorded,
 
       
@@ -731,7 +760,7 @@ const firstPitchRecorded =
       // or invalid value is handled by the bounded fallback in the UI.
       lastPlayEndedAt:
         league === "LMP" &&
-        gameData?.status?.abstractGameState === "Final"
+        (gameData?.status?.abstractGameState === "Final" || confirmedScheduleFinal !== null)
           ? [...lmpPlays].reverse().find(
               (play: any) =>
                 typeof play?.about?.endTime === "string" &&
@@ -753,7 +782,7 @@ away:
   "Visitante",
 
 awayRuns:
-  linescore?.teams?.away?.runs,
+  confirmedScheduleFinal?.awayRuns ?? linescore?.teams?.away?.runs,
 
 homeId:
   home?.id ?? 0,
@@ -763,7 +792,7 @@ home:
   "Local",
 
 homeRuns:
-  linescore?.teams?.home?.runs,
+  confirmedScheduleFinal?.homeRuns ?? linescore?.teams?.home?.runs,
       
       venue:
         league === "LMP" &&
