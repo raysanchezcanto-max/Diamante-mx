@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  118: [
+    {title: "Kansas City gana su primera Serie Mundial de 1985", date: "27 oct 1985", duration: "1:26", description: "Bret Saberhagen completa la blanqueada del séptimo juego ante St. Louis y los Royals celebran el primer campeonato de su historia.", url: "https://www.mlb.com/royals/video/royals-win-1985-world-series-c20084983"},
+    {title: "El inolvidable Juego de Comodines de 2014", date: "30 sep 2014", duration: "3:51:35", description: "Partido completo: Kansas City remonta dos veces y derrota 9–8 a Oakland en doce entradas para iniciar su histórica postemporada.", url: "https://www.mlb.com/video/royals-win-2014-al-wild-card-game"},
+    {title: "Los Royals vuelven a ser campeones en 2015", date: "1 nov 2015", duration: "4:23", description: "Celebración del segundo título mundial de Kansas City después de derrotar a New York Mets en cinco juegos.", url: "https://www.mlb.com/royals/video/royals-win-the-2015-world-series-c527664183"},
+  ],
   117: [
     {title: "Houston llega a su primera Serie Mundial", date: "19 oct 2005", duration: "0:55", description: "Dan Wheeler obtiene el último out de la Serie de Campeonato ante St. Louis y los Astros ganan su primer banderín de la Liga Nacional.", url: "https://www.mlb.com/video/astros-advance-to-world-series-c20047525"},
     {title: "Los Astros ganan su primera Serie Mundial en 2017", date: "1 nov 2017", duration: "0:28", description: "José Altuve completa la jugada final del séptimo partido ante Los Angeles Dodgers para asegurar la primera corona de la franquicia.", url: "https://www.mlb.com/astros/video/astros-win-the-world-series-c1866378083"},
