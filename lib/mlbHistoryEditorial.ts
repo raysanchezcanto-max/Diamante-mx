@@ -108,6 +108,64 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  116: {
+    intro: "Detroit Tigers es una de las franquicias fundadoras de la Liga Americana de 1901. Desde el histórico Ty Cobb hasta Miguel Cabrera, el club ha construido una tradición que incluye once banderines de la Americana y cuatro campeonatos de Serie Mundial: 1935, 1945, 1968 y 1984. Juega en Comerica Park desde 2000, después de casi nueve décadas en Tiger Stadium.",
+    featuredStory: {
+      kicker: "HISTORIA · LOS TIGRES DE 1984",
+      title: "DE UN ARRANQUE DE 35–5 A LA CUARTA CORONA",
+      excerpt: "Dirigidos por Sparky Anderson, los Tigers arrancaron 1984 con una marca extraordinaria de 35 victorias y 5 derrotas en sus primeros 40 partidos. Ganaron 104 juegos en temporada regular y vencieron a San Diego Padres en cinco encuentros para conquistar su cuarta Serie Mundial.",
+      url: "https://www.mlb.com/tigers/history/timeline",
+    },
+    debutYear: "1901",
+    worldSeriesTitles: 4,
+    worldSeriesWinningYears: ["1935", "1945", "1968", "1984"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1907", "1908", "1909", "1934", "1935", "1940", "1945", "1968", "1984", "2006", "2012"],
+    postseasonSource: "https://www.mlb.com/tigers/history/timeline",
+    divisionTitles: ["1972", "1984", "1987", "2011", "2012", "2013", "2014"],
+    stadiumOpened: "2000",
+    stadiumOpenedNote: "Comerica Park abrió el 11 de abril de 2000 y reemplazó al histórico Tiger Stadium, hogar de los Tigers entre 1912 y 1999.",
+    stadiumSource: "https://www.mlb.com/tigers/history/ballparks",
+    milestones: [
+      {year: "1901", title: "Comienza la aventura en la Liga Americana", description: "Detroit forma parte de los clubes fundadores de la Liga Americana moderna y juega en Bennett Park.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "1907–1909", title: "Tres banderines consecutivos", description: "Con Ty Cobb como gran figura, los Tigers conquistan la Liga Americana tres años seguidos y disputan sus primeras Series Mundiales.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "1912", title: "Un estadio que marcaría generaciones", description: "El club estrena Navin Field, posteriormente conocido como Briggs Stadium y Tiger Stadium.", url: "https://www.mlb.com/tigers/history/ballparks"},
+      {year: "1935", title: "Primera Serie Mundial", description: "Detroit derrota a Chicago Cubs y conquista el primer campeonato mundial de su historia, con Hank Greenberg y Mickey Cochrane como referentes.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "1945", title: "Segunda corona del Clásico de Otoño", description: "El equipo vence a Chicago Cubs en siete partidos y suma su segundo título de Serie Mundial.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "1968", title: "La remontada ante St. Louis", description: "Mickey Lolich gana el decisivo Juego 7 frente a Cardinals; Detroit consigue su tercer campeonato mundial.", url: "https://www.mlb.com/video/tigers-win-1968-world-series"},
+      {year: "1972", title: "Primer campeonato divisional", description: "Billy Martin conduce a Detroit al título del Este de la Liga Americana, pero Oakland vence en la Serie de Campeonato.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "1984", title: "35–5 y campeones del mundo", description: "El equipo de Sparky Anderson gana 104 partidos, barre la Serie de Campeonato y supera a San Diego para levantar su cuarta corona.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "2000", title: "Inauguración de Comerica Park", description: "El 11 de abril se estrena el estadio actual de los Tigers en el centro de Detroit.", url: "https://www.mlb.com/tigers/history/ballparks"},
+      {year: "2006", title: "El regreso a la Serie Mundial", description: "Con Jim Leyland como dirigente, Detroit consigue su décimo banderín de la Liga Americana; St. Louis se corona en la final.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "2012", title: "Triple Corona y otro banderín", description: "Miguel Cabrera gana la Triple Corona de bateo y los Tigers vuelven a la Serie Mundial, donde caen ante San Francisco.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "2014", title: "Cuatro títulos de división consecutivos", description: "Detroit conquista el Centro de la Liga Americana por cuarta campaña seguida, cerrando una etapa de dominio divisional.", url: "https://www.mlb.com/tigers/history/timeline"},
+      {year: "2022", title: "Los 3,000 imparables de Miguel Cabrera", description: "El venezolano alcanza el histórico hito ante Colorado en Comerica Park.", url: "https://www.mlb.com/tigers/video/cabrera-reaches-3-000th-hit"},
+    ],
+    legends: [
+      {name: "Ty Cobb", era: "1905–1926", role: "Jardinero · pionero del club", highlight: "Ganó doce títulos de bateo y fue el gran rostro de los tres banderines consecutivos entre 1907 y 1909.", url: "https://www.mlb.com/tigers/history/hall-of-famers"},
+      {name: "Hank Greenberg", era: "1930–1946", role: "Primera base · campeón de 1935 y 1945", highlight: "Poderoso bateador y dos veces Jugador Más Valioso de la Liga Americana, decisivo en las primeras coronas.", url: "https://www.mlb.com/tigers/history/hall-of-famers"},
+      {name: "Charlie Gehringer", era: "1924–1942", role: "Segunda base · MVP 1937", highlight: "Emblema de constancia y protagonista del campeonato de 1935; Detroit retiró su dorsal 2.", url: "https://www.mlb.com/tigers/history/retired-numbers"},
+      {name: "Al Kaline", era: "1953–1974", role: "Jardinero · campeón de 1968", highlight: "Pasó toda su carrera con Detroit; fue uno de los líderes de la tercera Serie Mundial del club.", url: "https://www.mlb.com/tigers/history/retired-numbers"},
+      {name: "Alan Trammell", era: "1977–1996", role: "Campocorto · MVP de Serie Mundial 1984", highlight: "Pieza central del equipo campeón y de una de las duplas de doble matanza más duraderas junto a Lou Whitaker.", url: "https://www.mlb.com/tigers/history/retired-numbers"},
+      {name: "Miguel Cabrera", era: "2008–2023", role: "Primera y tercera base · Triple Corona 2012", highlight: "En Detroit ganó cuatro títulos de bateo y logró su hit 3,000; simboliza la generación que disputó la Serie Mundial de 2012.", url: "https://www.mlb.com/tigers/video/cabrera-reaches-3-000th-hit"},
+    ],
+    immortals: [
+      {name: "Ty Cobb", year: "1936", role: "Cooperstown · jardinero", url: "https://baseballhall.org/hall-of-famers/cobb-ty"},
+      {name: "Charlie Gehringer", year: "1949", role: "Cooperstown · segunda base", url: "https://baseballhall.org/hall-of-famers/gehringer-charlie"},
+      {name: "Hank Greenberg", year: "1956", role: "Cooperstown · primera base", url: "https://baseballhall.org/hall-of-famers/greenberg-hank"},
+      {name: "Al Kaline", year: "1980", role: "Cooperstown · jardinero", url: "https://baseballhall.org/hall-of-famers/kaline-al"},
+      {name: "Jack Morris", year: "2018", role: "Cooperstown · lanzador", url: "https://baseballhall.org/hall-of-famers/morris-jack"},
+      {name: "Alan Trammell", year: "2018", role: "Cooperstown · campocorto", url: "https://baseballhall.org/hall-of-famers/trammell-alan"},
+    ],
+    sources: [
+      {label: "Cronología oficial de Detroit", url: "https://www.mlb.com/tigers/history/timeline"},
+      {label: "Estadios históricos de los Tigers", url: "https://www.mlb.com/tigers/history/ballparks"},
+      {label: "Números retirados por Detroit", url: "https://www.mlb.com/tigers/history/retired-numbers"},
+      {label: "Integrantes del Salón de la Fama", url: "https://www.mlb.com/tigers/history/hall-of-famers"},
+      {label: "Historia de postemporada MLB", url: "https://www.mlb.com/postseason/history"},
+    ],
+  },
+
   115: {
     intro: "Colorado Rockies debutó en Grandes Ligas en 1993 como franquicia de expansión de la Liga Nacional. En 1995 alcanzó su primera postemporada y estrenó Coors Field. Su momento cumbre llegó en 2007: la célebre racha Rocktober condujo al primer banderín de la Liga Nacional de su historia. Los Rockies aún no han ganado la Serie Mundial ni un título de división.",
     featuredStory: {
