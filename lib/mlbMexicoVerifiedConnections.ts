@@ -71,16 +71,6 @@ export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection
     },
   },
   {
-    mlbClubId: 108, group: "toMexico",
-    connection: {
-      name: "Jefry Marte", league: "LMB", mexicanClub: "Generales de Durango",
-      mexicanSlug: "generales", direction: "mlb-to-mexico", role: "Primera y tercera base",
-      year: "Angels 2016–2018 · Generales 2023",
-      description: "El dominicano vistió el uniforme de los Angels entre 2016 y 2018 y jugó posteriormente con Generales de Durango.",
-      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
-    },
-  },
-  {
     mlbClubId: 118, group: "debut",
     connection: {
       name: "Joakim Soria", league: "LMP", mexicanClub: "Yaquis de Ciudad Obregón",
