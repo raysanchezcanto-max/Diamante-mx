@@ -11,6 +11,40 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 114, group: "toMexico",
+    connection: {
+      name: "Wilson Ramos", league: "LMB", mexicanClub: "Acereros de Monclova",
+      mexicanSlug: "acereros", direction: "mlb-to-mexico", role: "Receptor",
+      year: "Cleveland 2021 · Acereros 2023",
+      description: "El receptor venezolano jugó con Cleveland en 2021 y participó con Acereros de Monclova en la Liga Mexicana de Beisbol de 2023. Su debut en Grandes Ligas ocurrió antes, con Minnesota en 2010.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/wilson-ramos-467092",
+    },
+  },
+  {
+    mlbClubId: 114, group: "toMexico",
+    connection: {
+      name: "Esmil Rogers", league: "LMB", mexicanClub: "El Águila de Veracruz",
+      mexicanSlug: "el-aguila", direction: "mlb-to-mexico", role: "Lanzador derecho",
+      year: "Cleveland 2012 · El Águila 2023",
+      description: "Después de lanzar para Cleveland en 2012 y para otros clubes de Grandes Ligas, el dominicano formó parte de El Águila de Veracruz durante la temporada 2023 de LMB.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/esmil-rogers-469134",
+    },
+  },
+  {
+    mlbClubId: 114, group: "toMexico",
+    connection: {
+      name: "Óliver Pérez", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Lanzador zurdo",
+      year: "Cleveland 2018–2021 · Leones 2023",
+      description: "El histórico relevista mexicano lanzó para Cleveland entre 2018 y 2021 y continuó su carrera en la Liga Mexicana con Leones de Yucatán durante 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/oliver-perez-424144",
+    },
+  },
+
+  {
     mlbClubId: 113, group: "toMexico",
     connection: {
       name: "Yasiel Puig", league: "LMB", mexicanClub: "El Águila de Veracruz",
