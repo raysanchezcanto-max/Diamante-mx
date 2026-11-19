@@ -94,7 +94,72 @@ const REDS_NUMBERS = "https://www.mlb.com/reds/history/records-stats-awards/reti
 const REDS_STADIUM = "https://www.mlb.com/reds/ballpark/information/facts";
 const REDS_1990 = "https://www.mlb.com/reds/news/1990-world-series-recap";
 
+const GUARDIANS_TIMELINE = "https://www.mlb.com/guardians/history/timeline";
+const GUARDIANS_POSTSEASON = "https://www.mlb.com/guardians/history/postseason-results";
+const GUARDIANS_HALL = "https://www.mlb.com/guardians/history/hall-of-fame";
+const GUARDIANS_RETIRED = "https://www.mlb.com/guardians/history/retired-numbers";
+const GUARDIANS_BALLPARK = "https://www.mlb.com/guardians/ballpark/information/history";
+const GUARDIANS_DIVISION_2026 = "https://www.mlb.com/guardians/news/guardians-clinch-2026-al-central-title";
+
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  114: {
+    intro: "Cleveland forma parte de la Liga Americana desde su temporada inaugural de 1901. La franquicia ha competido bajo distintos nombres, incluido Indians hasta 2021; desde 2022 se llama Guardians. Conquistó dos Series Mundiales, en 1920 y 1948, y seis banderines de la Liga Americana. Progressive Field es su hogar desde 1994.",
+    featuredStory: {
+      kicker: "HISTORIA · DOS CORONAS MUNDIALES",
+      title: "DE 1920 A 1948: LAS GRANDES CONQUISTAS DE CLEVELAND",
+      excerpt: "Cleveland ganó la Serie Mundial de 1920 frente a Brooklyn y volvió a coronarse en 1948 contra Boston Braves. Más adelante disputó las Series Mundiales de 1954, 1995, 1997 y 2016.",
+      url: GUARDIANS_POSTSEASON,
+    },
+    debutYear: "1901",
+    worldSeriesTitles: 2,
+    worldSeriesWinningYears: ["1920", "1948"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1920", "1948", "1954", "1995", "1997", "2016"],
+    postseasonSource: GUARDIANS_POSTSEASON,
+    divisionTitles: ["1995", "1996", "1997", "1998", "1999", "2001", "2007", "2016", "2017", "2018", "2022", "2024", "2025", "2026"],
+    stadiumOpened: "1994",
+    stadiumOpenedNote: "El parque abrió en 1994 con el nombre Jacobs Field y pasó a llamarse Progressive Field en 2008. Sustituyó al Cleveland Stadium como hogar del equipo.",
+    stadiumSource: GUARDIANS_BALLPARK,
+    milestones: [
+      {year: "1901", title: "Nace una franquicia de la Liga Americana", description: "Cleveland participa como miembro fundador de la Liga Americana, antecedente directo de los actuales Guardians.", url: GUARDIANS_TIMELINE},
+      {year: "1920", title: "Primer campeonato de Serie Mundial", description: "Con Tris Speaker como jugador y dirigente, Cleveland derrota a Brooklyn Robins en la Serie Mundial.", url: GUARDIANS_POSTSEASON},
+      {year: "1947", title: "Larry Doby rompe una barrera histórica", description: "Doby debuta con Cleveland y se convierte en el primer jugador negro de la Liga Americana.", url: GUARDIANS_RETIRED},
+      {year: "1948", title: "La segunda corona mundial", description: "Cleveland supera a Boston Braves en seis juegos bajo el mando de Lou Boudreau.", url: GUARDIANS_POSTSEASON},
+      {year: "1954", title: "Un extraordinario banderín", description: "Cleveland conquista la Liga Americana y llega a la Serie Mundial, donde cae ante New York Giants.", url: GUARDIANS_POSTSEASON},
+      {year: "1975", title: "Frank Robinson hace historia", description: "Robinson comienza como primer dirigente negro en la historia de las Grandes Ligas, mientras continúa como jugador.", url: GUARDIANS_TIMELINE},
+      {year: "1994", title: "Un nuevo hogar en el centro", description: "Se inaugura Jacobs Field, hoy Progressive Field, como nuevo estadio de la franquicia.", url: GUARDIANS_BALLPARK},
+      {year: "1995", title: "Regreso a la Serie Mundial", description: "Tras décadas sin alcanzar el Clásico de Otoño, Cleveland gana el banderín de la Americana, pero Atlanta se corona.", url: GUARDIANS_POSTSEASON},
+      {year: "1997", title: "Otra final dramática", description: "Los entonces Indians pierden ante Florida Marlins en siete encuentros de Serie Mundial.", url: GUARDIANS_POSTSEASON},
+      {year: "2016", title: "Una Serie Mundial de siete partidos", description: "Cleveland gana el banderín, toma ventaja de 3-1, pero Chicago Cubs remonta y obtiene el título.", url: GUARDIANS_POSTSEASON},
+      {year: "2022", title: "Una nueva identidad", description: "La franquicia juega su primera temporada oficial bajo el nombre Cleveland Guardians.", url: GUARDIANS_TIMELINE},
+      {year: "2026", title: "Tercer título divisional consecutivo", description: "Los Guardians ganan la Central de la Americana por tercer año seguido y llegan a la Serie de Campeonato.", url: GUARDIANS_DIVISION_2026},
+    ],
+    legends: [
+      {name: "Tris Speaker", era: "1916–1926", role: "Jardinero · jugador y dirigente", highlight: "Capitaneó la conquista mundial de 1920 y fue uno de los grandes bateadores de su época.", url: GUARDIANS_HALL},
+      {name: "Bob Feller", era: "1936–1956", role: "Lanzador · dorsal 19 retirado", highlight: "Referente histórico del pitcheo de Cleveland: 266 victorias y tres juegos sin hit ni carrera.", url: GUARDIANS_RETIRED},
+      {name: "Larry Doby", era: "1947–1955 y 1958", role: "Jardinero · pionero de la Liga Americana", highlight: "Primer jugador negro de la Americana y protagonista de los campeones de 1948.", url: GUARDIANS_RETIRED},
+      {name: "Lou Boudreau", era: "1938–1950", role: "Campocorto y dirigente · campeón 1948", highlight: "Ganó el premio al Jugador Más Valioso en 1948 mientras guiaba al club al campeonato.", url: GUARDIANS_HALL},
+      {name: "Jim Thome", era: "1991–2002 y 2011", role: "Primera base y bateador designado", highlight: "Uno de los grandes jonroneros de la franquicia y miembro de Cooperstown.", url: GUARDIANS_RETIRED},
+      {name: "José Ramírez", era: "2013–2026", role: "Tercera base · figura contemporánea", highlight: "Líder ofensivo y referente de la etapa moderna de Cleveland, incluidos los títulos divisionales recientes.", url: GUARDIANS_TIMELINE},
+    ],
+    immortals: [
+      {name: "Tris Speaker", year: "1937", role: "Cooperstown · jardinero y dirigente", url: "https://baseballhall.org/hall-of-famers/speaker-tris"},
+      {name: "Bob Feller", year: "1962", role: "Cooperstown · lanzador", url: "https://baseballhall.org/hall-of-famers/feller-bob"},
+      {name: "Lou Boudreau", year: "1970", role: "Cooperstown · campocorto y dirigente", url: "https://baseballhall.org/hall-of-famers/boudreau-lou"},
+      {name: "Bob Lemon", year: "1976", role: "Cooperstown · lanzador", url: "https://baseballhall.org/hall-of-famers/lemon-bob"},
+      {name: "Larry Doby", year: "1998", role: "Cooperstown · jardinero", url: "https://baseballhall.org/hall-of-famers/doby-larry"},
+      {name: "Jim Thome", year: "2018", role: "Cooperstown · primera base", url: "https://baseballhall.org/hall-of-famers/thome-jim"},
+    ],
+    sources: [
+      {label: "Cronología oficial de Cleveland", url: GUARDIANS_TIMELINE},
+      {label: "Resultados históricos de postemporada", url: GUARDIANS_POSTSEASON},
+      {label: "Salón de la Fama del club", url: GUARDIANS_HALL},
+      {label: "Dorsales retirados", url: GUARDIANS_RETIRED},
+      {label: "Historia de Progressive Field", url: GUARDIANS_BALLPARK},
+      {label: "Título divisional de 2026", url: GUARDIANS_DIVISION_2026},
+    ],
+  },
+
   113: {
     intro: "Cincinnati es una de las cunas del béisbol profesional. La franquicia actual compitió en la Asociación Americana desde 1882 y se incorporó a la Liga Nacional en 1890. Los Reds ganaron cinco Series Mundiales: 1919, 1940, 1975, 1976 y 1990. El legendario conjunto de los años setenta fue conocido como la Gran Máquina Roja. Desde 2003 juega en Great American Ball Park.",
     featuredStory: {
