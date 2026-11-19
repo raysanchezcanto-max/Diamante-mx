@@ -108,6 +108,65 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  117: {
+    intro: "Houston comenzó su historia de Grandes Ligas en 1962 como los Colt .45s y adoptó el nombre Astros en 1965 al mudarse al innovador Astrodome. Compitió en la Liga Nacional hasta 2012 y pasó a la Americana en 2013, convirtiéndose en una de las pocas franquicias con banderines en ambas ligas. Ganó las Series Mundiales de 2017 y 2022 y juega en Daikin Park desde 2000, cuando el inmueble abrió como Enron Field.",
+    featuredStory: {
+      kicker: "HISTORIA · CAMPEONES DE 2022",
+      title: "EL SEGUNDO TÍTULO Y UNA SERIE MUNDIAL INOLVIDABLE",
+      excerpt: "En 2022, los Astros vencieron a Philadelphia en seis juegos. Su pitcheo consiguió un juego sin hit ni carrera combinado en el cuarto encuentro y Kyle Tucker atrapó el último out de la serie, bajo la dirección de Dusty Baker.",
+      url: "https://www.mlb.com/astros/video/astros-win-the-world-series",
+    },
+    debutYear: "1962",
+    worldSeriesTitles: 2,
+    worldSeriesWinningYears: ["2017", "2022"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["2005", "2017", "2019", "2021", "2022"],
+    pennantLeagues: {"2005": "Liga Nacional", "2017": "Liga Americana", "2019": "Liga Americana", "2021": "Liga Americana", "2022": "Liga Americana"},
+    postseasonSource: "https://www.mlb.com/astros/history/timeline",
+    divisionTitles: ["1980", "1986", "1997", "1998", "1999", "2001", "2017", "2018", "2019", "2021", "2022", "2023", "2024", "2026"],
+    stadiumOpened: "2000",
+    stadiumOpenedNote: "El estadio abrió el 7 de abril de 2000 como Enron Field, se llamó Minute Maid Park entre 2002 y 2024 y adoptó el nombre Daikin Park en 2025. Antes, el club jugaba en el Astrodome desde 1965.",
+    stadiumSource: "https://www.mlb.com/astros/ballpark/information/facts-and-figures",
+    milestones: [
+      {year: "1962", title: "Nacen los Houston Colt .45s", description: "La franquicia de expansión debuta en la Liga Nacional bajo el nombre Colt .45s y juega sus primeros años al aire libre.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "1965", title: "Un nombre espacial y un estadio revolucionario", description: "La franquicia adopta el nombre Astros y se traslada al Astrodome, célebre estadio cubierto de Houston.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "1980", title: "Primer título de división", description: "Con Nolan Ryan, Joe Niekro y José Cruz, Houston gana el Oeste de la Liga Nacional y disputa una dramática Serie de Campeonato ante Philadelphia.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "1986", title: "Otra campaña histórica de pitcheo", description: "Mike Scott gana el Cy Young, lanza un juego sin hit y los Astros vuelven a disputar la Serie de Campeonato de la Nacional.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "1997–1999", title: "Tres divisiones consecutivas", description: "El núcleo de Jeff Bagwell y Craig Biggio gana tres títulos seguidos de la Central de la Liga Nacional.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "2000", title: "Nuevo hogar con techo retráctil", description: "Abre el actual Daikin Park, entonces Enron Field, en el centro de la ciudad y concluye la etapa del Astrodome.", url: "https://www.mlb.com/astros/ballpark/information/facts-and-figures"},
+      {year: "2005", title: "Primer banderín y primera Serie Mundial", description: "Roy Oswalt y compañía vencen a St. Louis en la Serie de Campeonato de la Nacional. Chicago White Sox gana la Serie Mundial.", url: "https://www.mlb.com/video/astros-advance-to-world-series-c20047525"},
+      {year: "2013", title: "Cambio a la Liga Americana", description: "Houston deja la Liga Nacional después de 51 temporadas y comienza a competir en la División Oeste de la Americana.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "2017", title: "Primera corona mundial", description: "Los Astros superan a Los Angeles Dodgers en siete juegos y conquistan su primer título de Serie Mundial.", url: "https://www.mlb.com/astros/video/astros-win-the-world-series-c1866378083"},
+      {year: "2020", title: "Sanciones por el robo electrónico de señas", description: "MLB sanciona a la organización tras investigar el uso indebido de tecnología para descifrar señas durante 2017 y 2018. El título de 2017 no fue retirado.", url: "https://www.mlb.com/news/notable-suspensions-and-discipline-in-baseball-history"},
+      {year: "2022", title: "Segunda Serie Mundial", description: "Houston supera a Philadelphia en seis juegos; Cristian Javier inicia el histórico juego sin hit combinado del cuarto partido.", url: "https://www.mlb.com/astros/video/astros-win-the-world-series"},
+      {year: "2023", title: "Séptima Serie de Campeonato consecutiva", description: "El club gana el Oeste de la Americana y vuelve a la Serie de Campeonato, pero Texas lo elimina en siete juegos.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "2024", title: "Última corona de una racha divisional", description: "Houston obtiene su cuarto campeonato consecutivo del Oeste de la Americana, antes de caer ante Detroit en la Serie de Comodines.", url: "https://www.mlb.com/astros/history/timeline"},
+      {year: "2026", title: "El regreso a octubre", description: "Los Astros ganan el Oeste de la Americana con marca 81–81, pero Chicago White Sox los elimina en la ronda de comodines.", url: "https://www.mlb.com/astros/news/astros-lose-2026-al-wild-card-series"},
+    ],
+    legends: [
+      {name: "José Cruz", era: "1975–1987", role: "Jardinero · dorsal 25 retirado", highlight: "Ídolo puertorriqueño y referencia ofensiva del primer equipo de Houston que ganó un título divisional.", url: "https://www.mlb.com/astros/history/hall-of-fame"},
+      {name: "Nolan Ryan", era: "1980–1988", role: "Lanzador · miembro de Cooperstown", highlight: "Una de las grandes figuras del pitcheo y emblema de la generación de los ochenta.", url: "https://www.mlb.com/astros/history/hall-of-fame"},
+      {name: "Craig Biggio", era: "1988–2007", role: "Receptor y segunda base · 3,060 imparables", highlight: "Jugó toda su carrera en Houston y protagonizó la primera Serie Mundial del club en 2005.", url: "https://www.mlb.com/astros/history/hall-of-fame"},
+      {name: "Jeff Bagwell", era: "1991–2005", role: "Primera base · MVP 1994", highlight: "Junto a Biggio construyó una era ganadora de la Central de la Nacional y llegó a la Serie Mundial de 2005.", url: "https://www.mlb.com/astros/history/hall-of-fame"},
+      {name: "José Altuve", era: "2011–presente", role: "Segunda base · MVP 2017", highlight: "Figura de las generaciones campeonas de 2017 y 2022, con numerosos batazos decisivos de postemporada.", url: "https://www.mlb.com/astros/history/timeline"},
+      {name: "Justin Verlander", era: "2017–2023, con interrupciones", role: "Lanzador · Cy Young 2019 y 2022", highlight: "Pieza clave de la rotación que ganó las dos Series Mundiales y protagonista de la etapa moderna del club.", url: "https://www.mlb.com/astros/history/timeline"},
+    ],
+    immortals: [
+      {name: "Joe Morgan", year: "1990", role: "Cooperstown · segunda base; jugó con Houston en dos etapas", url: "https://baseballhall.org/hall-of-famers/morgan-joe"},
+      {name: "Nolan Ryan", year: "1999", role: "Cooperstown · lanzador; Astros 1980–1988", url: "https://baseballhall.org/hall-of-famers/ryan-nolan"},
+      {name: "Craig Biggio", year: "2015", role: "Cooperstown · segunda base y receptor", url: "https://baseballhall.org/hall-of-famers/biggio-craig"},
+      {name: "Jeff Bagwell", year: "2017", role: "Cooperstown · primera base", url: "https://baseballhall.org/hall-of-famers/bagwell-jeff"},
+    ],
+    sources: [
+      {label: "Cronología oficial de los Astros", url: "https://www.mlb.com/astros/history/timeline"},
+      {label: "Campeonatos divisionales históricos", url: "https://www.mlb.com/press-release/press-release-astros-clinch-american-league-west-division-title-for-seventh-time-in-eight-seasons"},
+      {label: "División Oeste 2026", url: "https://www.mlb.com/astros/news/astros-clinch-2026-al-west-title"},
+      {label: "Datos históricos de Daikin Park", url: "https://www.mlb.com/astros/ballpark/information/facts-and-figures"},
+      {label: "Salón de la Fama de Houston", url: "https://www.mlb.com/astros/history/hall-of-fame"},
+      {label: "Investigación y sanciones oficiales", url: "https://www.mlb.com/news/notable-suspensions-and-discipline-in-baseball-history"},
+    ],
+  },
+
   116: {
     intro: "Detroit Tigers es una de las franquicias fundadoras de la Liga Americana de 1901. Desde el histórico Ty Cobb hasta Miguel Cabrera, el club ha construido una tradición que incluye once banderines de la Americana y cuatro campeonatos de Serie Mundial: 1935, 1945, 1968 y 1984. Juega en Comerica Park desde 2000, después de casi nueve décadas en Tiger Stadium.",
     featuredStory: {
