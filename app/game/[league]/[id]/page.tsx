@@ -28,6 +28,9 @@ import {
   type LeagueCode,
 } from "@/lib/teamLogos";
 
+// La transición EN VIVO → FINAL no debe reutilizar una página RSC antigua.
+export const dynamic = "force-dynamic";
+
 type GamePageProps = {
   params: Promise<{
     league: string;
