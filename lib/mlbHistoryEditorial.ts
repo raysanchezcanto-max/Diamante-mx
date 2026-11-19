@@ -122,7 +122,7 @@ const histories: Readonly<Record<number, MlbEditorialHistory>> = {
     titlesVerifiedThrough: "2026",
     pennants: ["1916", "1920", "1941", "1947", "1949", "1952", "1953", "1955", "1956", "1959", "1963", "1965", "1966", "1974", "1977", "1978", "1981", "1988", "2017", "2018", "2020", "2024", "2025"],
     postseasonSource: "https://www.mlb.com/dodgers/history/postseason-results",
-    divisionTitles: ["1974", "1977", "1978", "1981", "1983", "1985", "1988", "1995", "1996", "2004", "2006", "2008", "2009", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2022", "2023", "2024", "2025"],
+    divisionTitles: ["1974", "1977", "1978", "1981", "1983", "1985", "1988", "1995", "2004", "2008", "2009", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2022", "2023", "2024", "2025"],
     divisionTitlesLabel: "Títulos divisionales históricos documentados",
     stadiumOpened: "1962",
     stadiumOpenedNote: "Dodger Stadium abrió en 1962 en Chavez Ravine y es el hogar de la franquicia desde entonces. Antes del traslado de 1958, Brooklyn jugó durante décadas en Ebbets Field.",
