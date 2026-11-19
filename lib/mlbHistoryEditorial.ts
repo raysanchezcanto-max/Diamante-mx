@@ -108,6 +108,58 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  108: {
+    intro: "Los Angels nacieron en 1961 como franquicia de expansión de la Liga Americana y han representado a Los Ángeles y Anaheim bajo varios nombres. Desde 1966 juegan en Angel Stadium, inaugurado como Anaheim Stadium. Su primer título divisional llegó en 1979 y el mayor logro de la organización fue la Serie Mundial de 2002, ganada en siete juegos a San Francisco.",
+    featuredStory: {
+      kicker: "HISTORIA · CAMPEONES DEL 2002",
+      title: "LA REMONTADA QUE CAMBIÓ LA HISTORIA DE LOS ANGELS",
+      excerpt: "Los Angels remontaron una desventaja de cinco carreras en el sexto juego ante San Francisco y después ganaron 4–1 el séptimo encuentro. Troy Glaus fue el Jugador Más Valioso de la Serie Mundial y Troy Percival consiguió el último out.",
+      url: "https://www.mlb.com/angels/video/angels-win-2002-world-series",
+    },
+    debutYear: "1961",
+    worldSeriesTitles: 1,
+    worldSeriesWinningYears: ["2002"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["2002"],
+    pennantLeagues: {"2002": "Liga Americana"},
+    postseasonSource: "https://www.mlb.com/angels/history/timeline",
+    divisionTitles: ["1979", "1982", "1986", "2004", "2005", "2007", "2008", "2009", "2014"],
+    stadiumOpened: "1966",
+    stadiumOpenedNote: "El actual Angel Stadium abrió en Anaheim en 1966 como Anaheim Stadium. Anteriormente, el equipo jugó en Wrigley Field de Los Ángeles (1961) y en Dodger Stadium (1962–1965); el estadio también recibió el nombre Edison International Field.",
+    stadiumSource: "https://www.mlb.com/angels/history/ballparks",
+    milestones: [
+      {year: "1961", title: "Nace la franquicia de los Angels", description: "Los Angeles Angels debutan en la Liga Americana y disputan sus partidos de casa en Wrigley Field de Los Ángeles.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "1966", title: "Un hogar permanente en Anaheim", description: "El equipo estrena el nuevo Anaheim Stadium, hoy Angel Stadium, tras cuatro temporadas en Dodger Stadium.", url: "https://www.mlb.com/angels/history/ballparks"},
+      {year: "1973–1975", title: "Nolan Ryan domina desde la lomita", description: "Ryan lanza cuatro juegos sin hit ni carrera con los Angels entre 1973 y 1975 y construye su leyenda como ponchador.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "1979", title: "Primer título de división", description: "Con Don Baylor, MVP de la Liga Americana, los Angels conquistan por primera vez el Oeste y avanzan a la Serie de Campeonato.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "1982", title: "Nueva corona del Oeste", description: "La generación de veteranos con Bobby Grich y Reggie Jackson vuelve a conducir a Anaheim a la postemporada.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "1986", title: "A las puertas de la Serie Mundial", description: "Los Angels ganan su tercera división, aunque Boston los elimina en una dramática Serie de Campeonato.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "2002", title: "Primer banderín y campeonato mundial", description: "Los Angels superan a los Giants en siete juegos de Serie Mundial; Troy Glaus es el MVP y Troy Percival cierra el séptimo juego.", url: "https://www.mlb.com/angels/video/angels-win-2002-world-series"},
+      {year: "2004–2009", title: "Dominio divisional en la era de Scioscia", description: "Con Vladimir Guerrero, Francisco Rodríguez y otros referentes, el equipo obtiene cinco títulos del Oeste en seis campañas.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "2014", title: "La temporada de 98 victorias", description: "Mike Trout impulsa a los Angels a la mejor marca de MLB, pero Kansas City los elimina en la Serie Divisional.", url: "https://www.mlb.com/angels/history/timeline"},
+      {year: "2018", title: "Shohei Ohtani deslumbra en dos funciones", description: "Ohtani combina pitcheo y bateo de poder en su año de debut y conquista el premio al Novato del Año de la Americana.", url: "https://www.mlb.com/angels/history/timeline"},
+    ],
+    legends: [
+      {name: "Nolan Ryan", era: "1972–1979", role: "Lanzador · cuatro juegos sin hit con Angels", highlight: "Convirtió el pitcheo de poder y los ponches en una parte esencial de la identidad del club.", url: "https://www.mlb.com/angels/history/timeline"},
+      {name: "Tim Salmon", era: "1992–2006", role: "Jardinero · campeón de 2002", highlight: "Referente ofensivo de toda una generación y protagonista del único título mundial del club.", url: "https://www.mlb.com/angels/history/timeline"},
+      {name: "Garret Anderson", era: "1994–2008", role: "Jardinero · campeón de 2002", highlight: "Bateador consistente y pieza central de la ofensiva de la primera corona.", url: "https://www.mlb.com/angels/history/timeline"},
+      {name: "Vladimir Guerrero", era: "2004–2009", role: "Jardinero · MVP Americana 2004", highlight: "Su bate impulsó las múltiples conquistas divisionales de la década de 2000.", url: "https://www.mlb.com/angels/history/timeline"},
+      {name: "Mike Trout", era: "2011–presente", role: "Jardinero · tres premios MVP", highlight: "La figura moderna de la franquicia y uno de los grandes talentos de su generación.", url: "https://www.mlb.com/angels/history/timeline"},
+      {name: "Shohei Ohtani", era: "2018–2023", role: "Bateador y lanzador · Novato del Año 2018", highlight: "Revolucionó el béisbol moderno con su excepcional juego de doble función durante su paso por Anaheim.", url: "https://www.mlb.com/angels/history/timeline"},
+    ],
+    immortals: [
+      {name: "Nolan Ryan", year: "1999", role: "Cooperstown · lanzador; Angels 1972–1979", url: "https://baseballhall.org/hall-of-famers/ryan-nolan"},
+      {name: "Reggie Jackson", year: "1993", role: "Cooperstown · jardinero y bateador designado; Angels 1982–1986", url: "https://baseballhall.org/hall-of-famers/jackson-reggie"},
+      {name: "Vladimir Guerrero", year: "2018", role: "Cooperstown · jardinero; Angels 2004–2009", url: "https://baseballhall.org/hall-of-famers/guerrero-vladimir"},
+      {name: "Rod Carew", year: "1991", role: "Cooperstown · primera base; Angels 1979–1985", url: "https://baseballhall.org/hall-of-famers/carew-rod"},
+    ],
+    sources: [
+      {label: "Cronología oficial de los Angels", url: "https://www.mlb.com/angels/history/timeline"},
+      {label: "Estadios históricos de los Angels", url: "https://www.mlb.com/angels/history/ballparks"},
+      {label: "Último out de la Serie Mundial 2002", url: "https://www.mlb.com/angels/video/angels-win-2002-world-series"},
+    ],
+  },
+
   118: {
     intro: "Kansas City debutó como franquicia de expansión de la Liga Americana en 1969. Tras sus primeras temporadas en Municipal Stadium, estrenó en 1973 el actual Kauffman Stadium, una de las señas de identidad del club. La época de George Brett convirtió a los Royals en protagonistas de octubre; ganaron las Series Mundiales de 1985 y 2015, además de disputar los clásicos de 1980 y 2014.",
     featuredStory: {
