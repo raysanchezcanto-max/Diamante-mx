@@ -11,6 +11,17 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 113, group: "toMexico",
+    connection: {
+      name: "Yasiel Puig", league: "LMB", mexicanClub: "El Águila de Veracruz",
+      mexicanSlug: "aguila", direction: "mlb-to-mexico", role: "Jardinero",
+      year: "Reds 2019 · El Águila 2021 y 2024",
+      description: "Tras disputar la temporada de 2019 con Cincinnati y Cleveland, el jardinero cubano participó con El Águila de Veracruz en la Liga Mexicana. Su llegada a México fue posterior a su debut de MLB con Dodgers.",
+      source: "https://www.milb.com/news/previa-el-glorioso-y-espectacular-regreso-a-veracruz",
+      verificationSource: "https://www.milb.com/es/player/yasiel-puig-624577",
+    },
+  },
+  {
     mlbClubId: 145, group: "previousExperience",
     connection: {
       name: "Esteban Loaiza", league: "LMP", mexicanClub: "Tomateros de Culiacán",
