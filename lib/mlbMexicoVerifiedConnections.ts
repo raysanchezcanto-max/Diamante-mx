@@ -11,6 +11,39 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 116, group: "toMexico",
+    connection: {
+      name: "Fernando Rodney", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mlb-to-mexico", role: "Lanzador relevista",
+      year: "Detroit 2002–2009 · Diablos Rojos 2023",
+      description: "Rodney inició su carrera en Grandes Ligas con Detroit, donde lanzó en 2002–2003 y 2005–2009; en 2023 apareció en la LMB con los Diablos Rojos del México.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/fernando-rodney-407845",
+    },
+  },
+  {
+    mlbClubId: 116, group: "toMexico",
+    connection: {
+      name: "Renato Núñez", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Infielder",
+      year: "Detroit 2021 · Leones 2023",
+      description: "El venezolano jugó con los Tigers durante 2021 y posteriormente apareció con los Leones de Yucatán en el circuito de verano mexicano de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/renato-nunez-600524",
+    },
+  },
+  {
+    mlbClubId: 116, group: "toMexico",
+    connection: {
+      name: "José Valdez", league: "LMB", mexicanClub: "El Águila de Veracruz",
+      mexicanSlug: "el-aguila", direction: "mlb-to-mexico", role: "Lanzador derecho",
+      year: "Detroit 2015 · El Águila 2023",
+      description: "José Valdez debutó en Grandes Ligas con Detroit en 2015 y figura en la plantilla de El Águila de Veracruz de la temporada 2023 de LMB.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/jose-valdez-572521",
+    },
+  },
+  {
     mlbClubId: 115, group: "toMexico",
     connection: {
       name: "Esmil Rogers", league: "LMB", mexicanClub: "El Águila de Veracruz",
