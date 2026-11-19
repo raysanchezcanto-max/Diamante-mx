@@ -197,6 +197,10 @@ function GameCards({
           third: pilotInningTransition ? 0 : pilotState.third,
           outs: pilotInningTransition ? 0 : pilotState.outs,
         } : null;
+        // La mitad de entrada confirma a qué equipo pertenecen bateador y lanzador.
+        const pilotHalf = (pilotState?.inningState ?? "").trim().toLowerCase();
+        const pilotBattingTeam = pilotHalf === "top" ? "JAL" : pilotHalf === "bottom" ? "VEN" : "";
+        const pilotPitchingTeam = pilotHalf === "top" ? "VEN" : pilotHalf === "bottom" ? "JAL" : "";
 
         const awayLogo = getTeamLogo(
           league,
@@ -679,8 +683,8 @@ marginTop: "5px",
 {pilotSituation && !pilotInningTransition &&
   (pilotState?.batterName || pilotState?.pitcherName) && (
     <div className="pilotMatchupNames">
-      {pilotState.batterName && <span><b>AL BATE</b> {pilotState.batterName}</span>}
-      {pilotState.pitcherName && <span><b>LANZA</b> {pilotState.pitcherName}</span>}
+      {pilotState.batterName && <span><b>AL BATE</b><strong>{pilotState.batterName}</strong>{pilotBattingTeam && <em>· {pilotBattingTeam}</em>}</span>}
+      {pilotState.pitcherName && <span><b>LANZA</b><strong>{pilotState.pitcherName}</strong>{pilotPitchingTeam && <em>· {pilotPitchingTeam}</em>}</span>}
     </div>
   )}
 
