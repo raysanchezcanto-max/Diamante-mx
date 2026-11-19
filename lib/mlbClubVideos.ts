@@ -11,6 +11,12 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  119: [
+    {title: "Los Dodgers conquistan su novena Serie Mundial en 2025", date: "1 nov 2025", duration: "1:57", description: "Yoshinobu Yamamoto provoca una doble matanza para cerrar el séptimo juego ante Toronto y conquistar el bicampeonato.", url: "https://www.mlb.com/dodgers/video/yoshinobu-yamamoto-in-play-out-s-to-alejandro-kirk"},
+    {title: "Los nueve últimos outs de los Dodgers campeones", date: "1 nov 2025", duration: "1:59", description: "Recorrido histórico por las jugadas finales de cada una de las nueve Series Mundiales ganadas por la franquicia.", url: "https://www.mlb.com/es/video/every-final-out-from-dodgers-nine-world-series-wins"},
+    {title: "Kirk Gibson conecta su histórico jonrón de 1988", date: "15 oct 1988", duration: "2:15", description: "El bateador emergente, lesionado, conecta el cuadrangular que decide el primer juego de la Serie Mundial frente a Oakland.", url: "https://www.mlb.com/video/gibson-s-pinch-hit-hr-c3731660"},
+    {title: "La épica remontada para conquistar el título de 2024", date: "30 oct 2024", duration: "2:47:56", description: "Partido completo: Los Dodgers superan una desventaja de cinco carreras en el quinto juego y vencen a los Yankees.", url: "https://www.mlb.com/video/dodgers-overcome-5-run-deficit-to-win-world-series"},
+  ],
   108: [
     {title: "Los Angels ganan la Serie Mundial de 2002", date: "27 oct 2002", duration: "2:01", description: "Troy Percival consigue el último out del séptimo juego ante San Francisco para dar a Anaheim su primer campeonato mundial.", url: "https://www.mlb.com/angels/video/angels-win-2002-world-series"},
   ],
