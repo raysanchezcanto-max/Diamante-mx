@@ -1278,3 +1278,8 @@ Total output lines: 2623
 - En PRÓXIMO, HOY, POR COMENZAR y otros estados previos no se renderizan guiones de marcador: ambos espacios permanecen vacíos.
 - EN VIVO y FINAL muestran sus carreras; cuando una fuente todavía no informa carreras en juego, mantienen «–» como señal de dato pendiente, sin sustituir ceros válidos.
 - Se retiró la maqueta compacta exclusiva de Charros de Jalisco y todos sus estilos. Las 24 pruebas de estados y TypeScript pasaron. La idea de una presentación en vivo más elaborada queda para una propuesta futura sin alterar las dimensiones establecidas.
+
+### Auditoría MLB — Cincinnati Reds (ID 113) · 19 nov 2026 — EN CURSO
+- Se incorporó historia editorial individual con debut de la franquicia actual en 1882 (Asociación Americana), ingreso a Liga Nacional en 1890, cinco Series Mundiales (1919, 1940, 1975, 1976 y 1990), diez banderines incluyendo 1882 AA, diez divisiones documentadas y apertura de Great American Ball Park en 2003.
+- Incluye diez hitos, seis figuras históricas, seis integrantes de Cooperstown y enlaces primarios de MLB sobre cronología, postemporada, estadio y Salón de la Fama; mantiene el componente visual compartido de Historia.
+- **Pendiente para cerrar la franquicia:** auditar en producción las seis pestañas (Resumen, Estadísticas, Plantilla, Movimientos, Grandes Ligas e Historia), verificar noticias/videos y vínculos con béisbol mexicano, comprobar los datos cargados y ejecutar pruebas de perfiles. No pasar a Cleveland hasta cerrar Cincinnati.
