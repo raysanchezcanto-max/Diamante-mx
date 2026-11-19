@@ -36,7 +36,7 @@ export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection
     mlbClubId: 115, group: "toMexico",
     connection: {
       name: "Rio Ruiz", league: "LMB", mexicanClub: "Diablos Rojos del México",
-      mexicanSlug: "diablos", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      mexicanSlug: "diablos-rojos", direction: "mlb-to-mexico", role: "Jugador de cuadro",
       year: "Colorado 2021 · Diablos 2022–2023",
       description: "Después de jugar para Colorado durante 2021, el estadounidense se incorporó a Diablos Rojos del México en 2022 y figuró entre los peloteros con experiencia MLB que disputaron la LMB de 2023.",
       source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
