@@ -16,6 +16,11 @@ const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
     {title: "Rajai Davis empata el séptimo juego de 2016", date: "2 nov 2016", duration: "0:30", description: "Narración histórica del cuadrangular de dos carreras de Davis en la octava entrada frente a Cubs.", url: "https://www.mlb.com/video/davis-clutch-game-tying-homer-c1211132983"},
     {title: "Cleveland celebra el título divisional de 2026", date: "26 sep 2026", duration: "0:13", description: "Los Guardians celebran su tercera corona consecutiva de la Central de la Liga Americana.", url: "https://www.mlb.com/video/guardians-react-to-being-2026-al-central-champions"},
   ],
+  115: [
+    {title: "Colorado conquista la Liga Nacional en 2007", date: "15 oct 2007", duration: "3:05", description: "Los Rockies barren a Arizona en la Serie de Campeonato y obtienen el primer banderín de su historia.", url: "https://www.mlb.com/rockies/video/rockies-win-2007-nlcs-c22639773"},
+    {title: "Colorado celebra su triunfo de comodín en 2018", date: "2 oct 2018", duration: "1:58", description: "Celebración después de superar 2–1 a Chicago Cubs en trece entradas.", url: "https://www.mlb.com/rockies/video/rockies-celebrate-wild-card-win-c2513327983"},
+    {title: "Todd Helton recuerda su legado en Cooperstown", date: "21 jul 2024", duration: "4:32", description: "Entrevista oficial de MLB durante la ceremonia de ingreso del primera base al Salón de la Fama.", url: "https://www.mlb.com/rockies/video/todd-helton-talks-his-career-and-legacy-hall-of-fame"},
+  ],
   113: [
     {title: "Johnny Bench lidera a Cincinnati en 1975", date: "7 dic 2020", duration: "1:15", description: "MLB recuerda la actuación del receptor durante la Serie Mundial de 1975 ante Boston.", url: "https://www.mlb.com/reds/video/johnny-bench-leads-reds-in-75-ws"},
     {title: "El último out del bicampeonato de 1976", date: "21 oct 1976", duration: "0:44", description: "Will McEnaney completa el último out ante Yankees y los Reds celebran la corona de 1976.", url: "https://www.mlb.com/video/reds-win-the-1976-series-c19970319"},
