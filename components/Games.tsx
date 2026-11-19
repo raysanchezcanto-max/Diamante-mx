@@ -685,8 +685,8 @@ marginTop: "5px",
 {pilotSituation && !pilotInningTransition &&
   (pilotState?.batterName || pilotState?.pitcherName) && (
     <div className="pilotMatchupNames">
-      {pilotState.batterName && <span><b>AL BATE</b><strong>{pilotState.batterName}</strong>{pilotBattingTeam && <em>· {pilotBattingTeam}</em>}</span>}
-      {pilotState.pitcherName && <span><b>LANZA</b><strong>{pilotState.pitcherName}</strong>{pilotPitchingTeam && <em>· {pilotPitchingTeam}</em>}</span>}
+      {pilotState.batterName && <span><b>AL BATE</b><strong title={pilotState.batterName}>{pilotState.batterName}</strong>{pilotBattingTeam && <em>{pilotBattingTeam}</em>}</span>}
+      {pilotState.pitcherName && <span><b>LANZA</b><strong title={pilotState.pitcherName}>{pilotState.pitcherName}</strong>{pilotPitchingTeam && <em>{pilotPitchingTeam}</em>}</span>}
     </div>
   )}
 
@@ -1664,7 +1664,7 @@ const hasAnyGames =
 
       <div className="mlbWorldSeriesMatchup">
         <div>
-          <span>AL BAT</span>
+          <span>AL BATE</span>
           <strong>
             {mlbWorldSeriesLiveState.batterName ||
               "—"}
