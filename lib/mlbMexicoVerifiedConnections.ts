@@ -11,6 +11,51 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 115, group: "toMexico",
+    connection: {
+      name: "Esmil Rogers", league: "LMB", mexicanClub: "El Águila de Veracruz",
+      mexicanSlug: "el-aguila", direction: "mlb-to-mexico", role: "Lanzador derecho",
+      year: "Colorado 2009–2012 · El Águila 2023",
+      description: "Rogers debutó en Grandes Ligas con Colorado en 2009, también lanzó para Cleveland y más tarde participó en la LMB con El Águila de Veracruz durante 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/esmil-rogers-469134",
+    },
+  },
+  {
+    mlbClubId: 115, group: "toMexico",
+    connection: {
+      name: "Cristhian Adames", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "Colorado 2014–2017 · Leones 2023",
+      description: "El dominicano debutó en MLB con Colorado en 2014, jugó para los Rockies hasta 2017 y apareció con Leones de Yucatán en la Liga Mexicana de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/cristhian-adames-542436",
+    },
+  },
+  {
+    mlbClubId: 115, group: "toMexico",
+    connection: {
+      name: "Rio Ruiz", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "Colorado 2021 · Diablos 2022–2023",
+      description: "Después de jugar para Colorado durante 2021, el estadounidense se incorporó a Diablos Rojos del México en 2022 y figuró entre los peloteros con experiencia MLB que disputaron la LMB de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/rio-ruiz-547004",
+    },
+  },
+  {
+    mlbClubId: 115, group: "toMexico",
+    connection: {
+      name: "Rio Ruiz", league: "LMB", mexicanClub: "Conspiradores de Querétaro",
+      mexicanSlug: "conspiradores", direction: "mlb-to-mexico", role: "Jugador de cuadro",
+      year: "Colorado 2021 · Conspiradores 2024",
+      description: "El jugador continuó su carrera en México y fue asignado a Conspiradores de Querétaro en abril de 2024. Se registra como un segundo vínculo con otro club de LMB, no como otro debut en MLB.",
+      source: "https://www.mlb.com/player/rio-ruiz-547004",
+      verificationSource: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+
+  {
     mlbClubId: 114, group: "toMexico",
     connection: {
       name: "Wilson Ramos", league: "LMB", mexicanClub: "Acereros de Monclova",
