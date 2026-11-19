@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  114: [
+    {title: "Cleveland conquista la Serie Mundial de 1948", date: "11 oct 1948", duration: "0:33", description: "Gene Bearden consigue el último out ante Boston Braves para asegurar el segundo título mundial del club.", url: "https://www.mlb.com/video/indians-win-world-series-c1208509483"},
+    {title: "Rajai Davis empata el séptimo juego de 2016", date: "2 nov 2016", duration: "0:30", description: "Narración histórica del cuadrangular de dos carreras de Davis en la octava entrada frente a Cubs.", url: "https://www.mlb.com/video/davis-clutch-game-tying-homer-c1211132983"},
+    {title: "Cleveland celebra el título divisional de 2026", date: "26 sep 2026", duration: "0:13", description: "Los Guardians celebran su tercera corona consecutiva de la Central de la Liga Americana.", url: "https://www.mlb.com/video/guardians-react-to-being-2026-al-central-champions"},
+  ],
   113: [
     {title: "Johnny Bench lidera a Cincinnati en 1975", date: "7 dic 2020", duration: "1:15", description: "MLB recuerda la actuación del receptor durante la Serie Mundial de 1975 ante Boston.", url: "https://www.mlb.com/reds/video/johnny-bench-leads-reds-in-75-ws"},
     {title: "El último out del bicampeonato de 1976", date: "21 oct 1976", duration: "0:44", description: "Will McEnaney completa el último out ante Yankees y los Reds celebran la corona de 1976.", url: "https://www.mlb.com/video/reds-win-the-1976-series-c19970319"},
