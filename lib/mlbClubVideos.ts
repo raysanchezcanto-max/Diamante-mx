@@ -11,6 +11,9 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  108: [
+    {title: "Los Angels ganan la Serie Mundial de 2002", date: "27 oct 2002", duration: "2:01", description: "Troy Percival consigue el último out del séptimo juego ante San Francisco para dar a Anaheim su primer campeonato mundial.", url: "https://www.mlb.com/angels/video/angels-win-2002-world-series"},
+  ],
   118: [
     {title: "Kansas City gana su primera Serie Mundial de 1985", date: "27 oct 1985", duration: "1:26", description: "Bret Saberhagen completa la blanqueada del séptimo juego ante St. Louis y los Royals celebran el primer campeonato de su historia.", url: "https://www.mlb.com/royals/video/royals-win-1985-world-series-c20084983"},
     {title: "El inolvidable Juego de Comodines de 2014", date: "30 sep 2014", duration: "3:51:35", description: "Partido completo: Kansas City remonta dos veces y derrota 9–8 a Oakland en doce entradas para iniciar su histórica postemporada.", url: "https://www.mlb.com/video/royals-win-2014-al-wild-card-game"},
