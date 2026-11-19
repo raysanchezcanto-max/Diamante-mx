@@ -87,7 +87,70 @@ const WHITE_SOX_HALL = "https://www.mlb.com/whitesox/history/hall-of-famers";
 const WHITE_SOX_STADIUM = "https://www.mlb.com/whitesox/ballpark/information/history-and-dimensions";
 const WHITE_SOX_2005 = "https://www.mlb.com/whitesox/news/2005-world-series-recap";
 
+const REDS_TIMELINE = "https://www.mlb.com/reds/history/timeline";
+const REDS_POSTSEASON = "https://www.mlb.com/reds/history/postseason-results";
+const REDS_HALL = "https://www.mlb.com/reds/history/records-stats-awards/hall-of-famers";
+const REDS_NUMBERS = "https://www.mlb.com/reds/history/records-stats-awards/retired-numbers";
+const REDS_STADIUM = "https://www.mlb.com/reds/ballpark/information/facts";
+const REDS_1990 = "https://www.mlb.com/reds/news/1990-world-series-recap";
+
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  113: {
+    intro: "Cincinnati es una de las cunas del béisbol profesional. La franquicia actual compitió en la Asociación Americana desde 1882 y se incorporó a la Liga Nacional en 1890. Los Reds ganaron cinco Series Mundiales: 1919, 1940, 1975, 1976 y 1990. El legendario conjunto de los años setenta fue conocido como la Gran Máquina Roja. Desde 2003 juega en Great American Ball Park.",
+    featuredStory: {
+      kicker: "HISTORIA · LA GRAN MÁQUINA ROJA",
+      title: "DOS TÍTULOS CONSECUTIVOS QUE MARCARON UNA ÉPOCA",
+      excerpt: "Con Johnny Bench, Joe Morgan, Tony Pérez y Pete Rose como protagonistas, Cincinnati venció a Boston en una histórica Serie Mundial de siete partidos en 1975 y barrió a Yankees en 1976.",
+      url: REDS_TIMELINE,
+    },
+    debutYear: "1882",
+    worldSeriesTitles: 5,
+    worldSeriesWinningYears: ["1919", "1940", "1975", "1976", "1990"],
+    titlesVerifiedThrough: "2026",
+    pennants: ["1882", "1919", "1939", "1940", "1961", "1970", "1972", "1975", "1976", "1990"],
+    pennantLeagues: {"1882": "Asociación Americana"},
+    postseasonSource: REDS_POSTSEASON,
+    divisionTitles: ["1970", "1972", "1973", "1975", "1976", "1979", "1990", "1995", "2010", "2012"],
+    stadiumOpened: "2003",
+    stadiumOpenedNote: "Great American Ball Park abrió oficialmente el 31 de marzo de 2003 junto al río Ohio. El recinto sustituyó a Riverfront Stadium, hogar de la franquicia de 1970 a 2002.",
+    stadiumSource: REDS_STADIUM,
+    milestones: [
+      {year: "1882", title: "Campeones en la Asociación Americana", description: "La franquicia comienza a competir en la Asociación Americana y conquista el banderín de su temporada inaugural.", url: REDS_TIMELINE},
+      {year: "1890", title: "De regreso a la Liga Nacional", description: "Cincinnati inicia su etapa en la Liga Nacional tras ocho temporadas en la Asociación Americana.", url: REDS_TIMELINE},
+      {year: "1919", title: "Primera Serie Mundial", description: "Los Reds derrotan a Chicago White Sox en ocho juegos en la Serie Mundial de aquel año, disputada al mejor de nueve.", url: REDS_POSTSEASON},
+      {year: "1940", title: "La segunda corona", description: "Cincinnati vence a Detroit Tigers en siete encuentros y consigue su segundo campeonato mundial.", url: REDS_TIMELINE},
+      {year: "1970", title: "Comienza la era de Riverfront", description: "Se inaugura Riverfront Stadium y Cincinnati conquista el banderín de la Liga Nacional.", url: REDS_TIMELINE},
+      {year: "1975", title: "La Gran Máquina Roja toca la cima", description: "Cincinnati supera a Boston Red Sox en siete partidos para ganar su tercer título de Serie Mundial.", url: REDS_TIMELINE},
+      {year: "1976", title: "Bicampeones invictos en octubre", description: "Los Reds barren tanto a Philadelphia Phillies en la Serie de Campeonato como a New York Yankees en la Serie Mundial.", url: REDS_TIMELINE},
+      {year: "1990", title: "La sorpresa ante Oakland", description: "Dirigidos por Lou Piniella, los Reds barren a los favoritos Athletics y logran su quinto campeonato mundial.", url: REDS_1990},
+      {year: "2003", title: "Abre Great American Ball Park", description: "El club estrena el estadio que ocupa desde entonces, frente al río Ohio.", url: REDS_STADIUM},
+      {year: "2010", title: "Regresan los campeonatos divisionales", description: "Un jonrón de Jay Bruce permite asegurar el título de la División Central de la Nacional, el primero desde 1995.", url: "https://www.mlb.com/reds/ballpark/anniversary"},
+    ],
+    legends: [
+      {name: "Johnny Bench", era: "1967–1983", role: "Receptor · dos veces MVP de la Nacional", highlight: "Referente de la Gran Máquina Roja y pieza esencial de los campeonatos de 1975 y 1976.", url: REDS_HALL},
+      {name: "Joe Morgan", era: "1972–1979", role: "Segunda base · dos veces MVP", highlight: "Su llegada en un intercambio histórico impulsó la ofensiva y la defensa del equipo campeón.", url: REDS_TIMELINE},
+      {name: "Tony Pérez", era: "1964–1976, 1984–1986", role: "Primera y tercera base · bateador de poder", highlight: "Integrante del corazón ofensivo de la Gran Máquina Roja y dos veces campeón mundial.", url: REDS_HALL},
+      {name: "Pete Rose", era: "1963–1978, 1984–1986", role: "Jardinero e infielder · líder histórico de imparables", highlight: "Figura central de los campeonatos consecutivos de 1975 y 1976.", url: REDS_NUMBERS},
+      {name: "Barry Larkin", era: "1986–2004", role: "Campocorto · capitán y MVP de 1995", highlight: "Cincinnatiense que pasó toda su carrera en el club y ganó la Serie Mundial de 1990.", url: REDS_HALL},
+      {name: "Frank Robinson", era: "1956–1965", role: "Jardinero · MVP de 1961", highlight: "Ganó el premio al Jugador Más Valioso de la Nacional antes de su posterior etapa en Baltimore.", url: REDS_HALL},
+    ],
+    immortals: [
+      {name: "Ernie Lombardi", year: "1986", role: "Cooperstown · receptor", url: REDS_HALL},
+      {name: "Frank Robinson", year: "1982", role: "Cooperstown · jardinero", url: REDS_HALL},
+      {name: "Johnny Bench", year: "1989", role: "Cooperstown · receptor", url: REDS_HALL},
+      {name: "Joe Morgan", year: "1990", role: "Cooperstown · segunda base", url: REDS_HALL},
+      {name: "Tony Pérez", year: "2000", role: "Cooperstown · primera base", url: REDS_HALL},
+      {name: "Barry Larkin", year: "2012", role: "Cooperstown · campocorto", url: REDS_HALL},
+    ],
+    sources: [
+      {label: "Cronología oficial de Cincinnati Reds", url: REDS_TIMELINE},
+      {label: "Resultados históricos de postemporada", url: REDS_POSTSEASON},
+      {label: "Integrantes del Salón de la Fama", url: REDS_HALL},
+      {label: "Números retirados por el club", url: REDS_NUMBERS},
+      {label: "Información de Great American Ball Park", url: REDS_STADIUM},
+      {label: "Crónica del campeonato de 1990", url: REDS_1990},
+    ],
+  },
   145: {
     intro: "Chicago White Sox es una franquicia fundadora de la Liga Americana como circuito mayor en 1901. Conquistó las Series Mundiales de 1906 y 1917, ganó el banderín de 1959 y rompió una sequía de 88 años al barrer a Houston en la Serie Mundial de 2005. Su estadio actual, Rate Field, abrió en 1991.",
     featuredStory: {
