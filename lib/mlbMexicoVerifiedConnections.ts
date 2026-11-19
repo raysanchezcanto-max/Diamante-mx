@@ -11,6 +11,59 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 117, group: "debut",
+    connection: {
+      name: "José Luis Urquidy", league: "LMP", mexicanClub: "Venados de Mazatlán",
+      mexicanSlug: "venados", direction: "mexico-to-mlb", role: "Lanzador derecho",
+      year: "Venados 2015–2016 y 2018–2019 · MLB 2019",
+      description: "Urquidy tuvo participación con Venados antes de su debut en Grandes Ligas con Houston en 2019; con los Astros conquistó la Serie Mundial de 2022 y regresó a lanzar en LMP en 2025.",
+      source: "https://www.lmp.mx/noticias/jose-luis-urquidy-es-el-pitcher-de-la-semana",
+      verificationSource: "https://editor.lmp.mx/urquidy-calienta-motores/",
+    },
+  },
+  {
+    mlbClubId: 117, group: "toMexico",
+    connection: {
+      name: "Chris Carter", league: "LMB", mexicanClub: "Pericos de Puebla",
+      mexicanSlug: "pericos", direction: "mlb-to-mexico", role: "Primera base y bateador de poder",
+      year: "Houston 2013–2015 · Pericos 2023",
+      description: "Carter jugó tres campañas con Houston, luego lideró la Liga Nacional en jonrones con Milwaukee en 2016 y participó con los Pericos de Puebla en la LMB de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 117, group: "toMexico",
+    connection: {
+      name: "Andre Scrubb", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mlb-to-mexico", role: "Lanzador relevista",
+      year: "Houston 2020–2021 · Diablos Rojos 2023",
+      description: "El relevista lanzó para los Astros en 2020 y 2021; MLB registra su asignación a los Diablos Rojos del México en junio de 2023.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.mlb.com/player/andre-scrubb-668687",
+    },
+  },
+  {
+    mlbClubId: 117, group: "toMexico",
+    connection: {
+      name: "Henry Sosa", league: "LMB", mexicanClub: "Piratas de Campeche",
+      mexicanSlug: "piratas", direction: "mlb-to-mexico", role: "Lanzador derecho",
+      year: "Houston 2011 · Piratas 2023",
+      description: "Sosa tuvo actividad de Grandes Ligas con Houston en 2011 y más tarde lanzó en la LMB, incluida su etapa de 2023 con los Piratas de Campeche.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+      verificationSource: "https://www.milb.com/player/henry-sosa-464400",
+    },
+  },
+  {
+    mlbClubId: 117, group: "toMexico",
+    connection: {
+      name: "Jonathan Villar", league: "LMB", mexicanClub: "Algodoneros del Unión Laguna",
+      mexicanSlug: "algodoneros", direction: "mlb-to-mexico", role: "Infielder",
+      year: "Houston 2013–2015 · Unión Laguna 2023",
+      description: "Villar comenzó su carrera de Grandes Ligas en Houston y apareció en la plantilla de Algodoneros del Unión Laguna durante la temporada 2023 de LMB.",
+      source: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
     mlbClubId: 116, group: "toMexico",
     connection: {
       name: "Fernando Rodney", league: "LMB", mexicanClub: "Diablos Rojos del México",
