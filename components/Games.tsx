@@ -175,7 +175,7 @@ function GameCards({
 }: {
   games: Game[];
   league: LeagueCode;
-  pilotState?: { first: number; second: number; third: number; outs: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
+  pilotState?: { first: number; second: number; third: number; outs: number; inning?: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
 }) {
   return (
     <div className="gamesGrid">
@@ -190,15 +190,17 @@ function GameCards({
         // Ensayo solo en Charros–Venados LMP del 18 de noviembre.
         const liveCardPilot = league === "LMP" && game.id === 850421 &&
           game.status === "Live" && game.firstPitchRecorded === true;
-        const pilotInningTransition = ["middle", "end"].includes((pilotState?.inningState ?? "").toLowerCase());
-        const pilotSituation = liveCardPilot && pilotState ? {
+        const pilotHalf = (pilotState?.inningState ?? "").trim().toLowerCase();
+        const cardHalf = (game.inningState ?? "").trim().toLowerCase();
+        const pilotFeedAligned = Boolean(pilotState && pilotState.inning === game.inning && pilotHalf === cardHalf && (pilotHalf === "top" || pilotHalf === "bottom"));
+        const pilotInningTransition = ["middle", "end"].includes(pilotHalf);
+        const pilotSituation = liveCardPilot && pilotState && pilotFeedAligned ? {
           first: pilotInningTransition ? 0 : pilotState.first,
           second: pilotInningTransition ? 0 : pilotState.second,
           third: pilotInningTransition ? 0 : pilotState.third,
           outs: pilotInningTransition ? 0 : pilotState.outs,
         } : null;
         // La mitad de entrada confirma a qué equipo pertenecen bateador y lanzador.
-        const pilotHalf = (pilotState?.inningState ?? "").trim().toLowerCase();
         const pilotBattingTeam = pilotHalf === "top" ? "JAL" : pilotHalf === "bottom" ? "VEN" : "";
         const pilotPitchingTeam = pilotHalf === "top" ? "VEN" : pilotHalf === "bottom" ? "JAL" : "";
 
@@ -714,7 +716,7 @@ export default function Games({
   league = "MLB",
 }: {
   games: Game[];
-  lmpCardPilotState?: { first: number; second: number; third: number; outs: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
+  lmpCardPilotState?: { first: number; second: number; third: number; outs: number; inning?: number; inningState?: string; batterName?: string; pitcherName?: string } | null;
   nextGames?: Game[];
   recentGames?: Game[];
  lmbChampion?: {
