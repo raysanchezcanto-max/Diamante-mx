@@ -11,6 +11,39 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 118, group: "debut",
+    connection: {
+      name: "Joakim Soria", league: "LMP", mexicanClub: "Yaquis de Ciudad Obregón",
+      mexicanSlug: "yaquis", direction: "mexico-to-mlb", role: "Lanzador relevista",
+      year: "Yaquis 2006–2007 · MLB Kansas City 2007",
+      description: "El monclovense lanzó un juego perfecto con Yaquis en diciembre de 2006, antes de debutar con los Royals en abril de 2007. Kansas City lo convirtió en uno de los cerradores más destacados de su historia.",
+      source: "https://editor.lmp.mx/un-algodonero-se-retira-de-los-diamantes/amp/",
+      verificationSource: "https://www.mlb.com/player/joakim-soria-465657",
+    },
+  },
+  {
+    mlbClubId: 118, group: "toMexico",
+    connection: {
+      name: "Alcides Escobar", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Campocorto",
+      year: "Kansas City 2011–2018 · Leones 2023",
+      description: "Campocorto titular de los Royals campeones de 2015, Escobar se incorporó a los Leones de Yucatán durante la temporada de LMB de 2023.",
+      source: "https://www.milb.com/news/leones-alcides-escobar-jugara-con-los-campeones",
+      verificationSource: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
+    mlbClubId: 118, group: "toMexico",
+    connection: {
+      name: "Alcides Escobar", league: "LMB", mexicanClub: "Acereros de Monclova",
+      mexicanSlug: "acereros", direction: "mlb-to-mexico", role: "Campocorto",
+      year: "Kansas City 2011–2018 · Acereros 2023",
+      description: "Después de su paso por Yucatán, Escobar también jugó con Acereros de Monclova en la campaña mexicana de 2023; la crónica oficial registra un jonrón suyo con ese club.",
+      source: "https://www.milb.com/news/acereros-final-dramatico-en-victoria-yucateca",
+      verificationSource: "https://www.milb.com/news/lmb-el-sello-de-la-gran-carpa",
+    },
+  },
+  {
     mlbClubId: 117, group: "debut",
     connection: {
       name: "José Luis Urquidy", league: "LMP", mexicanClub: "Venados de Mazatlán",
