@@ -19,7 +19,7 @@ import LmbClubTabs from "@/components/LmbClubTabs";
 import { LMB_TEAM_IDS_2026 } from "@/lib/lmbClubLeaders";
 import { getClubSeasonStandings, getLatestClubSeasonStatistics, mexicoSeasonYear } from "@/lib/clubStatistics";
 
-export const revalidate = 1800;
+export const revalidate = 900;
 type PageProps = {
   params: Promise<{slug: string}>;
   searchParams?: Promise<{vista?: string;estilo?:string}>;
