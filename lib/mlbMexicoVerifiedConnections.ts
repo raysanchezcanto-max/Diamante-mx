@@ -11,6 +11,39 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 142, group: "toMexico",
+    connection: {
+      name: "Andrelton Simmons", league: "LMB", mexicanClub: "Dorados de Chihuahua",
+      mexicanSlug: "dorados", direction: "mlb-to-mexico", role: "Campocorto",
+      year: "Minnesota 2021 · Dorados 2025–2026",
+      description: "Tras jugar con Minnesota Twins en 2021, el cuatro veces ganador del Guante de Oro disputó 87 juegos con Dorados de Chihuahua en 2025 y 48 en 2026, según las estadísticas oficiales de LMB.",
+      source: "https://lmb.com.mx/jugador/592743",
+      verificationSource: "https://www.milb.com/news/dorados-andrelton-simmons-de-las-grandes-ligas-a-chihuahua",
+    },
+  },
+  {
+    mlbClubId: 142, group: "toMexico",
+    connection: {
+      name: "Devin Smeltzer", league: "LMB", mexicanClub: "Dorados de Chihuahua",
+      mexicanSlug: "dorados", direction: "mlb-to-mexico", role: "Lanzador zurdo",
+      year: "Minnesota 2019–2022 · Dorados 2025–2026",
+      description: "El zurdo lanzó en MLB con Minnesota y, más tarde, abrió trece encuentros para Dorados en 2025. También tuvo siete aperturas con Chihuahua durante 2026.",
+      source: "https://lmb.com.mx/jugador/656970",
+      verificationSource: "https://lmb.com.mx/noticias/devin-smeltzer-firma-su-segunda-temporada-con-los-dorados",
+    },
+  },
+  {
+    mlbClubId: 142, group: "toMexico",
+    connection: {
+      name: "Devin Smeltzer", league: "LMB", mexicanClub: "Caliente de Durango",
+      mexicanSlug: "caliente", direction: "mlb-to-mexico", role: "Lanzador zurdo",
+      year: "Minnesota 2019–2022 · Caliente 2026",
+      description: "El registro oficial de LMB acredita doce aperturas de Smeltzer con Caliente de Durango en 2026, después de su etapa con Twins y su paso por Dorados.",
+      source: "https://lmb.com.mx/jugador/656970",
+    },
+  },
+
+  {
     mlbClubId: 146, group: "toMexico",
     connection: {
       name: "Henderson Álvarez", league: "LMB", mexicanClub: "Leones de Yucatán",
