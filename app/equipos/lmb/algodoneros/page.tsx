@@ -23,7 +23,7 @@ import {
   ALGODONEROS_MOVEMENTS as movements,
 } from "@/lib/algodonerosProfile";
 
-export const revalidate = 1800;
+export const revalidate = 900;
 export const metadata: Metadata = {
   title: "Algodoneros del Unión Laguna | Equipos LMB | Diamante MX",
   description: "Perfil de Algodoneros, noticias destacadas, videos oficiales, plantilla y posiciones LMB 2026.",
