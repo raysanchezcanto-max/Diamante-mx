@@ -119,16 +119,16 @@ function readNewsFromOfficialHtml(html: string): OfficialStory[] {
     if (from < 0) continue;
     const after = html.indexOf(finish, from + begin.length);
     const chunk = html.slice(from, after > from ? after : Math.min(html.length, from + 100000));
-    const anchor = /<a\\b[^>]*href="(\\/noticias\\/[a-z0-9-]+)"[^>]*>([\\s\\S]*?)<\\/a>/gi;
+    const anchor = /<a\b[^>]*href="(\/noticias\/[a-z0-9-]+)"[^>]*>([\s\S]*?)<\/a>/gi;
     for (const match of chunk.matchAll(anchor)) {
       const pathname = match[1];
-      if (/\\/(?:lmb|lms)-movimientos-en-/i.test(pathname) || seen.has(pathname)) continue;
+      if (/\/(?:lmb|lms)-movimientos-en-/i.test(pathname) || seen.has(pathname)) continue;
       const fragment = match[2];
-      const alt = fragment.match(/<img\\b[^>]*\\balt="([^"]+)"/i)?.[1];
-      const heading = fragment.match(/<h[2-4]\\b[^>]*>([\\s\\S]*?)<\\/h[2-4]>/i)?.[1];
+      const alt = fragment.match(/<img\b[^>]*\balt="([^"]+)"/i)?.[1];
+      const heading = fragment.match(/<h[2-4]\b[^>]*>([\s\S]*?)<\/h[2-4]>/i)?.[1];
       const title = alt ? decodeEntities(alt).trim() : heading ? plainText(heading) : plainText(fragment);
       if (title.length < 12 || title.length > 220) continue;
-      const src = fragment.match(/<img\\b[^>]*\\bsrc="([^"]+)"/i)?.[1];
+      const src = fragment.match(/<img\b[^>]*\bsrc="([^"]+)"/i)?.[1];
       list.push({
         title,
         url: BASE + pathname,
