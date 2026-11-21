@@ -105,30 +105,39 @@ function externalPhoto(raw: string | undefined): string | null {
 }
 
 function readNewsFromOfficialHtml(html: string): OfficialStory[] {
-  const start = html.indexOf(">Noticias principales<");
-  if (start < 0) return [];
-  const endIndex = html.indexOf(">Movimientos<", start);
-  const section = html.slice(start, endIndex > start ? endIndex : Math.min(html.length, start + 85000));
   const list: OfficialStory[] = [];
   const seen = new Set<string>();
-  const matchAnchor = /<a\b[^>]*href="(\/noticias\/[a-z0-9-]+)"[^>]*>([\s\S]*?)<\/a>/gi;
-  for (const match of section.matchAll(matchAnchor)) {
-    const path = match[1];
-    if (/\/(?:lmb|lms)-movimientos-en-/i.test(path) || seen.has(path)) continue;
-    const fragment = match[2];
-    const alt = fragment.match(/<img\b[^>]*\balt="([^"]+)"/i)?.[1];
-    const heading = fragment.match(/<h[2-4]\b[^>]*>([\s\S]*?)<\/h[2-4]>/i)?.[1];
-    const title = alt ? decodeEntities(alt).trim() : heading ? plainText(heading) : "";
-    if (title.length < 12 || title.length > 220) continue;
-    const src = fragment.match(/<img\b[^>]*\bsrc="([^"]+)"/i)?.[1];
-    list.push({
-      title,
-      url: BASE + path,
-      label: "Publicación oficial LMB",
-      imageUrl: externalPhoto(src),
-    });
-    seen.add(path);
-    if (list.length >= 20) break;
+  // La portada del club separa notas destacadas de "Más Noticias".
+  // Revisar AMBAS: las contrataciones y cambios de cuerpo técnico suelen
+  // aparecer en la segunda sección, aunque no sean noticia principal.
+  const sections: Array<[string, string]> = [
+    [">Noticias principales<", ">Top Videos<"],
+    [">Más Noticias<", ">Movimientos<"],
+  ];
+  for (const [begin, finish] of sections) {
+    const from = html.indexOf(begin);
+    if (from < 0) continue;
+    const after = html.indexOf(finish, from + begin.length);
+    const chunk = html.slice(from, after > from ? after : Math.min(html.length, from + 100000));
+    const anchor = /<a\\b[^>]*href="(\\/noticias\\/[a-z0-9-]+)"[^>]*>([\\s\\S]*?)<\\/a>/gi;
+    for (const match of chunk.matchAll(anchor)) {
+      const pathname = match[1];
+      if (/\\/(?:lmb|lms)-movimientos-en-/i.test(pathname) || seen.has(pathname)) continue;
+      const fragment = match[2];
+      const alt = fragment.match(/<img\\b[^>]*\\balt="([^"]+)"/i)?.[1];
+      const heading = fragment.match(/<h[2-4]\\b[^>]*>([\\s\\S]*?)<\\/h[2-4]>/i)?.[1];
+      const title = alt ? decodeEntities(alt).trim() : heading ? plainText(heading) : plainText(fragment);
+      if (title.length < 12 || title.length > 220) continue;
+      const src = fragment.match(/<img\\b[^>]*\\bsrc="([^"]+)"/i)?.[1];
+      list.push({
+        title,
+        url: BASE + pathname,
+        label: "Publicación oficial LMB",
+        imageUrl: externalPhoto(src),
+      });
+      seen.add(pathname);
+      if (list.length >= 24) return list;
+    }
   }
   return list;
 }
