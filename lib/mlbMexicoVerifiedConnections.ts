@@ -11,6 +11,39 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 147, group: "toMexico",
+    connection: {
+      name: "Robinson Canó", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mlb-to-mexico", role: "Segunda base · campeón de bateo LMB",
+      year: "Yankees 2005–2013 · Diablos 2024–2025",
+      description: "El exsegunda base de los Yankees jugó para Diablos en 2024, ganó el título de bateo de LMB con .431 y fue nombrado MVP de la campaña.",
+      source: "https://www.milb.com/news/lmb-lideres-individuales-temporada-2024",
+      verificationSource: "https://www.milb.com/news/diablos-rojos-robinson-cano-regresa-con-la-pandilla-escarlata"
+    }
+  },
+  {
+    mlbClubId: 147, group: "toMexico",
+    connection: {
+      name: "José Pirela", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mlb-to-mexico", role: "Jugador de cuadro y jardinero",
+      year: "Yankees 2014–2015 · Diablos 2024–2025",
+      description: "Tras debutar con los Yankees en MLB, Pirela actuó con Diablos en la Liga Mexicana, incluido un jonrón contra Oaxaca en la final de la Zona Sur de 2024.",
+      source: "https://www.milb.com/news/guerreros-diablos-rojos-gana-y-sigue-con-vida",
+      verificationSource: "https://www.milb.com/news/lmb-peloteros-con-yankees-y-diablos-rojos"
+    }
+  },
+  {
+    mlbClubId: 147, group: "prospect",
+    connection: {
+      name: "Erick Leal", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mexico-to-mlb", role: "Lanzador derecho · contrato de Ligas Menores",
+      year: "Diablos 2023–2024 · firma Yankees 2024",
+      description: "Tras ser campeón de LMB con Diablos en 2024, firmó un contrato de Ligas Menores con los Yankees e invitación a los entrenamientos de 2025. No se presenta como debutante en MLB.",
+      source: "https://www.milb.com/news/diablos-rojos-erick-leal-firma-con-los-yankees"
+    }
+  },
+
+  {
     mlbClubId: 121, group: "toMexico",
     connection: {
       name: "Jeurys Familia", league: "LMB", mexicanClub: "Diablos Rojos del México",
