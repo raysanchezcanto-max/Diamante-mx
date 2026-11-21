@@ -26,6 +26,9 @@ type PageProps = {
   searchParams?: Promise<{ vista?: string;estilo?:string }>;
 };
 const views: LmbClubView[] = ["resumen", "estadisticas", "plantilla", "movimientos", "grandes-ligas", "historia"];
+const storyDateLabel = (iso: string | null): string => iso
+  ? new Intl.DateTimeFormat("es-MX", {day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(iso))
+  : "Fecha no indicada";
 const dateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
   timeZone: "America/Mexico_City", day: "numeric", month: "long", year: "numeric",
 }).format(new Date(value));
@@ -157,9 +160,9 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
             <div className="clubFeatureShade" aria-hidden="true"/>
             <div className="clubFeatureContent">
-              <span className="clubKicker">ACTUALIDAD · FUENTE MLB</span>
+              <span className="clubKicker">ACTUALIDAD · FUENTE MLB · {storyDateLabel(news.items[0].date)}</span>
               <h2>{news.items[0].title}</h2>
-              <p>Noticia reciente publicada por el canal oficial de {club.name}.</p>
+              <p>Publicación del canal oficial de {club.name}, con fecha indicada por MLB.</p>
               <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
                 Leer noticia en MLB ↗</a>
             </div>
@@ -192,7 +195,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             {news?.items.length ? <div className="clubNewsGrid">
               {secondaryNews.map(story => <a href={story.url}
                 className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
-                <span>NOTICIA · MLB</span><strong>{story.title}</strong>
+                <span>NOTICIA · MLB · {storyDateLabel(story.date)}</span><strong>{story.title}</strong>
                 <small>Leer publicación oficial ↗</small>
               </a>)}
             </div> : <div className="clubDirectoryNotice">
