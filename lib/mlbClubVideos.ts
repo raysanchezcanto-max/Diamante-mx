@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  146: [
+    {title: "Édgar Rentería decide la Serie Mundial de 1997", date: "26 oct 1997", duration: "0:59", description: "Sencillo para dejar en el terreno a Cleveland en la undécima entrada del séptimo juego.", url: "https://www.mlb.com/marlins/video/marlins-walk-off-the-1997-ws"},
+    {title: "Josh Beckett cierra la Serie Mundial de 2003", date: "25 oct 2003", duration: "1:50", description: "Beckett retira a Jorge Posada para terminar el sexto juego y asegurar el título ante los Yankees.", url: "https://www.mlb.com/marlins/video/marlins-win-03-world-series-c5506875"},
+    {title: "Documental oficial de la Serie Mundial de 2003", date: "18 nov 2003", duration: "1:11:58", description: "La película oficial de MLB sobre la segunda corona de los Marlins.", url: "https://www.mlb.com/video/2003-world-series-film"},
+  ],
   119: [
     {title: "Los Dodgers conquistan su novena Serie Mundial en 2025", date: "1 nov 2025", duration: "1:57", description: "Yoshinobu Yamamoto provoca una doble matanza para cerrar el séptimo juego ante Toronto y conquistar el bicampeonato.", url: "https://www.mlb.com/dodgers/video/yoshinobu-yamamoto-in-play-out-s-to-alejandro-kirk"},
     {title: "Los nueve últimos outs de los Dodgers campeones", date: "1 nov 2025", duration: "1:59", description: "Recorrido histórico por las jugadas finales de cada una de las nueve Series Mundiales ganadas por la franquicia.", url: "https://www.mlb.com/es/video/every-final-out-from-dodgers-nine-world-series-wins"},
