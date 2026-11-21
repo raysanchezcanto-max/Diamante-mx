@@ -5785,3 +5785,22 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 @media (max-width: 600px) {
   .leagueWrap .leagueLogo--caribe { width: 34px; height: 34px; }
 }
+
+/* Movimientos MLB/LMB/LMP: en teléfono la fecha siempre precede a la categoría.
+   El diseño de escritorio conserva su distribución horizontal. */
+@media (max-width: 600px) {
+  .clubProfile .clubMovementsContent .clubMovementDate {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .clubProfile .clubMovementsContent .clubMovementDate > .clubMovementType {
+    align-self: flex-start;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
