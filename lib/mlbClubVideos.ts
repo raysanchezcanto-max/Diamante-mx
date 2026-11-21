@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  142: [
+    {title: "Minnesota gana la Serie Mundial de 1987", date: "25 oct 1987", duration: "1:29", description: "Jeff Reardon consigue el último out del Juego 7 ante St. Louis Cardinals.", url: "https://www.mlb.com/video/twins-win-1987-world-series-c31110999"},
+    {title: "Kirby Puckett fuerza el Juego 7 en 1991", date: "26 oct 1991", duration: "5:06", description: "El jardinero conecta un jonrón para dejar en el terreno a Atlanta en la undécima entrada.", url: "https://www.mlb.com/twins/video/puckett-s-game-6-walk-off-homer"},
+    {title: "Jack Morris y la victoria de 1991", date: "27 oct 1991", duration: "10:30", description: "Morris lanza diez entradas sin permitir carrera y Minnesota conquista su segunda corona en la era Twins.", url: "https://www.mlb.com/twins/video/twins-walk-off-win-world-series"},
+  ],
   146: [
     {title: "Édgar Rentería decide la Serie Mundial de 1997", date: "26 oct 1997", duration: "0:59", description: "Sencillo para dejar en el terreno a Cleveland en la undécima entrada del séptimo juego.", url: "https://www.mlb.com/marlins/video/marlins-walk-off-the-1997-ws"},
     {title: "Josh Beckett cierra la Serie Mundial de 2003", date: "25 oct 2003", duration: "1:50", description: "Beckett retira a Jorge Posada para terminar el sexto juego y asegurar el título ante los Yankees.", url: "https://www.mlb.com/marlins/video/marlins-win-03-world-series-c5506875"},
