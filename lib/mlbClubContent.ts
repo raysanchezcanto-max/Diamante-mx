@@ -273,9 +273,11 @@ export async function getMlbClubNews(club: MlbClub): Promise<MlbClubNews> {
       seen.add(url);
       items.push({ title, url, date: Number.isFinite(Date.parse(published))
         ? new Date(published).toISOString() : null });
-      if (items.length === 6) break;
+      if (items.length === 16) break;
     }
-    const localized = await Promise.all(items.map(async (item, index) => ({
+    // La fuente no siempre emite el RSS en orden cronológico; no aparentar actualidad.
+    items.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+    const localized = await Promise.all(items.slice(0, 6).map(async (item, index) => ({
       ...item, title: await spanishHeadline(item.title, club.name, index + 1),
     })));
     return { sourceStatus: "connected", items: localized };
