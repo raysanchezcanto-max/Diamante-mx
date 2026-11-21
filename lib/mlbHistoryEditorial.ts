@@ -1,3 +1,4 @@
+import { MIAMI_MARLINS_HISTORY } from "./mlbMiamiEditorial";
 /**
  * Historia editorial de clubes MLB, incorporada franquicia por franquicia.
  * Cada fecha, premio y persona se publica solo con una fuente oficial revisada.
@@ -108,6 +109,7 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  146: MIAMI_MARLINS_HISTORY,
   119: {
     intro: "La franquicia nació en Brooklyn en 1884 y se incorporó a la Liga Nacional en 1890. Con Jackie Robinson rompió la barrera racial de Grandes Ligas en 1947, ganó su primera Serie Mundial en Brooklyn en 1955 y se trasladó a Los Ángeles en 1958. Desde 1962 juega en Dodger Stadium. Sus nueve coronas, la Fernandomanía y el bicampeonato de 2024–2025 marcan una de las historias más influyentes del béisbol.",
     featuredStory: {
