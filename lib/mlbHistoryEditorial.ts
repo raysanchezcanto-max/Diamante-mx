@@ -108,6 +108,243 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  121: {
+  "intro": "Los New York Mets debutaron en 1962 como equipo de expansión de la Liga Nacional, recuperando el béisbol del circuito en Nueva York tras las mudanzas de Dodgers y Giants. Siete años después se convirtieron en los 'Miracle Mets' al ganar la Serie Mundial de 1969 contra Baltimore; repitieron en 1986 frente a Boston. Sus cinco banderines de la Nacional también incluyen 1973, 2000 y 2015. Desde 2009 juegan en Citi Field, sucesor del histórico Shea Stadium.",
+  "featuredStory": {
+    "kicker": "HISTORIA · SERIE MUNDIAL 1986",
+    "title": "DE UNA REMONTADA IMPROBABLE A LA SEGUNDA CORONA",
+    "excerpt": "En el sexto juego contra Boston, los Mets revivieron cuando estaban a un strike de perder la Serie Mundial; el rodado de Mookie Wilson terminó en el error de Bill Buckner. En el séptimo, Jesse Orosco ponchó a Marty Barrett para asegurar el campeonato.",
+    "url": "https://www.mlb.com/mets/video/mets-win-world-series-c3531549"
+  },
+  "debutYear": "1962",
+  "worldSeriesTitles": 2,
+  "worldSeriesWinningYears": [
+    "1969",
+    "1986"
+  ],
+  "titlesVerifiedThrough": "2026",
+  "pennants": [
+    "1969",
+    "1973",
+    "1986",
+    "2000",
+    "2015"
+  ],
+  "postseasonSource": "https://www.mlb.com/mets/history",
+  "divisionTitles": [
+    "1969",
+    "1973",
+    "1986",
+    "1988",
+    "2006",
+    "2015"
+  ],
+  "stadiumOpened": "2009",
+  "stadiumOpenedNote": "Citi Field abrió para la temporada de 2009 y reemplazó a Shea Stadium (1964–2008). El equipo había jugado sus dos primeras campañas en el Polo Grounds (1962–1963).",
+  "stadiumSource": "https://www.mlb.com/mets/ballpark/information",
+  "milestones": [
+    {
+      "year": "1962",
+      "title": "Nacen los Mets",
+      "description": "El equipo de expansión de la Liga Nacional juega en Polo Grounds, bajo la dirección de Casey Stengel; termina su primera campaña con 40 victorias y 120 derrotas.",
+      "url": "https://www.mlb.com/mets/history/timeline"
+    },
+    {
+      "year": "1964",
+      "title": "Se inaugura Shea Stadium",
+      "description": "El club se muda a su hogar de Queens, sede de muchos de sus momentos más recordados.",
+      "url": "https://www.mlb.com/mets/history/timeline"
+    },
+    {
+      "year": "1967",
+      "title": "Llega Tom Seaver",
+      "description": "El lanzador obtiene el premio al Novato del Año de la Nacional y se convierte en el gran rostro de la franquicia.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "year": "1969",
+      "title": "Los Miracle Mets sorprenden al mundo",
+      "description": "Nueva York gana 100 juegos y supera a los Orioles en cinco partidos para conquistar su primera Serie Mundial.",
+      "url": "https://www.mlb.com/mets/video/mets-win-1969-world-series-c5617605"
+    },
+    {
+      "year": "1973",
+      "title": "Ya Gotta Believe",
+      "description": "El conjunto dirigido por Yogi Berra se lleva el banderín de la Nacional y disputa la Serie Mundial ante Oakland, que gana en siete encuentros.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "year": "1985",
+      "title": "Dwight Gooden deslumbra",
+      "description": "Doc Gooden gana el premio Cy Young con efectividad de 1.53 y 24 victorias.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "year": "1986",
+      "title": "Segunda corona mundial",
+      "description": "Un equipo de 108 triunfos remonta el Juego 6 y supera a Boston en el Juego 7 de la Serie Mundial.",
+      "url": "https://www.mlb.com/mets/video/mets-win-world-series-c3531549"
+    },
+    {
+      "year": "1988",
+      "title": "Otro campeonato divisional",
+      "description": "Los Mets consiguen 100 victorias y vuelven a ganar el Este de la Nacional, aunque Los Ángeles los elimina en la Serie de Campeonato.",
+      "url": "https://www.mlb.com/mets/history/timeline"
+    },
+    {
+      "year": "2000",
+      "title": "Una Serie Mundial neoyorquina",
+      "description": "Los Mets ganan el banderín de la Nacional y disputan la Serie Mundial contra los Yankees, que se coronan en cinco encuentros.",
+      "url": "https://www.mlb.com/mets/history"
+    },
+    {
+      "year": "2001",
+      "title": "El jonrón de Mike Piazza tras el 11-S",
+      "description": "Piazza conecta un jonrón decisivo contra Atlanta en el regreso del béisbol a Nueva York después de los atentados.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "year": "2006",
+      "title": "Regreso al título divisional",
+      "description": "Con Carlos Beltrán, José Reyes y David Wright, el club conquista el Este y llega a la Serie de Campeonato.",
+      "url": "https://www.mlb.com/mets/history/timeline-2000s"
+    },
+    {
+      "year": "2009",
+      "title": "Abre Citi Field",
+      "description": "El nuevo estadio de Queens sustituye al histórico Shea Stadium.",
+      "url": "https://www.mlb.com/mets/history/timeline-2000s"
+    },
+    {
+      "year": "2015",
+      "title": "Quinto banderín de la Nacional",
+      "description": "La rotación joven y Daniel Murphy impulsan a los Mets hasta la Serie Mundial, donde Kansas City se corona.",
+      "url": "https://www.mlb.com/mets/history"
+    },
+    {
+      "year": "2024",
+      "title": "Regreso a la Serie de Campeonato",
+      "description": "Tras avanzar como comodines, Nueva York llega a la Serie de Campeonato de la Nacional, en la que cae ante Dodgers.",
+      "url": "https://www.mlb.com/mets/history"
+    }
+  ],
+  "legends": [
+    {
+      "name": "Tom Seaver",
+      "era": "1967–1977, 1983",
+      "role": "Lanzador · tres premios Cy Young",
+      "highlight": "Tom Terrific ganó el Novato del Año de 1967 y condujo al club al campeonato de 1969.",
+      "url": "https://baseballhall.org/hall-of-famers/seaver-tom"
+    },
+    {
+      "name": "Gil Hodges",
+      "era": "1968–1971",
+      "role": "Mánager · campeón de 1969",
+      "highlight": "Transformó a los Mets y dirigió la histórica sorpresa ante Baltimore en 1969.",
+      "url": "https://baseballhall.org/hall-of-famers/hodges-gil"
+    },
+    {
+      "name": "Dwight Gooden",
+      "era": "1984–1994",
+      "role": "Lanzador · Cy Young 1985",
+      "highlight": "Conquistó la Triple Corona de pitcheo de la Nacional en 1985 y fue parte del equipo campeón de 1986.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "name": "Darryl Strawberry",
+      "era": "1983–1990",
+      "role": "Jardinero · Novato del Año 1983",
+      "highlight": "Bateador de poder y pieza central de la generación campeona de 1986.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "name": "Keith Hernandez",
+      "era": "1983–1989",
+      "role": "Primera base · líder defensivo",
+      "highlight": "Su liderazgo, bate oportuno y defensa fueron esenciales en la segunda corona.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "name": "Mike Piazza",
+      "era": "1998–2005",
+      "role": "Receptor · ícono de los Mets",
+      "highlight": "Su jonrón del 21 de septiembre de 2001 ayudó a unir a la ciudad tras los atentados.",
+      "url": "https://baseballhall.org/hall-of-famers/piazza-mike"
+    },
+    {
+      "name": "David Wright",
+      "era": "2004–2018",
+      "role": "Tercera base · capitán de los Mets",
+      "highlight": "Referente de la generación de 2006 y del club que llegó a la Serie Mundial de 2015.",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "name": "Jacob deGrom",
+      "era": "2014–2022",
+      "role": "Lanzador · dos Cy Young",
+      "highlight": "Ganó premios Cy Young consecutivos en 2018 y 2019.",
+      "url": "https://www.mlb.com/mets/history"
+    }
+  ],
+  "immortals": [
+    {
+      "name": "Casey Stengel",
+      "year": "1966",
+      "role": "Cooperstown · mánager inaugural de los Mets",
+      "url": "https://baseballhall.org/hall-of-famers/stengel-casey"
+    },
+    {
+      "name": "Tom Seaver",
+      "year": "1992",
+      "role": "Cooperstown · lanzador, leyenda de Nueva York",
+      "url": "https://baseballhall.org/hall-of-famers/seaver-tom"
+    },
+    {
+      "name": "Gary Carter",
+      "year": "2003",
+      "role": "Cooperstown · receptor; Mets 1985–1989",
+      "url": "https://baseballhall.org/hall-of-famers/carter-gary"
+    },
+    {
+      "name": "Mike Piazza",
+      "year": "2016",
+      "role": "Cooperstown · receptor; Mets 1998–2005",
+      "url": "https://baseballhall.org/hall-of-famers/piazza-mike"
+    },
+    {
+      "name": "Gil Hodges",
+      "year": "2022",
+      "role": "Cooperstown · mánager campeón de 1969",
+      "url": "https://baseballhall.org/hall-of-famers/hodges-gil"
+    }
+  ],
+  "sources": [
+    {
+      "label": "Archivo histórico oficial de los Mets",
+      "url": "https://www.mlb.com/mets/history"
+    },
+    {
+      "label": "Salón de la Fama del club",
+      "url": "https://www.mlb.com/mets/history/mets-hall-of-fame"
+    },
+    {
+      "label": "Historial de postemporada",
+      "url": "https://www.mlb.com/mets/history"
+    },
+    {
+      "label": "Citi Field — sitio oficial",
+      "url": "https://www.mlb.com/mets/ballpark"
+    },
+    {
+      "label": "Serie Mundial 1969 — último out MLB",
+      "url": "https://www.mlb.com/mets/video/mets-win-1969-world-series-c5617605"
+    },
+    {
+      "label": "Serie Mundial 1986 — último out MLB",
+      "url": "https://www.mlb.com/mets/video/mets-win-world-series-c3531549"
+    }
+  ]
+},
   142: {
     "intro": "La franquicia nació en 1901 como los Washington Senators y se trasladó a Minnesota en 1961, adoptando el nombre Twins. Cuenta con tres títulos de Serie Mundial como organización: 1924 en Washington y 1987 y 1991 en Minnesota. Desde 2010 juega en Target Field, después de pasar por Metropolitan Stadium y el Metrodome. Leyendas como Walter Johnson, Harmon Killebrew, Kirby Puckett y Joe Mauer representan distintas generaciones de su historia.",
     "featuredStory": {
