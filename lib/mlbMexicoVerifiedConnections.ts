@@ -11,6 +11,47 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 121, group: "toMexico",
+    connection: {
+      name: "Jeurys Familia", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mlb-to-mexico", role: "Lanzador relevista",
+      year: "Mets 2012–2018 y 2019–2022 · Diablos 2024",
+      description: "El cerrador, autor de 51 salvamentos para los Mets en 2016, debutó con Diablos Rojos del México en abril de 2024 y lanzó una entrada sin carrera.",
+      source: "https://www.milb.com/news/diablos-rojos-jeurys-familia-sobre-su-debut-con-los-pingos"
+    }
+  },
+  {
+    mlbClubId: 121, group: "toMexico",
+    connection: {
+      name: "Jordany Valdespín", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Jardinero y segunda base",
+      year: "Mets 2012–2013 · Leones 2017",
+      description: "Jugó en Grandes Ligas con Nueva York en 2012 y 2013 y después participó en Liga Mexicana con Leones durante 2017.",
+      source: "https://www.milb.com/news/jordany-valdespin-se-integra-a-toros-de-tijuana-312353746"
+    }
+  },
+  {
+    mlbClubId: 121, group: "toMexico",
+    connection: {
+      name: "Jordany Valdespín", league: "LMB", mexicanClub: "Olmecas de Tabasco",
+      mexicanSlug: "olmecas", direction: "mlb-to-mexico", role: "Jardinero y segunda base",
+      year: "Mets 2012–2013 · Olmecas 2017",
+      description: "Tras jugar con los Mets, Valdespín tuvo actividad con Olmecas de Tabasco en 2017 y registró promedio de bateo de .341 con la novena de Villahermosa.",
+      source: "https://www.milb.com/news/jordany-valdespin-se-integra-a-toros-de-tijuana-312353746"
+    }
+  },
+  {
+    mlbClubId: 121, group: "prospect",
+    connection: {
+      name: "Héctor Ayuso Cachón", league: "LMB", mexicanClub: "Diablos Rojos del México",
+      mexicanSlug: "diablos-rojos", direction: "mexico-to-mlb", role: "Lanzador · prospecto de academia",
+      year: "Cantera Diablos · firmado por Mets en 2018",
+      description: "El lanzador originario de Mérida fue formado en la academia Alfredo Harp Helú y firmado por la organización de Nueva York en 2018. Se trata de un vínculo de desarrollo, no de un debut en Grandes Ligas.",
+      source: "https://www.milb.com/news/mets-de-nueva-york-firma-a-un-diablo-rojo-273648262"
+    }
+  },
+
+  {
     mlbClubId: 142, group: "toMexico",
     connection: {
       name: "Andrelton Simmons", league: "LMB", mexicanClub: "Dorados de Chihuahua",
