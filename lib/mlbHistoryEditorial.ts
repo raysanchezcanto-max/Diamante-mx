@@ -108,6 +108,350 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  147: {
+  "intro": "Los New York Yankees debutaron en 1903 como Highlanders y adoptaron el nombre Yankees en 1913. Son la franquicia más laureada de Grandes Ligas, con 27 títulos de Serie Mundial y 41 banderines de la Liga Americana. Babe Ruth, Lou Gehrig, Joe DiMaggio, Mickey Mantle, Derek Jeter y Mariano Rivera protagonizaron diversas dinastías. En 2009 abrieron el actual Yankee Stadium en el Bronx, año de su campeonato más reciente; alcanzaron de nuevo la Serie Mundial en 2024.",
+  "featuredStory": {
+    "kicker": "HISTORIA · 27 CAMPEONATOS",
+    "title": "UN SIGLO DE DINASTÍAS EN EL BRONX",
+    "excerpt": "Del primer título de Babe Ruth en 1923 a la vigésima séptima corona de 2009, los Yankees definieron épocas enteras de Grandes Ligas; en 2024 sumaron su banderín número 41, aunque cayeron ante Dodgers.",
+    "url": "https://www.mlb.com/yankees/history/timeline-2000s"
+  },
+  "debutYear": "1903",
+  "worldSeriesTitles": 27,
+  "worldSeriesWinningYears": [
+    "1923",
+    "1927",
+    "1928",
+    "1932",
+    "1936",
+    "1937",
+    "1938",
+    "1939",
+    "1941",
+    "1943",
+    "1947",
+    "1949",
+    "1950",
+    "1951",
+    "1952",
+    "1953",
+    "1956",
+    "1958",
+    "1961",
+    "1962",
+    "1977",
+    "1978",
+    "1996",
+    "1998",
+    "1999",
+    "2000",
+    "2009"
+  ],
+  "titlesVerifiedThrough": "2026",
+  "pennants": [
+    "1921",
+    "1922",
+    "1923",
+    "1926",
+    "1927",
+    "1928",
+    "1932",
+    "1936",
+    "1937",
+    "1938",
+    "1939",
+    "1941",
+    "1942",
+    "1943",
+    "1947",
+    "1949",
+    "1950",
+    "1951",
+    "1952",
+    "1953",
+    "1955",
+    "1956",
+    "1957",
+    "1958",
+    "1960",
+    "1961",
+    "1962",
+    "1963",
+    "1964",
+    "1976",
+    "1977",
+    "1978",
+    "1981",
+    "1996",
+    "1998",
+    "1999",
+    "2000",
+    "2001",
+    "2003",
+    "2009",
+    "2024"
+  ],
+  "postseasonSource": "https://www.mlb.com/yankees/history/postseason-results",
+  "divisionTitles": [
+    "1976",
+    "1977",
+    "1978",
+    "1980",
+    "1981",
+    "1996",
+    "1998",
+    "1999",
+    "2000",
+    "2001",
+    "2002",
+    "2003",
+    "2004",
+    "2005",
+    "2006",
+    "2009",
+    "2011",
+    "2012",
+    "2019",
+    "2022",
+    "2024"
+  ],
+  "divisionTitlesLabel": "21 títulos del Este de la Liga Americana (1976–2024)",
+  "stadiumOpened": "2009",
+  "stadiumOpenedNote": "El Yankee Stadium actual inauguró su temporada regular el 16 de abril de 2009, al otro lado de la calle del histórico estadio original (1923–2008).",
+  "stadiumSource": "https://www.mlb.com/yankees/ballpark/information",
+  "milestones": [
+    {
+      "year": "1903",
+      "title": "Nacen los New York Highlanders",
+      "description": "La franquicia se traslada desde Baltimore a Manhattan, ingresa en la Liga Americana y comienza a jugar en Hilltop Park.",
+      "url": "https://www.mlb.com/yankees/history/timeline-1900s"
+    },
+    {
+      "year": "1913",
+      "title": "Se establece el nombre Yankees",
+      "description": "La organización adopta oficialmente el nombre New York Yankees después de su etapa como Highlanders.",
+      "url": "https://www.mlb.com/yankees/history/timeline-1900s"
+    },
+    {
+      "year": "1920–1923",
+      "title": "Babe Ruth y la primera corona",
+      "description": "La llegada de Babe Ruth impulsa una nueva era: el equipo conquista la Americana en 1921 y 1922, estrena el Yankee Stadium original en 1923 y gana su primera Serie Mundial.",
+      "url": "https://www.mlb.com/yankees/history/timeline-1920s"
+    },
+    {
+      "year": "1927–1928",
+      "title": "Los asesinos del bate y el bicampeonato",
+      "description": "Con Babe Ruth y Lou Gehrig, el legendario equipo de 1927 gana 110 encuentros y abre una racha de dos títulos mundiales.",
+      "url": "https://www.mlb.com/yankees/history/timeline-1920s"
+    },
+    {
+      "year": "1936–1939",
+      "title": "Cuatro campeonatos consecutivos",
+      "description": "Con Joe DiMaggio y Lou Gehrig, Nueva York se convierte en el primer club en ganar cuatro Series Mundiales seguidas.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "1939",
+      "title": "El discurso de Lou Gehrig",
+      "description": "Después de concluir su racha de 2,130 partidos consecutivos, Gehrig pronuncia su emotivo discurso de despedida en Yankee Stadium.",
+      "url": "https://www.mlb.com/yankees/news/greatest-moments-at-old-yankee-stadium"
+    },
+    {
+      "year": "1949–1953",
+      "title": "Cinco títulos al hilo",
+      "description": "Con Casey Stengel como mánager, los Yankees ganan cinco Series Mundiales consecutivas, récord histórico de MLB.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "1956",
+      "title": "El juego perfecto de Don Larsen",
+      "description": "Larsen retira a los 27 bateadores de Brooklyn en el Juego 5 de la Serie Mundial, hazaña sin precedentes en el Clásico de Otoño.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "1961",
+      "title": "61 jonrones de Roger Maris",
+      "description": "Maris supera la marca de 60 cuadrangulares de Babe Ruth y los Yankees se coronan campeones de la Serie Mundial.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "1977–1978",
+      "title": "Reggie Jackson y el regreso del Bronx",
+      "description": "Los Yankees conquistan dos Series Mundiales consecutivas ante Los Angeles Dodgers.",
+      "url": "https://www.mlb.com/video/yankees-win-78-world-series-c9335185"
+    },
+    {
+      "year": "1996",
+      "title": "La dinastía de Joe Torre y Derek Jeter",
+      "description": "Nueva York gana su primer campeonato desde 1978 al superar a Atlanta en seis partidos.",
+      "url": "https://www.mlb.com/yankees/video/yanks-win-the-1996-world-series-c7119209"
+    },
+    {
+      "year": "1998–2000",
+      "title": "Tres coronas consecutivas",
+      "description": "Con Derek Jeter, Mariano Rivera y sus compañeros, los Yankees levantan tres Series Mundiales seguidas.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "2001",
+      "title": "Una Serie Mundial inolvidable",
+      "description": "Nueva York disputa una emotiva Serie Mundial contra Arizona poco después de los atentados del 11 de septiembre, pero pierde el séptimo juego.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "2009",
+      "title": "El nuevo Yankee Stadium y la corona 27",
+      "description": "El equipo inaugura su estadio actual y vence a Philadelphia en seis juegos para conquistar su vigésima séptima Serie Mundial.",
+      "url": "https://www.mlb.com/yankees/history/timeline-2000s"
+    },
+    {
+      "year": "2024",
+      "title": "Regreso a la Serie Mundial",
+      "description": "Los Yankees logran el banderín 41 de la Americana; Los Ángeles Dodgers se lleva el título en cinco juegos.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "year": "2026",
+      "title": "Victoria en comodines, eliminación en la Divisional",
+      "description": "Nueva York elimina a Boston en la Serie de Comodines, pero Tampa Bay lo derrota en tres partidos en la Serie Divisional.",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    }
+  ],
+  "legends": [
+    {
+      "name": "Babe Ruth",
+      "era": "1920–1934",
+      "role": "Jardinero y bateador · 714 jonrones de carrera",
+      "highlight": "Transformó la identidad de la franquicia y lideró la primera gran dinastía.",
+      "url": "https://baseballhall.org/hall-of-famers/ruth-babe"
+    },
+    {
+      "name": "Lou Gehrig",
+      "era": "1923–1939",
+      "role": "Primera base · 2,130 juegos consecutivos",
+      "highlight": "El Caballo de Hierro fue símbolo de consistencia y liderazgo y pronunció un histórico discurso de despedida.",
+      "url": "https://baseballhall.org/hall-of-famers/gehrig-lou"
+    },
+    {
+      "name": "Joe DiMaggio",
+      "era": "1936–1942 y 1946–1951",
+      "role": "Jardinero central · 56 juegos seguidos bateando de hit",
+      "highlight": "Figura de la era de múltiples títulos; su racha de 1941 sigue siendo un récord de MLB.",
+      "url": "https://baseballhall.org/hall-of-famers/dimaggio-joe"
+    },
+    {
+      "name": "Yogi Berra",
+      "era": "1946–1963",
+      "role": "Receptor · diez títulos mundiales como jugador",
+      "highlight": "Leyenda del receptor y de las Series Mundiales, fue MVP de la Americana tres veces.",
+      "url": "https://baseballhall.org/hall-of-famers/berra-yogi"
+    },
+    {
+      "name": "Mickey Mantle",
+      "era": "1951–1968",
+      "role": "Jardinero · triple corona 1956",
+      "highlight": "Poderoso bateador ambidiestro, siete veces campeón mundial con Nueva York.",
+      "url": "https://baseballhall.org/hall-of-famers/mantle-mickey"
+    },
+    {
+      "name": "Reggie Jackson",
+      "era": "1977–1981",
+      "role": "Jardinero · Mr. October",
+      "highlight": "Conectó tres jonrones en el sexto juego de la Serie Mundial de 1977.",
+      "url": "https://baseballhall.org/hall-of-famers/jackson-reggie"
+    },
+    {
+      "name": "Derek Jeter",
+      "era": "1995–2014",
+      "role": "Campocorto · cinco títulos mundiales",
+      "highlight": "El Capitán encabezó la dinastía de fines de los noventa y fue pieza decisiva en 2009.",
+      "url": "https://baseballhall.org/hall-of-famers/jeter-derek"
+    },
+    {
+      "name": "Mariano Rivera",
+      "era": "1995–2013",
+      "role": "Relevista · 652 salvamentos",
+      "highlight": "El cerrador panameño fue protagonista de cinco campeonatos y el primer elegido unánimemente a Cooperstown.",
+      "url": "https://baseballhall.org/hall-of-famers/rivera-mariano"
+    }
+  ],
+  "immortals": [
+    {
+      "name": "Babe Ruth",
+      "year": "1936",
+      "role": "Cooperstown · Jardinero y lanzador",
+      "url": "https://baseballhall.org/hall-of-famers/ruth-babe"
+    },
+    {
+      "name": "Lou Gehrig",
+      "year": "1939",
+      "role": "Cooperstown · Primera base",
+      "url": "https://baseballhall.org/hall-of-famers/gehrig-lou"
+    },
+    {
+      "name": "Joe DiMaggio",
+      "year": "1955",
+      "role": "Cooperstown · Jardinero central",
+      "url": "https://baseballhall.org/hall-of-famers/dimaggio-joe"
+    },
+    {
+      "name": "Yogi Berra",
+      "year": "1972",
+      "role": "Cooperstown · Receptor",
+      "url": "https://baseballhall.org/hall-of-famers/berra-yogi"
+    },
+    {
+      "name": "Mickey Mantle",
+      "year": "1974",
+      "role": "Cooperstown · Jardinero",
+      "url": "https://baseballhall.org/hall-of-famers/mantle-mickey"
+    },
+    {
+      "name": "Reggie Jackson",
+      "year": "1993",
+      "role": "Cooperstown · Jardinero",
+      "url": "https://baseballhall.org/hall-of-famers/jackson-reggie"
+    },
+    {
+      "name": "Derek Jeter",
+      "year": "2020",
+      "role": "Cooperstown · Campocorto",
+      "url": "https://baseballhall.org/hall-of-famers/jeter-derek"
+    },
+    {
+      "name": "Mariano Rivera",
+      "year": "2019",
+      "role": "Cooperstown · Lanzador relevista",
+      "url": "https://baseballhall.org/hall-of-famers/rivera-mariano"
+    }
+  ],
+  "sources": [
+    {
+      "label": "Historia inaugural: New York Highlanders",
+      "url": "https://www.mlb.com/yankees/history/timeline-1900s"
+    },
+    {
+      "label": "Cronología oficial de los años veinte",
+      "url": "https://www.mlb.com/yankees/history/timeline-1920s"
+    },
+    {
+      "label": "Apertura del nuevo Yankee Stadium y corona 27",
+      "url": "https://www.mlb.com/yankees/history/timeline-2000s"
+    },
+    {
+      "label": "Resultados de postemporada 1903–2026",
+      "url": "https://www.mlb.com/yankees/history/postseason-results"
+    },
+    {
+      "label": "21 campeonatos divisionales, resumen MLB 2024",
+      "url": "https://img.mlbstatic.com/mlb-images/image/upload/fl_attachment/mlb/j0zu5emvprvdma1q1pgm.pdf"
+    },
+    {
+      "label": "Dorsales y leyendas de la franquicia",
+      "url": "https://www.mlb.com/yankees/history/retired-numbers"
+    }
+  ]
+},
   121: {
   "intro": "Los New York Mets debutaron en 1962 como equipo de expansión de la Liga Nacional, recuperando el béisbol del circuito en Nueva York tras las mudanzas de Dodgers y Giants. Siete años después se convirtieron en los 'Miracle Mets' al ganar la Serie Mundial de 1969 contra Baltimore; repitieron en 1986 frente a Boston. Sus cinco banderines de la Nacional también incluyen 1973, 2000 y 2015. Desde 2009 juegan en Citi Field, sucesor del histórico Shea Stadium.",
   "featuredStory": {
