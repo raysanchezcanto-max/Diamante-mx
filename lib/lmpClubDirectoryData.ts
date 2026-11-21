@@ -49,7 +49,8 @@ export const getLmpDirectoryStanding=cache(async(id:number):Promise<LmpClubRecor
 const newsTag:Record<number,string>={
  673:"aguilas-de-mexicali",674:"charros-de-jalisco",675:"caneros-de-los-mochis",
  676:"mayos-de-navojoa",677:"naranjeros-de-hermosillo",678:"tomateros-de-culiacan",
- 679:"venados-de-mazatlan",680:"yaquis-de-obregon",6483:"jaguares-de-nayarit"
+ 679:"venados-de-mazatlan",680:"yaquis-de-obregon",6483:"jaguares-de-nayarit",
+ 5482:"algodoneros-de-guasave"
 };
 const xmlSection=(src:string,key:string)=>{
  const match=src.match(new RegExp("<"+key+"(?:\\s[^>]*)?>([\\s\\S]*?)<\\/"+key+">","i"));
@@ -70,8 +71,8 @@ export const getLmpDirectoryNews=cache(async(id:number):Promise<LmpClubNews[]>=>
   if(!r.ok)return [];
   xml=await r.text();
  }catch{return [];}
- const entries=[...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0,12);
- return entries.flatMap(([_,content])=>{
+ const entries=[...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0,30);
+ const stories=entries.flatMap(([_,content])=>{
   const title=decoded(xmlSection(content,"title")),url=xmlSection(content,"link");
   const pubDate=xmlSection(content,"pubDate");
   const excerpt=decoded(xmlSection(content,"description")).slice(0,220);
@@ -79,8 +80,13 @@ export const getLmpDirectoryNews=cache(async(id:number):Promise<LmpClubNews[]>=>
   const image=cover.startsWith("https://editor.lmp.mx/content/images/")?cover:null;
   if(!title||!url.startsWith("https://editor.lmp.mx/"))return [];
   const published=pubDate&&Number.isFinite(Date.parse(pubDate))?new Date(pubDate).toISOString():"";
-  return [{title,url,published,excerpt,image}];
+  return published ? [{title,url,published,excerpt,image}] : [];
  });
+ // Fecha oficial, más reciente primero; excluir duplicados en las etiquetas RSS.
+ const seen=new Set<string>();
+ return stories.sort((a,b)=>b.published.localeCompare(a.published))
+  .filter(story=>{if(seen.has(story.url))return false;seen.add(story.url);return true;})
+  .slice(0,12);
 });
 type MlbPerson={id:number;fullName?:string;mlbDebutDate?:string;primaryPosition?:{name?:string}};
 export type LmpMlbAlumnus={id:number;name:string;debut:string;role:string};
