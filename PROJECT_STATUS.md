@@ -1339,3 +1339,12 @@ Total output lines: 2623
 - Confirmado en código que MLB (`app/equipos/mlb/[id]/page.tsx`), LMB (`app/equipos/lmb/[slug]/page.tsx`) y LMP (`components/LmpMovementTimeline.tsx`) usan el mismo marcado y clases, por lo que la regla aplica a todas sin alterar vistas de escritorio ni diseño de contenido.
 - Commit `4b85aa801a9cb004f4b49592a4fd4de357e02cdb`; despliegue de producción Vercel `dpl_BrVBV8LCepCvLLANnPHqigrjzeZB` confirmado **READY**.
 - Pendiente: prueba visual física de móvil para certificar estilo; no se modificaron transacciones ni su origen de datos.
+
+
+## Auditoría MLB — New York Yankees (ID 147) · 20 nov 2026 — CONTENIDO INTEGRADO; QA VISUAL PENDIENTE
+
+- Historia de Yankees integrada en `lib/mlbHistoryEditorial.ts` (commit `a1102ef2`): debut en 1903 como New York Highlanders, nombre Yankees en 1913, 27 títulos de Serie Mundial (1923–2009), 41 banderines de la Liga Americana (1921–2024), 21 coronas del Este (1976–2024), estadio actual desde 2009; 16 hitos, ocho leyendas y ocho integrantes de Cooperstown. Contraste con cronologías y resultados de postemporada de MLB y resumen oficial de 2024.
+- Resumen: tres videos oficiales de MLB de las coronaciones de 1978, 1996 y 2009, fechas/duraciones y URL reales (commit `347a87be`, Vercel READY).
+- Grandes Ligas: tres conexiones documentadas a Diablos Rojos de LMB (commit `8083bbbf`): Robinson Canó (actividad probada 2024, campeón de bateo .431), José Pirela (actividad probada 2024), Erick Leal (campeón con Diablos y firma de sucursales de Yankees 2024, expresamente prospecto/contrato de Ligas Menores, no debut de MLB). Fuentes oficiales LMB/MiLB; slug canónico `diablos-rojos`.
+- Despliegue Vercel de historia y videos READY; el deploy de la última versión con conexiones estaba BUILDING al escribir esta nota. Confirmar READY en un segundo chequeo.
+- Pendiente inspección visual individual en producción de seis pestañas y prueba móvil de fuentes y clips. No declarar QA final hasta completar esas verificaciones. Continuar con Athletics (ID 133) después de cerrar la revisión; no modificar tamaños ni jerarquía de fichas aprobadas.
