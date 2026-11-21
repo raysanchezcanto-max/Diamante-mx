@@ -108,6 +108,266 @@ const ROCKIES_POSTSEASON = "https://www.mlb.com/rockies/history/postseason-resul
 const ROCKIES_HELTON = "https://www.mlb.com/rockies/fans/todd-helton-hall-of-fame";
 
 const histories: Readonly<Record<number, MlbEditorialHistory>> = {
+  142: {
+    "intro": "La franquicia nació en 1901 como los Washington Senators y se trasladó a Minnesota en 1961, adoptando el nombre Twins. Cuenta con tres títulos de Serie Mundial como organización: 1924 en Washington y 1987 y 1991 en Minnesota. Desde 2010 juega en Target Field, después de pasar por Metropolitan Stadium y el Metrodome. Leyendas como Walter Johnson, Harmon Killebrew, Kirby Puckett y Joe Mauer representan distintas generaciones de su historia.",
+    "featuredStory": {
+      "kicker": "HISTORIA · LA SERIE MUNDIAL DE 1991",
+      "title": "DIEZ ENTRADAS EN BLANCO Y UN TÍTULO INOLVIDABLE",
+      "excerpt": "Jack Morris completó diez entradas sin permitir carrera contra Atlanta en el séptimo juego de 1991. Un imparable de Gene Larkin en la décima entrada aseguró la segunda corona mundial de Minnesota, tras el dramático jonrón de Kirby Puckett la noche anterior.",
+      "url": "https://www.mlb.com/twins/video/twins-walk-off-win-world-series"
+    },
+    "debutYear": "1901",
+    "worldSeriesTitles": 3,
+    "worldSeriesWinningYears": [
+      "1924",
+      "1987",
+      "1991"
+    ],
+    "titlesVerifiedThrough": "2026",
+    "pennants": [
+      "1924",
+      "1925",
+      "1933",
+      "1965",
+      "1987",
+      "1991"
+    ],
+    "pennantClubNames": {
+      "1924": "Washington Senators",
+      "1925": "Washington Senators",
+      "1933": "Washington Senators"
+    },
+    "postseasonSource": "https://www.mlb.com/twins/history",
+    "divisionTitles": [
+      "1969",
+      "1970",
+      "1987",
+      "1991",
+      "2002",
+      "2003",
+      "2004",
+      "2006",
+      "2009",
+      "2010",
+      "2019",
+      "2020",
+      "2023"
+    ],
+    "stadiumOpened": "2010",
+    "stadiumOpenedNote": "Target Field abrió el 12 de abril de 2010 y reemplazó al Metrodome (1982–2009); el club había jugado en Metropolitan Stadium (1961–1981).",
+    "stadiumSource": "https://www.mlb.com/twins/history/ballparks",
+    "milestones": [
+      {
+        "year": "1901",
+        "title": "Nace la franquicia en Washington",
+        "description": "La organización debuta en la Liga Americana como Washington Senators, primera etapa de la actual franquicia.",
+        "url": "https://www.mlb.com/news/washington-senators-history"
+      },
+      {
+        "year": "1924",
+        "title": "Primera Serie Mundial en Washington",
+        "description": "Con Walter Johnson y Bucky Harris, los Senators derrotan a New York Giants en siete juegos.",
+        "url": "https://www.mlb.com/postseason/history/1924"
+      },
+      {
+        "year": "1961",
+        "title": "De Washington a Minnesota",
+        "description": "La franquicia se traslada a las Ciudades Gemelas y comienza una nueva etapa con el nombre Minnesota Twins.",
+        "url": "https://www.mlb.com/twins/history/timeline-1960s"
+      },
+      {
+        "year": "1965",
+        "title": "Primer banderín como Twins",
+        "description": "Harmon Killebrew, Tony Oliva y compañía llevan a Minnesota a la Serie Mundial, donde Los Ángeles Dodgers gana en siete juegos.",
+        "url": "https://www.mlb.com/twins/history/timeline-1960s"
+      },
+      {
+        "year": "1969–1970",
+        "title": "Primeros campeonatos divisionales",
+        "description": "Los Twins conquistan dos veces consecutivas el Oeste de la Liga Americana.",
+        "url": "https://www.mlb.com/twins/history/timeline-1960s"
+      },
+      {
+        "year": "1987",
+        "title": "Primer título mundial en Minnesota",
+        "description": "Minnesota supera a los Cardinals en el séptimo partido del Metrodome; Jeff Reardon retira a Willie McGee para cerrar el juego.",
+        "url": "https://www.mlb.com/twins/history/timeline-1980s"
+      },
+      {
+        "year": "1991",
+        "title": "Una de las grandes Series Mundiales",
+        "description": "Kirby Puckett fuerza el Juego 7 con un jonrón; Jack Morris lanza diez entradas en blanco y Gene Larkin impulsa la carrera ganadora ante Atlanta.",
+        "url": "https://www.mlb.com/twins/history/timeline-1990s"
+      },
+      {
+        "year": "2002–2010",
+        "title": "Una nueva época de títulos divisionales",
+        "description": "Con figuras como Johan Santana, Torii Hunter, Justin Morneau y Joe Mauer, el club gana seis veces la Central de la Liga Americana.",
+        "url": "https://www.mlb.com/news/mlb-teams-with-most-division-titles"
+      },
+      {
+        "year": "2009",
+        "title": "Joe Mauer gana el MVP",
+        "description": "El receptor gana el premio al Jugador Más Valioso de la Liga Americana y su tercer título de bateo.",
+        "url": "https://www.mlb.com/twins/history/timeline-2010s"
+      },
+      {
+        "year": "2010",
+        "title": "Target Field abre sus puertas",
+        "description": "Minnesota se muda del Metrodome a un nuevo estadio al aire libre en el centro de Minneapolis.",
+        "url": "https://www.mlb.com/twins/history/ballparks"
+      },
+      {
+        "year": "2019–2020",
+        "title": "Dos campeonatos consecutivos",
+        "description": "El equipo vuelve a ganar la División Central en ambas temporadas.",
+        "url": "https://www.mlb.com/news/mlb-teams-with-most-division-titles"
+      },
+      {
+        "year": "2023",
+        "title": "Triunfo histórico en postemporada",
+        "description": "Los Twins ganan la Central y rompen su larga racha sin victorias en playoffs al superar a Toronto en la serie de comodines.",
+        "url": "https://www.mlb.com/news/mlb-teams-with-most-division-titles"
+      },
+      {
+        "year": "2024",
+        "title": "Homenaje a los Senators de 1924",
+        "description": "Minnesota retira la W de Washington para honrar los primeros 60 años de la franquicia y el centenario del título de 1924.",
+        "url": "https://www.mlb.com/news/twins-retire-washington-senators-w"
+      }
+    ],
+    "legends": [
+      {
+        "name": "Walter Johnson",
+        "era": "1907–1927",
+        "role": "Lanzador · 417 victorias",
+        "highlight": "El Big Train fue el gran as de los Senators originales y símbolo del campeonato de 1924.",
+        "url": "https://baseballhall.org/hall-of-famers/johnson-walter"
+      },
+      {
+        "name": "Harmon Killebrew",
+        "era": "1954–1974",
+        "role": "Bateador de poder · 573 jonrones",
+        "highlight": "Su carrera enlaza Washington y Minnesota; fue MVP de la Americana en 1969.",
+        "url": "https://baseballhall.org/hall-of-famers/killebrew-harmon"
+      },
+      {
+        "name": "Rod Carew",
+        "era": "1967–1978",
+        "role": "Segunda y primera base · siete títulos de bateo",
+        "highlight": "Fue MVP de la Liga Americana en 1977 y uno de los mayores bateadores de su generación.",
+        "url": "https://baseballhall.org/hall-of-famers/carew-rod"
+      },
+      {
+        "name": "Kirby Puckett",
+        "era": "1984–1995",
+        "role": "Jardinero central · dos veces campeón",
+        "highlight": "Protagonizó las coronas de 1987 y 1991; su jonrón del Juego 6 de 1991 es inolvidable.",
+        "url": "https://baseballhall.org/hall-of-famers/puckett-kirby"
+      },
+      {
+        "name": "Johan Santana",
+        "era": "2000–2007",
+        "role": "Lanzador zurdo · dos Cy Young",
+        "highlight": "Ganó los premios Cy Young de la Americana en 2004 y 2006 y encabezó la rotación de una generación ganadora.",
+        "url": "https://www.mlb.com/twins/history/timeline-2010s"
+      },
+      {
+        "name": "Joe Mauer",
+        "era": "2004–2018",
+        "role": "Receptor y primera base · MVP 2009",
+        "highlight": "Minnesotano y tres veces campeón de bateo; ingresó a Cooperstown en 2024.",
+        "url": "https://baseballhall.org/hall-of-famers/mauer-joe"
+      },
+      {
+        "name": "Tony Oliva",
+        "era": "1962–1976",
+        "role": "Jardinero · tres títulos de bateo",
+        "highlight": "Ídolo cubano, Novato del Año de 1964 y protagonista del banderín de 1965.",
+        "url": "https://baseballhall.org/hall-of-famers/oliva-tony"
+      }
+    ],
+    "immortals": [
+      {
+        "name": "Walter Johnson",
+        "year": "1936",
+        "role": "Cooperstown · lanzador de Washington Senators",
+        "url": "https://baseballhall.org/hall-of-famers/johnson-walter"
+      },
+      {
+        "name": "Harmon Killebrew",
+        "year": "1984",
+        "role": "Cooperstown · bateador de Washington/Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/killebrew-harmon"
+      },
+      {
+        "name": "Rod Carew",
+        "year": "1991",
+        "role": "Cooperstown · bateador de Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/carew-rod"
+      },
+      {
+        "name": "Kirby Puckett",
+        "year": "2001",
+        "role": "Cooperstown · jardinero central de Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/puckett-kirby"
+      },
+      {
+        "name": "Bert Blyleven",
+        "year": "2011",
+        "role": "Cooperstown · lanzador de Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/blyleven-bert"
+      },
+      {
+        "name": "Jim Kaat",
+        "year": "2022",
+        "role": "Cooperstown · lanzador de Washington/Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/kaat-jim"
+      },
+      {
+        "name": "Tony Oliva",
+        "year": "2022",
+        "role": "Cooperstown · jardinero de Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/oliva-tony"
+      },
+      {
+        "name": "Joe Mauer",
+        "year": "2024",
+        "role": "Cooperstown · receptor de Minnesota",
+        "url": "https://baseballhall.org/hall-of-famers/mauer-joe"
+      }
+    ],
+    "sources": [
+      {
+        "label": "Origen y traslado a Minnesota — MLB",
+        "url": "https://www.mlb.com/news/washington-senators-history"
+      },
+      {
+        "label": "Cronología de los años sesenta — MLB",
+        "url": "https://www.mlb.com/twins/history/timeline-1960s"
+      },
+      {
+        "label": "Campeones de 1987 — MLB",
+        "url": "https://www.mlb.com/twins/history/timeline-1980s"
+      },
+      {
+        "label": "Campeones de 1991 — MLB",
+        "url": "https://www.mlb.com/twins/history/timeline-1990s"
+      },
+      {
+        "label": "Estadios históricos de Minnesota — MLB",
+        "url": "https://www.mlb.com/twins/history/ballparks"
+      },
+      {
+        "label": "13 títulos de división — MLB",
+        "url": "https://www.mlb.com/news/mlb-teams-with-most-division-titles"
+      },
+      {
+        "label": "Leyendas de Senators y Twins en Cooperstown",
+        "url": "https://www.mlb.com/news/hall-of-famers-broken-down-by-mlb-team"
+      }
+    ]
+  },
   146: {
   intro: "Los Marlins nacieron en 1993 como Florida Marlins, una franquicia de expansión de la Liga Nacional. Conquistaron la Serie Mundial en 1997 y 2003 tras clasificarse como comodines, sin ganar nunca su división. En 2012 adoptaron el nombre Miami Marlins y estrenaron un estadio con techo retráctil, hoy llamado loanDepot park. Su historia reúne a héroes de octubre como Édgar Rentería y Josh Beckett, así como a figuras modernas como Giancarlo Stanton y José Fernández.",
   featuredStory: {
