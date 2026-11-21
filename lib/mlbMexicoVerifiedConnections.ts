@@ -11,6 +11,47 @@ export type VerifiedMexicanConnection = {
 
 export const MLB_MEXICO_VERIFIED_CONNECTIONS: readonly VerifiedMexicanConnection[] = [
   {
+    mlbClubId: 146, group: "toMexico",
+    connection: {
+      name: "Henderson Álvarez", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Lanzador derecho",
+      year: "Marlins 2012–2015 · Leones 2021–2023",
+      description: "Lanzó un juego sin hit ni carrera con Miami en 2013. Más adelante fue campeón con Leones de Yucatán en 2022 y recibió el premio de MVP de la Serie del Rey.",
+      source: "https://www.milb.com/news/leones-henderson-alvarez-de-regreso-con-los-melenudos",
+    },
+  },
+  {
+    mlbClubId: 146, group: "toMexico",
+    connection: {
+      name: "Jordany Valdespín", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mlb-to-mexico", role: "Jardinero y segunda base",
+      year: "Marlins 2014–2015 · Leones 2017",
+      description: "Jugó con Miami en las campañas 2014 y 2015; en 2017 tuvo actividad en la LMB con Leones de Yucatán y también con Olmecas de Tabasco.",
+      source: "https://www.milb.com/news/jordany-valdespin-se-integra-a-toros-de-tijuana-312353746",
+    },
+  },
+  {
+    mlbClubId: 146, group: "toMexico",
+    connection: {
+      name: "Jordany Valdespín", league: "LMB", mexicanClub: "Olmecas de Tabasco",
+      mexicanSlug: "olmecas", direction: "mlb-to-mexico", role: "Jardinero y segunda base",
+      year: "Marlins 2014–2015 · Olmecas 2017",
+      description: "Después de su etapa de MLB con Miami participó con Olmecas de Tabasco durante 2017; la crónica oficial de LMB registra su promedio de .341 con el club de Villahermosa.",
+      source: "https://www.milb.com/news/jordany-valdespin-se-integra-a-toros-de-tijuana-312353746",
+    },
+  },
+  {
+    mlbClubId: 146, group: "prospect",
+    connection: {
+      name: "Pablo León Meza", league: "LMB", mexicanClub: "Leones de Yucatán",
+      mexicanSlug: "leones", direction: "mexico-to-mlb", role: "Lanzador zurdo · academia y sucursales",
+      year: "Academia Leones 2018–2020 · firma con Miami 2021",
+      description: "El prospecto sinaloense se formó en la Academia de Beisbol del Pacífico de Leones y firmó con la organización de Miami en enero de 2021. La firma no equivale a debut en Grandes Ligas ni acredita participación de LMB.",
+      source: "https://www.milb.com/news/leones-los-marlins-firman-a-valioso-prospecto-melenudo",
+    },
+  },
+
+  {
     mlbClubId: 119, group: "debut",
     connection: {
       name: "Fernando Valenzuela", league: "LMP", mexicanClub: "Mayos de Navojoa",
