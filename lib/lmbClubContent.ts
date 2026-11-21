@@ -38,7 +38,7 @@ export type RosterResult = {
 };
 
 const BASE = "https://lmb.com.mx";
-const REVALIDATE_SECONDS = 1800;
+const REVALIDATE_SECONDS = 900;
 const ROSTER_GROUPS = [
   "Lanzadores", "Receptores", "Jugadores del cuadro", "Jardineros",
 ] as const;
@@ -218,7 +218,9 @@ export async function getLmbClubNews(slug: string, fallback: OfficialStory[] = [
   if (!validClubSlug(slug)) return { stories: fallback, sourceStatus: "fallback" };
   const html = await readOfficialHtml(BASE + "/equipos/" + slug);
   const news = html ? readNewsFromOfficialHtml(html) : [];
-  if (news.length < 3) return { stories: fallback, sourceStatus: "fallback" };
+  // Una o dos noticias oficiales son noticias válidas: nunca sustituirlas por archivo.
+  // El archivo no se presenta como novedad cuando la fuente temporalmente falla.
+  if (!news.length) return { stories: [], sourceStatus: "fallback" };
   return { stories: news, sourceStatus: "connected" };
 }
 
