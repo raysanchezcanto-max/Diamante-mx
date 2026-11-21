@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  147: [
+    {title:"Yankees conquistan la Serie Mundial de 1978",date:"17 oct 1978",duration:"1:03",description:"Último out del sexto juego contra Dodgers para ganar el segundo campeonato consecutivo.",url:"https://www.mlb.com/video/yankees-win-78-world-series-c9335185"},
+    {title:"Yankees campeones de 1996",date:"26 oct 1996",duration:"1:13",description:"Charlie Hayes captura el último out para cerrar el campeonato 23 y la primera Serie Mundial de Derek Jeter.",url:"https://www.mlb.com/yankees/video/yanks-win-the-1996-world-series-c7119209"},
+    {title:"Mariano Rivera cierra la Serie Mundial de 2009",date:"4 nov 2009",duration:"2:03",description:"Último out ante Philadelphia para conseguir el vigésimo séptimo campeonato de los Yankees.",url:"https://www.mlb.com/es/yankees/video/mo-shuts-door-on-series-c7121387"}
+  ],
   121: [
     {title:"Los Mets conquistan su primera Serie Mundial",date:"16 oct 1969",duration:"1:04",description:"Los Miracle Mets consiguen el último out ante Baltimore para levantar la corona de 1969.",url:"https://www.mlb.com/mets/video/mets-win-1969-world-series-c5617605"},
     {title:"El histórico rodado de Mookie Wilson",date:"25 oct 1986",duration:"0:32",description:"La remontada del sexto juego ante Boston que dio vida a los Mets en la Serie Mundial.",url:"https://www.mlb.com/video/it-gets-by-buckner-c13062925"},
