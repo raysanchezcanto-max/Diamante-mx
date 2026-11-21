@@ -1330,3 +1330,12 @@ Total output lines: 2623
 - Pruebas automáticas y despliegues: historia commit `8727d7bc` READY; clips commit `b72c5136` READY; la versión final incluyendo México commit `4359fd41` aún requería verificar READY al guardar este registro. Confirmar en Vercel.
 - Inspección visual de las seis pestañas en producción y móvil físico sigue pendiente: el lector web externo devolvió Internal Error en los enlaces al perfil. No confundir despliegue READY con QA visual terminada.
 - Mantener intacta jerarquía visual, medidas y colores de fichas, sin rediseñar tarjetas. Próximo equipo al cerrar Mets: New York Yankees ID 147.
+
+
+## Ajuste responsive transversal · Movimientos MLB/LMB/LMP · 20 nov 2026
+
+- Solicitud a partir de capturas reales de Miami Marlins: en teléfonos algunas categorías (“Contratación”, “Activación”, “Selección de contrato”) aparecían a la derecha de la fecha y otras debajo según la longitud; esto producía cabeceras inconsistentes.
+- Se añadió CSS responsive en `app/globals.css`, con alcance `@media (max-width: 600px)` y selectores compartidos `.clubProfile .clubMovementsContent .clubMovementDate` para apilar fecha y tipo verticalmente y alinear ambos a la izquierda. La etiqueta `.clubMovementType` admite nombres largos.
+- Confirmado en código que MLB (`app/equipos/mlb/[id]/page.tsx`), LMB (`app/equipos/lmb/[slug]/page.tsx`) y LMP (`components/LmpMovementTimeline.tsx`) usan el mismo marcado y clases, por lo que la regla aplica a todas sin alterar vistas de escritorio ni diseño de contenido.
+- Commit `4b85aa801a9cb004f4b49592a4fd4de357e02cdb`; despliegue de producción Vercel `dpl_BrVBV8LCepCvLLANnPHqigrjzeZB` confirmado **READY**.
+- Pendiente: prueba visual física de móvil para certificar estilo; no se modificaron transacciones ni su origen de datos.
