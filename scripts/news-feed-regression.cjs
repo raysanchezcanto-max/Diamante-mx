@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+"use strict";
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const path=require("node:path");
+const read=p=>fs.readFileSync(path.join(__dirname,"..",p),"utf8");
+const mlb=require("../lib/mlbClubDirectory.ts").MLB_CLUBS;
+const lmb=require("../lib/lmbClubs.ts").LMB_CLUB_DIRECTORY;
+const lmp=require("../lib/lmpClubDirectory.ts").LMP_CLUB_DIRECTORY;
+let checks=0;
+const check=(condition,message)=>{assert.ok(condition,message);checks++;};
+check(mlb.length===30,"30 clubs MLB");
+check(lmb.length===20,"20 clubs LMB");
+check(lmp.length===9,"9 directory clubs LMP plus Guasave");
+const mlbSource=read("lib/mlbClubContent.ts");
+check(mlbSource.includes('mlbOfficialTeamUrl(club) + "/feeds/news/rss.xml"'),"MLB official club RSS");
+check(mlbSource.includes("items.sort((a, b)"),"MLB RSS sorted by publication date");
+check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs");
+const lmbSource=read("lib/lmbClubContent.ts");
+check(lmbSource.includes('">Noticias principales<"')&&lmbSource.includes('">Más Noticias<"'),"LMB reads both news sections");
+check(lmbSource.includes("if (!news.length)")&&!lmbSource.includes("if (news.length < 3)"),"LMB retains one or two fresh official stories");
+check(lmbSource.includes('stories: [], sourceStatus: "fallback"'),"LMB does not pass old archive as current news");
+check(lmbSource.includes("const REVALIDATE_SECONDS = 900"),"LMB official content 15-minute cache");
+const lmpSource=read("lib/lmpClubDirectoryData.ts");
+const tagSection=lmpSource.split("const newsTag:")[1].split("};")[0];
+const tagged=new Set([...tagSection.matchAll(/(\d+):\s*"[^"]+"/g)].map(x=>Number(x[1])));
+for(const team of lmp)check(tagged.has(team.id),"LMP RSS tag for "+team.name);
+check(tagged.has(5482),"LMP RSS tag for Algodoneros Guasave");
+check(lmpSource.includes("stories.sort((a,b)=>b.published.localeCompare(a.published)"),"LMP articles sorted by official publication date");
+check(lmpSource.includes("seen.has(story.url)"),"LMP RSS duplicate URL protection");
+const guasave=read("lib/lmpAlgodonerosContent.ts");
+check(guasave.includes("getLmpDirectoryNews(5482)")&&guasave.includes("teamNews, ...leagueNews"),"Guasave combines club and league news");
+check(guasave.includes("sort((a,b)=>Date.parse(b.published)-Date.parse(a.published))"),"Guasave merged news sorted");
+const report=read("lib/lmbReportsInReview.ts");
+check(report.includes("validThrough")&&report.includes("officialTitles.some"),"Reports expire and disappear after official team publication");
+for(const p of ["app/equipos/lmb/[slug]/page.tsx","app/equipos/lmb/algodoneros/page.tsx","app/equipos/lmp/[slug]/page.tsx"]){
+ const page=read(p);check(/export const revalidate\s*=\s*900/.test(page),p+" 15-minute SSR cache");
+}
+check(read("app/equipos/lmb/[slug]/page.tsx").includes("EN SEGUIMIENTO · SIN CONFIRMACIÓN OFICIAL"),"Press rumor visually separated from official story");
+console.log("Noticias MLB/LMB/LMP: "+checks+" regression checks OK.");
