@@ -11,6 +11,11 @@ export type MlbClubVideo = {
 };
 
 const verified: Readonly<Record<number, readonly MlbClubVideo[]>> = {
+  121: [
+    {title:"Los Mets conquistan su primera Serie Mundial",date:"16 oct 1969",duration:"1:04",description:"Los Miracle Mets consiguen el último out ante Baltimore para levantar la corona de 1969.",url:"https://www.mlb.com/mets/video/mets-win-1969-world-series-c5617605"},
+    {title:"El histórico rodado de Mookie Wilson",date:"25 oct 1986",duration:"0:32",description:"La remontada del sexto juego ante Boston que dio vida a los Mets en la Serie Mundial.",url:"https://www.mlb.com/video/it-gets-by-buckner-c13062925"},
+    {title:"Jesse Orosco cierra la Serie Mundial de 1986",date:"27 oct 1986",duration:"1:16",description:"Último ponche del séptimo juego para la segunda Serie Mundial de Nueva York.",url:"https://www.mlb.com/mets/video/mets-win-world-series-c3531549"}
+  ],
   142: [
     {title: "Minnesota gana la Serie Mundial de 1987", date: "25 oct 1987", duration: "1:29", description: "Jeff Reardon consigue el último out del Juego 7 ante St. Louis Cardinals.", url: "https://www.mlb.com/video/twins-win-1987-world-series-c31110999"},
     {title: "Kirby Puckett fuerza el Juego 7 en 1991", date: "26 oct 1991", duration: "5:06", description: "El jardinero conecta un jonrón para dejar en el terreno a Atlanta en la undécima entrada.", url: "https://www.mlb.com/twins/video/puckett-s-game-6-walk-off-homer"},
