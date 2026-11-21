@@ -1320,3 +1320,13 @@ Total output lines: 2623
 - Tres vínculos confirmados MLB→LMB (commit `72cb2069`): Andrelton Simmons (Minnesota 2021 → Dorados de Chihuahua 2025–26), Devin Smeltzer (Twins 2019–22 → Dorados 2025–26 y Caliente de Durango 2026). Participación respaldada por estadísticas individuales oficiales `https://lmb.com.mx/jugador/592743` y `https://lmb.com.mx/jugador/656970`; los slugs `dorados` y `caliente` corresponden al directorio `lib/lmbClubs.ts`.
 - El despliegue con videos `74572911` confirmó READY. El despliegue de conexiones `72cb2069` estaba BUILDING en la última inspección; confirmar READY antes de cerrar. Miami tuvo despliegue READY y pruebas automáticas, pero la inspección visual pública no fue posible mediante web (falló acceso a la URL) y queda señalada para revisión manual.
 - Por comprobar: seis pestañas en producción a nivel visual (móvil físico especialmente), enlaces de videos y navegación cruzada a LMB. No proclamar equipo QA concluido sin esas comprobaciones. La plantilla y diseño de tarjetas compartidos permanecieron intactos.
+
+
+## Auditoría MLB — New York Mets (ID 121) · 20 nov 2026 — CONTENIDO INTEGRADO; QA VISUAL PENDIENTE
+
+- Historia individual en `lib/mlbHistoryEditorial.ts` (commit `8727d7bc`): fundación 1962, Series Mundiales 1969 y 1986, cinco banderines (1969, 1973, 1986, 2000, 2015), seis títulos del Este, estadio Citi Field desde 2009; catorce hitos, ocho figuras y cinco integrantes de Cooperstown. Se diferencia el Salón de la Fama del club del Nacional.
+- Resumen audiovisual: tres enlaces oficiales de MLB (1969 último out, 1986 error de Buckner, 1986 último out) y duraciones verificadas en MLB.com (commit `b72c5136`).
+- Grandes Ligas: cuatro fichas verificadas por MLB/MiLB/LMB (commit `4359fd41`): Jeurys Familia/Dïablos Rojos 2024, Jordany Valdespín/Leones y Olmecas 2017, Héctor Ayuso Cachón — canterano meridano Diablos firmado por la organización Mets en 2018, correctamente etiquetado prospecto, no debut.
+- Pruebas automáticas y despliegues: historia commit `8727d7bc` READY; clips commit `b72c5136` READY; la versión final incluyendo México commit `4359fd41` aún requería verificar READY al guardar este registro. Confirmar en Vercel.
+- Inspección visual de las seis pestañas en producción y móvil físico sigue pendiente: el lector web externo devolvió Internal Error en los enlaces al perfil. No confundir despliegue READY con QA visual terminada.
+- Mantener intacta jerarquía visual, medidas y colores de fichas, sin rediseñar tarjetas. Próximo equipo al cerrar Mets: New York Yankees ID 147.
