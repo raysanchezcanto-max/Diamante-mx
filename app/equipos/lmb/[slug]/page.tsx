@@ -5,6 +5,7 @@ import { getLmbStandings } from "@/lib/lmb";
 import { getTeamLogo } from "@/lib/teamLogos";
 import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
 import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview, getLmbClubVideos } from "@/lib/lmbClubContent";
+import { lmbReportsInReview } from "@/lib/lmbReportsInReview";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
@@ -72,6 +73,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const titleYears=lmbClubChampionships(club.slug);
   const teamRecord=standings.find(row=>findLmbClubByName(row.team)?.slug===club.slug);
   const topStory=news?.stories[0];
+  const reportsInReview=view==="resumen"?lmbReportsInReview(club.slug,(news?.stories??[]).map(item=>item.title)):[];
   // Misma tabla y titulares de referencia usados en el Resumen de Algodoneros.
   // Nunca mostramos estadísticas o noticias de otro club como respaldo.
   const zoneStandings=standings.filter(row=>{
@@ -164,6 +166,19 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   <a href={official(club.slug)} target="_blank" rel="noopener noreferrer">Consultar noticias en LMB ↗</a>
                 </section>
               )}
+              {reportsInReview.length>0&&<section className="clubEditorialSection" aria-label="Reportes periodísticos en seguimiento">
+                <div className="clubSectionTitle"><div>
+                  <span className="clubKicker">EN SEGUIMIENTO · SIN CONFIRMACIÓN OFICIAL</span>
+                  <h2>Reportes por confirmar</h2>
+                </div></div>
+                <p className="clubSmallNote">Cobertura periodística identificada; no es una contratación oficial ni una transacción en listas de reserva.</p>
+                <div className="clubNewsGrid">{reportsInReview.map(report=><a href={report.articleUrl}
+                  className="clubNewsCard" key={report.articleUrl} target="_blank" rel="noopener noreferrer">
+                  <span>REPORTE · {formatDate(report.date)}</span>
+                  <strong>{report.headline}</strong>
+                  <small>{report.sourceName} · Leer reporte ↗</small>
+                </a>)}</div>
+              </section>}
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
                   <div>
@@ -171,7 +186,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <h2>{COPY.summary.newsTitle}</h2>
                   </div>
                 </div>
-                <p className="clubSmallNote">La liga selecciona estas publicaciones. Consulta automática con caché aproximada de 30 minutos; no garantiza orden cronológico.</p>
+                <p className="clubSmallNote">La liga selecciona estas publicaciones. Consulta automática de fuentes oficiales con caché aproximada de 15 minutos. Las secciones destacadas de LMB no garantizan orden cronológico; los reportes sin confirmar se muestran aparte.</p>
                 <div className="clubNewsGrid">
                   {relatedNews.map(story=><a href={story.url} className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                     {story.imageUrl&&<img src={story.imageUrl} className="clubNewsThumb" alt="" loading="lazy"/>}
