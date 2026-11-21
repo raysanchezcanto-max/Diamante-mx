@@ -1,3 +1,4 @@
+import { getLmpDirectoryNews } from "./lmpClubDirectoryData";
 import { cache } from "react";
 
 // Algodoneros de Guasave (LMP), no confundir con Unión Laguna (LMB).
@@ -41,9 +42,8 @@ async function officialJson<T>(url: string): Promise<T | null> {
 
 type WpPost = { title?: { rendered?: string }; excerpt?: { rendered?: string }; link?: string; date?: string; _embedded?: {"wp:featuredmedia"?: Array<{ source_url?: string; media_details?: {sizes?: Record<string, {source_url?: string}>} }> } };
 export const getAlgodonerosNews = cache(async (): Promise<LmpClubNews[]> => {
-  const posts = await officialJson<WpPost[]>(NEWS);
-  if (!Array.isArray(posts)) return [];
-  return posts.flatMap(post => {
+  const [posts, leagueNews] = await Promise.all([officialJson<WpPost[]>(NEWS), getLmpDirectoryNews(5482)]);
+  const teamNews = (Array.isArray(posts) ? posts : []).flatMap(post => {
     const title = plainText(post.title?.rendered ?? "");
     const url = post.link ?? "";
     if (title.length < 8 || !url.startsWith("https://losalgodoneros.com/")) return [];
@@ -54,6 +54,14 @@ export const getAlgodonerosNews = cache(async (): Promise<LmpClubNews[]> => {
     const image = /^https:\/\/losalgodoneros\.com\/wp-content\/uploads\//.test(photo) ? photo : null;
     return [{title, url, published:post.date ?? "", excerpt:plainText(post.excerpt?.rendered ?? "").slice(0,220), image}];
   });
+  // Combinar el portal oficial de Algodoneros con las noticias oficiales LMP;
+  // el equipo puede publicar primero en cualquiera de las dos fuentes.
+  const seen = new Set<string>();
+  return [...teamNews, ...leagueNews].filter(story => {
+    if (!story.published || !Number.isFinite(Date.parse(story.published)) || seen.has(story.url)) return false;
+    seen.add(story.url);
+    return true;
+  }).sort((a,b)=>Date.parse(b.published)-Date.parse(a.published)).slice(0,12);
 });
 
 type LmpRosterEntry = {
