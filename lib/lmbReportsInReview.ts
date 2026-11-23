@@ -26,7 +26,15 @@ const pending: readonly ReportInReview[] = [
     sourceName: "John Denton · Roundtable Sports",
   },
 ];
-const normalized = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es");
+const normalized = (value: string) => value.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLocaleLowerCase("es");
+// Mencionar a un candidato no confirma su contratación. Solo un titular
+// afirmativo de la fuente oficial permite retirar el reporte pendiente.
+const officialAppointment = (title: string, subject: string): boolean => {
+  const text = normalized(title);
+  if (!text.includes(normalized(subject))) return false;
+  if (/[¿?]/.test(text) || /\\b(?:rumor|posible|podria|seria|perfilado|negocia|sin confirmar|no sera|descarta)\\b/.test(text)) return false;
+  return /\\b(?:nuevo (?:manager|director tecnico)|nombrad[oa] (?:como )?(?:manager|director tecnico)|designad[oa] (?:como )?(?:manager|director tecnico)|(?:anuncia|confirma|presenta|contrata) (?:a |como ))\\b/.test(text);
+};
 export function lmbReportsInReview(
   slug: string,
   officialTitles: readonly string[],
@@ -35,5 +43,5 @@ export function lmbReportsInReview(
   const day = now.toISOString().slice(0,10);
   return pending.filter(report => report.slug === slug &&
     report.date <= day && day <= report.validThrough &&
-    !officialTitles.some(title => normalized(title).includes(normalized(report.subject))));
+    !officialTitles.some(title => officialAppointment(title, report.subject)));
 }
