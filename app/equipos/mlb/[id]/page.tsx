@@ -156,13 +156,15 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
         </aside>
         <div className="clubMainColumn">
           {news?.items.length ? <article className="clubFeature"
-            aria-label={"Noticia oficial reciente de " + club.name}>
+            aria-label={"Noticia oficial de " + club.name}>
             {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
             <div className="clubFeatureShade" aria-hidden="true"/>
             <div className="clubFeatureContent">
-              <span className="clubKicker">ACTUALIDAD · FUENTE MLB · {storyDateLabel(news.items[0].date)}</span>
+              <span className="clubKicker">NOTICIA OFICIAL · FUENTE MLB · {storyDateLabel(news.items[0].date)}</span>
               <h2>{news.items[0].title}</h2>
-              <p>Publicación del canal oficial de {club.name}, con fecha indicada por MLB.</p>
+              <p>{news.items[0].date
+                 ? "Publicación del canal oficial de " + club.name + ", fechada por MLB."
+                 : "Publicación del canal oficial de " + club.name + ". MLB no indicó fecha verificable."}</p>
               <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
                 Leer noticia en MLB ↗</a>
             </div>
