@@ -230,7 +230,9 @@ async function spanishHeadline(title: string, clubName: string, order: number): 
   if (translated.trim() !== title.trim() && !englishHeadlineWords.test(translated)) {
     return translated;
   }
-  return "Actualidad de " + clubName + " · Nota oficial " + order;
+  // Si el traductor no devuelve una traducción fiable, conservar el titular
+  // oficial original: un rótulo genérico ocultaría la noticia real.
+  return title;
 }
 function rssText(value: string): string {
   const plain = value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
