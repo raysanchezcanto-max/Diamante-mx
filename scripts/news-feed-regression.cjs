@@ -33,6 +33,25 @@ check(guasave.includes("getLmpDirectoryNews(5482)")&&guasave.includes("teamNews,
 check(guasave.includes("sort((a,b)=>Date.parse(b.published)-Date.parse(a.published))"),"Guasave merged news sorted");
 const report=read("lib/lmbReportsInReview.ts");
 check(report.includes("validThrough")&&report.includes("officialTitles.some"),"Reports expire and disappear after official team publication");
+// Comportamientos editoriales: probar el resultado, no solo buscar cadenas.
+const {lmbReportsInReview}=require("../lib/lmbReportsInReview.ts");
+const onDate=new Date("2026-11-23T12:00:00Z");
+const reportsFor=(titles,date=onDate)=>lmbReportsInReview("leones",titles,date);
+check(reportsFor([]).length===1,"LMB report shown until verification");
+check(reportsFor(["Yadier Molina visita a los Leones"]).length===1,"Mere mention does not confirm appointment");
+check(reportsFor(["¿Yadier Molina será el nuevo mánager de Leones?"]).length===1,"Question does not confirm appointment");
+check(reportsFor(["Rumor: Yadier Molina podría ser mánager"]).length===1,"Speculation does not confirm appointment");
+check(reportsFor(["Leones confirma a Yadier Molina como su nuevo mánager"]).length===0,"Official affirmative appointment hides report");
+check(reportsFor(["Yadier Molina es nombrado director técnico de Leones"]).length===0,"Official named manager hides report");
+check(reportsFor([],new Date("2026-12-06T12:00:00Z")).length===0,"Expired report is not presented as current");
+check(lmbReportsInReview("diablos-rojos",[],onDate).length===0,"Report never leaks to another LMB team");
+const mlbPage=read("app/equipos/mlb/[id]/page.tsx");
+check(mlbPage.includes("Fecha no indicada")&&mlbPage.includes("news.items[0].date")&&
+  mlbPage.includes("MLB no indicó fecha verificable."),"MLB does not imply undated news is dated");
+const guasavePage=read("app/equipos/lmp/algodoneros/page.tsx");
+check(guasavePage.includes('url.startsWith("https://editor.lmp.mx/")')&&
+  guasavePage.includes("newsSource(topNews.url)")&&guasavePage.includes("newsSource(story.url)"),
+  "Guasave identifies club versus league source in featured and secondary news");
 for(const p of ["app/equipos/lmb/[slug]/page.tsx","app/equipos/lmb/algodoneros/page.tsx","app/equipos/lmp/[slug]/page.tsx"]){
  const page=read(p);check(/export const revalidate\s*=\s*900/.test(page),p+" 15-minute SSR cache");
 }
