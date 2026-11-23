@@ -275,7 +275,7 @@ export async function getMlbClubNews(club: MlbClub): Promise<MlbClubNews> {
       seen.add(url);
       items.push({ title, url, date: Number.isFinite(Date.parse(published))
         ? new Date(published).toISOString() : null });
-      if (items.length === 16) break;
+      // Revisar todas las entradas recibidas antes de elegir las seis más recientes.
     }
     // La fuente no siempre emite el RSS en orden cronológico; no aparentar actualidad.
     items.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
