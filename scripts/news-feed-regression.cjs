@@ -16,6 +16,8 @@ const mlbSource=read("lib/mlbClubContent.ts");
 check(mlbSource.includes('mlbOfficialTeamUrl(club) + "/feeds/news/rss.xml"'),"MLB official club RSS");
 check(mlbSource.includes("items.sort((a, b)"),"MLB RSS sorted by publication date");
 check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs");
+check(mlbSource.includes("return title;") && !mlbSource.includes('"Actualidad de " + clubName'),
+  "MLB preserves real official headlines if translation is unavailable");
 const lmbSource=read("lib/lmbClubContent.ts");
 check(lmbSource.includes('">Noticias principales<"')&&lmbSource.includes('">Más Noticias<"'),"LMB reads both news sections");
 check(lmbSource.includes("if (!news.length)")&&!lmbSource.includes("if (news.length < 3)"),"LMB retains one or two fresh official stories");
