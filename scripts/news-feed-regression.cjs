@@ -15,6 +15,9 @@ check(lmp.length===9,"9 directory clubs LMP plus Guasave");
 const mlbSource=read("lib/mlbClubContent.ts");
 check(mlbSource.includes('mlbOfficialTeamUrl(club) + "/feeds/news/rss.xml"'),"MLB official club RSS");
 check(mlbSource.includes("items.sort((a, b)"),"MLB RSS sorted by publication date");
+check(!mlbSource.includes("if (items.length === 16) break;") &&
+  mlbSource.indexOf("items.sort((a, b)") < mlbSource.indexOf("items.slice(0, 6)"),
+  "MLB reads full RSS before selecting six newest headlines");
 check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs");
 check(mlbSource.includes("return title;") && !mlbSource.includes('"Actualidad de " + clubName'),
   "MLB preserves real official headlines if translation is unavailable");
