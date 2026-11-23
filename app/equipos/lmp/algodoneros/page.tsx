@@ -18,6 +18,8 @@ export const metadata: Metadata = {
 
 const home = "/equipos/lmp/algodoneros";
 const official = "https://losalgodoneros.com/";
+const newsSource = (url: string) => url.startsWith("https://editor.lmp.mx/")
+  ? "LMP" : "ALGODONEROS";
 const rosterLink = "https://losalgodoneros.com/team/algodoneros/roster";
 const sections: LmbClubView[] = ["resumen","estadisticas","plantilla","movimientos","grandes-ligas","historia"];
 const groupOrder = ["Lanzadores", "Receptores", "Jugadores del cuadro", "Jardineros", "Otros jugadores"];
@@ -117,19 +119,21 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
               <div className="clubDirectoryHeroBadge">{logo?<img src={logo} width={140} height={140} alt=""/>:"⚾"}</div>}
             <div className="clubFeatureShade"/>
             <div className="clubFeatureContent">
-              <span className="clubKicker">NOTICIA DESTACADA · SITIO OFICIAL ALGODONEROS</span>
+              <span className="clubKicker">NOTICIA DESTACADA · FUENTE OFICIAL {newsSource(topNews.url)}</span>
               <h2>{topNews.title}</h2>
-              <p>{topNews.excerpt||"Publicación del sitio oficial del equipo."}</p>
+              <p>{topNews.excerpt || (newsSource(topNews.url)==="LMP"
+                ? "Publicación del canal oficial de la Liga Mexicana del Pacífico."
+                : "Publicación del sitio oficial de Algodoneros de Guasave.")}</p>
               <a href={topNews.url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a>
             </div>
-          </section>:<section className="clubDirectoryNotice"><h2>Noticias oficiales</h2><p>El sitio oficial no devolvió publicaciones en esta consulta.</p><a href="https://losalgodoneros.com/noticias/" target="_blank" rel="noopener noreferrer">Consultar noticias ↗</a></section>}
+          </section>:<section className="clubDirectoryNotice"><h2>Noticias oficiales</h2><p>Las fuentes oficiales de Algodoneros y LMP no devolvieron publicaciones verificables en esta consulta.</p><a href="https://losalgodoneros.com/noticias/" target="_blank" rel="noopener noreferrer">Consultar noticias ↗</a></section>}
           <section className="clubEditorialSection">
             <div className="clubSectionTitle"><div><span className="clubKicker">NOTICIAS · ALGODONEROS DE GUASAVE</span><h2>{COPY.summary.newsTitle}</h2></div></div>
-            <p className="clubSmallNote">Publicaciones automáticas del sitio oficial, con actualización aproximada cada 15 minutos.</p>
+            <p className="clubSmallNote">Publicaciones de las fuentes oficiales de Algodoneros de Guasave y LMP, ordenadas por fecha. Caché aproximada de 15 minutos.</p>
             <div className="clubNewsGrid">
               {news.slice(1,5).map(story=><a className="clubNewsCard" href={story.url} key={story.url} target="_blank" rel="noopener noreferrer">
                 {story.image&&<img className="clubNewsThumb" src={story.image} alt="" loading="lazy"/>}
-                <span>{story.published.slice(0,10)||"Sitio oficial"}</span>
+                <span>{story.published.slice(0,10)} · {newsSource(story.url)}</span>
                 <strong>{story.title}</strong>
                 <small>Leer noticia ↗</small>
               </a>)}
