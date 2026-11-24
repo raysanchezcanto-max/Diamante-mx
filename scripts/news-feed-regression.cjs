@@ -68,7 +68,7 @@ const report=read("lib/lmbReportsInReview.ts");
 check(report.includes("validThrough")&&report.includes("officialTitles.some"),"Reports expire and disappear after official team publication");
 // Comportamientos editoriales: probar el resultado, no solo buscar cadenas.
 const {lmbReportsInReview}=require("../lib/lmbReportsInReview.ts");
-const onDate=new Date("2026-11-23T12:00:00Z");
+const onDate=new Date("2026-11-21T12:00:00Z");
 const reportsFor=(titles,date=onDate)=>lmbReportsInReview("leones",titles,date);
 check(reportsFor([]).length===1,"LMB report shown until verification");
 check(reportsFor(["Yadier Molina visita a los Leones"]).length===1,"Mere mention does not confirm appointment");
@@ -76,6 +76,10 @@ check(reportsFor(["¿Yadier Molina será el nuevo mánager de Leones?"]).length=
 check(reportsFor(["Rumor: Yadier Molina podría ser mánager"]).length===1,"Speculation does not confirm appointment");
 check(reportsFor(["Leones confirma a Yadier Molina como su nuevo mánager"]).length===0,"Official affirmative appointment hides report");
 check(reportsFor(["Yadier Molina es nombrado director técnico de Leones"]).length===0,"Official named manager hides report");
+check(reportsFor([],new Date("2026-11-22T12:00:00Z")).length===1,
+  "Leones sourced report remains marked unconfirmed before club announcement");
+check(reportsFor([],new Date("2026-11-23T12:00:00Z")).length===0,
+  "Leones report stays closed from official Yadier Molina announcement even without official feed");
 check(reportsFor([],new Date("2026-12-06T12:00:00Z")).length===0,"Expired report is not presented as current");
 check(lmbReportsInReview("diablos-rojos",[],onDate).length===0,"Report never leaks to another LMB team");
 const mlbPage=read("app/equipos/mlb/[id]/page.tsx");
