@@ -156,15 +156,16 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
         </aside>
         <div className="clubMainColumn">
           {news?.items.length ? <article className="clubFeature"
-            aria-label={"Noticia oficial de " + club.name}>
+            aria-label={(news.items[0].isSourcedReport ? "Reporte periodístico sobre " : "Publicación de MLB.com sobre ") + club.name}>
             {logo && <img className="clubFeatureEmblem" src={logo} alt=""/>}
             <div className="clubFeatureShade" aria-hidden="true"/>
             <div className="clubFeatureContent">
-              <span className="clubKicker">NOTICIA OFICIAL · FUENTE MLB · {storyDateLabel(news.items[0].date)}</span>
+              <span className="clubKicker">{news.items[0].isSourcedReport ? "REPORTE PERIODÍSTICO · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(news.items[0].date)}</span>
               <h2>{news.items[0].title}</h2>
-              <p>{news.items[0].date
-                 ? "Publicación del canal oficial de " + club.name + ", fechada por MLB."
-                 : "Publicación del canal oficial de " + club.name + ". MLB no indicó fecha verificable."}</p>
+              <p>{news.items[0].isSourcedReport
+                 ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
+                 : "Noticia publicada por MLB.com sobre " + club.name + "; no necesariamente es un comunicado institucional."}
+                {!news.items[0].date && " MLB no indicó fecha verificable."}</p>
               <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
                 Leer noticia en MLB ↗</a>
             </div>
@@ -197,8 +198,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             {news?.items.length ? <div className="clubNewsGrid">
               {secondaryNews.map(story => <a href={story.url}
                 className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
-                <span>NOTICIA · MLB · {storyDateLabel(story.date)}</span><strong>{story.title}</strong>
-                <small>Leer publicación oficial ↗</small>
+                <span>{story.isSourcedReport ? "REPORTE · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(story.date)}</span><strong>{story.title}</strong>
+                <small>Leer en MLB.com ↗</small>
               </a>)}
             </div> : <div className="clubDirectoryNotice">
               <p>Consulta todas las publicaciones recientes en el portal del club.</p>
