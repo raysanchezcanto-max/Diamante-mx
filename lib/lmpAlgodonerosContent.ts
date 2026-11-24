@@ -1,4 +1,5 @@
 import { getLmpDirectoryNews } from "./lmpClubDirectoryData";
+import { isRepublishedAlgodonerosNews } from "./algodonerosNewsDedupe";
 import { cache } from "react";
 
 // Algodoneros de Guasave (LMP), no confundir con Unión Laguna (LMB).
@@ -58,6 +59,10 @@ export const getAlgodonerosNews = cache(async (): Promise<LmpClubNews[]> => {
   // el equipo puede publicar primero en cualquiera de las dos fuentes.
   const seen = new Set<string>();
   return [...teamNews, ...leagueNews].filter(story => {
+    // Mismo titular publicado por el club y LMP (con fechas distintas):
+    // conservar el enlace original del club y no mostrar dos tarjetas iguales.
+    if (story.url.startsWith("https://editor.lmp.mx/") &&
+      isRepublishedAlgodonerosNews(teamNews, story)) return false;
     if (!story.published || !Number.isFinite(Date.parse(story.published)) || seen.has(story.url)) return false;
     seen.add(story.url);
     return true;
