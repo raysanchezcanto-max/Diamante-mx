@@ -2,7 +2,7 @@ import { MLB_CLUBS, mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory"
 import { translateMlbTransaction } from "./mlbTransactionSpanish";
 import { translateBaseballText } from "./translateBaseball";
 import { isReportedMlbHeadline } from "./mlbNewsAttribution";
-import { officialMlbTradeSide, type MlbTradeDirection } from "./mlbNewsMovements";
+import { officialMlbTradeSide, isConfirmedMlbRelease, type MlbTradeDirection } from "./mlbNewsMovements";
 
 const API = "https://statsapi.mlb.com/api/v1";
 const mxDate = (date = new Date()) =>
@@ -97,6 +97,8 @@ export type MlbClubTransaction = {
   isConfirmedSigning: boolean;
   /** Reclamo de waivers que identifica explícitamente al equipo receptor. */
   isConfirmedWaiverClaim: boolean;
+  /** Liberación definitiva, no DFA, outright ni expiración de contrato. */
+  isConfirmedRelease: boolean;
   tradeDirection: MlbTradeDirection | null;
   tradeCounterpart: string | null;
 };
@@ -133,6 +135,7 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
       isConfirmedWaiverClaim: Boolean(player?.trim()) &&
         desc.toLowerCase().startsWith(club.name.toLowerCase() + " claimed ") &&
         /\boff waivers\b/i.test(desc),
+      isConfirmedRelease: isConfirmedMlbRelease(desc, club.name, player),
       tradeDirection: trade?.direction ?? null,
       tradeCounterpart: trade?.counterpart ?? null,
     } satisfies MlbClubTransaction];
