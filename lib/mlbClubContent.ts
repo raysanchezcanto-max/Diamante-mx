@@ -1,4 +1,4 @@
-import { mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory";
+import { MLB_CLUBS, mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory";
 import { translateMlbTransaction } from "./mlbTransactionSpanish";
 import { translateBaseballText } from "./translateBaseball";
 import { isReportedMlbHeadline } from "./mlbNewsAttribution";
@@ -115,7 +115,8 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
     const desc = typeof row?.description === "string" ? row.description.trim() : "";
     const player = typeof row?.person?.fullName === "string" ? row.person.fullName : null;
     // No inferir equipo receptor/origen por el lenguaje natural del texto.
-    const trade = player?.trim() ? officialMlbTradeSide(row, club.id) : null;
+    const trade = player?.trim()
+      ? officialMlbTradeSide({...row, description: desc}, club.id, player, MLB_CLUBS) : null;
     const translated = translateMlbTransaction(
       desc,
       String(row?.typeDesc ?? row?.type?.description ?? ""),
