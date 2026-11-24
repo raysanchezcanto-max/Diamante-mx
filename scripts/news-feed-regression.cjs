@@ -32,6 +32,47 @@ check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs"
 check(mlbSource.includes("isSourcedReport: isReportedMlbHeadline(title)"),
   "MLB source qualifier is recorded before translating the original RSS title");
 
+const {findVerifiedMlbSigning}=require("../lib/mlbNewsMovements.ts");
+const suterNews={
+  url:"https://www.mlb.com/yankees/news/brent-suter-yankees-contract",
+  originalTitle:"Yankees reach 1-year deal with lefty reliever Suter (source)",
+  date:"2026-11-24T08:00:00Z"
+};
+const suterOfficial={player:"Brent Suter",date:"2026-11-24",isConfirmedSigning:true};
+const hillNews={
+  url:"https://www.mlb.com/yankees/news/tim-hill-deal-with-yankees",
+  originalTitle:"Hill agrees to 1-year deal to return to Yankees (source)",
+  date:"2026-11-15T18:00:00Z"
+};
+check(findVerifiedMlbSigning(suterNews,[suterOfficial])?.player==="Brent Suter",
+  "Suter sourced report connects to same-player MLB signing on Nov 24");
+check(findVerifiedMlbSigning(hillNews,[{player:"Tim Hill",date:"2026-11-24",isConfirmedSigning:true}])?.player==="Tim Hill",
+  "Hill original report connects to same-player MLB signing nine days later");
+check(findVerifiedMlbSigning(suterNews,[{...suterOfficial,isConfirmedSigning:false}])===null,
+  "Unverified transactions or unrelated transaction types do not confirm a signing");
+check(findVerifiedMlbSigning(suterNews,[{...suterOfficial,player:"Brent Headrick"}])===null,
+  "Similar player name is not an official match");
+check(findVerifiedMlbSigning({...suterNews,originalTitle:"Yankees discuss bullpen options including Suter"},[suterOfficial])===null,
+  "A discussion article does not inherit confirmation from a signed player");
+check(findVerifiedMlbSigning({...suterNews,url:"https://example.com/yankees/news/brent-suter-contract"},[suterOfficial])===null,
+  "Non MLB.com articles are never certified by the MLB club merger");
+check(findVerifiedMlbSigning({...suterNews,date:null},[suterOfficial])===null,
+  "Undated articles do not acquire signing confirmations");
+check(findVerifiedMlbSigning({...suterNews,date:"2026-10-01T08:00:00Z"},[suterOfficial])===null,
+  "Old reports do not link to unrelated future signing cycles");
+check(findVerifiedMlbSigning(suterNews,[suterOfficial,suterOfficial])===null,
+  "Ambiguous multiple official transactions are not assigned speculatively");
+check(findVerifiedMlbSigning({...suterNews,url:"https://www.mlb.com/yankees/news/suter-joins-team"},
+  [suterOfficial])===null,
+  "A surname alone in the link cannot validate a person");
+check(findVerifiedMlbSigning({...suterNews,originalTitle:"Yankees sign pitcher Jones"},
+  [suterOfficial])===null,
+  "A different player in the headline is never associated by URL alone");
+check(mlbSource.includes("originalTitle: title")&&
+  mlbSource.includes("isConfirmedSigning: Boolean(player?.trim())"),
+  "MLB RSS keeps the original headline and StatsAPI marks explicit signatures only");
+
+
 check(mlbSource.includes("return title;") && !mlbSource.includes('"Actualidad de " + clubName'),
   "MLB preserves real official headlines if translation is unavailable");
 const lmbSource=read("lib/lmbClubContent.ts");
@@ -83,6 +124,15 @@ check(reportsFor([],new Date("2026-11-23T12:00:00Z")).length===0,
 check(reportsFor([],new Date("2026-12-06T12:00:00Z")).length===0,"Expired report is not presented as current");
 check(lmbReportsInReview("diablos-rojos",[],onDate).length===0,"Report never leaks to another LMB team");
 const mlbPage=read("app/equipos/mlb/[id]/page.tsx");
+check(mlbPage.includes('(view === "movimientos" || view === "resumen") ? getMlbClubTransactions(club)') &&
+  mlbPage.includes("findVerifiedMlbSigning(news.items[0], transactions.items)") &&
+  mlbPage.includes("findVerifiedMlbSigning(story, transactions.items)"),
+  "News reconciliation uses official StatsAPI in summary featured and secondary cards");
+check(mlbPage.includes("MOVIMIENTO REGISTRADO · MLB") &&
+  mlbPage.includes("CONTRATACIÓN REGISTRADA · MLB") &&
+  mlbPage.includes("El registro verifica el movimiento, no necesariamente las condiciones"),
+  "MLB news clearly limits proof to the official transaction, not the article's deal terms");
+
 check(mlbPage.includes("REPORTE PERIODÍSTICO · MLB.COM")&&
   mlbPage.includes("REPORTE · MLB.COM")&&
   mlbPage.includes("no implica confirmación oficial del club."),
