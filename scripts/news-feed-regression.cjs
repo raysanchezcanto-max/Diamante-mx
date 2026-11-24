@@ -69,6 +69,13 @@ check(mlbSource.includes('desc.toLowerCase().startsWith(club.name.toLowerCase() 
   "Waiver record must identify the receiving MLB club and explicit off-waivers operation");
 check(findVerifiedMlbSigning(suterNews,[suterOfficial])?.player==="Brent Suter",
   "Suter sourced report connects to same-player MLB signing on Nov 24");
+check(findVerifiedMlbSigning({...suterNews,originalTitle:"Could Yankees sign Brent Suter?"},[suterOfficial])===null,
+  "Question about a future signing is not retroactively certified");
+check(findVerifiedMlbSigning({...suterNews,originalTitle:"Yankees might sign Brent Suter"},[suterOfficial])===null,
+  "Speculative MLB signing language is not treated as a signed report");
+check(findVerifiedMlbSigning({...suterNews,originalTitle:"Brent Suter returns to New York"},[suterOfficial])===null,
+  "Ambiguous return headline does not prove a new signing");
+
 check(findVerifiedMlbSigning(hillNews,[{player:"Tim Hill",date:"2026-11-24",isConfirmedSigning:true}])?.player==="Tim Hill",
   "Hill original report connects to same-player MLB signing nine days later");
 check(findVerifiedMlbSigning(suterNews,[{...suterOfficial,isConfirmedSigning:false}])===null,
