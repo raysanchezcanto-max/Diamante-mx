@@ -2,6 +2,7 @@ import { mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory";
 import { translateMlbTransaction } from "./mlbTransactionSpanish";
 import { translateBaseballText } from "./translateBaseball";
 import { isReportedMlbHeadline } from "./mlbNewsAttribution";
+import { officialMlbTradeSide, type MlbTradeDirection } from "./mlbNewsMovements";
 
 const API = "https://statsapi.mlb.com/api/v1";
 const mxDate = (date = new Date()) =>
@@ -96,6 +97,8 @@ export type MlbClubTransaction = {
   isConfirmedSigning: boolean;
   /** Reclamo de waivers que identifica explícitamente al equipo receptor. */
   isConfirmedWaiverClaim: boolean;
+  tradeDirection: MlbTradeDirection | null;
+  tradeCounterpart: string | null;
 };
 export type MlbClubTransactions = {
   sourceStatus: "connected" | "unavailable"; items: MlbClubTransaction[];
@@ -111,6 +114,8 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return [];
     const desc = typeof row?.description === "string" ? row.description.trim() : "";
     const player = typeof row?.person?.fullName === "string" ? row.person.fullName : null;
+    // No inferir equipo receptor/origen por el lenguaje natural del texto.
+    const trade = player?.trim() ? officialMlbTradeSide(row, club.id) : null;
     const translated = translateMlbTransaction(
       desc,
       String(row?.typeDesc ?? row?.type?.description ?? ""),
@@ -127,6 +132,8 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
       isConfirmedWaiverClaim: Boolean(player?.trim()) &&
         desc.toLowerCase().startsWith(club.name.toLowerCase() + " claimed ") &&
         /\boff waivers\b/i.test(desc),
+      tradeDirection: trade?.direction ?? null,
+      tradeCounterpart: trade?.counterpart ?? null,
     } satisfies MlbClubTransaction];
   });
   // StatsAPI puede incluir la misma operación como registro general y como
