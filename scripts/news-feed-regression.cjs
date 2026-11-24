@@ -59,8 +59,12 @@ check(fallback(rawRoxby,112,"Joey Bart")===null,
   "One multi-player article must not attribute Roxby's trade to claimed player Bart");
 check(fallback({...rawRoxby,description:"Nationals traded Roxby to Cubs."},112,"Braxton Roxby")===null,
   "Fallback rejects abbreviated team/player descriptions");
-check(fallback({...rawRoxby,typeCode:"TR"},112,"Braxton Roxby")===null,
-  "Fallback requires actual TE transaction code");
+check(fallback({...rawRoxby,typeCode:"TR"},112,"Braxton Roxby")?.direction==="received",
+  "A different StatsAPI code can be accepted only with an unambiguous source trade description");
+check(fallback({...rawRoxby,typeCode:"TR",description:"Washington Nationals transferred RHP Braxton Roxby to Chicago Cubs for cash."},112,"Braxton Roxby")===null,
+  "A transfer sentence is never mistaken for an MLB trade");
+check(fallback({...rawRoxby,typeCode:"TR",description:"RHP Braxton Roxby arrived in Chicago Cubs."},112,"Braxton Roxby")===null,
+  "Unstructured text without explicit source and recipient remains unconfirmed");
 check(fallback({...rawRoxby,fromTeam:{id:119,name:"Los Angeles Dodgers"}},112,"Braxton Roxby")===null,
   "Fallback rejects partial structured origin contradicting source description");
 const rawLewis={
