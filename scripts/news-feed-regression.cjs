@@ -32,7 +32,7 @@ check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs"
 check(mlbSource.includes("isSourcedReport: isReportedMlbHeadline(title)"),
   "MLB source qualifier is recorded before translating the original RSS title");
 
-const {findVerifiedMlbSigning}=require("../lib/mlbNewsMovements.ts");
+const {findVerifiedMlbSigning,findVerifiedMlbWaiverClaim}=require("../lib/mlbNewsMovements.ts");
 const suterNews={
   url:"https://www.mlb.com/yankees/news/brent-suter-yankees-contract",
   originalTitle:"Yankees reach 1-year deal with lefty reliever Suter (source)",
@@ -44,6 +44,29 @@ const hillNews={
   originalTitle:"Hill agrees to 1-year deal to return to Yankees (source)",
   date:"2026-11-15T18:00:00Z"
 };
+const bartNews={
+  url:"https://www.mlb.com/cubs/news/joey-bart-deal-with-cubs",
+  originalTitle:"Cubs add C Bart off waivers, trade for RHP Roxby in flurry of moves",
+  date:"2026-11-21T10:00:00Z"
+};
+const bartOfficial={player:"Joey Bart",date:"2026-11-20",isConfirmedSigning:false,isConfirmedWaiverClaim:true};
+check(findVerifiedMlbWaiverClaim(bartNews,[bartOfficial])?.player==="Joey Bart",
+  "Cubs Joey Bart article links to his MLB waiver claim on Nov 20");
+check(findVerifiedMlbWaiverClaim(bartNews,[{...bartOfficial,isConfirmedWaiverClaim:false}])===null,
+  "Cubs does not infer a waiver claim from the news alone");
+check(findVerifiedMlbWaiverClaim(bartNews,[{...bartOfficial,player:"Braxton Roxby"}])===null,
+  "Cubs multi-player article never certifies unrelated Roxby as waiver addition");
+check(findVerifiedMlbWaiverClaim({...bartNews,originalTitle:"Could Cubs add Bart off waivers?"},[bartOfficial])===null,
+  "Speculative waiver headline cannot be marked as recorded movement");
+check(findVerifiedMlbWaiverClaim({...bartNews,date:"2026-11-01T12:00:00Z"},[bartOfficial])===null,
+  "Waiver articles older than five days cannot be connected");
+check(findVerifiedMlbWaiverClaim({...bartNews,url:"https://www.mlb.com/cubs/news/bart-roxby-moves"},[bartOfficial])===null,
+  "Waiver link needs full official player name in article slug");
+check(findVerifiedMlbSigning(bartNews,[{...bartOfficial,isConfirmedSigning:true}])===null,
+  "Cubs Bart waiver report is not mislabeled a free agent signing");
+check(mlbSource.includes('desc.toLowerCase().startsWith(club.name.toLowerCase() + " claimed ")')&&
+  mlbSource.includes('/\\boff waivers\\b/i.test(desc)'),
+  "Waiver record must identify the receiving MLB club and explicit off-waivers operation");
 check(findVerifiedMlbSigning(suterNews,[suterOfficial])?.player==="Brent Suter",
   "Suter sourced report connects to same-player MLB signing on Nov 24");
 check(findVerifiedMlbSigning(hillNews,[{player:"Tim Hill",date:"2026-11-24",isConfirmedSigning:true}])?.player==="Tim Hill",
@@ -128,6 +151,11 @@ check(mlbPage.includes('(view === "movimientos" || view === "resumen") ? getMlbC
   mlbPage.includes("findVerifiedMlbSigning(news.items[0], transactions.items)") &&
   mlbPage.includes("findVerifiedMlbSigning(story, transactions.items)"),
   "News reconciliation uses official StatsAPI in summary featured and secondary cards");
+check(mlbPage.includes("RECLAMO DE WAIVERS REGISTRADO · MLB") &&
+  mlbPage.includes("INCORPORACIÓN POR WAIVERS · MLB") &&
+  mlbPage.includes("findVerifiedMlbWaiverClaim(story, transactions.items)") &&
+  mlbPage.includes("findVerifiedMlbWaiverClaim(news.items[0], transactions.items)"),
+  "Waiver labels appear only when StatsAPI corroborates featured or secondary MLB news");
 check(mlbPage.includes("MOVIMIENTO REGISTRADO · MLB") &&
   mlbPage.includes("CONTRATACIÓN REGISTRADA · MLB") &&
   mlbPage.includes("El registro verifica el movimiento, no necesariamente las condiciones"),
