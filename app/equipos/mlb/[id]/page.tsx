@@ -27,7 +27,7 @@ type PageProps = {
 };
 const views: LmbClubView[] = ["resumen", "estadisticas", "plantilla", "movimientos", "grandes-ligas", "historia"];
 const storyDateLabel = (iso: string | null): string => iso
-  ? new Intl.DateTimeFormat("es-MX", {day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(iso))
+  ? new Intl.DateTimeFormat("es-MX", {day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(iso)) + " (RSS)"
   : "Fecha no indicada";
 const dateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
   timeZone: "America/Mexico_City", day: "numeric", month: "long", year: "numeric",
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Pick<PageProps, "params">): P
   return {
     title: club ? club.name + " | Equipos MLB | Diamante MX" : "Equipos MLB | Diamante MX",
     description: club
-      ? "Noticias oficiales, plantilla, movimientos, historia y estadísticas de " + club.name + "."
+      ? "Noticias y reportes de MLB.com, plantilla, movimientos, historia y estadísticas de " + club.name + "."
       : "Clubes de Grandes Ligas",
   };
 }
@@ -193,7 +193,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                 <h2>{COPY.summary.newsTitle}</h2></div>
             </div>
             <p className="clubSmallNote">{news?.items.length
-              ? "Titulares publicados en MLB.com sobre " + club.name + ". Se actualizan aproximadamente cada 30 minutos; los reportes atribuidos a fuentes no equivalen a anuncios del club."
+              ? "Titulares publicados en MLB.com sobre " + club.name + ". Las fechas corresponden al canal RSS y pueden diferir de las del artículo. Se actualizan aproximadamente cada 30 minutos; los reportes atribuidos a fuentes no equivalen a anuncios del club."
               : "No se recibieron artículos verificables de MLB.com en esta consulta."}</p>
             {secondaryNews.length ? <div className="clubNewsGrid">
               {secondaryNews.map(story => <a href={story.url}
