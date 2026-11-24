@@ -355,7 +355,17 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               {logo && <img src={logo} alt="" width={53} height={53}/>}
               <div>{movementPlayerTitle(item.player,item.description||"")&&<h3>{movementPlayerTitle(item.player,item.description||"")}</h3>}
                 {q?.estilo!=="original"?<MovementGeminiDetails text={item.description || item.label}/>:<p>{item.description || item.label}</p>}
-                {transfer&&<div className="clubMovementDirection"><span>{transfer.label}</span>{q?.estilo!=="original"&&<MovementCounterpartLogo league="MLB" name={transfer.otherClub}/>}<strong>{transfer.otherClub}</strong></div>}
+                {item.tradeDirection ? <div className="clubMovementDirection">
+                  <span>{item.tradeDirection === "received" ? "RECIBIDO EN INTERCAMBIO" : "CEDIDO EN INTERCAMBIO"}</span>
+                  {item.tradeCounterpart && <>
+                    {q?.estilo !== "original" && <MovementCounterpartLogo league="MLB" name={item.tradeCounterpart}/>}
+                    <strong>{item.tradeCounterpart}</strong>
+                  </>}
+                </div> : transfer && <div className="clubMovementDirection">
+                  <span>{transfer.label}</span>
+                  {q?.estilo !== "original" && <MovementCounterpartLogo league="MLB" name={transfer.otherClub}/>}
+                  <strong>{transfer.otherClub}</strong>
+                </div>}
                 <a href={official + "/roster/transactions"} target="_blank"
                   rel="noopener noreferrer">Consultar fuente oficial MLB ↗</a>
               </div>
