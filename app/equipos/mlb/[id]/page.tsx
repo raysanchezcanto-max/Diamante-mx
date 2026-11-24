@@ -17,6 +17,7 @@ import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
 import { mlbTransferPresentation } from "@/lib/movementTransferPresentation";
+import { findVerifiedMlbSigning } from "@/lib/mlbNewsMovements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 
@@ -29,6 +30,9 @@ const views: LmbClubView[] = ["resumen", "estadisticas", "plantilla", "movimient
 const storyDateLabel = (iso: string | null): string => iso
   ? new Intl.DateTimeFormat("es-MX", {day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(iso)) + " (RSS)"
   : "Fecha no indicada";
+const movementDateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
+  timeZone: "UTC", day: "numeric", month: "short", year: "numeric",
+}).format(new Date(value + "T12:00:00Z"));
 const dateLabel = (value: string) => new Intl.DateTimeFormat("es-MX", {
   timeZone: "America/Mexico_City", day: "numeric", month: "long", year: "numeric",
 }).format(new Date(value));
@@ -67,7 +71,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
     getMlbClubOverview(club),
     view === "resumen" ? getStandings() : Promise.resolve([]),
     view === "plantilla" ? getMlbClubRoster(club) : Promise.resolve(null),
-    view === "movimientos" ? getMlbClubTransactions(club) : Promise.resolve(null),
+    (view === "movimientos" || view === "resumen") ? getMlbClubTransactions(club) : Promise.resolve(null),
     view === "resumen" ? getMlbClubNextGame(club) : Promise.resolve(null),
     view === "estadisticas" ? getLatestClubSeasonStatistics("MLB", club.id, mexicoSeasonYear()) : Promise.resolve(null),
     view === "resumen" ? getMlbClubNews(club) : Promise.resolve(null),
@@ -83,6 +87,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   const videos = view === "resumen" ? getMlbClubVerifiedVideos(club.id) : [];
   // La noticia destacada ocupa el índice 0: nunca repetirla en las tarjetas.
   const secondaryNews = news?.items.slice(1, 4) ?? [];
+  const featuredSigning = news?.items[0] && transactions?.sourceStatus === "connected"
+    ? findVerifiedMlbSigning(news.items[0], transactions.items) : null;
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
   const opponent = nextGame
@@ -162,10 +168,16 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             <div className="clubFeatureContent">
               <span className="clubKicker">{news.items[0].isSourcedReport ? "REPORTE PERIODÍSTICO · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(news.items[0].date)}</span>
               <h2>{news.items[0].title}</h2>
-              <p>{news.items[0].isSourcedReport
-                 ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
-                 : "Noticia publicada por MLB.com sobre " + club.name + "; no necesariamente es un comunicado institucional."}
+              <p>{featuredSigning
+                 ? "MLB StatsAPI registra una contratación de " + featuredSigning.player +
+                   " el " + movementDateLabel(featuredSigning.date) +
+                   ". El registro verifica el movimiento, no necesariamente las condiciones mencionadas en el artículo."
+                 : news.items[0].isSourcedReport
+                   ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
+                   : "Noticia publicada por MLB.com sobre " + club.name + "; no necesariamente es un comunicado institucional."}
                 {!news.items[0].date && " MLB no indicó fecha verificable."}</p>
+              {featuredSigning && <a href={home + "?vista=movimientos"}
+                className="clubDirectoryDetailLink">MOVIMIENTO REGISTRADO · MLB · {movementDateLabel(featuredSigning.date)} ↗</a>}
               <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
                 Leer noticia en MLB ↗</a>
             </div>
@@ -196,11 +208,17 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               ? "Titulares publicados en MLB.com sobre " + club.name + ". Las fechas corresponden al canal RSS y pueden diferir de las del artículo. Se actualizan aproximadamente cada 30 minutos; los reportes atribuidos a fuentes no equivalen a anuncios del club."
               : "No se recibieron artículos verificables de MLB.com en esta consulta."}</p>
             {secondaryNews.length ? <div className="clubNewsGrid">
-              {secondaryNews.map(story => <a href={story.url}
-                className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
-                <span>{story.isSourcedReport ? "REPORTE · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(story.date)}</span><strong>{story.title}</strong>
-                <small>Leer en MLB.com ↗</small>
-              </a>)}
+              {secondaryNews.map(story => {
+                const signing = transactions?.sourceStatus === "connected"
+                  ? findVerifiedMlbSigning(story, transactions.items) : null;
+                return <a href={story.url} className="clubNewsCard" key={story.url}
+                  target="_blank" rel="noopener noreferrer">
+                  <span>{story.isSourcedReport ? "REPORTE · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(story.date)}</span>
+                  <strong>{story.title}</strong>
+                  {signing && <small>CONTRATACIÓN REGISTRADA · MLB · {movementDateLabel(signing.date)}</small>}
+                  <small>Leer en MLB.com ↗</small>
+                </a>;
+              })}
             </div> : <div className="clubDirectoryNotice">
               <p>{news?.items.length
                 ? "Por ahora solo hay una noticia disponible; ya aparece como destacada arriba."
