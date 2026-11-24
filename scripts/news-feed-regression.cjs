@@ -32,7 +32,7 @@ check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs"
 check(mlbSource.includes("isSourcedReport: isReportedMlbHeadline(title)"),
   "MLB source qualifier is recorded before translating the original RSS title");
 
-const {findVerifiedMlbSigning,findVerifiedMlbWaiverClaim,findVerifiedMlbTrade,officialMlbTradeSide}=require("../lib/mlbNewsMovements.ts");
+const {findVerifiedMlbSigning,findVerifiedMlbWaiverClaim,findVerifiedMlbTrade,officialMlbTradeSide,isConfirmedMlbRelease,findVerifiedMlbRelease}=require("../lib/mlbNewsMovements.ts");
 const recordTrade={
   typeCode:"TE",
   fromTeam:{id:142,name:"Minnesota Twins"},
@@ -142,6 +142,66 @@ check(mlbSource.includes("officialMlbTradeSide({...row, description: desc}, club
   mlbSource.includes("tradeDirection: trade?.direction ?? null") &&
   mlbSource.includes("tradeCounterpart: trade?.counterpart ?? null"),
   "Team trade directions come exclusively from structured MLB transaction fields");
+// Casos reales de registro MLB: los titulares/URLs de prueba son sintéticos
+// para no inventar que MLB haya publicado artículos dedicados a cada baja.
+const raysCut="Tampa Bay Rays released RHP Jesse Scholtens.";
+const oriolesCut="Baltimore Orioles released RF Rece Hinds.";
+check(isConfirmedMlbRelease(raysCut,"Tampa Bay Rays","Jesse Scholtens"),
+  "Rays explicitly released Jesse Scholtens on Nov 19");
+check(isConfirmedMlbRelease(oriolesCut,"Baltimore Orioles","Rece Hinds"),
+  "Orioles explicitly released Rece Hinds on Nov 17");
+check(!isConfirmedMlbRelease(raysCut,"Baltimore Orioles","Jesse Scholtens"),
+  "Release cannot be assigned to a different team");
+check(!isConfirmedMlbRelease(raysCut,"Tampa Bay Rays","Jesse Bolton"),
+  "A near-name may never inherit someone else's release");
+check(!isConfirmedMlbRelease("Toronto Blue Jays designated RHP Chase Lee for assignment.",
+  "Toronto Blue Jays","Chase Lee"),"DFA is not a final release");
+check(!isConfirmedMlbRelease("Detroit Tigers placed RHP Sawyer Gipson-Long on unconditional release waivers.",
+  "Detroit Tigers","Sawyer Gipson-Long"),"Release waivers alone are not final release");
+check(!isConfirmedMlbRelease("Detroit Tigers signed free agent RHP Sawyer Gipson-Long to a minor league contract.",
+  "Detroit Tigers","Sawyer Gipson-Long"),"Later minor league signing is not a release");
+check(!isConfirmedMlbRelease("Baltimore Orioles outrighted C Zach Morgan to Triple-A Norfolk.",
+  "Baltimore Orioles","Zach Morgan"),"Outright is not a release");
+check(!isConfirmedMlbRelease("Baltimore Orioles non-tendered RF Rece Hinds.",
+  "Baltimore Orioles","Rece Hinds"),"Non-tender is not automatically a recorded release");
+check(!isConfirmedMlbRelease("Baltimore Orioles released RF Rece Hinds and C Zach Morgan.",
+  "Baltimore Orioles","Rece Hinds"),"Multi-player release text is ambiguous");
+const hypotheticalRelease={
+  url:"https://www.mlb.com/rays/news/jesse-scholtens-released",
+  originalTitle:"Rays release Jesse Scholtens",
+  date:"2026-11-19T15:00:00Z",
+};
+const officialScholtens={
+  player:"Jesse Scholtens",date:"2026-11-19",isConfirmedSigning:false,
+  isConfirmedRelease:true
+};
+check(findVerifiedMlbRelease(hypotheticalRelease,[officialScholtens])?.player==="Jesse Scholtens",
+  "A hypothetical direct MLB release headline matches an official Rays transaction");
+check(findVerifiedMlbRelease({...hypotheticalRelease,originalTitle:"Rays may release Jesse Scholtens"},
+  [officialScholtens])===null,"Possible future release cannot gain confirmed status");
+check(findVerifiedMlbRelease({...hypotheticalRelease,originalTitle:"Could Rays release Jesse Scholtens?"},
+  [officialScholtens])===null,"Interrogative release headline is not retrospectively certified");
+check(findVerifiedMlbRelease({...hypotheticalRelease,originalTitle:"Rays place Jesse Scholtens on release waivers"},
+  [officialScholtens])===null,"Release-waivers headline is not definitive liberation");
+check(findVerifiedMlbRelease({...hypotheticalRelease,originalTitle:"Rays designate Jesse Scholtens for assignment (DFA)"},
+  [officialScholtens])===null,"DFA article never receives a release badge");
+check(findVerifiedMlbRelease({...hypotheticalRelease,originalTitle:"Rays release Joe Smith"},
+  [officialScholtens])===null,"Different player in headline cannot receive badge");
+check(findVerifiedMlbRelease({...hypotheticalRelease,url:"https://www.mlb.com/rays/news/scholtens-released"},
+  [officialScholtens])===null,"Release headline URL must contain full player name");
+check(findVerifiedMlbRelease({...hypotheticalRelease,url:"https://example.com/rays/news/jesse-scholtens-released"},
+  [officialScholtens])===null,"Outside domain is not verified as an MLB.com article");
+check(findVerifiedMlbRelease({...hypotheticalRelease,date:null},
+  [officialScholtens])===null,"Undated release news cannot be automatically matched");
+check(findVerifiedMlbRelease({...hypotheticalRelease,date:"2026-11-01T15:00:00Z"},
+  [officialScholtens])===null,"News outside the seven-day window does not link to an old release");
+check(findVerifiedMlbRelease(hypotheticalRelease,[{...officialScholtens,isConfirmedRelease:false}])===null,
+  "A generic low-confidence movement cannot confirm a release");
+check(findVerifiedMlbRelease(hypotheticalRelease,[officialScholtens,officialScholtens])===null,
+  "Duplicate candidate releases must be treated as ambiguous");
+check(mlbSource.includes("isConfirmedRelease: isConfirmedMlbRelease(desc, club.name, player)"),
+  "Only the team's original StatsAPI description can certify the release");
+
 const suterNews={
   url:"https://www.mlb.com/yankees/news/brent-suter-yankees-contract",
   originalTitle:"Yankees reach 1-year deal with lefty reliever Suter (source)",
@@ -267,6 +327,12 @@ check(mlbPage.includes('(view === "movimientos" || view === "resumen") ? getMlbC
   mlbPage.includes("findVerifiedMlbSigning(news.items[0], transactions.items)") &&
   mlbPage.includes("findVerifiedMlbSigning(story, transactions.items)"),
   "News reconciliation uses official StatsAPI in summary featured and secondary cards");
+check(mlbPage.includes("findVerifiedMlbRelease(news.items[0], transactions.items)") &&
+  mlbPage.includes("findVerifiedMlbRelease(story, transactions.items)") &&
+  mlbPage.includes("LIBERACIÓN REGISTRADA · MLB") &&
+  mlbPage.includes('item.isConfirmedRelease ? "LIBERACIÓN REGISTRADA" : item.label') &&
+  mlbPage.includes("La liberación está registrada; no se infiere"),
+  "MLB release badge is evidence-gated in news while release differs from DFA in movements");
 check(mlbPage.includes("findVerifiedMlbTrade(news.items[0], transactions.items)") &&
   mlbPage.includes("findVerifiedMlbTrade(story, transactions.items)") &&
   mlbPage.includes("INTERCAMBIO REGISTRADO · MLB") &&
