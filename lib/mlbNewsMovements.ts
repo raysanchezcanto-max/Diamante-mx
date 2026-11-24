@@ -19,7 +19,7 @@ const normalize = (value: string): string => value.normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "").toLowerCase()
   .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-const signingContext = /\b(?:agreement|agrees?|agreed|deal|contract|signs?|signed|signing|re-?signs?|returns?|returning|acuerdo|contrato|firma|firmo|contratacion|pacta)\b/i;
+const signingContext = /\b(?:agreement|agrees?|agreed|deal|contract|signs?|signed|signing|re-?signs?|acuerdo|contrato|firma|firmo|contratacion|pacta)\b/i;
 // El reclamo en waivers es una incorporación, NO una firma de agente libre.
 const waiverContext = /\b(?:claimed|claims?|claiming)\b.*\bwaivers?\b|\boff waivers?\b/i;
 const speculativeContext = /\b(?:could|might|may|perhaps|potential|possibly|possible|rumor|rumour|podria|podrian|quizas|posible|rumor)\b/i;
@@ -37,9 +37,11 @@ function matchOfficialMovement(
   if (url.protocol !== "https:" || url.hostname !== "www.mlb.com" ||
       !url.pathname.includes("/news/")) return null;
   const headline = normalize(story.originalTitle).replace(/-/g, " ");
+  // Titulares en forma de hipótesis no pueden recibir una marca automática,
+  // ni siquiera cuando existe después un registro real de ese jugador.
+  if (speculativeContext.test(headline) || /[¿?]/.test(story.originalTitle)) return null;
   if (kind === "signing" ? !signingContext.test(headline) :
-      !waiverContext.test(headline) || speculativeContext.test(headline) ||
-      /[¿?]/.test(story.originalTitle)) return null;
+      !waiverContext.test(headline)) return null;
 
   const normalizedHeadline = "-" + normalize(story.originalTitle) + "-";
   const slug = "-" + normalize(url.pathname.split("/").filter(Boolean).at(-1) ?? "") + "-";
