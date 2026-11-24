@@ -99,12 +99,17 @@ export function officialMlbTradeSide(
   player?: string | null,
   knownClubs: readonly KnownMlbClub[] = [],
 ): OfficialMlbTradeSide | null {
-  if (record.typeCode !== "TE" || !Number.isInteger(clubId)) return null;
+  if (!Number.isInteger(clubId)) return null;
+  // Algunas respuestas no identifican un intercambio con el código TE.
+  // Solo aceptamos otro código cuando el texto oficial identifica
+  // literalmente «Club A traded [jugador] to Club B».
+  const codedTrade = record.typeCode === "TE";
+  if (!codedTrade && !/\btraded\b/i.test(record.description ?? "")) return null;
   const from = Number(record.fromTeam?.id);
   const to = Number(record.toTeam?.id);
   const validFrom = Number.isInteger(from) && from > 0;
   const validTo = Number.isInteger(to) && to > 0;
-  if (validFrom && validTo) {
+  if (codedTrade && validFrom && validTo) {
     if (from === to) return null;
     if (to === clubId) {
       return {direction: "received", counterpart: record.fromTeam?.name?.trim() || null};
