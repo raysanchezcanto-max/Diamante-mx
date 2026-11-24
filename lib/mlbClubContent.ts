@@ -92,6 +92,8 @@ export async function getMlbClubRoster(club: MlbClub): Promise<MlbClubRoster> {
 
 export type MlbClubTransaction = {
   key: string; date: string; label: string; description: string; player: string | null;
+  /** Alta de firma explícita, reconocida desde la descripción de StatsAPI. */
+  isConfirmedSigning: boolean;
 };
 export type MlbClubTransactions = {
   sourceStatus: "connected" | "unavailable"; items: MlbClubTransaction[];
@@ -118,6 +120,7 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
       label: translated.label,
       description: translated.description,
       player,
+      isConfirmedSigning: Boolean(player?.trim()) && /\bsigned\b/i.test(desc),
     } satisfies MlbClubTransaction];
   });
   // StatsAPI puede incluir la misma operación como registro general y como
@@ -219,7 +222,11 @@ export async function getMlbClubSeasonStats(club: MlbClub): Promise<MlbClubSeaso
 }
 
 /** Titulares publicados en el canal del club en MLB.com (incluye reportes). */
-export type MlbClubNewsStory = { title: string; url: string; date: string | null; isSourcedReport: boolean };
+export type MlbClubNewsStory = {
+  title: string; url: string; date: string | null; isSourcedReport: boolean;
+  /** Titular sin traducir: permite relacionar con el nombre del registro MLB. */
+  originalTitle: string;
+};
 export type MlbClubNews = {
   sourceStatus: "connected" | "unavailable";
   items: MlbClubNewsStory[];
@@ -274,7 +281,7 @@ export async function getMlbClubNews(club: MlbClub): Promise<MlbClubNews> {
       const published = rssItemField(fragment, "pubDate");
       if (!title || !url.startsWith("https://www.mlb.com/") || seen.has(url)) continue;
       seen.add(url);
-      items.push({ title, url, isSourcedReport: isReportedMlbHeadline(title),
+      items.push({ title, originalTitle: title, url, isSourcedReport: isReportedMlbHeadline(title),
         date: Number.isFinite(Date.parse(published))
           ? new Date(published).toISOString() : null });
       // Revisar todas las entradas recibidas antes de elegir las seis más recientes.
