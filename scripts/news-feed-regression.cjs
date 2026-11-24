@@ -234,6 +234,12 @@ check(mlbPage.includes("findVerifiedMlbTrade(news.items[0], transactions.items)"
   mlbPage.includes('featuredTrade.direction === "received" ? "RECIBIDO" : "CEDIDO"') &&
   mlbPage.includes('trade.direction === "received" ? "RECIBIDO" : "CEDIDO"'),
   "All MLB club cards label trades by verified received/sent direction");
+check(mlbPage.includes('item.tradeDirection === "received" ? "RECIBIDO EN INTERCAMBIO" : "CEDIDO EN INTERCAMBIO"') &&
+  mlbPage.includes('name={item.tradeCounterpart}') &&
+  mlbPage.includes('<strong>{item.tradeCounterpart}</strong>') &&
+  mlbPage.includes("item.tradeDirection ? <div"),
+  "MLB Movimientos uses StatsAPI from/to direction and counterpart instead of inferring it from translated prose");
+
 check(mlbPage.includes("RECLAMO DE WAIVERS REGISTRADO · MLB") &&
   mlbPage.includes("INCORPORACIÓN POR WAIVERS · MLB") &&
   mlbPage.includes("findVerifiedMlbWaiverClaim(story, transactions.items)") &&
