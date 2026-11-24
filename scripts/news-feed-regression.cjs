@@ -38,6 +38,41 @@ const recordTrade={
   fromTeam:{id:142,name:"Minnesota Twins"},
   toTeam:{id:119,name:"Los Angeles Dodgers"}
 };
+const fallbackClubs=[
+  {id:112,name:"Chicago Cubs"},
+  {id:120,name:"Washington Nationals"},
+  {id:119,name:"Los Angeles Dodgers"},
+  {id:142,name:"Minnesota Twins"}
+];
+const rawRoxby={
+  typeCode:"TE",
+  description:"Washington Nationals traded RHP Braxton Roxby to Chicago Cubs for cash."
+};
+const fallback=(record,clubId,player)=>officialMlbTradeSide(record,clubId,player,fallbackClubs);
+check(fallback(rawRoxby,112,"Braxton Roxby")?.direction==="received",
+  "Cubs receives Roxby when official TE omits fromTeam/toTeam but description identifies both clubs");
+check(fallback(rawRoxby,120,"Braxton Roxby")?.direction==="sent",
+  "Nationals sends Roxby when the same official transaction names the sender");
+check(fallback(rawRoxby,142,"Braxton Roxby")===null,
+  "A third club cannot inherit a clear text-only trade");
+check(fallback(rawRoxby,112,"Joey Bart")===null,
+  "One multi-player article must not attribute Roxby's trade to claimed player Bart");
+check(fallback({...rawRoxby,description:"Nationals traded Roxby to Cubs."},112,"Braxton Roxby")===null,
+  "Fallback rejects abbreviated team/player descriptions");
+check(fallback({...rawRoxby,typeCode:"TR"},112,"Braxton Roxby")===null,
+  "Fallback requires actual TE transaction code");
+check(fallback({...rawRoxby,fromTeam:{id:119,name:"Los Angeles Dodgers"}},112,"Braxton Roxby")===null,
+  "Fallback rejects partial structured origin contradicting source description");
+const rawLewis={
+  typeCode:"TE",
+  description:"Minnesota Twins traded 3B Royce Lewis to Los Angeles Dodgers for RHP Bobby Miller and C Francisco Espinoza."
+};
+check(fallback(rawLewis,119,"Royce Lewis")?.direction==="received",
+  "Structured-free Twins-to-Dodgers trade identifies Lewis as received");
+check(fallback(rawLewis,142,"Royce Lewis")?.direction==="sent",
+  "Structured-free Twins-to-Dodgers trade identifies Lewis as sent");
+check(fallback(rawLewis,119,"Bobby Miller")===null,
+  "Text-only direction parser refuses a trade counterpart listed only after 'for'");
 check(officialMlbTradeSide(recordTrade,119)?.direction==="received"&&
   officialMlbTradeSide(recordTrade,119)?.counterpart==="Minnesota Twins",
   "MLB structured team IDs classify Dodgers receiving Royce Lewis");
@@ -99,7 +134,7 @@ const roxbyIncoming={
 };
 check(findVerifiedMlbTrade(roxbyArticle,[roxbyIncoming])===null,
   "Multiple-player Cubs article does not certify Roxby when full name is absent from URL");
-check(mlbSource.includes("officialMlbTradeSide(row, club.id)") &&
+check(mlbSource.includes("officialMlbTradeSide({...row, description: desc}, club.id, player, MLB_CLUBS)") &&
   mlbSource.includes("tradeDirection: trade?.direction ?? null") &&
   mlbSource.includes("tradeCounterpart: trade?.counterpart ?? null"),
   "Team trade directions come exclusively from structured MLB transaction fields");
