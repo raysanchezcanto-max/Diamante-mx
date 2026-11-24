@@ -94,6 +94,8 @@ export type MlbClubTransaction = {
   key: string; date: string; label: string; description: string; player: string | null;
   /** Alta de firma explícita, reconocida desde la descripción de StatsAPI. */
   isConfirmedSigning: boolean;
+  /** Reclamo de waivers que identifica explícitamente al equipo receptor. */
+  isConfirmedWaiverClaim: boolean;
 };
 export type MlbClubTransactions = {
   sourceStatus: "connected" | "unavailable"; items: MlbClubTransaction[];
@@ -120,7 +122,11 @@ export async function getMlbClubTransactions(club: MlbClub): Promise<MlbClubTran
       label: translated.label,
       description: translated.description,
       player,
-      isConfirmedSigning: Boolean(player?.trim()) && /\bsigned\b/i.test(desc),
+      isConfirmedSigning: Boolean(player?.trim()) &&
+        desc.toLowerCase().startsWith(club.name.toLowerCase() + " signed "),
+      isConfirmedWaiverClaim: Boolean(player?.trim()) &&
+        desc.toLowerCase().startsWith(club.name.toLowerCase() + " claimed ") &&
+        /\boff waivers\b/i.test(desc),
     } satisfies MlbClubTransaction];
   });
   // StatsAPI puede incluir la misma operación como registro general y como
