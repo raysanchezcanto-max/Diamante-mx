@@ -180,21 +180,21 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                 Leer nota oficial ↗</a>
             </div>
           </article> : <section className="clubDirectoryNotice" aria-label={"Noticias de " + club.name}>
-            <span className="clubKicker">FUENTE DE NOTICIAS · MLB</span>
-            <h2>Publicaciones oficiales</h2>
-            <p>Consulta la actualidad de {club.name} en su portal oficial.
-              Todavía no hay artículos individuales verificados para mostrar dentro de Diamante MX.</p>
+            <span className="clubKicker">FUENTE DE NOTICIAS · MLB.COM</span>
+            <h2>Publicaciones de MLB.com</h2>
+            <p>Consulta las noticias sobre {club.name} publicadas en MLB.com.
+              Todavía no hay artículos individuales verificables para mostrar dentro de Diamante MX.</p>
             <a href={official + "/news"} target="_blank" rel="noopener noreferrer">
               Noticias del equipo en MLB ↗</a>
           </section>}
           <section className="clubEditorialSection">
             <div className="clubSectionTitle">
-              <div><span className="clubKicker">NOTICIAS · FUENTE MLB</span>
+              <div><span className="clubKicker">NOTICIAS · MLB.COM</span>
                 <h2>{COPY.summary.newsTitle}</h2></div>
             </div>
             <p className="clubSmallNote">{news?.items.length
-              ? "Titulares del canal oficial de " + club.name + " en MLB. Se actualizan aproximadamente cada 30 minutos."
-              : "No se recibieron artículos verificables del canal oficial en esta consulta."}</p>
+              ? "Titulares publicados en MLB.com sobre " + club.name + ". Se actualizan aproximadamente cada 30 minutos; los reportes atribuidos a fuentes no equivalen a anuncios del club."
+              : "No se recibieron artículos verificables de MLB.com en esta consulta."}</p>
             {news?.items.length ? <div className="clubNewsGrid">
               {secondaryNews.map(story => <a href={story.url}
                 className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
