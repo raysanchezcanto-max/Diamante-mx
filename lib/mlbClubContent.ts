@@ -19,6 +19,7 @@ async function getJson(path: string, seconds = 1800): Promise<any | null> {
   } catch { return null; }
 }
 
+import { isReportedMlbHeadline } from "./mlbNewsAttribution";
 export type MlbClubOverview = {
   name: string; division: string; league: string;
   stadium: string | null; capacity: number | null; firstYear: string | null;
@@ -217,8 +218,8 @@ export async function getMlbClubSeasonStats(club: MlbClub): Promise<MlbClubSeaso
     ?? await officialSeasonStats(club.id, current - 1);
 }
 
-/** Titulares propios de cada club publicados por su canal RSS en MLB.com. */
-export type MlbClubNewsStory = { title: string; url: string; date: string | null };
+/** Titulares publicados en el canal del club en MLB.com (incluye reportes). */
+export type MlbClubNewsStory = { title: string; url: string; date: string | null; isSourcedReport: boolean };
 export type MlbClubNews = {
   sourceStatus: "connected" | "unavailable";
   items: MlbClubNewsStory[];
@@ -273,8 +274,9 @@ export async function getMlbClubNews(club: MlbClub): Promise<MlbClubNews> {
       const published = rssItemField(fragment, "pubDate");
       if (!title || !url.startsWith("https://www.mlb.com/") || seen.has(url)) continue;
       seen.add(url);
-      items.push({ title, url, date: Number.isFinite(Date.parse(published))
-        ? new Date(published).toISOString() : null });
+      items.push({ title, url, isSourcedReport: isReportedMlbHeadline(title),
+        date: Number.isFinite(Date.parse(published))
+          ? new Date(published).toISOString() : null });
       // Revisar todas las entradas recibidas antes de elegir las seis más recientes.
     }
     // La fuente no siempre emite el RSS en orden cronológico; no aparentar actualidad.
