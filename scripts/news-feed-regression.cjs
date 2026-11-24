@@ -34,7 +34,22 @@ check(tagged.has(5482),"LMP RSS tag for Algodoneros Guasave");
 check(lmpSource.includes("stories.sort((a,b)=>b.published.localeCompare(a.published)"),"LMP articles sorted by official publication date");
 check(lmpSource.includes("seen.has(story.url)"),"LMP RSS duplicate URL protection");
 const guasave=read("lib/lmpAlgodonerosContent.ts");
-check(guasave.includes("getLmpDirectoryNews(5482)")&&guasave.includes("teamNews, ...leagueNews"),"Guasave combines club and league news");
+const {isRepublishedAlgodonerosNews}=require("../lib/algodonerosNewsDedupe.ts");
+const clubExample=[{title:"ALGODONEROS HACE ESTALLAR SU OFENSIVA PARA TRAERSE LA SERIE DE NAVOJOA",published:"2026-11-19T16:00:00Z"}];
+check(isRepublishedAlgodonerosNews(clubExample,{
+  title:"Algodoneros hace estallar su ofensiva para traerse la serie de Navojoa",
+  published:"2026-11-20T11:00:00Z"
+}),"Guasave removes a real club/LMP republication with one-day date difference");
+check(!isRepublishedAlgodonerosNews(clubExample,{
+  title:"Algodoneros y Venados cancelan su serie",
+  published:"2026-11-21T11:00:00Z"
+}),"Guasave preserves distinct official LMP articles");
+check(!isRepublishedAlgodonerosNews(clubExample,{
+  title:"Algodoneros hace estallar su ofensiva para traerse la serie de Navojoa",
+  published:"2026-12-21T11:00:00Z"
+}),"Guasave does not combine identical headlines posted a month apart");
+
+check(guasave.includes("getLmpDirectoryNews(5482)")&&guasave.includes("teamNews, ...leagueNews")&&guasave.includes("isRepublishedAlgodonerosNews(teamNews, story)"),"Guasave merges sources while removing republications");
 check(guasave.includes("sort((a,b)=>Date.parse(b.published)-Date.parse(a.published))"),"Guasave merged news sorted");
 const report=read("lib/lmbReportsInReview.ts");
 check(report.includes("validThrough")&&report.includes("officialTitles.some"),"Reports expire and disappear after official team publication");
