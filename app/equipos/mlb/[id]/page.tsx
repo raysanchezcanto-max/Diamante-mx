@@ -81,8 +81,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   const record = standings.find(s => s.teamId === club.id);
   const editorial = mlbEditorialHistory(club.id);
   const videos = view === "resumen" ? getMlbClubVerifiedVideos(club.id) : [];
-  const secondaryNews = news?.items.length
-    ? news.items.length > 1 ? news.items.slice(1, 4) : news.items : [];
+  // La noticia destacada ocupa el índice 0: nunca repetirla en las tarjetas.
+  const secondaryNews = news?.items.slice(1, 4) ?? [];
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
   const opponent = nextGame
@@ -195,16 +195,18 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
             <p className="clubSmallNote">{news?.items.length
               ? "Titulares publicados en MLB.com sobre " + club.name + ". Se actualizan aproximadamente cada 30 minutos; los reportes atribuidos a fuentes no equivalen a anuncios del club."
               : "No se recibieron artículos verificables de MLB.com en esta consulta."}</p>
-            {news?.items.length ? <div className="clubNewsGrid">
+            {secondaryNews.length ? <div className="clubNewsGrid">
               {secondaryNews.map(story => <a href={story.url}
                 className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                 <span>{story.isSourcedReport ? "REPORTE · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(story.date)}</span><strong>{story.title}</strong>
                 <small>Leer en MLB.com ↗</small>
               </a>)}
             </div> : <div className="clubDirectoryNotice">
-              <p>Consulta todas las publicaciones recientes en el portal del club.</p>
+              <p>{news?.items.length
+                ? "Por ahora solo hay una noticia disponible; ya aparece como destacada arriba."
+                : "Consulta las noticias disponibles en el portal del club."}</p>
               <a href={official + "/news"} target="_blank" rel="noopener noreferrer">
-                Noticias oficiales MLB ↗</a>
+                Ver más en MLB.com ↗</a>
             </div>}
           </section>
           <section className="clubEditorialSection" aria-label={"Videos relacionados con " + club.name}>
