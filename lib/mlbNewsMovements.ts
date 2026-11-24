@@ -123,7 +123,8 @@ export function findVerifiedMlbTrade(
   if (url.protocol !== "https:" || url.hostname !== "www.mlb.com" ||
       !url.pathname.includes("/news/")) return null;
   const headline = normalize(story.originalTitle).replace(/-/g, " ");
-  if (!tradeContext.test(headline) || speculativeContext.test(headline) ||
+  const tradeLanguage = tradeContext.test(headline) || /\bdeal\b.*\bto\b/.test(headline);
+  if (!tradeLanguage || speculativeContext.test(headline) ||
       /[¿?]/.test(story.originalTitle)) return null;
   const normalizedHeadline = "-" + normalize(story.originalTitle) + "-";
   const slug = "-" + normalize(url.pathname.split("/").filter(Boolean).at(-1) ?? "") + "-";
