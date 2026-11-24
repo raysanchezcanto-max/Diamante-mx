@@ -13,12 +13,25 @@ check(mlb.length===30,"30 clubs MLB");
 check(lmb.length===20,"20 clubs LMB");
 check(lmp.length===9,"9 directory clubs LMP plus Guasave");
 const mlbSource=read("lib/mlbClubContent.ts");
+const {isReportedMlbHeadline}=require("../lib/mlbNewsAttribution.ts");
+check(isReportedMlbHeadline("Yankees reach 1-year deal with Suter (source)"),
+  "MLB source-attributed Yankees signing story is a report");
+check(isReportedMlbHeadline("Hill agrees to 1-year deal (reports)"),
+  "MLB plural report attribution is recognized");
+check(!isReportedMlbHeadline("Yankees confirm official roster move"),
+  "MLB unqualified news is not labeled a sourced report");
+check(!isReportedMlbHeadline("Yankees improve source data for scouts"),
+  "MLB source word in headline is not a report qualifier");
+
 check(mlbSource.includes('mlbOfficialTeamUrl(club) + "/feeds/news/rss.xml"'),"MLB official club RSS");
 check(mlbSource.includes("items.sort((a, b)"),"MLB RSS sorted by publication date");
 check(!mlbSource.includes("if (items.length === 16) break;") &&
   mlbSource.indexOf("items.sort((a, b)") < mlbSource.indexOf("items.slice(0, 6)"),
   "MLB reads full RSS before selecting six newest headlines");
 check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs");
+check(mlbSource.includes("isSourcedReport: isReportedMlbHeadline(title)"),
+  "MLB source qualifier is recorded before translating the original RSS title");
+
 check(mlbSource.includes("return title;") && !mlbSource.includes('"Actualidad de " + clubName'),
   "MLB preserves real official headlines if translation is unavailable");
 const lmbSource=read("lib/lmbClubContent.ts");
@@ -66,6 +79,13 @@ check(reportsFor(["Yadier Molina es nombrado director técnico de Leones"]).leng
 check(reportsFor([],new Date("2026-12-06T12:00:00Z")).length===0,"Expired report is not presented as current");
 check(lmbReportsInReview("diablos-rojos",[],onDate).length===0,"Report never leaks to another LMB team");
 const mlbPage=read("app/equipos/mlb/[id]/page.tsx");
+check(mlbPage.includes("REPORTE PERIODÍSTICO · MLB.COM")&&
+  mlbPage.includes("REPORTE · MLB.COM")&&
+  mlbPage.includes("no implica confirmación oficial del club."),
+  "MLB featured and secondary news distinguish source reports from club announcements");
+check(!mlbPage.includes("NOTICIA OFICIAL · FUENTE MLB"),
+  "MLB news does not call press articles confirmed club news");
+
 check(mlbPage.includes("Fecha no indicada")&&mlbPage.includes("news.items[0].date")&&
   mlbPage.includes("MLB no indicó fecha verificable."),"MLB does not imply undated news is dated");
 const guasavePage=read("app/equipos/lmp/algodoneros/page.tsx");
