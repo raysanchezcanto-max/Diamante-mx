@@ -17,7 +17,7 @@ import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
 import { mlbTransferPresentation } from "@/lib/movementTransferPresentation";
-import { findVerifiedMlbSigning } from "@/lib/mlbNewsMovements";
+import { findVerifiedMlbSigning, findVerifiedMlbWaiverClaim } from "@/lib/mlbNewsMovements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 
@@ -89,6 +89,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
   const secondaryNews = news?.items.slice(1, 4) ?? [];
   const featuredSigning = news?.items[0] && transactions?.sourceStatus === "connected"
     ? findVerifiedMlbSigning(news.items[0], transactions.items) : null;
+  const featuredWaiverClaim = news?.items[0] && transactions?.sourceStatus === "connected"
+    ? findVerifiedMlbWaiverClaim(news.items[0], transactions.items) : null;
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
   const opponent = nextGame
@@ -172,12 +174,18 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                  ? "MLB StatsAPI registra una contratación de " + featuredSigning.player +
                    " el " + movementDateLabel(featuredSigning.date) +
                    ". El registro verifica el movimiento, no necesariamente las condiciones mencionadas en el artículo."
-                 : news.items[0].isSourcedReport
-                   ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
+                 : featuredWaiverClaim
+                   ? "MLB StatsAPI registra un reclamo de waivers de " + featuredWaiverClaim.player +
+                     " el " + movementDateLabel(featuredWaiverClaim.date) +
+                     ". Se verificó la incorporación, no otras operaciones citadas en la noticia."
+                   : news.items[0].isSourcedReport
+                     ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
                    : "Noticia publicada por MLB.com sobre " + club.name + "; no necesariamente es un comunicado institucional."}
                 {!news.items[0].date && " MLB no indicó fecha verificable."}</p>
               {featuredSigning && <a href={home + "?vista=movimientos"}
                 className="clubDirectoryDetailLink">MOVIMIENTO REGISTRADO · MLB · {movementDateLabel(featuredSigning.date)} ↗</a>}
+              {featuredWaiverClaim && <a href={home + "?vista=movimientos"}
+                className="clubDirectoryDetailLink">RECLAMO DE WAIVERS REGISTRADO · MLB · {movementDateLabel(featuredWaiverClaim.date)} ↗</a>}
               <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
                 Leer noticia en MLB ↗</a>
             </div>
@@ -211,11 +219,14 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
               {secondaryNews.map(story => {
                 const signing = transactions?.sourceStatus === "connected"
                   ? findVerifiedMlbSigning(story, transactions.items) : null;
+                const waiverClaim = transactions?.sourceStatus === "connected"
+                  ? findVerifiedMlbWaiverClaim(story, transactions.items) : null;
                 return <a href={story.url} className="clubNewsCard" key={story.url}
                   target="_blank" rel="noopener noreferrer">
                   <span>{story.isSourcedReport ? "REPORTE · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(story.date)}</span>
                   <strong>{story.title}</strong>
                   {signing && <small>CONTRATACIÓN REGISTRADA · MLB · {movementDateLabel(signing.date)}</small>}
+                  {waiverClaim && <small>INCORPORACIÓN POR WAIVERS · MLB · {movementDateLabel(waiverClaim.date)}</small>}
                   <small>Leer en MLB.com ↗</small>
                 </a>;
               })}
