@@ -32,7 +32,77 @@ check(mlbSource.includes("https://www.mlb.com/"),"MLB only official source URLs"
 check(mlbSource.includes("isSourcedReport: isReportedMlbHeadline(title)"),
   "MLB source qualifier is recorded before translating the original RSS title");
 
-const {findVerifiedMlbSigning,findVerifiedMlbWaiverClaim}=require("../lib/mlbNewsMovements.ts");
+const {findVerifiedMlbSigning,findVerifiedMlbWaiverClaim,findVerifiedMlbTrade,officialMlbTradeSide}=require("../lib/mlbNewsMovements.ts");
+const recordTrade={
+  typeCode:"TE",
+  fromTeam:{id:142,name:"Minnesota Twins"},
+  toTeam:{id:119,name:"Los Angeles Dodgers"}
+};
+check(officialMlbTradeSide(recordTrade,119)?.direction==="received"&&
+  officialMlbTradeSide(recordTrade,119)?.counterpart==="Minnesota Twins",
+  "MLB structured team IDs classify Dodgers receiving Royce Lewis");
+check(officialMlbTradeSide(recordTrade,142)?.direction==="sent"&&
+  officialMlbTradeSide(recordTrade,142)?.counterpart==="Los Angeles Dodgers",
+  "MLB structured team IDs classify Twins sending Royce Lewis");
+check(officialMlbTradeSide(recordTrade,112)===null,
+  "Neither participant: a different club may not confirm the trade");
+check(officialMlbTradeSide({...recordTrade,typeCode:"TR"},119)===null,
+  "MLB transfer code TR must never be mistaken for trade TE");
+check(officialMlbTradeSide({...recordTrade,fromTeam:null},119)===null,
+  "Missing origin team cannot infer trade direction");
+check(officialMlbTradeSide({...recordTrade,toTeam:{id:142,name:"Minnesota Twins"}},142)===null,
+  "Transaction with identical origin and destination cannot imply a trade");
+const lewisArticle={
+  url:"https://www.mlb.com/news/royce-lewis-traded-from-twins-to-dodgers",
+  originalTitle:"Twins deal '17 top pick Lewis to Dodgers for pitcher, catching prospect",
+  date:"2026-11-21T12:00:00Z"
+};
+const lewisIncoming={
+  player:"Royce Lewis",date:"2026-11-20",isConfirmedSigning:false,
+  tradeDirection:"received",tradeCounterpart:"Minnesota Twins"
+};
+const lewisOutgoing={
+  ...lewisIncoming,tradeDirection:"sent",tradeCounterpart:"Los Angeles Dodgers"
+};
+check(findVerifiedMlbTrade(lewisArticle,[lewisIncoming])?.direction==="received",
+  "Official Lewis news marks Dodgers incoming trade only");
+check(findVerifiedMlbTrade(lewisArticle,[lewisOutgoing])?.direction==="sent",
+  "Same Lewis article can mark Twins outgoing trade when source club is sender");
+check(findVerifiedMlbTrade({...lewisArticle,originalTitle:"Could Twins trade Lewis to Dodgers?"},[lewisIncoming])===null,
+  "Speculation about a possible trade is never certified retroactively");
+check(findVerifiedMlbTrade({...lewisArticle,originalTitle:"Twins evaluate Lewis' new Dodgers role"},[lewisIncoming])===null,
+  "Generic analysis articles do not get confirmation without trade language");
+check(findVerifiedMlbTrade({...lewisArticle,date:null},[lewisIncoming])===null,
+  "Undated MLB trade articles are not automatically matched");
+check(findVerifiedMlbTrade({...lewisArticle,date:"2026-10-10T12:00:00Z"},[lewisIncoming])===null,
+  "Trade articles older than the maximum seven days are not matched");
+check(findVerifiedMlbTrade({...lewisArticle,url:"https://example.com/news/royce-lewis-traded-to-dodgers"},[lewisIncoming])===null,
+  "Trade article must be from MLB.com, not a similarly named website");
+check(findVerifiedMlbTrade({...lewisArticle,url:"https://www.mlb.com/news/lewis-traded-to-dodgers"},[lewisIncoming])===null,
+  "Trade article slug must contain player's full name");
+check(findVerifiedMlbTrade({...lewisArticle,originalTitle:"Twins trade Ortiz to Dodgers"},[lewisIncoming])===null,
+  "Trade article headline must refer to the actual player's surname");
+check(findVerifiedMlbTrade(lewisArticle,[{...lewisIncoming,player:"Royce O'Lewis"}])===null,
+  "Another player with a similar surname is never accepted");
+check(findVerifiedMlbTrade(lewisArticle,[{...lewisIncoming,tradeDirection:null}])===null,
+  "A movement with no trusted origin/destination does not certify a trade");
+check(findVerifiedMlbTrade(lewisArticle,[lewisIncoming,lewisIncoming])===null,
+  "Duplicate candidate official trades are treated as ambiguous");
+const roxbyArticle={
+  url:"https://www.mlb.com/cubs/news/joey-bart-deal-with-cubs",
+  originalTitle:"Cubs add C Bart off waivers, trade for RHP Roxby in flurry of moves",
+  date:"2026-11-21T10:00:00Z"
+};
+const roxbyIncoming={
+  player:"Braxton Roxby",date:"2026-11-20",tradeDirection:"received",
+  tradeCounterpart:"Washington Nationals",isConfirmedSigning:false
+};
+check(findVerifiedMlbTrade(roxbyArticle,[roxbyIncoming])===null,
+  "Multiple-player Cubs article does not certify Roxby when full name is absent from URL");
+check(mlbSource.includes("officialMlbTradeSide(row, club.id)") &&
+  mlbSource.includes("tradeDirection: trade?.direction ?? null") &&
+  mlbSource.includes("tradeCounterpart: trade?.counterpart ?? null"),
+  "Team trade directions come exclusively from structured MLB transaction fields");
 const suterNews={
   url:"https://www.mlb.com/yankees/news/brent-suter-yankees-contract",
   originalTitle:"Yankees reach 1-year deal with lefty reliever Suter (source)",
@@ -158,6 +228,12 @@ check(mlbPage.includes('(view === "movimientos" || view === "resumen") ? getMlbC
   mlbPage.includes("findVerifiedMlbSigning(news.items[0], transactions.items)") &&
   mlbPage.includes("findVerifiedMlbSigning(story, transactions.items)"),
   "News reconciliation uses official StatsAPI in summary featured and secondary cards");
+check(mlbPage.includes("findVerifiedMlbTrade(news.items[0], transactions.items)") &&
+  mlbPage.includes("findVerifiedMlbTrade(story, transactions.items)") &&
+  mlbPage.includes("INTERCAMBIO REGISTRADO · MLB") &&
+  mlbPage.includes('featuredTrade.direction === "received" ? "RECIBIDO" : "CEDIDO"') &&
+  mlbPage.includes('trade.direction === "received" ? "RECIBIDO" : "CEDIDO"'),
+  "All MLB club cards label trades by verified received/sent direction");
 check(mlbPage.includes("RECLAMO DE WAIVERS REGISTRADO · MLB") &&
   mlbPage.includes("INCORPORACIÓN POR WAIVERS · MLB") &&
   mlbPage.includes("findVerifiedMlbWaiverClaim(story, transactions.items)") &&
