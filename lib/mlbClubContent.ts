@@ -1,6 +1,7 @@
 import { mlbOfficialTeamUrl, type MlbClub } from "./mlbClubDirectory";
 import { translateMlbTransaction } from "./mlbTransactionSpanish";
 import { translateBaseballText } from "./translateBaseball";
+import { isReportedMlbHeadline } from "./mlbNewsAttribution";
 
 const API = "https://statsapi.mlb.com/api/v1";
 const mxDate = (date = new Date()) =>
@@ -19,7 +20,6 @@ async function getJson(path: string, seconds = 1800): Promise<any | null> {
   } catch { return null; }
 }
 
-import { isReportedMlbHeadline } from "./mlbNewsAttribution";
 export type MlbClubOverview = {
   name: string; division: string; league: string;
   stadium: string | null; capacity: number | null; firstYear: string | null;
