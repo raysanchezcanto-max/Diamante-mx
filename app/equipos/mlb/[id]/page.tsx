@@ -17,7 +17,7 @@ import LmbClubTabs, { type LmbClubView } from "@/components/LmbClubTabs";
 import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getMlbClubVerifiedVideos } from "@/lib/mlbClubVideos";
 import { mlbTransferPresentation } from "@/lib/movementTransferPresentation";
-import { findVerifiedMlbSigning, findVerifiedMlbWaiverClaim, findVerifiedMlbTrade } from "@/lib/mlbNewsMovements";
+import { findVerifiedMlbSigning, findVerifiedMlbWaiverClaim, findVerifiedMlbTrade, findVerifiedMlbRelease } from "@/lib/mlbNewsMovements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 
@@ -93,6 +93,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
     ? findVerifiedMlbWaiverClaim(news.items[0], transactions.items) : null;
   const featuredTrade = news?.items[0] && transactions?.sourceStatus === "connected"
     ? findVerifiedMlbTrade(news.items[0], transactions.items) : null;
+  const featuredRelease = news?.items[0] && transactions?.sourceStatus === "connected"
+    ? findVerifiedMlbRelease(news.items[0], transactions.items) : null;
   const divisionTeams = standings.filter(s => s.division === record?.division)
     .sort((a, b) => Number.parseFloat(b.pct) - Number.parseFloat(a.pct));
   const opponent = nextGame
@@ -187,8 +189,12 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                        club.name + (featuredTrade.counterpart ?
                          (featuredTrade.direction === "received" ? " desde " : " a ") + featuredTrade.counterpart : "") +
                        ". El registro verifica el traslado del jugador, no todas las condiciones de la nota."
-                     : news.items[0].isSourcedReport
-                       ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
+                     : featuredRelease
+                       ? "MLB StatsAPI registra la liberación de " + featuredRelease.player +
+                         " por " + club.name + " el " + movementDateLabel(featuredRelease.date) +
+                         ". La liberación está registrada; no se infiere el próximo equipo ni los términos de salida."
+                       : news.items[0].isSourcedReport
+                         ? "Información publicada por MLB.com con base en fuentes o reportes; no implica confirmación oficial del club."
                    : "Noticia publicada por MLB.com sobre " + club.name + "; no necesariamente es un comunicado institucional."}
                 {!news.items[0].date && " MLB no indicó fecha verificable."}</p>
               {featuredSigning && <a href={home + "?vista=movimientos"}
@@ -197,6 +203,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                 className="clubDirectoryDetailLink">RECLAMO DE WAIVERS REGISTRADO · MLB · {movementDateLabel(featuredWaiverClaim.date)} ↗</a>}
               {featuredTrade && <a href={home + "?vista=movimientos"}
                 className="clubDirectoryDetailLink">INTERCAMBIO REGISTRADO · MLB · {featuredTrade.direction === "received" ? "RECIBIDO" : "CEDIDO"} · {movementDateLabel(featuredTrade.date)} ↗</a>}
+              {featuredRelease && <a href={home + "?vista=movimientos"}
+                className="clubDirectoryDetailLink">LIBERACIÓN REGISTRADA · MLB · {movementDateLabel(featuredRelease.date)} ↗</a>}
               <a href={news.items[0].url} target="_blank" rel="noopener noreferrer">
                 Leer noticia en MLB ↗</a>
             </div>
@@ -234,6 +242,8 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                   ? findVerifiedMlbWaiverClaim(story, transactions.items) : null;
                 const trade = transactions?.sourceStatus === "connected"
                   ? findVerifiedMlbTrade(story, transactions.items) : null;
+                const release = transactions?.sourceStatus === "connected"
+                  ? findVerifiedMlbRelease(story, transactions.items) : null;
                 return <a href={story.url} className="clubNewsCard" key={story.url}
                   target="_blank" rel="noopener noreferrer">
                   <span>{story.isSourcedReport ? "REPORTE · MLB.COM" : "PUBLICACIÓN · MLB.COM"} · {storyDateLabel(story.date)}</span>
@@ -241,6 +251,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
                   {signing && <small>CONTRATACIÓN REGISTRADA · MLB · {movementDateLabel(signing.date)}</small>}
                   {waiverClaim && <small>INCORPORACIÓN POR WAIVERS · MLB · {movementDateLabel(waiverClaim.date)}</small>}
                   {trade && <small>INTERCAMBIO REGISTRADO · MLB · {trade.direction === "received" ? "RECIBIDO" : "CEDIDO"} · {movementDateLabel(trade.date)}</small>}
+                  {release && <small>LIBERACIÓN REGISTRADA · MLB · {movementDateLabel(release.date)}</small>}
                   <small>Leer en MLB.com ↗</small>
                 </a>;
               })}
@@ -349,7 +360,7 @@ export default async function MlbClubProfile({ params, searchParams }: PageProps
           {transactions.items.map(item => {const transfer=mlbTransferPresentation(item.label,item.description);return <article className="clubMovementItem" key={item.key}>
             <div className="clubMovementDate">
               <span>{dateLabel(item.date + "T12:00:00Z")}</span>
-              <span className="clubMovementType">{item.label}</span>
+              <span className="clubMovementType">{item.isConfirmedRelease ? "LIBERACIÓN REGISTRADA" : item.label}</span>
             </div>
             <div className="clubMovementBody">
               {logo && <img src={logo} alt="" width={53} height={53}/>}
