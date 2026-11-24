@@ -19,7 +19,10 @@ const pending: readonly ReportInReview[] = [
     slug: "leones",
     subject: "Yadier Molina",
     date: "2026-11-20",
-    validThrough: "2026-12-05",
+    // Confirmación institucional 23 nov 2026, emitida por Prensa Leones:
+    // https://www.leones.mx/un-campeon-de-venezuela-llega-a-la-cueva-yadier-molina-sera-el-manager-de-los-leones-de-yucatan/
+    // El reporte cierra el día previo y nunca debe reaparecer aunque cambie el feed.
+    validThrough: "2026-11-22",
     headline: "Reportes sitúan a Yadier Molina como próximo mánager de Leones",
     summary: "Francys Romero y John Denton informan de un acuerdo para 2027. Hasta que Leones o la LMB lo anuncien, se presenta como reporte periodístico, NO como contratación oficial.",
     articleUrl: "https://roundtable.io/sports/mlb/cardinals/news/cardinals-hall-of-famer-yadier-molina-named-manager-of-mexican-league-team-for-27",
