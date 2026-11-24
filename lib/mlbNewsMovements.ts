@@ -195,3 +195,64 @@ export function findVerifiedMlbTrade(
     counterpart: match.tradeCounterpart || null,
   };
 }
+
+
+/**
+ * Una liberación registrada es distinta de designación para asignación,
+ * waivers de liberación, non-tender, cesión u opción de contrato declinada.
+ * Acepta solo el texto exacto de StatsAPI con el club emisor y jugador.
+ */
+export function isConfirmedMlbRelease(
+  originalDescription: string,
+  clubName: string,
+  player: string | null,
+): boolean {
+  if (!player?.trim() || !clubName.trim()) return false;
+  const description = originalDescription.replace(/\s+/g, " ").trim();
+  const prefix = clubName.trim() + " released ";
+  if (!description.toLowerCase().startsWith(prefix.toLowerCase())) return false;
+  const escaped = player.trim().replace(/[$.*+?^{}()|[\]\\]/g, "\\$&");
+  const remainder = description.slice(prefix.length).replace(/\.$/, "").trim();
+  return new RegExp(
+    "^(?:(?:RHP|LHP|P|C|RF|LF|CF|OF|IF|INF|1B|2B|3B|SS|DH)\\s+)?" + escaped + "$",
+    "i",
+  ).test(remainder);
+}
+
+const releaseContext = /\b(?:release|releases|released|libera|liberan|liberado|liberacion)\b/i;
+const releaseNotFinal = /\b(?:designated for assignment|dfa|outrighted|non tender|waivers?|release waivers|option declined|cleared waivers)\b/i;
+const MAX_RELEASE_DAYS = 7;
+
+/** Vincular titulares concretos a una liberación definitiva registrada por MLB. */
+export function findVerifiedMlbRelease(
+  story: MlbSigningNews,
+  transactions: readonly (MlbSigningTransaction & { isConfirmedRelease?: boolean })[],
+): VerifiedMlbSigning | null {
+  if (!story.date || !Number.isFinite(Date.parse(story.date))) return null;
+  let url: URL;
+  try { url = new URL(story.url); } catch { return null; }
+  if (url.protocol !== "https:" || url.hostname !== "www.mlb.com" ||
+      !url.pathname.includes("/news/")) return null;
+  const headline = normalize(story.originalTitle).replace(/-/g, " ");
+  if (!releaseContext.test(headline) || releaseNotFinal.test(headline) ||
+      speculativeContext.test(headline) || /[¿?]/.test(story.originalTitle)) return null;
+  const slug = "-" + normalize(url.pathname.split("/").filter(Boolean).at(-1) ?? "") + "-";
+  const normalizedHeadline = "-" + normalize(story.originalTitle) + "-";
+  const newsTime = Date.parse(story.date);
+  const candidates = transactions.filter(tx => {
+    if (!tx.isConfirmedRelease || !tx.player ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(tx.date)) return false;
+    const name = normalize(tx.player);
+    const parts = name.split("-").filter(Boolean);
+    if (parts.length < 2 || parts.some(part => part.length < 2)) return false;
+    const surname = parts.at(-1)!;
+    if (!slug.includes("-" + name + "-") ||
+        !normalizedHeadline.includes("-" + surname + "-")) return false;
+    const transactionTime = Date.parse(tx.date + "T12:00:00Z");
+    return Number.isFinite(transactionTime) &&
+      Math.abs(newsTime - transactionTime) <= MAX_RELEASE_DAYS * 24 * 60 * 60 * 1000;
+  });
+  // Una sola baja que cumpla todas las condiciones; nada de deducciones.
+  if (candidates.length !== 1) return null;
+  return {player: candidates[0].player!, date: candidates[0].date};
+}
