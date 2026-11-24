@@ -89,6 +89,13 @@ check(mlbPage.includes("REPORTE PERIODÍSTICO · MLB.COM")&&
   "MLB featured and secondary news distinguish source reports from club announcements");
 check(!mlbPage.includes("NOTICIA OFICIAL · FUENTE MLB"),
   "MLB news does not call press articles confirmed club news");
+check(mlbPage.includes('format(new Date(iso)) + " (RSS)"') &&
+  mlbPage.includes("Las fechas corresponden al canal RSS y pueden diferir de las del artículo."),
+  "MLB news timestamps are explicitly attributed to the RSS rather than to the editorial article");
+check(mlbPage.includes("Noticias y reportes de MLB.com, plantilla, movimientos") &&
+  !mlbPage.includes("Noticias oficiales, plantilla, movimientos"),
+  "MLB metadata does not imply every newsroom story is a confirmed club announcement");
+
 check(mlbPage.includes("const secondaryNews = news?.items.slice(1, 4) ?? [];") &&
   !mlbPage.includes("news.items.length > 1 ? news.items.slice(1, 4) : news.items"),
   "MLB never repeats a single featured RSS story in its secondary cards");
