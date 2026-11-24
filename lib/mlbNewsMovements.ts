@@ -88,24 +88,63 @@ export type OfficialMlbTradeSide = {
 };
 type RawMlbTradeRecord = {
   typeCode?: string;
+  description?: string;
   fromTeam?: { id?: number; name?: string } | null;
   toTeam?: { id?: number; name?: string } | null;
 };
+type KnownMlbClub = { id: number; name: string };
 export function officialMlbTradeSide(
   record: RawMlbTradeRecord,
   clubId: number,
+  player?: string | null,
+  knownClubs: readonly KnownMlbClub[] = [],
 ): OfficialMlbTradeSide | null {
   if (record.typeCode !== "TE" || !Number.isInteger(clubId)) return null;
   const from = Number(record.fromTeam?.id);
   const to = Number(record.toTeam?.id);
-  if (!Number.isInteger(from) || !Number.isInteger(to) ||
-      from <= 0 || to <= 0 || from === to) return null;
-  if (to === clubId) {
-    return {direction: "received", counterpart: record.fromTeam?.name?.trim() || null};
+  const validFrom = Number.isInteger(from) && from > 0;
+  const validTo = Number.isInteger(to) && to > 0;
+  if (validFrom && validTo) {
+    if (from === to) return null;
+    if (to === clubId) {
+      return {direction: "received", counterpart: record.fromTeam?.name?.trim() || null};
+    }
+    if (from === clubId) {
+      return {direction: "sent", counterpart: record.toTeam?.name?.trim() || null};
+    }
+    return null;
   }
-  if (from === clubId) {
-    return {direction: "sent", counterpart: record.toTeam?.name?.trim() || null};
+  // Algunos registros de transacción TE omiten fromTeam/toTeam.
+  // Respaldo estricto: texto ORIGINAL de StatsAPI, dos clubes canónicos
+  // y nombre completo del jugador antes del "to" de la operación.
+  if (!player?.trim() || !record.description?.trim() || !knownClubs.length) return null;
+  const desc = record.description.trim();
+  const p = player.trim().toLowerCase();
+  const candidates: Array<{origin: KnownMlbClub; destination: KnownMlbClub}> = [];
+  for (const origin of knownClubs) {
+    const prefix = origin.name + " traded ";
+    if (!desc.toLowerCase().startsWith(prefix.toLowerCase())) continue;
+    const rest = desc.slice(prefix.length);
+    for (const destination of knownClubs) {
+      if (origin.id === destination.id) continue;
+      const marker = " to " + destination.name;
+      const index = rest.toLowerCase().indexOf(marker.toLowerCase());
+      if (index < 0) continue;
+      const after = rest.slice(index + marker.length);
+      if (after && !/^(?:\s+(?:for|in exchange for)\b|[.,;])/.test(after)) continue;
+      const playerSegment = rest.slice(0, index).toLowerCase();
+      const at = playerSegment.indexOf(p);
+      if (at < 0 || /[a-z]/.test(playerSegment[at - 1] ?? "") ||
+          /[a-z]/.test(playerSegment[at + p.length] ?? "")) continue;
+      // Una identidad de club presente en la respuesta debe coincidir.
+      if ((validFrom && from !== origin.id) || (validTo && to !== destination.id)) continue;
+      candidates.push({origin, destination});
+    }
   }
+  if (candidates.length !== 1) return null;
+  const {origin, destination} = candidates[0];
+  if (destination.id === clubId) return {direction: "received", counterpart: origin.name};
+  if (origin.id === clubId) return {direction: "sent", counterpart: destination.name};
   return null;
 }
 
