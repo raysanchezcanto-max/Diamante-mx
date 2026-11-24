@@ -1387,3 +1387,11 @@ Objetivo: evitar que los perfiles de equipos parezcan abandonados o presenten no
 - **Protección automática:** `scripts/news-feed-regression.cjs` incluye casos positivos/negativos de titulares atribuidos y verifica el etiquetado. Compilación de `561d6a8e` reportó **51 comprobaciones de Noticias superadas**, Vercel `dpl_AAHtGdzsyfmoxbNXsYQupKrr3jce` **READY producción**.
 - **Límite de la heurística:** no clasifica todo rumor ni certifica anuncios institucionales; títulos sin calificadores reciben «PUBLICACIÓN», jamás un sello de «contratación confirmada». Hay que verificar los hechos en cada fuente antes de reportarlos como movimientos oficiales.
 - **Pendiente:** comparación visual en web y APK móvil de la ficha Yankees y revisión de títulos/fechas/enlaces concretos en Yankees, Leones y Guasave. El navegador externo de auditoría no pudo abrir `/equipos/mlb/147`; no confundir verificación de compilación con QA visual.
+
+
+### Auditoría MLB — evitar noticia destacada duplicada · 24 nov 2026
+
+- **Hallazgo en código compartido:** `app/equipos/mlb/[id]/page.tsx` seleccionaba la nota del índice 0 como destacada y, cuando el RSS devolvía **una sola nota**, la repetía también en el bloque de tarjetas secundarias. Las páginas MLB afectadas comparten esta implementación (30 clubes).
+- **Corrección:** las secundarias proceden exclusivamente de `news?.items.slice(1,4) ?? []`. Si solo existe una noticia, aparece **una sola vez** y el bloque inferior explica que no hay otras entradas; si hay varias, muestra la destacada y hasta tres secundarias diferentes. Se conservan las clases y la composición visual.
+- **Pruebas:** dos guardas adicionales en `scripts/news-feed-regression.cjs` detectan el patrón antiguo y verifican el comportamiento del bloque vacío. Commit `dc57684e`; Vercel `dpl_Bbby2YRdFcQzx8X6LwuBZgV2bECH` en producción **READY**.
+- **QA no completada:** el comprobador web externo no puede abrir actualmente las fichas publicadas `/equipos/mlb/147`, `/equipos/lmb/leones` ni `/equipos/lmp/algodoneros`. La validación aquí es de código y compilación, **no visual ni de enlaces en producción**. Pendientes capturas/prueba manual de escritorio y móvil en las tres fichas, contrastando títulos, fechas y URLs con fuentes primarias.
