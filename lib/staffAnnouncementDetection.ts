@@ -47,9 +47,10 @@ const normalize = (raw: string): string => raw.normalize("NFD")
 const otherSport = /\b(?:lms|softbol|softball|femenil|leonas|gloriosas|guerreras softbol)\b/;
 const speculative = /[¿?]|\b(?:se perfila|podria|podrian|posible|posiblemente|rumor|rumores|rumorado|habria|seria|tendria|trascendio|estaria cerca|busca contratar|negociaciones|sin confirmar|no confirmado)\b/;
 const negative = /\b(?:no sera|no es|no fue|desmiente|descarta|rechaza|niega|no hay acuerdo|no llegara)\b/;
+const newRole = /\b(?:nuevo|nueva)\s+(?:manager|manejador|director tecnico|coach(?:es)?|entrenador(?:es)?|asesor deportivo|cuerpo tecnico|staff de coaches)\b/;
 const role = /\b(?:manager|manejador|director tecnico|coach(?:es)?|entrenador(?:es)?|cuerpo tecnico|staff de coaches|asesor deportivo|coordinador deportivo|coach de banca|coach de pitcheo)\b/;
 const staffRole = /\b(?:coach(?:es)?|entrenador(?:es)?|cuerpo tecnico|staff de coaches|asesor deportivo|coordinador deportivo)\b/;
-const action = /\b(?:nuevo|nueva|nombrad[oa]|nombra|nombran|anuncia|anuncian|presenta|presentan|llega|sera|designad[oa]|designa|toma el mando|al frente|asume|incorpora|integrara|se integra|se suma|sum[aó]|ratifica|ratifican|ratificado|ratificada|renueva|renovad[oa]|repite|continua|continua al frente|reemplaza|sustituye|relevo|interino|renuncia|dimite|sale|salida|deja el cargo|deja de ser|no seguira|destituye|destituido|despide|despedido|cesa|definido|nueva etapa)\b/;
+const action = /\b(?:nombrad[oa]|nombra|nombran|anuncia|anuncian|presenta|presentan|llega|sera|designad[oa]|designa|toma el mando|al frente|asume|incorpora|integrara|se integra|se suma|sum[aó]|ratifica|ratifican|ratificado|ratificada|renueva|renovad[oa]|repite|continua|continua al frente|reemplaza|sustituye|relevo|interino|renuncia|dimite|sale|salida|deja el cargo|deja de ser|no seguira|destituye|destituido|despide|despedido|cesa|definido|nueva etapa)\b/;
 
 export function detectStaffAnnouncement(
   article: StaffArticleInput,
@@ -61,7 +62,7 @@ export function detectStaffAnnouncement(
   if (title.length < 16 || title.length > 240) return null;
   const n = normalize(title);
   // Una mención casual al mánager o a un partido no acredita cambios.
-  if (otherSport.test(n) || speculative.test(n) || negative.test(n) || !role.test(n) || !action.test(n)) return null;
+  if (otherSport.test(n) || speculative.test(n) || negative.test(n) || !role.test(n) || !(action.test(n) || newRole.test(n))) return null;
 
   let proposedKind: StaffCandidateKind;
   if (/\b(?:renuncia|dimite)\b/.test(n)) proposedKind = "resignation";
