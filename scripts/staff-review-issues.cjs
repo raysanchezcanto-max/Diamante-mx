@@ -132,6 +132,15 @@ async function main(){
     " repetidas/no emitidas, "+pending.length+" candidatas en el informe. NO publicadas.");
 }
 if(require.main===module){
-  main().catch(error=>{console.error("Error creando bandeja editorial:",error);process.exitCode=1;});
+  const command=process.argv[2];
+  const job=command==="--init-labels" ? ensureLabels()
+    : command===undefined ? main()
+    : Promise.reject(new Error("Comando desconocido: "+command));
+  job.then(()=>{
+    if(command==="--init-labels")console.log("Etiquetas de la mesa editorial inicializadas.");
+  }).catch(error=>{
+    console.error("Error en mesa editorial:",error);
+    process.exitCode=1;
+  });
 }
-module.exports={candidateKey,reviewIssueTemplate};
+module.exports={candidateKey,reviewIssueTemplate,ensureLabels};
