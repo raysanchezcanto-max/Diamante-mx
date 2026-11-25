@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { getLmbStandings } from "@/lib/lmb";
 import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
+import { previewLmbMovements } from "@/lib/officialMovementPreview";
+import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -55,7 +57,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
     currentView==="resumen" ? getLmbStandings() : Promise.resolve([]),
     currentView==="resumen" ? getAlgodonerosNews() : Promise.resolve(null),
     rosterView ? getAlgodonerosRoster() : Promise.resolve(null),
-    movementsView ? getAlgodonerosMovements() : Promise.resolve(null),
+    (movementsView || currentView==="resumen") ? getAlgodonerosMovements(new Date(),currentView==="resumen"?6:24) : Promise.resolve(null),
     currentView==="resumen" ? getLmbClubVideos("algodoneros") : Promise.resolve(null),
     statisticsView ? getLatestClubSeasonStatistics("LMB",447,mexicoSeasonYear()) : Promise.resolve(null),
   ]);
@@ -72,6 +74,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
   const newsConnected = newsResult?.sourceStatus === "connected";
   const rosterConnected = rosterResult?.sourceStatus === "connected";
   const featuredStory = displayedStories[0];
+  const movementPreview = currentView==="resumen" ? previewLmbMovements(movementResult?.movements ?? []) : [];
 
   // Tabla real: solo si incluye al club; si falla, conservar el corte oficial 2026.
   const officialNorth = officialStandings.filter(s => normalize(s.division).includes("norte"));
@@ -273,6 +276,9 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   ))}
                 </div>
               </section>
+              <OfficialMovementPreviewSection league="LMB" clubName={club.name}
+                items={movementPreview} movementsHref="/equipos/lmb/algodoneros?vista=movimientos"
+                officialSourceHref="https://lmb.com.mx/movimientos"/>
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
                   <div><span className="clubKicker">{COPY.summary.videosKicker("LMB")}</span><h2>{COPY.summary.videosTitle}</h2></div>
