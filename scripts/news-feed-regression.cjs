@@ -334,7 +334,7 @@ check(previewLmbMovements([{...molinaMovement,url:"https://example.com/anuncio-f
 check(previewLmbMovements([molinaMovement]).length===1,
   "An official managerial announcement remains visible even if no fresh reserve bulletin is available");
 check(read("lib/lmbMovements.ts").includes("officialLmbPersonnelAppointments(config.profileUrl)") &&
-  read("lib/lmbMovements.ts").includes("sourceKind: \\"official-appointment\\" as const"),
+  read("lib/lmbMovements.ts").includes('sourceKind: "official-appointment" as const'),
   "LMB movement timeline merges independently verified club appointments");
 check(previewComponent.includes("NOMBRAMIENTO OFICIAL · LMB") &&
   previewComponent.includes("Consultar anuncio oficial"),
