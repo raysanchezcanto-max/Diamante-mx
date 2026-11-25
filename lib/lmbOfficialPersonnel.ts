@@ -1,4 +1,4 @@
-import { verifiedPersonnelEventsForClub, type VerifiedStaffKind } from "./verifiedPersonnelEvents";
+import { verifiedPersonnelEventsForClub, type VerifiedStaffKind } from "./verifiedPersonnelEvents.ts";
 
 /** Adaptador de LMB: eventos editoriales fechados y verificados; no roster. */
 export type LmbPersonnelAppointment = {
