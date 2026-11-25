@@ -336,8 +336,8 @@ check(previewLmbMovements([molinaMovement]).length===1,
 check(read("lib/lmbMovements.ts").includes("officialLmbPersonnelAppointments(config.profileUrl)") &&
   read("lib/lmbMovements.ts").includes('sourceKind: "official-appointment" as const'),
   "LMB movement timeline merges independently verified club appointments");
-check(previewComponent.includes("NOMBRAMIENTO OFICIAL · LMB") &&
-  previewComponent.includes("Consultar anuncio oficial"),
+check(read("components/OfficialMovementPreviewSection.tsx").includes("NOMBRAMIENTO OFICIAL · LMB") &&
+  read("components/OfficialMovementPreviewSection.tsx").includes("Consultar anuncio oficial"),
   "LMB summary distinguishes managerial appointment from a transaction in reserve lists");
 
 const lmpMovementsExample=[
