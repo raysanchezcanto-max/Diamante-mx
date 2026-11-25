@@ -344,7 +344,7 @@ export async function getLmbClubMovements(
   }).sort((a,b) => b.date.localeCompare(a.date) || Number(b.automatic) - Number(a.automatic));
   return {
     movements,
-    sourceStatus: appointments.length > 0 || (html && profileLinks.length > 0) || (newsIndex && newsLinks.length > 0)
+    sourceStatus: (html && profileLinks.length > 0) || (newsIndex && newsLinks.length > 0)
       ? "connected" : "fallback",
     verifiedAt: html || newsIndex ? new Date().toISOString() : null,
     recentDetected: articles.flat().length,
