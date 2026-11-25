@@ -6,6 +6,8 @@ import { CLUB_PROFILE_COPY as COPY } from "@/lib/clubProfileCopy";
 import { getAlgodonerosNews, getAlgodonerosRoster, getAlgodonerosStanding, getAlgodonerosFixtures } from "@/lib/lmpAlgodonerosContent";
 import { getLmpDirectoryMovements } from "@/lib/lmpClubDirectoryData";
 import LmpMovementTimeline from "@/components/LmpMovementTimeline";
+import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
+import { previewLmpMovements } from "@/lib/officialMovementPreview";
 import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
 import { getLmpSeasonYear } from "@/lib/lmp";
 import { getClubSeasonStandings, getLatestClubSeasonStatistics } from "@/lib/clubStatistics";
@@ -34,13 +36,14 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
     view==="plantilla"?getAlgodonerosRoster():Promise.resolve([]),
     view==="resumen"?getAlgodonerosStanding():Promise.resolve(null),
     view==="resumen"?getAlgodonerosFixtures():Promise.resolve([]),
-    view==="movimientos"?getLmpDirectoryMovements(5482):Promise.resolve([]),
+    (view==="movimientos" || view==="resumen")?getLmpDirectoryMovements(5482):Promise.resolve([]),
     statsSeason!==null?getClubSeasonStandings("LMP",statsSeason):Promise.resolve([]),
     statsSeason!==null?getLatestClubSeasonStatistics("LMP",5482,statsSeason):Promise.resolve(null),
   ]);
   const name="Algodoneros de Guasave";
   const logo=getTeamLogo("LMP",5482,name);
   const topNews=news[0];
+  const movementPreview=view==="resumen"?previewLmpMovements(movements):[];
   return <main className="clubProfile clubProfile--all">
     <header className="clubTopbar">
       <a className="clubBrand" href="/?league=lmp"><span className="clubDiamond" aria-hidden="true">◆</span><strong>DIAMANTE <em>MX</em></strong></a>
@@ -139,6 +142,9 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
               </a>)}
             </div>
           </section>
+          <OfficialMovementPreviewSection league="LMP" clubName={name}
+            items={movementPreview} movementsHref={home+"?vista=movimientos"}
+            officialSourceHref="https://www.lmp.mx/rosters/algodoneros"/>
           <section className="clubEditorialSection">
             <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.summary.videosKicker("LMP")}</span><h2>{COPY.summary.videosTitle}</h2></div></div>
             <p className="clubSmallNote">Selección verificada de resúmenes del canal oficial de LMP. Estos clips corresponden a los juegos de Guasave del 7 de noviembre de 2026, no a transmisiones en vivo.</p>
