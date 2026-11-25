@@ -71,6 +71,18 @@ const EVENTS: readonly VerifiedPersonnelEvent[] = [
     description:"Mayos de Navojoa anunció a Miguel Tejada como nuevo mánager para la temporada 2026–27.",
   },
   {
+    league:"LMP",clubSlug:"naranjeros",date:"2026-07-23",person:"Gil Velázquez",role:"Coach de banca",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/",
+    description:"Naranjeros de Hermosillo anunció la incorporación de Gil Velázquez como coach de banca para 2026–27. Es parte del cuerpo técnico y no un movimiento de jugador.",
+  },
+  {
+    league:"LMP",clubSlug:"aguilas",date:"2026-08-18",person:"Adulfo Camacho",role:"Coach de tercera base",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/aguilas-de-mexicali-presenta-su-staff-de-coaches/",
+    description:"Águilas de Mexicali anunció la llegada de Adulfo Camacho como coach de tercera base para 2026–27. El nombramiento no implica alta de pelotero.",
+  },
+  {
     league:"LMP",clubSlug:"naranjeros",date:"2026-05-08",person:"José “Cheo” Moreno",role:"Mánager",
     kind:"appointment",effectiveSeason:"2026–27",
     url:"https://editor.lmp.mx/naranjeros-anuncia-a-jose-cheo-moreno-como-su-nuevo-manager/",
