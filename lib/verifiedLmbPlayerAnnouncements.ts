@@ -43,3 +43,9 @@ export function verifiedLmbPlayerNewsForClub(
   return APPROVED.filter(item=>item.clubSlug===clubSlug &&
     canonicalOfficialNewsUrl(item.url)===url).map(e=>({...e}));
 }
+
+/** La vista resumida solo acepta comunicados ya incluidos en el registro editorial. */
+export function isVerifiedLmbPlayerAnnouncementSource(articleUrl:string):boolean{
+  const url=canonicalOfficialNewsUrl(articleUrl);
+  return url!==null && APPROVED.some(item=>canonicalOfficialNewsUrl(item.url)===url);
+}
