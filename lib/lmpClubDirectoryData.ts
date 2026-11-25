@@ -1,6 +1,8 @@
 import {cache} from "react";
 import type { LmpClubNews, LmpClubPlayer, LmpClubRecord, AlgodonerosFixture } from "./lmpAlgodonerosContent";
 import { localizeLmpMovement, spanishBaseballRole } from "./baseballSpanishTerms";
+import { LMP_CLUB_DIRECTORY } from "./lmpClubDirectory";
+import { verifiedPersonnelEventsForClub, type VerifiedStaffKind } from "./verifiedPersonnelEvents";
 
 const API="https://statsapi.mlb.com/api/v1";
 async function officialJSON<T>(url:string):Promise<T|null>{
@@ -102,14 +104,24 @@ export const getLmpDirectoryMlbAlumni=cache(async(id:number):Promise<LmpMlbAlumn
 // Registro de transacciones de la propia LMP (misma API que usa lmp.mx/rosters).
 // Las notas periodísticas NO son un sustituto del registro de altas y bajas.
 type OfficialLmpMovement={transactionDate?:string;description?:string;transactionType?:string};
-export type LmpDirectoryMovement={date:string;description:string};
+export type LmpDirectoryMovement={
+ date:string;description:string;
+ sourceKind?:"official-appointment";staffKind?:VerifiedStaffKind;
+ sourceUrl?:string;person?:string;
+};
 export const getLmpDirectoryMovements=cache(async(id:number):Promise<LmpDirectoryMovement[]>=>{
  const data=await officialJSON<{response?:{movements?:OfficialLmpMovement[]}}>(
   `https://api.lmp.mx/3.0.0/teams/${id}/movements?limit=50`
  );
- if(!Array.isArray(data?.response?.movements))return [];
+ const slug=id===5482?"algodoneros":LMP_CLUB_DIRECTORY.find(club=>club.id===id)?.slug;
+ const staff: LmpDirectoryMovement[]=slug ? verifiedPersonnelEventsForClub("LMP",slug).map(event=>({
+   date:event.date,description:event.description,
+   sourceKind:"official-appointment",staffKind:event.kind,
+   sourceUrl:event.url,person:event.person,
+ })) : [];
+ if(!Array.isArray(data?.response?.movements))return staff;
  const seen=new Set<string>();
- return data.response.movements.flatMap(item=>{
+ const rosterMovements=data.response.movements.flatMap(item=>{
   const date=item.transactionDate?.trim()??"";
   const description=item.description?.replace(/\s+/g," ").trim()??"";
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!description)return [];
@@ -117,5 +129,7 @@ export const getLmpDirectoryMovements=cache(async(id:number):Promise<LmpDirector
   if(seen.has(key))return [];
   seen.add(key);
   return [{date,description:localizeLmpMovement(description)}];
- }).sort((a,b)=>b.date.localeCompare(a.date));
+ });
+ // No atribuir cambios del cuerpo técnico al API de altas y bajas de jugadores.
+ return [...rosterMovements,...staff].sort((a,b)=>b.date.localeCompare(a.date));
 });
