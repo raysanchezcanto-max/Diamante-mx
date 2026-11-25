@@ -12,6 +12,7 @@ import type { Standing } from "@/lib/mlb";
 import LmpMovementTimeline from "./LmpMovementTimeline";
 import OfficialMovementPreviewSection from "./OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "./OfficialStaffHistorySection";
+import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import { previewLmpMovements } from "@/lib/officialMovementPreview";
 import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
 import LmpAguilasEditorialHistory from "./LmpAguilasEditorialHistory";
@@ -82,13 +83,13 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
      {news[0]?<section className="clubFeature">
        {news[0].image?<img src={news[0].image} className="clubFeatureImage" alt="" loading="lazy"/>:<div className="clubDirectoryHeroBadge">{logo&&<img src={logo} width={140} height={140} alt=""/>}</div>}
        <div className="clubFeatureShade"/><div className="clubFeatureContent"><span className="clubKicker">NOTICIA DESTACADA · FUENTE OFICIAL LMP</span>
-        <h2>{news[0].title}</h2><p>{news[0].excerpt}</p><a href={news[0].url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a></div>
+        <h2>{news[0].title}</h2><p>{news[0].excerpt}</p><a href={news[0].url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a>{verifiedStaffNewsForClub("LMP",club.slug,news[0].url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">CUERPO TÉCNICO · VER EVENTO DOCUMENTADO ↗</a>}</div>
       </section>:<section className="clubDirectoryNotice"><h2>Noticias oficiales</h2><p>La fuente oficial no devolvió noticias encabezadas por este equipo en las publicaciones más recientes. No mostramos las de otros clubes como propias.</p><a href="https://www.lmp.mx/" target="_blank" rel="noopener noreferrer">Consultar LMP ↗</a></section>}
      <section className="clubEditorialSection"><div className="clubSectionTitle"><div><span className="clubKicker">NOTICIAS · {club.name.toLocaleUpperCase("es")}</span><h2>{COPY.summary.newsTitle}</h2></div></div>
       <p className="clubSmallNote">Noticias de LMP cuyo titular identifica al equipo como protagonista. La selección no incluye todas las menciones al club.</p>
       <div className="clubNewsGrid">{news.slice(1,6).map(story=><a className="clubNewsCard" key={story.url} href={story.url} target="_blank" rel="noopener noreferrer">
        {story.image&&<img className="clubNewsThumb" src={story.image} alt="" loading="lazy"/>}
-       <span>{story.published.slice(0,10)}</span><strong>{story.title}</strong><small>Leer noticia ↗</small></a>)}</div>
+       <span>{story.published.slice(0,10)}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMP",club.slug,story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}<small>Leer noticia ↗</small></a>)}</div>
      </section>
      <OfficialMovementPreviewSection league="LMP" clubName={club.name}
       items={movementPreview} movementsHref={home+"?vista=movimientos"}
