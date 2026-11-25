@@ -8,6 +8,7 @@ import { getLmpDirectoryMovements } from "@/lib/lmpClubDirectoryData";
 import LmpMovementTimeline from "@/components/LmpMovementTimeline";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
+import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import { previewLmpMovements } from "@/lib/officialMovementPreview";
 import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
 import { getLmpSeasonYear } from "@/lib/lmp";
@@ -129,6 +130,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
                 ? "Publicación del canal oficial de la Liga Mexicana del Pacífico."
                 : "Publicación del sitio oficial de Algodoneros de Guasave.")}</p>
               <a href={topNews.url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a>
+              {verifiedStaffNewsForClub("LMP","algodoneros",topNews.url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">CUERPO TÉCNICO · VER EVENTO DOCUMENTADO ↗</a>}
             </div>
           </section>:<section className="clubDirectoryNotice"><h2>Noticias oficiales</h2><p>Las fuentes oficiales de Algodoneros y LMP no devolvieron publicaciones verificables en esta consulta.</p><a href="https://losalgodoneros.com/noticias/" target="_blank" rel="noopener noreferrer">Consultar noticias ↗</a></section>}
           <section className="clubEditorialSection">
@@ -139,6 +141,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
                 {story.image&&<img className="clubNewsThumb" src={story.image} alt="" loading="lazy"/>}
                 <span>{story.published.slice(0,10)} · {newsSource(story.url)}</span>
                 <strong>{story.title}</strong>
+                {verifiedStaffNewsForClub("LMP","algodoneros",story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}
                 <small>Leer noticia ↗</small>
               </a>)}
             </div>
