@@ -1,0 +1,40 @@
+name: Decisiones editoriales de cuerpo técnico
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  decision-editorial:
+    if: >-
+      github.event.issue.pull_request == null &&
+      (github.event.label.name == 'editorial-aprobado' ||
+       github.event.label.name == 'editorial-descartado')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: staff-review-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - name: Consultar código de decisión editorial
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Preparar Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+
+      - name: Rechazar o crear PR en borrador (sin publicar)
+        run: node scripts/staff-review-approval.cjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_ACTOR: ${{ github.actor }}
