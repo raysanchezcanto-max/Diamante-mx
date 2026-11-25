@@ -309,7 +309,7 @@ check(leonesAppointments[0].url===
   "https://lmb.com.mx/noticias/el-historico-ex-receptor-yadier-molina-es-el-nuevo-manager-de-los-leones-de-yucatan",
   "Leones manager appointment cites the verified official LMB announcement");
 check(officialLmbPersonnelAppointments("https://lmb.com.mx/equipos/acereros").length===0 &&
-  officialLmbPersonnelAppointments("https://lmb.com.mx/equipos/diablos-rojos").length===0 &&
+  officialLmbPersonnelAppointments("https://lmb.com.mx/equipos/diablos-rojos").some(e=>e.person==="Benjamín Gil") &&
   officialLmbPersonnelAppointments("https://not-lmb.com.mx/equipos/leones").length===0,
   "Leones appointment never leaks to other LMB clubs or unofficial domains");
 const molinaMovement={
@@ -336,9 +336,75 @@ check(previewLmbMovements([molinaMovement]).length===1,
 check(read("lib/lmbMovements.ts").includes("officialLmbPersonnelAppointments(config.profileUrl)") &&
   read("lib/lmbMovements.ts").includes('sourceKind: "official-appointment" as const'),
   "LMB movement timeline merges independently verified club appointments");
-check(read("components/OfficialMovementPreviewSection.tsx").includes("NOMBRAMIENTO OFICIAL · LMB") &&
+check(read("components/OfficialMovementPreviewSection.tsx").includes("staffEventLabel(item.staffKind") &&
   read("components/OfficialMovementPreviewSection.tsx").includes("Consultar anuncio oficial"),
   "LMB summary distinguishes managerial appointment from a transaction in reserve lists");
+
+const {verifiedPersonnelEventsForClub,staffEventLabel}=require("../lib/verifiedPersonnelEvents.ts");
+const lmbStaffCases=[
+  ["leones","Yadier Molina","2026-11-23"],
+  ["diablos-rojos","Benjamín Gil","2026-10-15"],
+  ["guerreros","Asdrúbal Cabrera","2026-10-20"],
+  ["saraperos","Lloyd McClendon","2026-11-11"],
+  ["dorados","Tony DeFrancesco","2026-09-03"]
+];
+for(const [club,person,date] of lmbStaffCases){
+  const events=verifiedPersonnelEventsForClub("LMB",club);
+  check(events.some(e=>e.person===person&&e.date===date&&e.kind==="appointment"),
+    "LMB official manager appointment "+club+" documented with source");
+}
+check(verifiedPersonnelEventsForClub("LMB","diablos-rojos").length===1,
+  "Two official articles introducing Benjamin Gil count as one appointment event");
+check(verifiedPersonnelEventsForClub("LMB","leones").length===1 &&
+  verifiedPersonnelEventsForClub("LMP","leones").length===0,
+  "Manager event cannot cross leagues or be assigned to another club");
+check(verifiedPersonnelEventsForClub("LMB","leonas").length===0,
+  "Mexican Softball League managerial news must never become an LMB event");
+check(verifiedPersonnelEventsForClub("LMB","pericos").length===0,
+  "An equivocal se perfila headline cannot create an automatic managerial confirmation");
+
+const jaguaresStaff=verifiedPersonnelEventsForClub("LMP","jaguares");
+check(jaguaresStaff.length===1&&jaguaresStaff[0].person==="Erik Rodríguez"&&
+  jaguaresStaff[0].date==="2026-11-05"&&jaguaresStaff[0].kind==="replacement"&&
+  jaguaresStaff[0].replaces==="Luis Carlos Rivera",
+  "Jaguares replacement records both managers but does not attribute a dismissal");
+const lmpStaffCases=[
+  ["yaquis","José Mosquera","2026-06-29","appointment"],
+  ["mayos","Miguel Tejada","2026-05-21","appointment"],
+  ["naranjeros","José “Cheo” Moreno","2026-05-08","appointment"],
+  ["aguilas","Roberto “Chapo” Vizcarra","2026-03-02","ratification"],
+  ["venados","Chris Roberson","2026-02-21","appointment"]
+];
+for(const [club,person,date,kind] of lmpStaffCases){
+  check(verifiedPersonnelEventsForClub("LMP",club).some(e=>
+    e.person===person&&e.date===date&&e.kind===kind),
+    "LMP historical staff event "+club+" has verified kind/date");
+}
+check(staffEventLabel("appointment")==="Nombramiento oficial" &&
+  staffEventLabel("ratification")==="Ratificación oficial" &&
+  staffEventLabel("replacement")==="Cambio de mánager confirmado" &&
+  staffEventLabel("resignation")!==staffEventLabel("dismissal"),
+  "Staff schema distinguishes appointments, reappointments, replacements, resignations and dismissals");
+const jaguaresPreview=previewLmpMovements([{
+  date:jaguaresStaff[0].date,
+  description:jaguaresStaff[0].description,
+  sourceKind:"official-appointment",
+  staffKind:jaguaresStaff[0].kind,
+  sourceUrl:jaguaresStaff[0].url,
+  person:jaguaresStaff[0].person
+}]);
+check(jaguaresPreview.length===1 &&
+  jaguaresPreview[0].staffKind==="replacement" &&
+  jaguaresPreview[0].sourceUrl===jaguaresStaff[0].url &&
+  jaguaresPreview[0].title==="Erik Rodríguez",
+  "Verified Jaguares manager replacement has event-specific source and no fake roster movement");
+check(previewLmpMovements([{...jaguaresStaff[0],sourceKind:"official-appointment",
+  sourceUrl:"https://fake-lmp.example/nuevo-manager",person:"Erik Rodríguez",staffKind:"replacement"}]).length===0,
+  "A fake LMP site cannot insert a manager into the official movement preview");
+check(read("lib/lmpClubDirectoryData.ts").includes('verifiedPersonnelEventsForClub("LMP",slug)') &&
+  read("components/LmpMovementTimeline.tsx").includes("staffEventLabel(item.staffKind!)") &&
+  read("components/LmpMovementTimeline.tsx").includes("Consultar anuncio oficial LMP"),
+  "LMP staff events are separate from roster API and link the individual official article");
 
 const lmpMovementsExample=[
  {date:"2026-11-15",description:"Algodoneros de Guasave informa la activación de José Álvarez, desactivando a Joel Rangel."},
@@ -359,7 +425,7 @@ check(previewLmpMovements([{date:"2026-11-15",description:"A".repeat(250)}])[0].
 const previewComponent=read("components/OfficialMovementPreviewSection.tsx");
 check(previewComponent.includes('"REGISTRO " + league') &&
   previewComponent.includes("item.sourceUrl ?? movementsHref") &&
-  previewComponent.includes("Estas entradas no acreditan por sí solas los titulares periodísticos."),
+  previewComponent.includes("no acreditan por sí solos los titulares periodísticos."),
   "Shared news-adjacent panel separates journalism from official roster evidence");
 check(read("app/equipos/lmb/[slug]/page.tsx").includes('previewLmbMovements(movements?.movements ?? [])') &&
   read("app/equipos/lmb/algodoneros/page.tsx").includes("previewLmbMovements(movementResult?.movements ?? [])") &&
