@@ -48,7 +48,8 @@ function normalizeEvent(entry){
       date.getTime()>Date.now()+86400000||
       date.getUTCFullYear()<2020)throw Error("Fecha de anuncio obligatoria e inválida");
   if(event.person.length<5||event.person.length>115||
-      event.person.split(/\s+/).length<2)throw Error("Nombre completo obligatorio");
+      event.person.split(/\s+/).length<2||
+      !/^[\p{L}\p{M} .\u0027“”"-]+$/u.test(event.person))throw Error("Nombre completo obligatorio");
   if(event.role.length<3||event.role.length>90)throw Error("Cargo obligatorio");
   if(!/^[\dA-Za-zÁÉÍÓÚÜÑáéíóúüñ– -]{4,30}$/.test(event.effectiveSeason))
     throw Error("Temporada obligatoria");
