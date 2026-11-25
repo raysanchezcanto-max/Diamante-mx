@@ -27,7 +27,7 @@ export default async function LmpClubDirectoryPage({params,searchParams}:Props){
   view==="resumen"?getLmpDirectoryStanding(club.id):Promise.resolve(null),
   view==="resumen"?getLmpDirectoryNews(club.id):Promise.resolve([]),
   view==="grandes-ligas"?getLmpDirectoryMlbAlumni(club.id):Promise.resolve([]),
-  view==="movimientos"?getLmpDirectoryMovements(club.id):Promise.resolve([]),
+  (view==="movimientos" || view==="resumen")?getLmpDirectoryMovements(club.id):Promise.resolve([]),
   season!==null?getClubSeasonStandings("LMP",season):Promise.resolve([]),
   season!==null?getLatestClubSeasonStatistics("LMP",club.id,season):Promise.resolve(null),
  ]);
