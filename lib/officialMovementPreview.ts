@@ -8,6 +8,7 @@ export type OfficialMovementPreview = {
   title: string;
   excerpt: string;
   sourceUrl: string | null;
+  kind?: "official-appointment";
 };
 
 type LmbMovementInput = {
@@ -63,6 +64,7 @@ export function previewLmbMovements(
       title: compress(item.title, 130),
       excerpt: compress(item.description, 220),
       sourceUrl: item.url,
+      ...(validAppointment ? {kind:"official-appointment" as const} : {}),
     }];
   });
   return items.sort((a, b) => b.date.localeCompare(a.date)).slice(0, Math.max(0, Math.min(limit, 3)));
