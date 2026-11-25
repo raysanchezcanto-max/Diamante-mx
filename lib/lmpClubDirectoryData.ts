@@ -1,6 +1,7 @@
 import {cache} from "react";
 import type { LmpClubNews, LmpClubPlayer, LmpClubRecord, AlgodonerosFixture } from "./lmpAlgodonerosContent";
 import { localizeLmpMovement, spanishBaseballRole } from "./baseballSpanishTerms";
+import { LMP_OFFICIAL_NEWS_TAGS } from "./lmpOfficialNewsTags";
 import { LMP_CLUB_DIRECTORY } from "./lmpClubDirectory";
 import { verifiedPersonnelEventsForClub, type VerifiedStaffKind } from "./verifiedPersonnelEvents";
 
@@ -48,12 +49,7 @@ export const getLmpDirectoryStanding=cache(async(id:number):Promise<LmpClubRecor
 // Ghost public RSS etiquetado por equipo. A diferencia de buscar titulares
 // en toda LMP, estas etiquetas incluyen artículos donde el club es protagonista
 // aunque no aparezca al principio del encabezado. Solo ligas oficiales.
-const newsTag:Record<number,string>={
- 673:"aguilas-de-mexicali",674:"charros-de-jalisco",675:"caneros-de-los-mochis",
- 676:"mayos-de-navojoa",677:"naranjeros-de-hermosillo",678:"tomateros-de-culiacan",
- 679:"venados-de-mazatlan",680:"yaquis-de-obregon",6483:"jaguares-de-nayarit",
- 5482:"algodoneros-de-guasave"
-};
+
 const xmlSection=(src:string,key:string)=>{
  const match=src.match(new RegExp("<"+key+"(?:\\s[^>]*)?>([\\s\\S]*?)<\\/"+key+">","i"));
  return (match?.[1]??"").replace(/^<!\[CDATA\[|\]\]>$/g,"").trim();
@@ -65,7 +61,7 @@ function decoded(v:string):string{
  }).replace(/\s+/g," ").trim();
 }
 export const getLmpDirectoryNews=cache(async(id:number):Promise<LmpClubNews[]>=>{
- const tag=newsTag[id];
+ const tag=LMP_OFFICIAL_NEWS_TAGS[id];
  if(!tag)return [];
  let xml="";
  try{
