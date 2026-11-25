@@ -29,7 +29,7 @@ export default function OfficialMovementPreviewSection({
       <a href={movementsHref}>Ver historial ↗</a>
     </div>
     <p className="clubSmallNote">{league === "LMB"
-      ? "Boletines de listas de reserva y anuncios institucionales verificados del cuerpo técnico. Las cesiones de derechos no garantizan cambios de plantilla activa."
+      ? "Boletines de listas de reserva y anuncios documentados de cuerpo técnico o regresos de jugadores. Un regreso anunciado no equivale a un alta en roster activo."
       : "Extractos del registro de altas y bajas LMP, junto con anuncios institucionales verificados del cuerpo técnico. No son equivalentes a contrataciones o liberaciones definitivas y no acreditan por sí solos los titulares periodísticos."}</p>
     <div className="clubNewsGrid">
       {items.map((item, index) => <a
@@ -37,10 +37,10 @@ export default function OfficialMovementPreviewSection({
         key={item.date + item.title + index}
         href={item.sourceUrl ?? movementsHref}
         {...(item.sourceUrl ? {target: "_blank", rel: "noopener noreferrer"} : {})}>
-        <span>{item.kind === "official-appointment" ? staffEventLabel(item.staffKind ?? "appointment").toLocaleUpperCase("es") + " · " + league : "REGISTRO " + league} · {formatDay(item.date)}</span>
+        <span>{item.kind === "official-appointment" ? staffEventLabel(item.staffKind ?? "appointment").toLocaleUpperCase("es") + " · " + league : item.kind === "official-player-announcement" ? "REGRESO ANUNCIADO · NO ALTA DE ROSTER" : "REGISTRO " + league} · {formatDay(item.date)}</span>
         <strong>{item.title}</strong>
         {item.excerpt && <small>{item.excerpt}</small>}
-        <small>{item.kind === "official-appointment" ? "Consultar anuncio oficial ↗" : item.sourceUrl ? "Consultar boletín oficial ↗" : "Ver movimiento en el historial ↗"}</small>
+        <small>{item.kind === "official-appointment" ? "Consultar anuncio oficial ↗" : item.kind === "official-player-announcement" ? "Consultar anuncio del club ↗" : item.sourceUrl ? "Consultar boletín oficial ↗" : "Ver movimiento en el historial ↗"}</small>
       </a>)}
     </div>
     <a className="clubDirectorySource" href={officialSourceHref} target="_blank" rel="noopener noreferrer">
