@@ -1,0 +1,53 @@
+name: Auditoría de nombramientos LMB y LMP
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Diario 12:17 UTC; una ejecución no implica publicar nuevos movimientos.
+    - cron: "17 12 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: auditoria-cuerpo-tecnico
+  cancel-in-progress: false
+
+jobs:
+  revisar-comunicados:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Obtener codigo fuente
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Preparar Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+
+      - name: Analizar noticias institucionales
+        run: node scripts/staff-announcement-audit.cjs
+        env:
+          STAFF_AUDIT_OUTPUT: .audit
+
+      - name: Mostrar resumen editorial
+        if: always()
+        shell: bash
+        run: |
+          if [ -f .audit/staff-audit.md ]; then
+            cat .audit/staff-audit.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "La auditoria no pudo producir un informe. Revisar logs." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Conservar evidencia para revision
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: auditoria-cuerpo-tecnico
+          path: .audit/staff-audit.*
+          if-no-files-found: warn
+          retention-days: 14
