@@ -274,6 +274,99 @@ check(mlbSource.includes("originalTitle: title")&&
 
 check(mlbSource.includes("return title;") && !mlbSource.includes('"Actualidad de " + clubName'),
   "MLB preserves real official headlines if translation is unavailable");
+
+// Detector de candidatos: el pipeline NO publica automáticamente registros.
+const {detectStaffAnnouncement,dedupeStaffCandidates}=require("../lib/staffAnnouncementDetection.ts");
+const staffCandidate=(title,league="LMB",clubSlug="leones",url)=>detectStaffAnnouncement({
+  title,league,clubSlug,url:url??(
+    league==="LMB"
+      ?"https://lmb.com.mx/noticias/yadier-molina-nuevo-manager-de-los-leones"
+      :"https://editor.lmp.mx/nuevo-manager-de-jaguares/"
+  ),
+  publishedAt:"2026-11-23T18:00:00Z",
+});
+check(staffCandidate("El histórico ex receptor Yadier Molina es el nuevo manager de los Leones de Yucatán")?.proposedKind==="appointment",
+  "Official Yadier Molina headline enters candidate review, not automatically published");
+check(staffCandidate("Benjamín Gil llega al infierno: es el nuevo manager de los Diablos Rojos",
+ "LMB","diablos-rojos","https://lmb.com.mx/noticias/benjamin-gil-llega-al-infierno-es-el-nuevo-manager-de-los-diablos-rojos")?.proposedKind==="appointment",
+  "Verified LMB manager appointment headline qualifies for review");
+check(staffCandidate("Ratifican a Roberto Chapo Vizcarra como manager de Águilas",
+ "LMP","aguilas","https://editor.lmp.mx/chapo-vizcarra-es-ratificado-como-manager-de-aguilas-de-mexicali/")?.proposedKind==="ratification",
+  "Confirmed club ratification differs from new managerial appointment");
+check(staffCandidate("Jaguares nombran a Erik Rodríguez como manager en sustitución de Luis Carlos Rivera",
+ "LMP","jaguares")?.proposedKind==="replacement",
+  "Manager replacement is a candidate event, not proof of dismissal");
+check(staffCandidate("Definido el cuerpo técnico de Naranjeros",
+ "LMP","naranjeros")?.proposedKind==="staff-change",
+  "Entire coaching staff headline is reviewed as a group rather than invented individual hires");
+check(staffCandidate("Águilas de Mexicali presenta su staff de coaches",
+ "LMP","aguilas")?.proposedKind==="staff-change",
+  "Staff presentation is flagged for review without inventing individuals");
+check(staffCandidate("Lorenzo Bundy abre nueva etapa dentro de los Diablos Rojos como Asesor Deportivo",
+ "LMB","diablos-rojos")?.proposedKind==="coach-addition",
+  "Source detector notices baseball staff changes beyond manager");
+check(staffCandidate("Leones confirman que su manager renuncia")?.proposedKind==="resignation",
+  "Resignation is not mislabeled as replacement or firing");
+check(staffCandidate("Leones destituye a su manager")?.proposedKind==="dismissal",
+  "Dismissal is distinguished from resignation");
+check(staffCandidate("Leones designa manager interino")?.proposedKind==="interim",
+  "Interim designation is not labeled permanent appointment");
+for(const title of [
+  "Sergio Omar Gastélum se perfila para repetir con Pericos como manager",
+  "¿Yadier Molina será el nuevo manager de Leones?",
+  "Rumores: Yadier Molina podría ser manager en Yucatán",
+  "Leones desmiente que Yadier Molina será su nuevo manager",
+  "Héctor Hurtado es el nuevo manager de Diablos Rojos Femenil",
+  "Manager de Leonas de Yucatán se integra a LMS",
+  "Yadier Molina visita a Leones y habla de la nueva temporada con el manager",
+  "Lo que dijo el manager sobre la jornada del sábado"
+])check(staffCandidate(title)===null,
+  "Rumor, softbol, denial or generic manager mention cannot enter pending-confirmation feed: "+title);
+check(staffCandidate("Leones anuncian a Yadier Molina como nuevo manager",
+ "LMB","leones","https://evil.example/noticias/yadier-molina-nuevo-manager")===null,
+ "Staff auditing ignores spoofed official website");
+check(staffCandidate("Leones anuncian a Yadier Molina como nuevo manager",
+ "LMB","leones","https://lmb.com.mx.evil.example/noticias/yadier-molina-nuevo-manager")===null,
+ "Staff audit ignores lookalike LMB domain");
+check(staffCandidate("Leones anuncian a Yadier Molina como nuevo manager",
+ "LMB","leones","http://lmb.com.mx/noticias/yadier-molina-nuevo-manager")===null,
+ "HTTP-only article cannot qualify as official");
+check(staffCandidate("Leones anuncian a Yadier Molina como nuevo manager",
+ "LMB","leones","https://lmb.com.mx/noticias/yadier-molina-nuevo-manager?ref=ad")===null,
+ "Uncanonical official article URL with query parameters does not qualify");
+const verifiedMolina=detectStaffAnnouncement({
+  league:"LMB",clubSlug:"leones",
+  title:"El histórico ex receptor Yadier Molina es el nuevo manager de los Leones de Yucatán",
+  url:"https://lmb.com.mx/noticias/el-historico-ex-receptor-yadier-molina-es-el-nuevo-manager-de-los-leones-de-yucatan"
+},["https://lmb.com.mx/noticias/el-historico-ex-receptor-yadier-molina-es-el-nuevo-manager-de-los-leones-de-yucatan"]);
+check(verifiedMolina?.status==="already_verified"&&verifiedMolina.publishedAt===null,
+ "Exact URL marks the existing editorial record and never invents an LMB publication date");
+const fresh=staffCandidate("Leones anuncian a Yadier Molina como nuevo manager");
+check(fresh?.status==="pending_review" &&
+  fresh.validationNote.includes("NO publicar como confirmado"),
+  "Official-looking unreviewed article always remains pending review");
+check(dedupeStaffCandidates([fresh,fresh]).length===1,
+ "Candidate same league-club-URL is deduplicated");
+check(read("lib/lmpClubDirectoryData.ts").includes("LMP_OFFICIAL_NEWS_TAGS[id]") &&
+  read("lib/lmpOfficialNewsTags.ts").includes("5482"),
+ "LMP auditor shares exact official team RSS feed mapping with production app");
+const auditSrc=read("scripts/staff-announcement-audit.cjs");
+const auditWorkflow=read(".github/workflows/staff-announcement-audit.yml");
+check(auditSrc.includes("LMB_CLUB_DIRECTORY") &&
+  auditSrc.includes("LMP_CLUB_DIRECTORY") &&
+  auditSrc.includes("STALE_DAYS=120") &&
+  auditSrc.includes('status==="pending_review"') &&
+  auditSrc.includes("Ningún candidato queda confirmado") &&
+  auditSrc.includes("failures.length>=10"),
+ "Auditor scans all Mexican league club sources and preserves failure status and editorial safeguards");
+check(auditWorkflow.includes("workflow_dispatch:") &&
+  auditWorkflow.includes('cron: "17 12 * * *"') &&
+  auditWorkflow.includes("permissions:\n  contents: read") &&
+  auditWorkflow.includes("if: always()") &&
+  auditWorkflow.includes("actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02") &&
+  !auditWorkflow.includes("contents: write"),
+ "Daily GitHub Action reports candidates read-only, retains artifact even on source failure");
+
 const {previewLmbMovements,previewLmpMovements}=require("../lib/officialMovementPreview.ts");
 const lmbMovementsExample=[
   {date:"2026-11-19",title:"Derechos recibidos: Andretty Cordero Medina",
