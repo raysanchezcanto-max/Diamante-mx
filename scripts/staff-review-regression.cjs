@@ -68,6 +68,15 @@ const approval=read(".github/workflows/staff-review-decision.yml");
 check(queue.includes('state=all&per_page=100')&&queue.includes("MAX_NEW_ISSUES=15")&&
   queue.includes("pending_review")&&queue.includes("failures>=10"),
   "Queue remembers rejected issues and bounds amount and source failures");
+check(queue.includes('command==="--init-labels" ? ensureLabels()') &&
+  queue.includes('module.exports={candidateKey,reviewIssueTemplate,ensureLabels}'),
+  "La inicialización de etiquetas puede ejecutarse sin haber leído un informe RSS");
+check(audit.includes("node scripts/staff-review-issues.cjs --init-labels") &&
+  audit.indexOf("node scripts/staff-review-issues.cjs --init-labels") <
+  audit.indexOf("node scripts/staff-announcement-audit.cjs") &&
+  audit.includes("continue-on-error: true"),
+  "La bandeja inicializa etiquetas antes de consultar las fuentes y conserva diagnósticos si fallan");
+
 check(audit.includes("issues: write")&&audit.includes("node scripts/staff-review-issues.cjs")&&
   audit.includes("GITHUB_TOKEN:")&&!audit.includes("contents: write"),
   "Audit can create Issues but never modify source code");
