@@ -50,7 +50,7 @@ const negative = /\b(?:no sera|no es|no fue|desmiente|descarta|rechaza|niega|no 
 const newRole = /\b(?:nuevo|nueva)\s+(?:manager|manejador|director tecnico|coach(?:es)?|entrenador(?:es)?|asesor deportivo|cuerpo tecnico|staff de coaches)\b/;
 const role = /\b(?:manager|manejador|director tecnico|coach(?:es)?|entrenador(?:es)?|cuerpo tecnico|staff de coaches|asesor deportivo|coordinador deportivo|coach de banca|coach de pitcheo)\b/;
 const staffRole = /\b(?:coach(?:es)?|entrenador(?:es)?|cuerpo tecnico|staff de coaches|asesor deportivo|coordinador deportivo)\b/;
-const action = /\b(?:nombrad[oa]|nombra|nombran|anuncia|anuncian|presenta|presentan|llega|sera|designad[oa]|designa|toma el mando|al frente|asume|incorpora|integrara|se integra|se suma|sum[aó]|ratifica|ratifican|ratificado|ratificada|renueva|renovad[oa]|repite|continua|continua al frente|reemplaza|sustituye|relevo|interino|renuncia|dimite|sale|salida|deja el cargo|deja de ser|no seguira|destituye|destituido|despide|despedido|cesa|definido|nueva etapa)\b/;
+const action = /\b(?:nombrad[oa]|nombra|nombran|anuncia|anuncian|presenta|presentan|llega|regresa|regresara|vuelve|retorna|sera|designad[oa]|designa|toma el mando|al frente|asume|incorpora|integrara|se integra|se suma|sum[aó]|ratifica|ratifican|ratificado|ratificada|renueva|renovad[oa]|repite|continua|continua al frente|reemplaza|sustituye|relevo|interino|renuncia|dimite|sale|salida|deja el cargo|deja de ser|no seguira|destituye|destituido|despide|despedido|cesa|definido|nueva etapa)\b/;
 
 export function detectStaffAnnouncement(
   article: StaffArticleInput,
