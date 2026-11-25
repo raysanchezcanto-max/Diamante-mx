@@ -274,6 +274,56 @@ check(mlbSource.includes("originalTitle: title")&&
 
 check(mlbSource.includes("return title;") && !mlbSource.includes('"Actualidad de " + clubName'),
   "MLB preserves real official headlines if translation is unavailable");
+const {previewLmbMovements,previewLmpMovements}=require("../lib/officialMovementPreview.ts");
+const lmbMovementsExample=[
+  {date:"2026-11-19",title:"Derechos recibidos: Andretty Cordero Medina",
+   description:"El club Acereros de Monclova cede de manera definitiva los derechos de Andretty Cordero Medina al club Leones de Yucatán.",
+   url:"https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-19-de-noviembre-de-2026",automatic:true},
+  {date:"2026-11-19",title:"Derechos cedidos: Jared Cole Wetherbee",
+   description:"El club Leones de Yucatán cede de manera definitiva los derechos de Jared Cole Wetherbee al club Acereros de Monclova.",
+   url:"https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-19-de-noviembre-de-2026",automatic:true}
+];
+check(previewLmbMovements(lmbMovementsExample).length===2,
+  "LMB preview preserves distinct movements within same official daily bulletin");
+check(previewLmbMovements([...lmbMovementsExample,lmbMovementsExample[0]]).length===2,
+  "LMB preview deduplicates the same official movement");
+check(previewLmbMovements([{...lmbMovementsExample[0],automatic:false}]).length===0,
+  "Archived LMB items never masquerade as newly connected bulletins");
+check(previewLmbMovements([{...lmbMovementsExample[0],url:"https://example.com/fake"}]).length===0,
+  "LMB movement previews accept only official lmb.com.mx daily reserve bulletins");
+check(previewLmbMovements([{...lmbMovementsExample[0],date:"2026-02-30"}]).length===0,
+  "LMB movement previews reject nonexistent dates");
+check(previewLmbMovements(lmbMovementsExample,1).length===1,
+  "LMB preview respects limited card count");
+const lmpMovementsExample=[
+ {date:"2026-11-15",description:"Algodoneros de Guasave informa la activación de José Álvarez, desactivando a Joel Rangel."},
+ {date:"2026-11-13",description:"Algodoneros de Guasave informa la activación de Carlos Vázquez y Joel Rangel, inactivando a Jorge Monroy."}
+];
+check(previewLmpMovements(lmpMovementsExample).length===2,
+  "LMP preview accepts two distinct dated official movement entries");
+check(previewLmpMovements([...lmpMovementsExample,lmpMovementsExample[0]]).length===2,
+  "LMP preview deduplicates identical movements in the official record");
+check(previewLmpMovements(lmpMovementsExample)[0].sourceUrl===null,
+  "LMP movements never invent individual bulletin URLs unavailable in the API");
+check(previewLmpMovements([{date:"",description:"Se activó José Álvarez"}]).length===0,
+  "Undated LMP movements are not displayed as verified");
+check(previewLmpMovements([{date:"2026-11-15",description:"Alta"}]).length===0,
+  "Incomplete LMP official movements are not treated as informative previews");
+check(previewLmpMovements([{date:"2026-11-15",description:"A".repeat(250)}])[0].excerpt.includes("Extracto"),
+  "Truncated LMP movements explicitly tell readers to consult full official record");
+const previewComponent=read("components/OfficialMovementPreviewSection.tsx");
+check(previewComponent.includes("REGISTRO {league}") &&
+  previewComponent.includes("item.sourceUrl ?? movementsHref") &&
+  previewComponent.includes("Estas entradas no acreditan por sí solas los titulares periodísticos."),
+  "Shared news-adjacent panel separates journalism from official roster evidence");
+check(read("app/equipos/lmb/[slug]/page.tsx").includes('previewLmbMovements(movements?.movements ?? [])') &&
+  read("app/equipos/lmb/algodoneros/page.tsx").includes("previewLmbMovements(movementResult?.movements ?? [])") &&
+  read("app/equipos/lmp/[slug]/page.tsx").includes('view==="resumen")?getLmpDirectoryMovements(club.id)') &&
+  read("app/equipos/lmp/algodoneros/page.tsx").includes("previewLmpMovements(movements)"),
+  "Preview source wiring covers 20 LMB and 10 LMP club profiles");
+check(read("lib/lmbMovements.ts").includes("config.maxCandidates ?? 24"),
+  "LMB summary loads only bounded recent bulletins, movement tab retains full coverage");
+
 const lmbSource=read("lib/lmbClubContent.ts");
 check(lmbSource.includes('">Noticias principales<"')&&lmbSource.includes('">Más Noticias<"'),"LMB reads both news sections");
 check(lmbSource.includes("if (!news.length)")&&!lmbSource.includes("if (news.length < 3)"),"LMB retains one or two fresh official stories");
