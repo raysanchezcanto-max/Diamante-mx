@@ -28,6 +28,7 @@ function parseReview(issue){
   return event;
 }
 function normalizeEvent(entry){
+  if(entry.reviewed!==true)throw Error("Marcar reviewed=true después de revisar manualmente la fuente");
   const value=key=>typeof entry[key]==="string"?entry[key].trim():"";
   const event={
     league:value("league"),clubSlug:value("clubSlug"),
