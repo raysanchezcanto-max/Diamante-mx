@@ -33,6 +33,8 @@ export type LmbClubMovementSource = {
   headingAliases: readonly string[];
   archive: readonly Omit<ClubMovement, "automatic">[];
   clubName?: string;
+  /** En Resumen se consulta una ventana breve; Movimientos conserva la cobertura completa. */
+  maxCandidates?: number;
 };
 const MONTHS: Record<string, number> = {
   enero: 1, febrero: 2, marzo: 3, abril: 4, mayo: 5, junio: 6,
@@ -291,7 +293,7 @@ export async function getLmbClubMovements(
   const candidates = [...new Set([...profileLinks, ...newsLinks, ...VERIFIED_TRANSFER_BULLETINS, ...recentSlugs(now)])]
     .filter(url => movementDate(url) !== null)
     .sort((a,b) => (movementDate(b) ?? "").localeCompare(movementDate(a) ?? ""))
-    .slice(0, 24);
+    .slice(0, Math.max(1, Math.min(config.maxCandidates ?? 24, 24)));
   const existingUrls = new Set<string>(fallback.map(item => item.url));
   const freshCandidates = candidates.filter(url => !existingUrls.has(url));
   const articles = await Promise.all(freshCandidates.map(async url => {
