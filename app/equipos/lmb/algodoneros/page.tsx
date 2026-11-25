@@ -6,6 +6,7 @@ import LmbRosterHeadshot from "@/components/LmbRosterHeadshot";
 import { getAlgodonerosMovements } from "@/lib/lmbMovements";
 import { previewLmbMovements } from "@/lib/officialMovementPreview";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
+import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -279,6 +280,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
               <OfficialMovementPreviewSection league="LMB" clubName={club.name}
                 items={movementPreview} movementsHref="/equipos/lmb/algodoneros?vista=movimientos"
                 officialSourceHref="https://lmb.com.mx/movimientos"/>
+              <OfficialStaffHistorySection league="LMB" clubSlug="algodoneros" recentPreview={movementPreview}/>
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
                   <div><span className="clubKicker">{COPY.summary.videosKicker("LMB")}</span><h2>{COPY.summary.videosTitle}</h2></div>
