@@ -1,4 +1,5 @@
 import type { VerifiedStaffKind } from "./verifiedPersonnelEvents";
+import { isVerifiedLmbPlayerAnnouncementSource } from "./verifiedLmbPlayerAnnouncements";
 
 /**
  * Entradas oficiales independientes de los titulares periodísticos.
@@ -10,13 +11,13 @@ export type OfficialMovementPreview = {
   title: string;
   excerpt: string;
   sourceUrl: string | null;
-  kind?: "official-appointment";
+  kind?: "official-appointment" | "official-player-announcement";
   staffKind?: VerifiedStaffKind;
 };
 
 type LmbMovementInput = {
   date: string; title: string; description: string; url: string; automatic?: boolean;
-  sourceKind?: "official-appointment";
+  sourceKind?: "official-appointment" | "official-player-announcement";
   staffKind?: VerifiedStaffKind;
 };
 type LmpMovementInput = {date:string;description:string;sourceKind?:"official-appointment";staffKind?:VerifiedStaffKind;sourceUrl?:string;person?:string};
@@ -58,7 +59,9 @@ export function previewLmbMovements(
     const validBulletin = item.automatic === true && isLmbBulletin(item.url);
     const validAppointment = item.sourceKind === "official-appointment" &&
       item.automatic === false && isOfficialAppointment(item.url);
-    if ((!validBulletin && !validAppointment) || !validDate(item.date) ||
+    const validPlayerNotice = item.sourceKind === "official-player-announcement" &&
+      item.automatic === false && isVerifiedLmbPlayerAnnouncementSource(item.url);
+    if ((!validBulletin && !validAppointment && !validPlayerNotice) || !validDate(item.date) ||
         item.title.trim().length < 8 || item.description.trim().length < 18) return [];
     const key = item.date + "|" + item.url + "|" + item.description;
     if (seen.has(key)) return [];
@@ -69,6 +72,7 @@ export function previewLmbMovements(
       excerpt: compress(item.description, 220),
       sourceUrl: item.url,
       ...(validAppointment ? {kind:"official-appointment" as const,staffKind:item.staffKind??"appointment"} : {}),
+      ...(validPlayerNotice ? {kind:"official-player-announcement" as const} : {}),
     }];
   });
   return items.sort((a, b) => b.date.localeCompare(a.date)).slice(0, Math.max(0, Math.min(limit, 3)));
