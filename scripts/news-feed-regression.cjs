@@ -295,6 +295,51 @@ check(previewLmbMovements([{...lmbMovementsExample[0],date:"2026-02-30"}]).lengt
   "LMB movement previews reject nonexistent dates");
 check(previewLmbMovements(lmbMovementsExample,1).length===1,
   "LMB preview respects limited card count");
+// LMB: nombramiento oficial de cuerpo técnico por comunicado propio,
+// no movimiento de lista de reserva ni transacción de jugador.
+const {officialLmbPersonnelAppointments}=require("../lib/lmbOfficialPersonnel.ts");
+const leonesAppointments=officialLmbPersonnelAppointments("https://lmb.com.mx/equipos/leones");
+check(leonesAppointments.length===1 &&
+  leonesAppointments[0].person==="Yadier Molina" &&
+  leonesAppointments[0].date==="2026-11-23" &&
+  leonesAppointments[0].role==="Mánager" &&
+  leonesAppointments[0].effectiveSeason==="2027",
+  "Yadier Molina is an official Nov 23 Leones managerial appointment for 2027");
+check(leonesAppointments[0].url===
+  "https://lmb.com.mx/noticias/el-historico-ex-receptor-yadier-molina-es-el-nuevo-manager-de-los-leones-de-yucatan",
+  "Leones manager appointment cites the verified official LMB announcement");
+check(officialLmbPersonnelAppointments("https://lmb.com.mx/equipos/acereros").length===0 &&
+  officialLmbPersonnelAppointments("https://lmb.com.mx/equipos/diablos-rojos").length===0 &&
+  officialLmbPersonnelAppointments("https://not-lmb.com.mx/equipos/leones").length===0,
+  "Leones appointment never leaks to other LMB clubs or unofficial domains");
+const molinaMovement={
+ date:leonesAppointments[0].date,
+ title:"Nombramiento oficial: "+leonesAppointments[0].person,
+ description:leonesAppointments[0].description,
+ url:leonesAppointments[0].url,
+ automatic:false,
+ sourceKind:"official-appointment"
+};
+const mixedLeonesPreview=previewLmbMovements([...lmbMovementsExample,molinaMovement],2);
+check(mixedLeonesPreview.length===2 &&
+  mixedLeonesPreview[0].kind==="official-appointment" &&
+  mixedLeonesPreview[0].title.includes("Yadier Molina") &&
+  mixedLeonesPreview[0].date==="2026-11-23",
+  "Official manager announcement comes before older reserve moves in Leones summary");
+check(previewLmbMovements([{...molinaMovement,sourceKind:undefined}]).length===0 &&
+  previewLmbMovements([{...molinaMovement,automatic:true}]).length===0,
+  "A normal archived entry or automatic reserve item cannot impersonate a staff announcement");
+check(previewLmbMovements([{...molinaMovement,url:"https://example.com/anuncio-falso"}]).length===0,
+  "Staff announcement requires an official LMB news URL");
+check(previewLmbMovements([molinaMovement]).length===1,
+  "An official managerial announcement remains visible even if no fresh reserve bulletin is available");
+check(read("lib/lmbMovements.ts").includes("officialLmbPersonnelAppointments(config.profileUrl)") &&
+  read("lib/lmbMovements.ts").includes("sourceKind: \\"official-appointment\\" as const"),
+  "LMB movement timeline merges independently verified club appointments");
+check(previewComponent.includes("NOMBRAMIENTO OFICIAL · LMB") &&
+  previewComponent.includes("Consultar anuncio oficial"),
+  "LMB summary distinguishes managerial appointment from a transaction in reserve lists");
+
 const lmpMovementsExample=[
  {date:"2026-11-15",description:"Algodoneros de Guasave informa la activación de José Álvarez, desactivando a Joel Rangel."},
  {date:"2026-11-13",description:"Algodoneros de Guasave informa la activación de Carlos Vázquez y Joel Rangel, inactivando a Jorge Monroy."}
@@ -312,7 +357,7 @@ check(previewLmpMovements([{date:"2026-11-15",description:"Alta"}]).length===0,
 check(previewLmpMovements([{date:"2026-11-15",description:"A".repeat(250)}])[0].excerpt.includes("Extracto"),
   "Truncated LMP movements explicitly tell readers to consult full official record");
 const previewComponent=read("components/OfficialMovementPreviewSection.tsx");
-check(previewComponent.includes("REGISTRO {league}") &&
+check(previewComponent.includes('"REGISTRO " + league') &&
   previewComponent.includes("item.sourceUrl ?? movementsHref") &&
   previewComponent.includes("Estas entradas no acreditan por sí solas los titulares periodísticos."),
   "Shared news-adjacent panel separates journalism from official roster evidence");
