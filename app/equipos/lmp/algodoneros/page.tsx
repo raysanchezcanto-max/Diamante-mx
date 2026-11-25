@@ -7,6 +7,7 @@ import { getAlgodonerosNews, getAlgodonerosRoster, getAlgodonerosStanding, getAl
 import { getLmpDirectoryMovements } from "@/lib/lmpClubDirectoryData";
 import LmpMovementTimeline from "@/components/LmpMovementTimeline";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
+import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
 import { previewLmpMovements } from "@/lib/officialMovementPreview";
 import ClubStatisticsProfile from "@/components/ClubStatisticsProfile";
 import { getLmpSeasonYear } from "@/lib/lmp";
@@ -145,6 +146,7 @@ export default async function AlgodonerosLmpProfile({searchParams}:Props){
           <OfficialMovementPreviewSection league="LMP" clubName={name}
             items={movementPreview} movementsHref={home+"?vista=movimientos"}
             officialSourceHref="https://www.lmp.mx/rosters/algodoneros"/>
+          <OfficialStaffHistorySection league="LMP" clubSlug="algodoneros" recentPreview={movementPreview}/>
           <section className="clubEditorialSection">
             <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.summary.videosKicker("LMP")}</span><h2>{COPY.summary.videosTitle}</h2></div></div>
             <p className="clubSmallNote">Selección verificada de resúmenes del canal oficial de LMP. Estos clips corresponden a los juegos de Guasave del 7 de noviembre de 2026, no a transmisiones en vivo.</p>
