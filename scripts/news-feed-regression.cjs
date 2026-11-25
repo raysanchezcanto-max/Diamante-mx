@@ -302,6 +302,10 @@ check(staffCandidate("Definido el cuerpo técnico de Naranjeros",
 check(staffCandidate("Águilas de Mexicali presenta su staff de coaches",
  "LMP","aguilas")?.proposedKind==="staff-change",
   "Staff presentation is flagged for review without inventing individuals");
+check(staffCandidate('Rafael "Rafy" Chaves regresa a los planes de los Leones como coach de pitcheo para el 2027',
+ "LMB","leones",
+ "https://lmb.com.mx/noticias/rafael-rafy-chaves-regresa-los-planes-de-los-leones-como-coach-de-pitcheo-para-el-2027")?.status==="pending_review",
+ "Official coach return is discovered but stays pending until individual review");
 check(staffCandidate("Lorenzo Bundy abre nueva etapa dentro de los Diablos Rojos como Asesor Deportivo",
  "LMB","diablos-rojos")?.proposedKind==="coach-addition",
   "Source detector notices baseball staff changes beyond manager");
