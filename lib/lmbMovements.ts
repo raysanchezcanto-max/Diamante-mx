@@ -340,11 +340,12 @@ export async function getLmbClubMovements(
 
 // Mismo lector reutilizable: próximos equipos solo aportan su URL, el encabezado
 // de su nombre oficial en los boletines y el archivo histórico de respaldo.
-export async function getAlgodonerosMovements(now = new Date()): Promise<MovementResult> {
+export async function getAlgodonerosMovements(now = new Date(), maxCandidates = 24): Promise<MovementResult> {
   return getLmbClubMovements({
     profileUrl: PROFILE,
     headingAliases: ["LAGUNA"],
     archive: ALGODONEROS_MOVEMENTS,
     clubName: "Unión Laguna",
+    maxCandidates,
   }, now);
 }
