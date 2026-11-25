@@ -320,8 +320,8 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
             </div>
             <p className="clubSmallNote">
               {movements?.sourceStatus==="connected"?
-                "Consultas automáticas de comunicados vinculados por LMB a este club, con caché de 30 minutos.":
-                "La lista oficial no pudo verificarse recientemente. Consulta la fuente para confirmar movimientos."}
+                "Boletines de movimientos LMB con caché aproximada de 30 minutos y nombramientos institucionales verificados por separado.":
+                "No fue posible confirmar el listado reciente de boletines; los nombramientos con comunicado institucional conservan su fuente individual."}
               {" "}Las altas de academia, bajas y cesiones de derechos no implican necesariamente cambios de la plantilla activa.
             </p>
             {movements?.movements.length?(
@@ -347,7 +347,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
             ):<div className="clubDirectoryNotice"><h3>{COPY.movements.noneTitle}</h3>
               <p>Esto no significa que no hayan existido operaciones. El historial publicado por LMB puede ser parcial.</p>
               <a href="https://lmb.com.mx/movimientos" target="_blank" rel="noopener noreferrer">Ver movimientos LMB ↗</a></div>}
-            <p className="clubSmallNote">Los boletines se actualizan al visitar la sección; no son alertas instantáneas ni un historial exhaustivo.</p>
+            <p className="clubSmallNote">Los boletines se consultan periódicamente; los nombramientos oficiales documentados se incorporan por separado. No son alertas instantáneas ni un historial exhaustivo.</p>
           </section>
         )}
 
