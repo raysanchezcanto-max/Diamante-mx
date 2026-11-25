@@ -10,6 +10,8 @@ import ClubStatisticsProfile from "./ClubStatisticsProfile";
 import type { ClubSeasonStatistics } from "@/lib/clubStatistics";
 import type { Standing } from "@/lib/mlb";
 import LmpMovementTimeline from "./LmpMovementTimeline";
+import OfficialMovementPreviewSection from "./OfficialMovementPreviewSection";
+import { previewLmpMovements } from "@/lib/officialMovementPreview";
 import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
 import LmpAguilasEditorialHistory from "./LmpAguilasEditorialHistory";
 import LmpTomaterosEditorialHistory from "./LmpTomaterosEditorialHistory";
@@ -31,6 +33,7 @@ const source="https://www.baseball-reference.com/bullpen/LMP";
 export default function LmpDirectoryClubProfile({club,view,roster,news,record,fixtures,mlbAlumni,movements,standings,statistics,statsSeason,gemini=false}:Props){
  const logo=getTeamLogo("LMP",club.id,club.name);
  const home="/equipos/lmp/"+club.slug;
+ const movementPreview=view==="resumen"?previewLmpMovements(movements):[];
  const first=club.championships[0],last=club.championships[club.championships.length-1];
  const titleCount=club.championships.length;
  const highlights=[first,last].filter((s,i,a):s is string=>Boolean(s)&&a.indexOf(s)===i);
@@ -86,6 +89,9 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
        {story.image&&<img className="clubNewsThumb" src={story.image} alt="" loading="lazy"/>}
        <span>{story.published.slice(0,10)}</span><strong>{story.title}</strong><small>Leer noticia ↗</small></a>)}</div>
      </section>
+     <OfficialMovementPreviewSection league="LMP" clubName={club.name}
+      items={movementPreview} movementsHref={home+"?vista=movimientos"}
+      officialSourceHref={"https://www.lmp.mx/rosters/"+club.slug}/>
      <section className="clubEditorialSection">
       <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.summary.videosKicker("LMP")}</span><h2>{COPY.summary.videosTitle}</h2></div></div>
       <p className="clubSmallNote">Archivo audiovisual del canal oficial de la Liga Mexicana del Pacífico. Los clips individuales solo aparecerán aquí cuando el rival, partido y fecha estén comprobados.</p>
