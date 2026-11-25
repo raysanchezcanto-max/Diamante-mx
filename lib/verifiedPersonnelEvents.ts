@@ -77,6 +77,24 @@ const EVENTS: readonly VerifiedPersonnelEvent[] = [
     description:"Naranjeros de Hermosillo anunció la incorporación de Gil Velázquez como coach de banca para 2026–27. Es parte del cuerpo técnico y no un movimiento de jugador.",
   },
   {
+    league:"LMP",clubSlug:"naranjeros",date:"2026-07-23",person:"Giovanni Carrara",role:"Coach de pitcheo",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/",
+    description:"Naranjeros anunció a Giovanni Carrara como nuevo encargado del cuerpo de lanzadores para 2026–27; anuncio de personal técnico, no movimiento de roster.",
+  },
+  {
+    league:"LMP",clubSlug:"naranjeros",date:"2026-07-23",person:"Mike Jacobs",role:"Coach de bateo",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/",
+    description:"Naranjeros presentó a Mike Jacobs como nuevo coach de bateo para la temporada 2026–27; no equivale a alta como jugador.",
+  },
+  {
+    league:"LMP",clubSlug:"naranjeros",date:"2026-07-23",person:"Ever Magallanes",role:"Coach de primera base",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/",
+    description:"Naranjeros anunció que Ever Magallanes se sumaría como coach de primera base para 2026–27; no supone un movimiento de roster.",
+  },
+  {
     league:"LMP",clubSlug:"aguilas",date:"2026-08-18",person:"Adulfo Camacho",role:"Coach de tercera base",
     kind:"coach-addition",effectiveSeason:"2026–27",
     url:"https://editor.lmp.mx/aguilas-de-mexicali-presenta-su-staff-de-coaches/",
