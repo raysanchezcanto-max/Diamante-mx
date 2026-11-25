@@ -574,8 +574,8 @@ check(lmbSource.includes("if (!news.length)")&&!lmbSource.includes("if (news.len
 check(lmbSource.includes('stories: [], sourceStatus: "fallback"'),"LMB does not pass old archive as current news");
 check(lmbSource.includes("const REVALIDATE_SECONDS = 900"),"LMB official content 15-minute cache");
 const lmpSource=read("lib/lmpClubDirectoryData.ts");
-const tagSection=lmpSource.split("const newsTag:")[1].split("};")[0];
-const tagged=new Set([...tagSection.matchAll(/(\d+):\s*"[^"]+"/g)].map(x=>Number(x[1])));
+const {LMP_OFFICIAL_NEWS_TAGS}=require("../lib/lmpOfficialNewsTags.ts");
+const tagged=new Set(Object.keys(LMP_OFFICIAL_NEWS_TAGS).map(Number));
 for(const team of lmp)check(tagged.has(team.id),"LMP RSS tag for "+team.name);
 check(tagged.has(5482),"LMP RSS tag for Algodoneros Guasave");
 check(lmpSource.includes("stories.sort((a,b)=>b.published.localeCompare(a.published)"),"LMP articles sorted by official publication date");
