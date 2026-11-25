@@ -7,6 +7,8 @@ import { getLmbClub, findLmbClubByName } from "@/lib/lmbClubs";
 import { getLmbClubNews, getLmbClubRoster, getLmbClubOverview, getLmbClubVideos } from "@/lib/lmbClubContent";
 import { lmbReportsInReview } from "@/lib/lmbReportsInReview";
 import { getLmbClubMovements } from "@/lib/lmbMovements";
+import { previewLmbMovements } from "@/lib/officialMovementPreview";
+import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -56,11 +58,12 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
     view==="resumen"?getLmbStandings():Promise.resolve([]),
     view==="resumen"?getLmbClubNews(club.slug):Promise.resolve(null),
     view==="plantilla"?getLmbClubRoster(club.slug):Promise.resolve(null),
-    view==="movimientos"?getLmbClubMovements({
+    (view==="movimientos" || view==="resumen")?getLmbClubMovements({
       profileUrl:official(club.slug),
       headingAliases:[club.bulletinHeading,club.bulletinHeading==="DOS LAREDOS"?"LAREDO":club.bulletinHeading],
       clubName:club.name,
       archive:[],
+      maxCandidates:view==="resumen"?6:undefined,
     }):Promise.resolve(null),
     view==="estadisticas"?getLatestClubSeasonStatistics("LMB",LMB_TEAM_IDS_2026[club.slug],mexicoSeasonYear()):Promise.resolve(null),
     view==="resumen"?getLmbClubVideos(club.slug):Promise.resolve(null),
@@ -85,6 +88,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   // ocupa el índice 0; las tarjetas 1-3 y los titulares desde el índice 4.
   const relatedNews=(news?.stories??[]).slice(1,4);
   const headlines=(news?.stories??[]).slice(4,11);
+  const movementPreview = view==="resumen" ? previewLmbMovements(movements?.movements ?? []) : [];
   return (
     <main className="clubProfile clubProfile--all">
       <header className="clubTopbar">
@@ -197,6 +201,9 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                   <p className="clubSmallNote">No hay otras noticias verificadas para este club en la consulta actual.</p>
                 )}
               </section>
+              <OfficialMovementPreviewSection league="LMB" clubName={club.name}
+                 items={movementPreview} movementsHref={home+"?vista=movimientos"}
+                 officialSourceHref="https://lmb.com.mx/movimientos"/>
               <section className="clubEditorialSection" aria-label={"Videos de béisbol relacionados con "+club.name}>
                 <div className="clubSectionTitle">
                   <div>
