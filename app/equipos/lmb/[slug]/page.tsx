@@ -10,6 +10,7 @@ import { getLmbClubMovements } from "@/lib/lmbMovements";
 import { previewLmbMovements } from "@/lib/officialMovementPreview";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
+import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -161,6 +162,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <h2>{topStory.title}</h2>
                     <p>Selección de publicaciones oficiales del club. Se actualiza al consultar la página.</p>
                     <a href={topStory.url} target="_blank" rel="noopener noreferrer">Leer nota en LMB ↗</a>
+                    {verifiedStaffNewsForClub("LMB",club.slug,topStory.url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">CUERPO TÉCNICO · VER EVENTO DOCUMENTADO ↗</a>}
                   </div>
                 </section>
               ):(
@@ -195,7 +197,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                 <div className="clubNewsGrid">
                   {relatedNews.map(story=><a href={story.url} className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                     {story.imageUrl&&<img src={story.imageUrl} className="clubNewsThumb" alt="" loading="lazy"/>}
-                    <span>{story.label}</span><strong>{story.title}</strong><small>Leer en LMB ↗</small>
+                    <span>{story.label}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMB",club.slug,story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}<small>Leer en LMB ↗</small>
                   </a>)}
                 </div>
                 {!relatedNews.length&&(
