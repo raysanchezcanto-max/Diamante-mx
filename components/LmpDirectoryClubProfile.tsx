@@ -11,6 +11,7 @@ import type { ClubSeasonStatistics } from "@/lib/clubStatistics";
 import type { Standing } from "@/lib/mlb";
 import LmpMovementTimeline from "./LmpMovementTimeline";
 import OfficialMovementPreviewSection from "./OfficialMovementPreviewSection";
+import OfficialStaffHistorySection from "./OfficialStaffHistorySection";
 import { previewLmpMovements } from "@/lib/officialMovementPreview";
 import LmpNaranjerosEditorialHistory from "./LmpNaranjerosEditorialHistory";
 import LmpAguilasEditorialHistory from "./LmpAguilasEditorialHistory";
@@ -92,6 +93,7 @@ export default function LmpDirectoryClubProfile({club,view,roster,news,record,fi
      <OfficialMovementPreviewSection league="LMP" clubName={club.name}
       items={movementPreview} movementsHref={home+"?vista=movimientos"}
       officialSourceHref={"https://www.lmp.mx/rosters/"+club.slug}/>
+     <OfficialStaffHistorySection league="LMP" clubSlug={club.slug} recentPreview={movementPreview}/>
      <section className="clubEditorialSection">
       <div className="clubSectionTitle"><div><span className="clubKicker">{COPY.summary.videosKicker("LMP")}</span><h2>{COPY.summary.videosTitle}</h2></div></div>
       <p className="clubSmallNote">Archivo audiovisual del canal oficial de la Liga Mexicana del Pacífico. Los clips individuales solo aparecerán aquí cuando el rival, partido y fecha estén comprobados.</p>
