@@ -1,3 +1,5 @@
+import type { VerifiedStaffKind } from "./verifiedPersonnelEvents";
+
 /**
  * Entradas oficiales independientes de los titulares periodísticos.
  * LMB publica boletines individuales; LMP publica un registro de movimientos
@@ -9,13 +11,15 @@ export type OfficialMovementPreview = {
   excerpt: string;
   sourceUrl: string | null;
   kind?: "official-appointment";
+  staffKind?: VerifiedStaffKind;
 };
 
 type LmbMovementInput = {
   date: string; title: string; description: string; url: string; automatic?: boolean;
   sourceKind?: "official-appointment";
+  staffKind?: VerifiedStaffKind;
 };
-type LmpMovementInput = { date: string; description: string };
+type LmpMovementInput = {date:string;description:string;sourceKind?:"official-appointment";staffKind?:VerifiedStaffKind;sourceUrl?:string;person?:string};
 
 const validDate = (date: string): boolean => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
@@ -64,13 +68,21 @@ export function previewLmbMovements(
       title: compress(item.title, 130),
       excerpt: compress(item.description, 220),
       sourceUrl: item.url,
-      ...(validAppointment ? {kind:"official-appointment" as const} : {}),
+      ...(validAppointment ? {kind:"official-appointment" as const,staffKind:item.staffKind??"appointment"} : {}),
     }];
   });
   return items.sort((a, b) => b.date.localeCompare(a.date)).slice(0, Math.max(0, Math.min(limit, 3)));
 }
 
-/** LMP: extracto del registro, no un artículo ni una confirmación de su contenido. */
+const isOfficialLmpAnnouncement = (value: string): boolean => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === "editor.lmp.mx" &&
+      /^\/[a-z0-9-]+\/$/.test(url.pathname) && !url.search && !url.hash;
+  } catch { return false; }
+};
+
+/** LMP: diferenciar anuncios institucionales de la API de altas/bajas. */
 export function previewLmpMovements(
   movements: readonly LmpMovementInput[],
   limit = 2,
@@ -78,15 +90,21 @@ export function previewLmpMovements(
   const seen = new Set<string>();
   const items = movements.flatMap(item => {
     const description = item.description.replace(/\s+/g, " ").trim();
+    const staff = item.sourceKind === "official-appointment" &&
+      Boolean(item.staffKind && item.person?.trim() && item.sourceUrl &&
+      isOfficialLmpAnnouncement(item.sourceUrl));
+    if (item.sourceKind === "official-appointment" && !staff) return [];
     if (!validDate(item.date) || description.length < 18) return [];
     const key = item.date + "|" + description;
     if (seen.has(key)) return [];
     seen.add(key);
     return [{
       date: item.date,
-      title: compress(description, 180),
-      excerpt: description.length > 180 ? "Extracto del registro; consulta el historial para leer el movimiento completo." : "",
-      sourceUrl: null,
+      title: staff ? item.person!.trim() : compress(description, 180),
+      excerpt: staff ? compress(description, 220) :
+        description.length > 180 ? "Extracto del registro; consulta el historial para leer el movimiento completo." : "",
+      sourceUrl: staff ? item.sourceUrl! : null,
+      ...(staff ? {kind:"official-appointment" as const,staffKind:item.staffKind} : {}),
     }];
   });
   return items.sort((a, b) => b.date.localeCompare(a.date)).slice(0, Math.max(0, Math.min(limit, 3)));
