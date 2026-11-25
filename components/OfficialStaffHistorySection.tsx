@@ -20,8 +20,18 @@ export default function OfficialStaffHistorySection({league,clubSlug,recentPrevi
     .filter(event=>!recentPreview.some(item=>
       item.kind==="official-appointment" && item.sourceUrl===event.url &&
       (item.title.includes(event.person) || item.excerpt.includes(event.person))
-    )).slice(0,3);
-  if(!notices.length)return null;
+    ));
+  // Un comunicado puede anunciar varios coaches: agrupar por fuente y fecha
+  // para evitar tarjetas idénticas y conservar visibles todos sus nombres.
+  const grouped=new Map<string,typeof notices>();
+  for(const event of notices){
+    const key=event.url+"|"+event.date;
+    const group=grouped.get(key)??[];
+    group.push(event);
+    grouped.set(key,group);
+  }
+  const visible=[...grouped.values()].slice(0,3);
+  if(!visible.length)return null;
   return <section className="clubEditorialSection" aria-label={"Comunicados de cuerpo técnico "+league}>
     <div className="clubSectionTitle">
       <div><span className="clubKicker">CUERPO TÉCNICO · {league}</span>
@@ -29,14 +39,20 @@ export default function OfficialStaffHistorySection({league,clubSlug,recentPrevi
     </div>
     <p className="clubSmallNote">Historial de anuncios institucionales con fecha y fuente. No equivale a la plantilla vigente ni confirma por sí solo quién ocupa actualmente cada cargo.</p>
     <div className="clubNewsGrid">
-      {notices.map(event=><a className="clubNewsCard"
-        href={event.url} target="_blank" rel="noopener noreferrer"
-        key={event.clubSlug+"|"+event.date+"|"+event.person+"|"+event.kind}>
-        <span>{staffEventLabel(event.kind).toLocaleUpperCase("es")} · {dateLabel(event.date)}</span>
-        <strong>{event.person} · {event.role}</strong>
-        <small>{event.description}</small>
-        <small>Consultar comunicado oficial {league} ↗</small>
-      </a>)}
+      {visible.map(group=>{
+        const event=group[0];
+        return <a className="clubNewsCard"
+          href={event.url} target="_blank" rel="noopener noreferrer"
+          key={event.clubSlug+"|"+event.date+"|"+event.url}>
+          <span>{staffEventLabel(event.kind).toLocaleUpperCase("es")} · {dateLabel(event.date)}</span>
+          <strong>{group.length===1
+            ? event.person+" · "+event.role
+            : group.length+" integrantes del cuerpo técnico documentados"}</strong>
+          {group.length===1?<small>{event.description}</small>:group.map(member=>
+            <small key={member.person+"|"+member.role}>{member.person} · {member.role}</small>)}
+          <small>Consultar comunicado oficial {league} ↗</small>
+        </a>;
+      })}
     </div>
   </section>;
 }
