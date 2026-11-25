@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: auditoria-cuerpo-tecnico
@@ -32,6 +33,13 @@ jobs:
         run: node scripts/staff-announcement-audit.cjs
         env:
           STAFF_AUDIT_OUTPUT: .audit
+
+      - name: Crear bandeja de revisión sin publicar confirmaciones
+        run: node scripts/staff-review-issues.cjs
+        env:
+          STAFF_AUDIT_OUTPUT: .audit
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
       - name: Mostrar resumen editorial
         if: always()
