@@ -10,6 +10,7 @@ import { getLmbClubMovements } from "@/lib/lmbMovements";
 import { previewLmbMovements } from "@/lib/officialMovementPreview";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
+import OfficialPlayerAnnouncementSection from "@/components/OfficialPlayerAnnouncementSection";
 import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import { verifiedLmbPlayerNewsForClub } from "@/lib/verifiedLmbPlayerAnnouncements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
@@ -210,6 +211,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                  items={movementPreview} movementsHref={home+"?vista=movimientos"}
                  officialSourceHref="https://lmb.com.mx/movimientos"/>
               <OfficialStaffHistorySection league="LMB" clubSlug={club.slug} recentPreview={movementPreview}/>
+              <OfficialPlayerAnnouncementSection clubSlug={club.slug} recentPreview={movementPreview} movementsHref={home+"?vista=movimientos"}/>
               <section className="clubEditorialSection" aria-label={"Videos de béisbol relacionados con "+club.name}>
                 <div className="clubSectionTitle">
                   <div>
