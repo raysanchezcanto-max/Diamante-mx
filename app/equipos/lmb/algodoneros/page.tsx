@@ -7,6 +7,7 @@ import { getAlgodonerosMovements } from "@/lib/lmbMovements";
 import { previewLmbMovements } from "@/lib/officialMovementPreview";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
+import OfficialPlayerAnnouncementSection from "@/components/OfficialPlayerAnnouncementSection";
 import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import { verifiedLmbPlayerNewsForClub } from "@/lib/verifiedLmbPlayerAnnouncements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
@@ -285,6 +286,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                 items={movementPreview} movementsHref="/equipos/lmb/algodoneros?vista=movimientos"
                 officialSourceHref="https://lmb.com.mx/movimientos"/>
               <OfficialStaffHistorySection league="LMB" clubSlug="algodoneros" recentPreview={movementPreview}/>
+              <OfficialPlayerAnnouncementSection clubSlug={"algodoneros"} recentPreview={movementPreview} movementsHref={"/equipos/lmb/algodoneros?vista=movimientos"}/>
               <section className="clubEditorialSection">
                 <div className="clubSectionTitle">
                   <div><span className="clubKicker">{COPY.summary.videosKicker("LMB")}</span><h2>{COPY.summary.videosTitle}</h2></div>
