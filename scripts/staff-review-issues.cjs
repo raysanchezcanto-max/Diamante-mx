@@ -28,7 +28,7 @@ function reviewIssueTemplate(item) {
     schema:"diamante-staff-review-v1",candidateKey:key,
     league:item.league,clubSlug:item.clubSlug,
     articleUrl:item.url,proposedKind:item.proposedKind,
-    person:"",role:"",kind:"",date:"",effectiveSeason:"",
+    person:"",role:"",kind:"",date:"",effectiveSeason:"",reviewed:false,
     description:"",replaces:""
   };
   const ticks=String.fromCharCode(96).repeat(3);
