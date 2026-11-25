@@ -28,7 +28,7 @@ export default function OfficialMovementPreviewSection({
       <a href={movementsHref}>Ver historial ↗</a>
     </div>
     <p className="clubSmallNote">{league === "LMB"
-      ? "Extractos de boletines publicados por LMB, independientes de las noticias del club. Las cesiones de derechos y cambios de listas no garantizan participación en la plantilla activa."
+      ? "Boletines de listas de reserva y nombramientos del cuerpo técnico confirmados por LMB, independientes de las noticias. Las cesiones de derechos no garantizan participación en la plantilla activa."
       : "Extractos del registro de movimientos de LMP. Activaciones y desactivaciones no equivalen necesariamente a contrataciones o bajas definitivas. Estas entradas no acreditan por sí solas los titulares periodísticos."}</p>
     <div className="clubNewsGrid">
       {items.map((item, index) => <a
@@ -36,10 +36,10 @@ export default function OfficialMovementPreviewSection({
         key={item.date + item.title + index}
         href={item.sourceUrl ?? movementsHref}
         {...(item.sourceUrl ? {target: "_blank", rel: "noopener noreferrer"} : {})}>
-        <span>REGISTRO {league} · {formatDay(item.date)}</span>
+        <span>{item.kind === "official-appointment" ? "NOMBRAMIENTO OFICIAL · LMB" : "REGISTRO " + league} · {formatDay(item.date)}</span>
         <strong>{item.title}</strong>
         {item.excerpt && <small>{item.excerpt}</small>}
-        <small>{item.sourceUrl ? "Consultar boletín oficial ↗" : "Ver movimiento en el historial ↗"}</small>
+        <small>{item.kind === "official-appointment" ? "Consultar anuncio oficial ↗" : item.sourceUrl ? "Consultar boletín oficial ↗" : "Ver movimiento en el historial ↗"}</small>
       </a>)}
     </div>
     <a className="clubDirectorySource" href={officialSourceHref} target="_blank" rel="noopener noreferrer">
