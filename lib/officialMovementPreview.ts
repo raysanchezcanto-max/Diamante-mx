@@ -12,6 +12,7 @@ export type OfficialMovementPreview = {
 
 type LmbMovementInput = {
   date: string; title: string; description: string; url: string; automatic?: boolean;
+  sourceKind?: "official-appointment";
 };
 type LmpMovementInput = { date: string; description: string };
 
@@ -33,14 +34,26 @@ const isLmbBulletin = (value: string): boolean => {
   } catch { return false; }
 };
 
-/** Solo registros extraídos de boletines de LMB; jamás archivo de respaldo. */
+const isOfficialAppointment = (value: string): boolean => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === "lmb.com.mx" &&
+      /^\/noticias\/[a-z0-9-]+$/.test(url.pathname) &&
+      !url.search && !url.hash;
+  } catch { return false; }
+};
+
+/** Solo boletines y nombramientos institucionales previamente verificados, jamás archivo. */
 export function previewLmbMovements(
   movements: readonly LmbMovementInput[],
   limit = 2,
 ): OfficialMovementPreview[] {
   const seen = new Set<string>();
   const items = movements.flatMap(item => {
-    if (item.automatic !== true || !validDate(item.date) || !isLmbBulletin(item.url) ||
+    const validBulletin = item.automatic === true && isLmbBulletin(item.url);
+    const validAppointment = item.sourceKind === "official-appointment" &&
+      item.automatic === false && isOfficialAppointment(item.url);
+    if ((!validBulletin && !validAppointment) || !validDate(item.date) ||
         item.title.trim().length < 8 || item.description.trim().length < 18) return [];
     const key = item.date + "|" + item.url + "|" + item.description;
     if (seen.has(key)) return [];
