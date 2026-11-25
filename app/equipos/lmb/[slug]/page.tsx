@@ -11,6 +11,7 @@ import { previewLmbMovements } from "@/lib/officialMovementPreview";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
 import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
+import { verifiedLmbPlayerNewsForClub } from "@/lib/verifiedLmbPlayerAnnouncements";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -163,6 +164,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <p>Selección de publicaciones oficiales del club. Se actualiza al consultar la página.</p>
                     <a href={topStory.url} target="_blank" rel="noopener noreferrer">Leer nota en LMB ↗</a>
                     {verifiedStaffNewsForClub("LMB",club.slug,topStory.url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">CUERPO TÉCNICO · VER EVENTO DOCUMENTADO ↗</a>}
+                    {verifiedLmbPlayerNewsForClub(club.slug,topStory.url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">REGRESO ANUNCIADO · NO ALTA DE ROSTER ↗</a>}
                   </div>
                 </section>
               ):(
@@ -197,7 +199,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                 <div className="clubNewsGrid">
                   {relatedNews.map(story=><a href={story.url} className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                     {story.imageUrl&&<img src={story.imageUrl} className="clubNewsThumb" alt="" loading="lazy"/>}
-                    <span>{story.label}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMB",club.slug,story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}<small>Leer en LMB ↗</small>
+                    <span>{story.label}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMB",club.slug,story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}{verifiedLmbPlayerNewsForClub(club.slug,story.url).length>0&&<small>REGRESO ANUNCIADO · NO ALTA DE ROSTER</small>}<small>Leer en LMB ↗</small>
                   </a>)}
                 </div>
                 {!relatedNews.length&&(
