@@ -1,4 +1,5 @@
 import type { OfficialMovementPreview } from "@/lib/officialMovementPreview";
+import { staffEventLabel } from "@/lib/verifiedPersonnelEvents";
 
 type Props = {
   league: "LMB" | "LMP";
@@ -28,15 +29,15 @@ export default function OfficialMovementPreviewSection({
       <a href={movementsHref}>Ver historial ↗</a>
     </div>
     <p className="clubSmallNote">{league === "LMB"
-      ? "Boletines de listas de reserva y nombramientos del cuerpo técnico confirmados por LMB, independientes de las noticias. Las cesiones de derechos no garantizan participación en la plantilla activa."
-      : "Extractos del registro de movimientos de LMP. Activaciones y desactivaciones no equivalen necesariamente a contrataciones o bajas definitivas. Estas entradas no acreditan por sí solas los titulares periodísticos."}</p>
+      ? "Boletines de listas de reserva y anuncios institucionales verificados del cuerpo técnico. Las cesiones de derechos no garantizan cambios de plantilla activa."
+      : "Extractos del registro de altas y bajas LMP, junto con anuncios institucionales verificados del cuerpo técnico. No son equivalentes a contrataciones o liberaciones definitivas y no acreditan por sí solos los titulares periodísticos."}</p>
     <div className="clubNewsGrid">
       {items.map((item, index) => <a
         className="clubNewsCard"
         key={item.date + item.title + index}
         href={item.sourceUrl ?? movementsHref}
         {...(item.sourceUrl ? {target: "_blank", rel: "noopener noreferrer"} : {})}>
-        <span>{item.kind === "official-appointment" ? "NOMBRAMIENTO OFICIAL · LMB" : "REGISTRO " + league} · {formatDay(item.date)}</span>
+        <span>{item.kind === "official-appointment" ? staffEventLabel(item.staffKind ?? "appointment").toLocaleUpperCase("es") + " · " + league : "REGISTRO " + league} · {formatDay(item.date)}</span>
         <strong>{item.title}</strong>
         {item.excerpt && <small>{item.excerpt}</small>}
         <small>{item.kind === "official-appointment" ? "Consultar anuncio oficial ↗" : item.sourceUrl ? "Consultar boletín oficial ↗" : "Ver movimiento en el historial ↗"}</small>
