@@ -617,6 +617,17 @@ for(const page of ["app/equipos/lmb/[slug]/page.tsx","app/equipos/lmb/algodonero
     read(page).includes("REGRESO ANUNCIADO · NO ALTA DE ROSTER"),
     "The official club article has an evidence-gated news-to-movements link in "+page);
 }
+const returnPanel=read("components/OfficialPlayerAnnouncementSection.tsx");
+check(returnPanel.includes("verifiedLmbPlayerAnnouncements(") &&
+  returnPanel.includes('p.kind==="official-player-announcement"&&p.sourceUrl===item.url') &&
+  returnPanel.includes("No equivalen por sí solos a un alta en lista de reserva") &&
+  returnPanel.includes("Leer anuncio oficial LMB") &&
+  returnPanel.includes("Ver detalle en Movimientos"),
+  "Summaries expose documented club-player returns with source, movement context and explicit no-roster warning");
+check(read("app/equipos/lmb/[slug]/page.tsx").includes("<OfficialPlayerAnnouncementSection clubSlug={club.slug}") &&
+  read("app/equipos/lmb/algodoneros/page.tsx").includes('<OfficialPlayerAnnouncementSection clubSlug={"algodoneros"}'),
+  "The player-return section is reusable on all 20 LMB pages but stays hidden for teams without evidence");
+
 const jaguaresPreview=previewLmpMovements([{
   date:jaguaresStaff[0].date,
   description:jaguaresStaff[0].description,
