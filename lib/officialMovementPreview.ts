@@ -1,5 +1,5 @@
 import type { VerifiedStaffKind } from "./verifiedPersonnelEvents";
-import { isVerifiedLmbPlayerAnnouncementSource } from "./verifiedLmbPlayerAnnouncements";
+import { isVerifiedLmbPlayerAnnouncementSource } from "./verifiedLmbPlayerAnnouncements.ts";
 
 /**
  * Entradas oficiales independientes de los titulares periodísticos.
