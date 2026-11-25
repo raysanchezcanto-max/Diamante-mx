@@ -531,7 +531,7 @@ check(staffEventLabel("coach-addition")==="Incorporación al cuerpo técnico" &&
   staffEventLabel("departure")!==staffEventLabel("dismissal"),
   "Coach appointments and staff departures preserve distinct editorial meanings");
 check(verifiedPersonnelEventsForClub("LMP","aguilas").length===2 &&
-  verifiedPersonnelEventsForClub("LMP","naranjeros").length===2,
+  verifiedPersonnelEventsForClub("LMP","naranjeros").length===5,
   "Manager ratifications and coach additions coexist as independent dated events");
 check(read("components/OfficialMovementPreviewSection.tsx").includes("FUENTES OFICIALES {league}"),
   "Movement summary identifies separate LMB and LMP institutional sources");
@@ -557,6 +557,66 @@ for(const path of staffWiring){
     "Historical staff section is uniformly available in "+path);
 }
 
+const naranjerosStaffUrl="https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/";
+const naranjerosCoaches=[
+  ["Gil Velázquez","Coach de banca"],
+  ["Giovanni Carrara","Coach de pitcheo"],
+  ["Mike Jacobs","Coach de bateo"],
+  ["Ever Magallanes","Coach de primera base"]
+];
+for(const [person,role] of naranjerosCoaches){
+  const event=verifiedPersonnelEventsForClub("LMP","naranjeros")
+    .find(item=>item.person===person);
+  check(Boolean(event && event.date==="2026-07-23" &&
+    event.kind==="coach-addition" && event.role===role &&
+    event.url===naranjerosStaffUrl),
+  "Naranjeros official July 23 staff announcement documents "+person+" without roster inference");
+}
+check(read("components/OfficialStaffHistorySection.tsx").includes("const grouped=new Map") &&
+  read("components/OfficialStaffHistorySection.tsx").includes("group.length") &&
+  read("components/OfficialStaffHistorySection.tsx").includes("group.map(member=>"),
+  "A shared staff article displays all confirmed coaches in one source card without dropping names");
+
+const {verifiedLmbPlayerAnnouncements,verifiedLmbPlayerNewsForClub,isVerifiedLmbPlayerAnnouncementSource}
+ =require("../lib/verifiedLmbPlayerAnnouncements.ts");
+const alvaradoUrl="https://lmb.com.mx/noticias/cristian-alvarado-esta-de-vuelta-con-los-guerreros-de-oaxaca";
+const alvarado=verifiedLmbPlayerAnnouncements("https://lmb.com.mx/equipos/guerreros")[0];
+check(alvarado?.player==="Cristian Alvarado" &&
+  alvarado.date==="2026-11-07" && alvarado.kind==="return-announced" &&
+  alvarado.description.includes("no por sí solo un alta"),
+  "Oaxaca return is a documented announcement, never a confirmed reserve-list roster activation");
+check(verifiedLmbPlayerAnnouncements("https://lmb.com.mx/equipos/leones").length===0 &&
+  verifiedLmbPlayerNewsForClub("leones",alvaradoUrl).length===0,
+  "An announced Oaxaca pitcher cannot appear on Leones roster/movements");
+check(verifiedLmbPlayerNewsForClub("guerreros",alvaradoUrl)[0]?.player==="Cristian Alvarado" &&
+  isVerifiedLmbPlayerAnnouncementSource(alvaradoUrl),
+  "Only the specific official Oaxaca return article is linked as a historical event");
+check(verifiedLmbPlayerNewsForClub("guerreros",alvaradoUrl+"?utm_source=untrusted").length===0 &&
+  !isVerifiedLmbPlayerAnnouncementSource("https://lmb.com.mx.evil.example/noticias/"+alvaradoUrl.split("/").pop()),
+  "Player announcement verification rejects query aliases and fake LMB domains");
+const playerReturnPreview=previewLmbMovements([{
+  date:alvarado.date,title:"Regreso anunciado: "+alvarado.player,
+  description:alvarado.description,url:alvarado.url,
+  sourceKind:"official-player-announcement",automatic:false
+}]);
+check(playerReturnPreview[0]?.kind==="official-player-announcement" &&
+  playerReturnPreview[0].sourceUrl===alvaradoUrl,
+  "The movement preview calls a return a club announcement, not a roster transaction");
+check(previewLmbMovements([{
+  date:alvarado.date,title:"Regreso anunciado: "+alvarado.player,
+  description:alvarado.description,url:"https://lmb.com.mx/noticias/another-pitcher-return",
+  sourceKind:"official-player-announcement",automatic:false
+}]).length===0,
+  "Unverified player-return article cannot inherit the approved source label");
+check(read("lib/lmbMovements.ts").includes("verifiedLmbPlayerAnnouncements(config.profileUrl)") &&
+  read("lib/lmbMovements.ts").includes('type:"Anuncio del club · Regreso de jugador"') &&
+  read("components/OfficialMovementPreviewSection.tsx").includes("REGRESO ANUNCIADO · NO ALTA DE ROSTER"),
+  "Oaxaca movements and preview display club-announced player return separately from confirmed roster moves");
+for(const page of ["app/equipos/lmb/[slug]/page.tsx","app/equipos/lmb/algodoneros/page.tsx"]){
+  check(read(page).includes("verifiedLmbPlayerNewsForClub(") &&
+    read(page).includes("REGRESO ANUNCIADO · NO ALTA DE ROSTER"),
+    "The official club article has an evidence-gated news-to-movements link in "+page);
+}
 const jaguaresPreview=previewLmpMovements([{
   date:jaguaresStaff[0].date,
   description:jaguaresStaff[0].description,
