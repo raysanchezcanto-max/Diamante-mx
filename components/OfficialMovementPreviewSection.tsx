@@ -23,7 +23,7 @@ export default function OfficialMovementPreviewSection({
   return <section className="clubEditorialSection" aria-label={"Movimientos registrados de " + clubName}>
     <div className="clubSectionTitle">
       <div>
-        <span className="clubKicker">MOVIMIENTOS · REGISTRO {league}</span>
+        <span className="clubKicker">MOVIMIENTOS · FUENTES OFICIALES {league}</span>
         <h2>Movimientos recientes documentados</h2>
       </div>
       <a href={movementsHref}>Ver historial ↗</a>
