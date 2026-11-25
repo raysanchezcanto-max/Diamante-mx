@@ -557,6 +557,17 @@ for(const path of staffWiring){
     "Historical staff section is uniformly available in "+path);
 }
 
+const tomaterosStaffUrl="https://editor.lmp.mx/tomateros-presenta-su-cuerpo-tecnico-para-la-temporada-2026-2027/";
+const tomaterosCoaches=[["Gabriel Luckert","Coach de pitcheo"],["Luis Vázquez","Coach de bullpen"],["José Macías","Coach de bateo"]];
+for(const [person,role] of tomaterosCoaches){
+  check(verifiedPersonnelEventsForClub("LMP","tomateros").some(e=>e.person===person && e.role===role && e.kind==="coach-addition" && e.date==="2026-08-22" && e.url===tomaterosStaffUrl),
+    "Tomateros official August 22 announcement documents "+person);
+}
+check(verifiedPersonnelEventsForClub("LMP","tomateros").filter(e=>e.url===tomaterosStaffUrl && e.kind==="coach-addition").length===3,
+  "Tomateros coaching additions are distinct and not internal role changes");
+check(verifiedStaffNewsForClub("LMP","tomateros",tomaterosStaffUrl).length===3 &&
+  verifiedStaffNewsForClub("LMP","naranjeros",tomaterosStaffUrl).length===0,
+  "Tomateros official news crosslink is restricted to its club");
 const naranjerosStaffUrl="https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/";
 const naranjerosCoaches=[
   ["Gil Velázquez","Coach de banca"],
