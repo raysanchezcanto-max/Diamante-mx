@@ -2,6 +2,7 @@ import { ALGODONEROS_MOVEMENTS } from "./algodonerosProfile";
 import { LMB_CLUB_DIRECTORY } from "./lmbClubs";
 import { localizeBaseballMovementTerms } from "./baseballSpanishTerms";
 import { officialLmbPersonnelAppointments } from "./lmbOfficialPersonnel";
+import { staffEventLabel, type VerifiedStaffKind } from "./verifiedPersonnelEvents";
 
 // Datos públicos de LMB. No hay API oficial de movimientos documentada
 // para este uso: se leen enlaces y comunicados publicados en lmb.com.mx.
@@ -14,6 +15,7 @@ export type ClubMovement = {
   automatic?: boolean;
   /** Comunicado institucional verificado, distinto de boletín de lista de reserva. */
   sourceKind?: "official-appointment";
+  staffKind?: VerifiedStaffKind;
   // Solo las cesiones explícitas permiten afirmar quién entrega o recibe derechos.
   direction?: "out" | "in";
   otherClub?: string;
@@ -327,12 +329,13 @@ export async function getLmbClubMovements(
   const appointments: ClubMovement[] = officialLmbPersonnelAppointments(config.profileUrl)
     .map(item => ({
       date: item.date,
-      type: "Cuerpo técnico · Nombramiento oficial",
-      title: "Nombramiento oficial: " + item.person,
+      type: "Cuerpo técnico · " + staffEventLabel(item.kind),
+      title: staffEventLabel(item.kind) + ": " + item.person,
       description: item.description,
       url: item.url,
       automatic: false,
       sourceKind: "official-appointment" as const,
+      staffKind: item.kind,
     }));
   const combined = [...appointments, ...fallback, ...articles.flat()];
   const seen = new Set<string>();
