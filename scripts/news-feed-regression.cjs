@@ -409,7 +409,7 @@ check(staffSection.includes('verifiedPersonnelEventsForClub(league,clubSlug)') &
   staffSection.includes('item.sourceUrl===event.url') &&
   staffSection.includes('item.title.includes(event.person) || item.excerpt.includes(event.person)'),
   "Staff summary suppresses only verified duplicate announcements already present in movement previews");
-check(staffSection.includes("no confirma por sí solo quién ocupa actualmente") &&
+check(staffSection.includes("ni confirma por sí solo quién ocupa actualmente") &&
   staffSection.includes("Anuncios oficiales documentados") &&
   staffSection.includes("Consultar comunicado oficial"),
   "Staff summary clearly identifies a historical announcement, not a current-team claim");
