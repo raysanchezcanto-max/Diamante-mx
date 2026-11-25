@@ -385,6 +385,25 @@ check(staffEventLabel("appointment")==="Nombramiento oficial" &&
   staffEventLabel("replacement")==="Cambio de mánager confirmado" &&
   staffEventLabel("resignation")!==staffEventLabel("dismissal"),
   "Staff schema distinguishes appointments, reappointments, replacements, resignations and dismissals");
+const coachAdditions=[
+  ["naranjeros","Gil Velázquez","Coach de banca","2026-07-23","https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/"],
+  ["aguilas","Adulfo Camacho","Coach de tercera base","2026-08-18","https://editor.lmp.mx/aguilas-de-mexicali-presenta-su-staff-de-coaches/"]
+];
+for(const [club,person,role,date,url] of coachAdditions){
+  const event=verifiedPersonnelEventsForClub("LMP",club).find(e=>e.person===person);
+  check(Boolean(event && event.kind==="coach-addition" && event.role===role &&
+    event.date===date && event.url===url),
+    "Verified LMP coaching addition is not confused with a manager or player: "+club);
+}
+check(staffEventLabel("coach-addition")==="Incorporación al cuerpo técnico" &&
+  staffEventLabel("departure")!==staffEventLabel("dismissal"),
+  "Coach appointments and staff departures preserve distinct editorial meanings");
+check(verifiedPersonnelEventsForClub("LMP","aguilas").length===2 &&
+  verifiedPersonnelEventsForClub("LMP","naranjeros").length===2,
+  "Manager ratifications and coach additions coexist as independent dated events");
+check(read("components/OfficialMovementPreviewSection.tsx").includes("FUENTES OFICIALES {league}"),
+  "Movement summary identifies separate LMB and LMP institutional sources");
+
 const jaguaresPreview=previewLmpMovements([{
   date:jaguaresStaff[0].date,
   description:jaguaresStaff[0].description,
