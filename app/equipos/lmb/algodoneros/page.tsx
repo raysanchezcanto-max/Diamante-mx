@@ -7,6 +7,7 @@ import { getAlgodonerosMovements } from "@/lib/lmbMovements";
 import { previewLmbMovements } from "@/lib/officialMovementPreview";
 import OfficialMovementPreviewSection from "@/components/OfficialMovementPreviewSection";
 import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySection";
+import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -259,6 +260,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                     ? "Selección publicada en el sitio oficial de LMB. Se consulta periódicamente."
                     : "Selección del archivo histórico de LMB mientras se recupera la fuente."}</p>
                   <a href={featuredStory.url} target="_blank" rel="noopener noreferrer">Leer nota oficial ↗</a>
+                  {verifiedStaffNewsForClub("LMB","algodoneros",featuredStory.url).length>0&&<a href="/equipos/lmb/algodoneros?vista=movimientos" className="clubDirectoryDetailLink">CUERPO TÉCNICO · VER EVENTO DOCUMENTADO ↗</a>}
                 </div>
               </section>
               <section className="clubEditorialSection">
@@ -272,7 +274,7 @@ export default async function AlgodonerosProfile({searchParams}: PageProps) {
                   {displayedStories.slice(1,4).map(story=>(
                     <a className="clubNewsCard" href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
                       {story.imageUrl && <img className="clubNewsThumb" src={story.imageUrl} alt="" loading="lazy" />}
-                      <span>{story.label}</span><strong>{story.title}</strong><small>Leer en LMB ↗</small>
+                      <span>{story.label}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMB","algodoneros",story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}<small>Leer en LMB ↗</small>
                     </a>
                   ))}
                 </div>
