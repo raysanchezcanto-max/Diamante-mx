@@ -1,6 +1,7 @@
 import { ALGODONEROS_MOVEMENTS } from "./algodonerosProfile";
 import { LMB_CLUB_DIRECTORY } from "./lmbClubs";
 import { localizeBaseballMovementTerms } from "./baseballSpanishTerms";
+import { officialLmbPersonnelAppointments } from "./lmbOfficialPersonnel";
 
 // Datos públicos de LMB. No hay API oficial de movimientos documentada
 // para este uso: se leen enlaces y comunicados publicados en lmb.com.mx.
@@ -11,6 +12,8 @@ export type ClubMovement = {
   description: string;
   url: string;
   automatic?: boolean;
+  /** Comunicado institucional verificado, distinto de boletín de lista de reserva. */
+  sourceKind?: "official-appointment";
   // Solo las cesiones explícitas permiten afirmar quién entrega o recibe derechos.
   direction?: "out" | "in";
   otherClub?: string;
@@ -321,7 +324,17 @@ export async function getLmbClubMovements(
       };
     });
   }));
-  const combined = [...fallback, ...articles.flat()];
+  const appointments: ClubMovement[] = officialLmbPersonnelAppointments(config.profileUrl)
+    .map(item => ({
+      date: item.date,
+      type: "Cuerpo técnico · Nombramiento oficial",
+      title: "Nombramiento oficial: " + item.person,
+      description: item.description,
+      url: item.url,
+      automatic: false,
+      sourceKind: "official-appointment" as const,
+    }));
+  const combined = [...appointments, ...fallback, ...articles.flat()];
   const seen = new Set<string>();
   const movements = combined.filter(item => {
     const key = item.url + "|" + (item.automatic ? item.description : "");
@@ -331,7 +344,7 @@ export async function getLmbClubMovements(
   }).sort((a,b) => b.date.localeCompare(a.date) || Number(b.automatic) - Number(a.automatic));
   return {
     movements,
-    sourceStatus: (html && profileLinks.length > 0) || (newsIndex && newsLinks.length > 0)
+    sourceStatus: appointments.length > 0 || (html && profileLinks.length > 0) || (newsIndex && newsLinks.length > 0)
       ? "connected" : "fallback",
     verifiedAt: html || newsIndex ? new Date().toISOString() : null,
     recentDetected: articles.flat().length,
