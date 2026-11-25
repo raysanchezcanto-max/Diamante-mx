@@ -29,6 +29,14 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Inicializar etiquetas de revisión editorial
+        # Las etiquetas deben existir incluso si fallan las fuentes del RSS.
+        run: node scripts/staff-review-issues.cjs --init-labels
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
       - name: Analizar noticias institucionales
         run: node scripts/staff-announcement-audit.cjs
         env:
