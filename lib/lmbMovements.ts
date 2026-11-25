@@ -2,6 +2,7 @@ import { ALGODONEROS_MOVEMENTS } from "./algodonerosProfile";
 import { LMB_CLUB_DIRECTORY } from "./lmbClubs";
 import { localizeBaseballMovementTerms } from "./baseballSpanishTerms";
 import { officialLmbPersonnelAppointments } from "./lmbOfficialPersonnel";
+import { verifiedLmbPlayerAnnouncements } from "./verifiedLmbPlayerAnnouncements";
 import { staffEventLabel, type VerifiedStaffKind } from "./verifiedPersonnelEvents";
 
 // Datos públicos de LMB. No hay API oficial de movimientos documentada
@@ -14,7 +15,7 @@ export type ClubMovement = {
   url: string;
   automatic?: boolean;
   /** Comunicado institucional verificado, distinto de boletín de lista de reserva. */
-  sourceKind?: "official-appointment";
+  sourceKind?: "official-appointment" | "official-player-announcement";
   staffKind?: VerifiedStaffKind;
   // Solo las cesiones explícitas permiten afirmar quién entrega o recibe derechos.
   direction?: "out" | "in";
@@ -337,7 +338,16 @@ export async function getLmbClubMovements(
       sourceKind: "official-appointment" as const,
       staffKind: item.kind,
     }));
-  const combined = [...appointments, ...fallback, ...articles.flat()];
+  const playerAnnouncements:ClubMovement[]=verifiedLmbPlayerAnnouncements(config.profileUrl).map(item=>({
+    date:item.date,
+    type:"Anuncio del club · Regreso de jugador",
+    title:"Regreso anunciado: "+item.player,
+    description:item.description,
+    url:item.url,
+    automatic:false,
+    sourceKind:"official-player-announcement" as const,
+  }));
+  const combined = [...appointments, ...playerAnnouncements, ...fallback, ...articles.flat()];
   const seen = new Set<string>();
   const movements = combined.filter(item => {
     const key = item.url + "|" + (item.automatic ? item.description : "");
