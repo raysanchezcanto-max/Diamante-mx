@@ -404,6 +404,27 @@ check(verifiedPersonnelEventsForClub("LMP","aguilas").length===2 &&
 check(read("components/OfficialMovementPreviewSection.tsx").includes("FUENTES OFICIALES {league}"),
   "Movement summary identifies separate LMB and LMP institutional sources");
 
+const staffSection=read("components/OfficialStaffHistorySection.tsx");
+check(staffSection.includes('verifiedPersonnelEventsForClub(league,clubSlug)') &&
+  staffSection.includes('item.sourceUrl===event.url') &&
+  staffSection.includes('item.title.includes(event.person) || item.excerpt.includes(event.person)'),
+  "Staff summary suppresses only verified duplicate announcements already present in movement previews");
+check(staffSection.includes("no necesariamente") &&
+  staffSection.includes("Anuncios oficiales documentados") &&
+  staffSection.includes("Consultar comunicado oficial"),
+  "Staff summary clearly identifies a historical announcement, not a current-team claim");
+const staffWiring=[
+  "app/equipos/lmb/[slug]/page.tsx",
+  "app/equipos/lmb/algodoneros/page.tsx",
+  "components/LmpDirectoryClubProfile.tsx",
+  "app/equipos/lmp/algodoneros/page.tsx"
+];
+for(const path of staffWiring){
+  check(read(path).includes("<OfficialStaffHistorySection") &&
+    read(path).includes("recentPreview={movementPreview}"),
+    "Historical staff section is uniformly available in "+path);
+}
+
 const jaguaresPreview=previewLmpMovements([{
   date:jaguaresStaff[0].date,
   description:jaguaresStaff[0].description,
