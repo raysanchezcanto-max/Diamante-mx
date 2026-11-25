@@ -44,12 +44,12 @@ export default function OfficialStaffHistorySection({league,clubSlug,recentPrevi
         return <a className="clubNewsCard"
           href={event.url} target="_blank" rel="noopener noreferrer"
           key={event.clubSlug+"|"+event.date+"|"+event.url}>
-          <span>{staffEventLabel(event.kind).toLocaleUpperCase("es")} · {dateLabel(event.date)}</span>
+          <span>{(group.every(member=>member.kind===event.kind)?staffEventLabel(event.kind):"Movimientos del cuerpo técnico").toLocaleUpperCase("es")} · {dateLabel(event.date)}</span>
           <strong>{group.length===1
             ? event.person+" · "+event.role
             : group.length+" integrantes del cuerpo técnico documentados"}</strong>
           {group.length===1?<small>{event.description}</small>:group.map(member=>
-            <small key={member.person+"|"+member.role}>{member.person} · {member.role}</small>)}
+            <small key={member.person+"|"+member.role}>{member.person} · {member.role}{member.kind==="role-change"?` · ${member.description}`:""}</small>)}
           <small>Consultar comunicado oficial {league} ↗</small>
         </a>;
       })}

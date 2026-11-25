@@ -6,7 +6,7 @@
 export type VerifiedStaffKind =
   | "appointment" | "ratification" | "replacement"
   | "interim" | "departure" | "dismissal" | "resignation"
-  | "coach-addition" | "coach-departure";
+  | "coach-addition" | "coach-departure" | "role-change";
 
 export type VerifiedPersonnelEvent = {
   league: "LMB" | "LMP";
@@ -119,6 +119,12 @@ const EVENTS: readonly VerifiedPersonnelEvent[] = [
     description:"Venados de Mazatlán presentó oficialmente a Chris Roberson como nuevo mánager para la temporada 2026–27.",
   },
   {
+    league:"LMP",clubSlug:"tomateros",date:"2026-08-22",person:"Robinson Cancel",role:"Coach de banca",
+    kind:"role-change",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/tomateros-presenta-su-cuerpo-tecnico-para-la-temporada-2026-2027/",
+    description:"Tomateros anunció el cambio de Robinson Cancel de coach de bateo a coach de banca; no es una nueva incorporación.",
+  },
+  {
     league:"LMP",clubSlug:"tomateros",date:"2026-08-22",person:"Gabriel Luckert",role:"Coach de pitcheo",
     kind:"coach-addition",effectiveSeason:"2026–27",
     url:"https://editor.lmp.mx/tomateros-presenta-su-cuerpo-tecnico-para-la-temporada-2026-2027/",
@@ -158,6 +164,7 @@ export function staffEventLabel(kind: VerifiedStaffKind): string {
     resignation:"Renuncia confirmada",
     "coach-addition":"Incorporación al cuerpo técnico",
     "coach-departure":"Salida del cuerpo técnico",
+    "role-change":"Cambio de cargo dentro del cuerpo técnico",
   };
   return labels[kind];
 }

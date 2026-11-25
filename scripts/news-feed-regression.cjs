@@ -565,9 +565,12 @@ for(const [person,role] of tomaterosCoaches){
 }
 check(verifiedPersonnelEventsForClub("LMP","tomateros").filter(e=>e.url===tomaterosStaffUrl && e.kind==="coach-addition").length===3,
   "Tomateros coaching additions are distinct and not internal role changes");
-check(verifiedStaffNewsForClub("LMP","tomateros",tomaterosStaffUrl).length===3 &&
+check(verifiedStaffNewsForClub("LMP","tomateros",tomaterosStaffUrl).length===4 &&
   verifiedStaffNewsForClub("LMP","naranjeros",tomaterosStaffUrl).length===0,
   "Tomateros official news crosslink is restricted to its club");
+check(verifiedPersonnelEventsForClub("LMP","tomateros").some(e=>e.person==="Robinson Cancel" && e.kind==="role-change" && e.role==="Coach de banca" && e.description.includes("coach de bateo")) &&
+  staffEventLabel("role-change")==="Cambio de cargo dentro del cuerpo técnico",
+  "Tomateros internal role change is not a new hire");
 const naranjerosStaffUrl="https://editor.lmp.mx/definido-el-cuerpo-tecnico-de-naranjeros/";
 const naranjerosCoaches=[
   ["Gil Velázquez","Coach de banca"],
