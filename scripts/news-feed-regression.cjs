@@ -438,6 +438,41 @@ check(read("components/OfficialMovementPreviewSection.tsx").includes("staffEvent
   "LMB summary distinguishes managerial appointment from a transaction in reserve lists");
 
 const {verifiedPersonnelEventsForClub,staffEventLabel}=require("../lib/verifiedPersonnelEvents.ts");
+const {verifiedStaffNewsForClub}=require("../lib/verifiedStaffNewsCrosslink.ts");
+const molinaArticle="https://lmb.com.mx/noticias/el-historico-ex-receptor-yadier-molina-es-el-nuevo-manager-de-los-leones-de-yucatan";
+const jaguaresArticle="https://editor.lmp.mx/erik-rodriguez-nuevo-manager-de-jaguares/";
+check(verifiedStaffNewsForClub("LMB","leones",molinaArticle)[0]?.person==="Yadier Molina",
+  "Leones news official source links to the exact verified Yadier movement");
+check(verifiedStaffNewsForClub("LMP","jaguares",jaguaresArticle)[0]?.person==="Erik Rodríguez",
+  "LMP news links to verified Jaguares manager replacement");
+check(verifiedStaffNewsForClub("LMB","leones",molinaArticle+"/").length===1,
+  "Trailing slash variation of same official LMB article matches exactly");
+check(verifiedStaffNewsForClub("LMB","acereros",molinaArticle).length===0,
+  "An official LMB Leones appointment cannot become an Acereros movement");
+check(verifiedStaffNewsForClub("LMP","jaguares",molinaArticle).length===0,
+  "An LMB article cannot link to an LMP movement");
+check(verifiedStaffNewsForClub("LMB","leones","https://lmb.com.mx/noticias/yadier-molina-rumores").length===0,
+  "A different headline or speculation URL cannot borrow a verified staff badge");
+check(verifiedStaffNewsForClub("LMB","leones",molinaArticle+"?utm_campaign=test").length===0,
+  "Source URL with tracking query cannot be silently certified");
+check(verifiedStaffNewsForClub("LMB","leones","https://lmb.com.mx.evil.example/noticias/yadier-molina").length===0,
+  "Lookalike official domain cannot produce a verified link");
+check(verifiedStaffNewsForClub("LMP","jaguares",jaguaresArticle.replace("https:","http:")).length===0,
+  "Insecure copy of LMP URL cannot produce verified crosslink");
+for(const page of [
+  "app/equipos/lmb/[slug]/page.tsx",
+  "app/equipos/lmb/algodoneros/page.tsx",
+  "components/LmpDirectoryClubProfile.tsx",
+  "app/equipos/lmp/algodoneros/page.tsx",
+]){
+  const source=read(page);
+  check(source.includes("verifiedStaffNewsForClub(") &&
+    source.includes("CUERPO TÉCNICO · VER EVENTO DOCUMENTADO") &&
+    source.includes("CUERPO TÉCNICO · EVENTO DOCUMENTADO") &&
+    source.includes("vista=movimientos"),
+    "All 30 Mexican team summaries link only verified staff articles to movement history: "+page);
+}
+
 const lmbStaffCases=[
   ["leones","Yadier Molina","2026-11-23"],
   ["diablos-rojos","Benjamín Gil","2026-10-15"],
