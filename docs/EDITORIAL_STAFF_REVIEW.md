@@ -6,6 +6,20 @@ Este flujo es una **bandeja de candidatos**, no un servicio de confirmación aut
 
 La mesa editorial inicial funciona en **GitHub Issues** usando la autenticación y los permisos del repositorio. No requiere un administrador público en Diamante MX ni contraseñas adicionales. Si el repositorio es público, las incidencias también pueden ser visibles al público: todas deben mantener la etiqueta y el aviso **POR VERIFICAR / NO CONFIRMADO**.
 
+## Primera apertura: etiqueta inexistente
+
+Si GitHub muestra **«Invalid value editorial-pendiente for label»**, significa que la etiqueta todavía no se ha creado. Es normal antes del primer uso, pero no debe interpretarse como «no hay movimientos» ni como fallo de la web.
+
+**Inicialización desde el repositorio:**
+
+1. Abrir [Actions > Auditoría de nombramientos LMB y LMP](https://github.com/raysanchezcanto-max/Diamante-mx/actions/workflows/staff-announcement-audit.yml).
+2. Hacer clic en **Run workflow**, elegir rama **main** y confirmar **Run workflow** (no usar New issue).
+3. El primer paso editorial crea las etiquetas `editorial-pendiente`, `editorial-aprobado`, `editorial-descartado`, `editorial-pr` **antes** de consultar LMB y LMP. Si una fuente falla, esa inicialización no se pierde.
+4. Abrir la ejecución para comprobar `Inicializar etiquetas de revisión editorial`, `Analizar noticias institucionales` y `Crear bandeja de revisión sin publicar confirmaciones`. Si este último paso falla, el informe adjunto puede ayudar a localizar el problema. Que las etiquetas existan no demuestra que el escaneo fuera exitoso.
+5. Volver a [Issues pendientes](https://github.com/raysanchezcanto-max/Diamante-mx/issues?q=is%3Aissue+label%3Aeditorial-pendiente). Si ahora el filtro es válido, pero la lista está vacía, puede no haber candidatos pendientes o el escaneo pudo fallar: revisar la ejecución y `staff-audit.md`.
+
+La ejecución programada también puede inicializar las etiquetas en su siguiente horario. La primera ejecución real, los permisos de Actions y la capacidad para crear incidencias **deben verificarse** desde GitHub; no se deducen únicamente de una compilación Vercel.
+
 ## Abrir la bandeja
 
 1. Visitar [Issues pendientes](https://github.com/raysanchezcanto-max/Diamante-mx/issues?q=is%3Aissue+label%3Aeditorial-pendiente).
