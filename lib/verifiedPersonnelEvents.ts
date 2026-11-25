@@ -118,6 +118,24 @@ const EVENTS: readonly VerifiedPersonnelEvent[] = [
     url:"https://editor.lmp.mx/chris-roberson-toma-el-mando-de-los-venados-de-mazatlan/",
     description:"Venados de Mazatlán presentó oficialmente a Chris Roberson como nuevo mánager para la temporada 2026–27.",
   },
+  {
+    league:"LMP",clubSlug:"tomateros",date:"2026-08-22",person:"Gabriel Luckert",role:"Coach de pitcheo",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/tomateros-presenta-su-cuerpo-tecnico-para-la-temporada-2026-2027/",
+    description:"Tomateros de Culiacán anunció la incorporación de Gabriel Luckert como coach de pitcheo para 2026–27. Es un anuncio de cuerpo técnico, no un alta de jugador.",
+  },
+  {
+    league:"LMP",clubSlug:"tomateros",date:"2026-08-22",person:"Luis Vázquez",role:"Coach de bullpen",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/tomateros-presenta-su-cuerpo-tecnico-para-la-temporada-2026-2027/",
+    description:"Tomateros de Culiacán anunció la incorporación de Luis Vázquez como coach de bullpen para 2026–27. Es un anuncio de cuerpo técnico, no un alta de jugador.",
+  },
+  {
+    league:"LMP",clubSlug:"tomateros",date:"2026-08-22",person:"José Macías",role:"Coach de bateo",
+    kind:"coach-addition",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/tomateros-presenta-su-cuerpo-tecnico-para-la-temporada-2026-2027/",
+    description:"Tomateros de Culiacán anunció la incorporación de José Macías como coach de bateo para 2026–27. Es un anuncio de cuerpo técnico, no un alta de jugador.",
+  },
 ];
 
 export function verifiedPersonnelEventsForClub(
