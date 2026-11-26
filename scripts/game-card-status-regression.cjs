@@ -84,4 +84,8 @@ assert.match(games, /\{liveCardPilot && \(\s*<div className="pilotMatchupNames"/
 assert.match(games, /pilotSituation && !pilotInningTransition && liveState\?\.batterName/); checks++;
 assert.match(games, /pilotSituation && !pilotInningTransition && liveState\?\.pitcherName/); checks++;
 assert.match(games, /Actualizando…/); checks++;
+assert.doesNotMatch(games, /DOBLE · JUEGO/); checks++;
+assert.match(games, /gameDoubleNumber/); checks++;
+assert.match(games, /gameCardFinalCompact/); checks++;
+assert.match(games, /gameCardLiveHeader/); checks++;
 process.stdout.write(`Game-card regression: ${checks} checks OK.\n`);

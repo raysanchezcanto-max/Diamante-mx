@@ -287,9 +287,10 @@ const showMlbRegularPitchers =
           <Link
             href={`/game/${league.toLowerCase()}/${game.id}`}
             prefetch={league !== "LMP"}
-            className={`gameCard gameCardLink${liveCardPilot ? " gameCardLivePilot" : ""}`}
+            className={`gameCard gameCardLink${liveCardPilot ? " gameCardLivePilot" : ""}${game.status === "Final" && !specialStatus ? " gameCardFinalCompact" : ""}`}
             key={game.id}
           >
+          <div className={liveCardPilot ? "gameCardLiveHeader" : "gameCardStaticHeader"}>
            <div
   
 
@@ -306,7 +307,7 @@ className={
              
 
 
-{(league === "LMP" ||
+{!liveCardPilot && (league === "LMP" ||
   league === "MLB" ||
   league === "LMB") &&
  
@@ -319,19 +320,7 @@ className={
 
   (game.gameNumber === 1 ||
     game.gameNumber === 2) && (
-    <span
-      style={{
-        float: "right",
-        color: "var(--muted)",
-        fontSize: "10px",
-        fontWeight: 800,
-        letterSpacing: "0.08em",
-      }}
-    >
-      
-DOBLE · JUEGO {game.gameNumber}
-
-    </span>
+    <span className="gameDoubleNumber">JUEGO {game.gameNumber}</span>
   )}
              
 
@@ -505,6 +494,28 @@ marginTop: "5px",
     <span>{pilotSituation.outs} {pilotSituation.outs === 1 ? "OUT" : "OUTS"}</span></> : <><BaseDiamond /><span>— OUTS</span></>}
   </div>
 )}
+{liveCardPilot && (league === "LMP" ||
+  league === "MLB" ||
+  league === "LMB") &&
+ 
+(game.doubleHeader === "Y" ||
+  game.doubleHeader === "S" ||
+  (league === "LMB" &&
+    game.doubleHeader === "INFERRED")) &&
+
+
+
+  (game.gameNumber === 1 ||
+    game.gameNumber === 2) && (
+    <span className="gameDoubleNumber">JUEGO {game.gameNumber}</span>
+  )}
+             
+
+ 
+
+  
+
+</div>
 {league === "MLB" &&
   (game.seriesDescription ||
     game.seriesGameNumber ||

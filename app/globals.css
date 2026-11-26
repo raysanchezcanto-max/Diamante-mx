@@ -5808,3 +5808,15 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
 /* Datos pendientes no representan bases vacías ni cero outs. */
 .gameCardLivePilot .pilotBasesUnknown .base { border-style: dashed; opacity: .65; }
 .gameCardLivePilot .pilotMatchupNames .pilotNamePending { color: var(--muted); font-weight: 400; }
+
+/* Pizarra común: resultados cerrados compactos y contenido en vivo estable. */
+.gamesGrid > .gameCardLink.gameCardFinalCompact { align-self: start; height: auto; min-height: 0; }
+.gamesGrid > .gameCardLink.gameCardLivePilot { display: flex; flex-direction: column; }
+.gamesGrid .gameDoubleNumber { float: right; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
+.gamesGrid > .gameCardLivePilot .gameCardLiveHeader { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 39px; margin-bottom: 5px; }
+.gamesGrid > .gameCardLivePilot .gameStatus { padding-right: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 0; flex-wrap: wrap; }
+.gamesGrid > .gameCardLivePilot .livePulseText, .gamesGrid > .gameCardLivePilot .liveInningText { white-space: nowrap; flex-shrink: 0; }
+.gamesGrid > .gameCardLivePilot .pilotBasesOuts { position: static; flex: 0 0 auto; margin-left: auto; }
+.gamesGrid > .gameCardLivePilot .gameDoubleNumber { order: 2; flex-basis: 100%; float: none; line-height: 12px; }
+.gamesGrid > .gameCardLivePilot .pilotMatchupNames { margin-top: auto; padding-top: 12px; }
+.gamesGrid .gameCardStaticHeader { display: contents; }
