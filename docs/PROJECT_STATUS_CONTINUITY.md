@@ -11,3 +11,6 @@ Complemento de [PROJECT_STATUS.md](../PROJECT_STATUS.md). No sustituye ni elimin
 Conexión editorial exacta entre noticia de Gustavo Núñez y boletín del 16/oct/2026, sin crear otro movimiento. Exige fecha, identidad, URL, dirección y contraparte del registro ya presente. No confirma roster activo. Noticias destacadas, secundarias y titulares laterales en ficha general LMB; enlace inverso en Movimientos. Pruebas agregadas; build y comprobación pública pendientes al registrar esta nota.
 
 Siguiente: comprobar Vercel y las fichas; si el boletín no aparece, diagnosticar extracción y fallback. No modificar bandeja editorial ni workflows. Después continuar auditoría de clubes.
+
+## Confirmación de despliegue — 26/nov/2026
+- Commit funcional `897c5f82ba9e09871b46b664b0ab370b5e84d13c`: Vercel `dpl_2xR2h1ELPG87CU9uDhjEPjK5uQ7p` READY, production, dominio asignado sin error. Confirmado por consulta directa a Vercel. Queda pendiente verificar el movimiento real y el distintivo editorial en las fichas públicas; READY no equivale a QA visual ni confirma la disponibilidad del boletín.
