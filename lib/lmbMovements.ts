@@ -57,6 +57,7 @@ const VERIFIED_TRANSFER_BULLETINS = [
   BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-1-de-octubre-de-2026",
   BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-7-de-octubre-de-2026",
   BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-13-de-junio-de-2026",
+  BASE + "/noticias/lmb-movimientos-en-listas-de-reserva-16-de-octubre-de-2026",
 ];
 
 function movementDate(url: string): string | null {
@@ -301,7 +302,9 @@ export async function getLmbClubMovements(
     .sort((a,b) => (movementDate(b) ?? "").localeCompare(movementDate(a) ?? ""))
     .slice(0, Math.max(1, Math.min(config.maxCandidates ?? 24, 24)));
   const existingUrls = new Set<string>(fallback.map(item => item.url));
-  const freshCandidates = candidates.filter(url => !existingUrls.has(url));
+  // Los boletines históricos corroborados no deben caducar por el límite de búsqueda reciente.
+  const freshCandidates = [...new Set([...candidates, ...VERIFIED_TRANSFER_BULLETINS])]
+    .filter(url => !existingUrls.has(url));
   const articles = await Promise.all(freshCandidates.map(async url => {
     const date = movementDate(url);
     if (!date) return [];
