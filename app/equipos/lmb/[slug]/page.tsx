@@ -13,6 +13,7 @@ import OfficialStaffHistorySection from "@/components/OfficialStaffHistorySectio
 import OfficialPlayerAnnouncementSection from "@/components/OfficialPlayerAnnouncementSection";
 import { verifiedStaffNewsForClub } from "@/lib/verifiedStaffNewsCrosslink";
 import { verifiedLmbPlayerNewsForClub } from "@/lib/verifiedLmbPlayerAnnouncements";
+import { verifiedTransferNewsForClub, verifiedTransferNewsForMovement } from "@/lib/verifiedLmbTransferNews";
 import MovementGeminiDetails from "@/components/MovementGeminiDetails";
 import MovementCounterpartLogo from "@/components/MovementCounterpartLogo";
 import { lmbMovementPlayerTitle } from "@/lib/lmbMovementPresentation";
@@ -93,6 +94,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
   const relatedNews=(news?.stories??[]).slice(1,4);
   const headlines=(news?.stories??[]).slice(4,11);
   const movementPreview = view==="resumen" ? previewLmbMovements(movements?.movements ?? []) : [];
+  const transferLinked=(url:string)=>verifiedTransferNewsForClub(club.slug,url,movements?.movements??[]);
   return (
     <main className="clubProfile clubProfile--all">
       <header className="clubTopbar">
@@ -166,6 +168,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     <a href={topStory.url} target="_blank" rel="noopener noreferrer">Leer nota en LMB ↗</a>
                     {verifiedStaffNewsForClub("LMB",club.slug,topStory.url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">CUERPO TÉCNICO · VER EVENTO DOCUMENTADO ↗</a>}
                     {verifiedLmbPlayerNewsForClub(club.slug,topStory.url).length>0&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">REGRESO ANUNCIADO · NO ALTA DE ROSTER ↗</a>}
+                    {transferLinked(topStory.url)&&<a href={home+"?vista=movimientos"} className="clubDirectoryDetailLink">CESIÓN DE DERECHOS · VER MOVIMIENTO ↗</a>}
                   </div>
                 </section>
               ):(
@@ -200,7 +203,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                 <div className="clubNewsGrid">
                   {relatedNews.map(story=><a href={story.url} className="clubNewsCard" key={story.url} target="_blank" rel="noopener noreferrer">
                     {story.imageUrl&&<img src={story.imageUrl} className="clubNewsThumb" alt="" loading="lazy"/>}
-                    <span>{story.label}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMB",club.slug,story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}{verifiedLmbPlayerNewsForClub(club.slug,story.url).length>0&&<small>REGRESO ANUNCIADO · NO ALTA DE ROSTER</small>}<small>Leer en LMB ↗</small>
+                    <span>{story.label}</span><strong>{story.title}</strong>{verifiedStaffNewsForClub("LMB",club.slug,story.url).length>0&&<small>CUERPO TÉCNICO · EVENTO DOCUMENTADO</small>}{verifiedLmbPlayerNewsForClub(club.slug,story.url).length>0&&<small>REGRESO ANUNCIADO · NO ALTA DE ROSTER</small>}{transferLinked(story.url)&&<small>CESIÓN DE DERECHOS · MOVIMIENTO DOCUMENTADO</small>}<small>Leer en LMB ↗</small>
                   </a>)}
                 </div>
                 {!relatedNews.length&&(
@@ -265,7 +268,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                     {headlines.map((story,i)=>(
                       <a href={story.url} target="_blank" rel="noopener noreferrer" key={story.url}>
                         <span className="clubHeadlineIndex">{String(i+1).padStart(2,"0")}</span>
-                        <strong>{story.title}</strong>
+                        <strong>{story.title}{transferLinked(story.url)&&<small className="clubSmallNote"> · CESIÓN DE DERECHOS DOCUMENTADA</small>}</strong>
                       </a>
                     ))}
                   </div>
@@ -347,7 +350,7 @@ export default async function LmbClubProfile({params,searchParams}:PageProps){
                             <strong>{item.otherClub}</strong>
                           </div>
                         )}
-                        <a href={item.url} target="_blank" rel="noopener noreferrer">Consultar comunicado LMB ↗</a></div>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer">Consultar comunicado LMB ↗</a>{verifiedTransferNewsForMovement(club.slug,item)&&<a href={verifiedTransferNewsForMovement(club.slug,item)!} target="_blank" rel="noopener noreferrer">Noticia relacionada ↗</a>}</div>
                     </div>
                   </article>
                 ))}

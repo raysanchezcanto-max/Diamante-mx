@@ -439,6 +439,17 @@ check(read("components/OfficialMovementPreviewSection.tsx").includes("staffEvent
 
 const {verifiedPersonnelEventsForClub,staffEventLabel}=require("../lib/verifiedPersonnelEvents.ts");
 const {verifiedStaffNewsForClub}=require("../lib/verifiedStaffNewsCrosslink.ts");
+const {verifiedTransferNewsForClub,verifiedTransferNewsForMovement}=require("../lib/verifiedLmbTransferNews.ts");
+const transferArticle="https://lmb.com.mx/noticias/gustavo-nunez-llegara-en-2027-la-frontera-con-los-campeones-toros";
+const transferBulletin="https://lmb.com.mx/noticias/lmb-movimientos-en-listas-de-reserva-16-de-octubre-de-2026";
+const transferFixture={url:transferBulletin,date:"2026-10-16",title:"Derechos recibidos: Gustavo Adolfo Núñez Castillo",description:"Cesión definitiva de Gustavo Adolfo Núñez Castillo",direction:"in",otherClub:"Sultanes de Monterrey"};
+check(verifiedTransferNewsForClub("toros",transferArticle,[transferFixture]),"Verified Toros article matches actual movement");
+check(verifiedTransferNewsForMovement("sultanes",{...transferFixture,direction:"out",otherClub:"Toros de Tijuana"})===transferArticle,"Sultanes reciprocal movement links to related article");
+check(!verifiedTransferNewsForClub("toros",transferArticle,[]) && !verifiedTransferNewsForClub("bravos",transferArticle,[transferFixture]),"Missing movement or unrelated club cannot gain badge");
+check(!verifiedTransferNewsForClub("toros",transferArticle+"?x=1",[transferFixture]) && !verifiedTransferNewsForClub("toros",transferArticle.replace("lmb.com.mx","lmb.com.mx.example"),[transferFixture]),"Reject modified and impostor URLs");
+check(!verifiedTransferNewsForClub("toros",transferArticle,[{...transferFixture,title:"Otro jugador",description:"Aderlín Rodríguez Sánchez"}]),"Same bulletin does not link another player");
+check(!verifiedTransferNewsForClub("toros",transferArticle,[{...transferFixture,direction:"out"}]),"Wrong transfer direction rejected");
+
 const molinaArticle="https://lmb.com.mx/noticias/el-historico-ex-receptor-yadier-molina-es-el-nuevo-manager-de-los-leones-de-yucatan";
 const jaguaresArticle="https://editor.lmp.mx/erik-rodriguez-nuevo-manager-de-jaguares/";
 check(verifiedStaffNewsForClub("LMB","leones",molinaArticle)[0]?.person==="Yadier Molina",
