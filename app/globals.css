@@ -5804,3 +5804,7 @@ img[src*="/logos/lmp/official/tomateros-culiacan.png"]{filter:brightness(1.18) s
     overflow-wrap: anywhere;
   }
 }
+
+/* Datos pendientes no representan bases vacías ni cero outs. */
+.gameCardLivePilot .pilotBasesUnknown .base { border-style: dashed; opacity: .65; }
+.gameCardLivePilot .pilotMatchupNames .pilotNamePending { color: var(--muted); font-weight: 400; }

@@ -77,4 +77,11 @@ for (const [file, count] of [
     `${file} preserves schedule metadata in all active mappings`);
 }
 
+assert.match(games, /\{liveCardPilot && \(\s*<div className=\{\x60pilotBasesOuts/); checks++;
+assert.match(games, /pilotBasesUnknown/); checks++;
+assert.match(games, /— OUTS/); checks++;
+assert.match(games, /\{liveCardPilot && \(\s*<div className="pilotMatchupNames"/); checks++;
+assert.match(games, /pilotSituation && !pilotInningTransition && liveState\?\.batterName/); checks++;
+assert.match(games, /pilotSituation && !pilotInningTransition && liveState\?\.pitcherName/); checks++;
+assert.match(games, /Actualizando…/); checks++;
 process.stdout.write(`Game-card regression: ${checks} checks OK.\n`);

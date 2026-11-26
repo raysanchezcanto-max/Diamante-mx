@@ -188,7 +188,7 @@ function GameCards({
           : "";
         const awayDisplayName = getTeamDisplayName(league, game.away);
         const homeDisplayName = getTeamDisplayName(league, game.home);
-        const liveCardPilot = game.status === "Live" && game.firstPitchRecorded === true;
+        const liveCardPilot = game.status === "Live" && game.firstPitchRecorded === true && !getGameSpecialStatus(game.detailedState);
         const liveState = liveCardStates[game.id] ?? null;
         const pilotHalf = (liveState?.inningState ?? "").trim().toLowerCase();
         const cardHalf = (game.inningState ?? "").trim().toLowerCase();
@@ -499,10 +499,10 @@ marginTop: "5px",
 
 
 </div>
-{pilotSituation && (
-  <div className="pilotBasesOuts" aria-label={`Corredores en bases y ${pilotSituation.outs} outs`}>
-    <BaseDiamond first={pilotSituation.first} second={pilotSituation.second} third={pilotSituation.third} />
-    <span>{pilotSituation.outs} {pilotSituation.outs === 1 ? "OUT" : "OUTS"}</span>
+{liveCardPilot && (
+  <div className={`pilotBasesOuts${pilotSituation ? "" : " pilotBasesUnknown"}`} aria-label={pilotSituation ? `Corredores en bases y ${pilotSituation.outs} outs` : "Bases y outs: actualizando datos"}>
+    {pilotSituation ? <><BaseDiamond first={pilotSituation.first} second={pilotSituation.second} third={pilotSituation.third} />
+    <span>{pilotSituation.outs} {pilotSituation.outs === 1 ? "OUT" : "OUTS"}</span></> : <><BaseDiamond /><span>— OUTS</span></>}
   </div>
 )}
 {league === "MLB" &&
@@ -683,11 +683,10 @@ marginTop: "5px",
   </div>
 )}
 
-{pilotSituation && !pilotInningTransition &&
-  (liveState?.batterName || liveState?.pitcherName) && (
+{liveCardPilot && (
     <div className="pilotMatchupNames">
-      {liveState.batterName && <span><b>AL BATE</b><strong title={liveState.batterName}>{liveState.batterName}</strong>{pilotBattingTeam && <em>{pilotBattingTeam}</em>}</span>}
-      {liveState.pitcherName && <span><b>LANZA</b><strong title={liveState.pitcherName}>{liveState.pitcherName}</strong>{pilotPitchingTeam && <em>{pilotPitchingTeam}</em>}</span>}
+      <span><b>AL BATE</b><strong className={pilotSituation && !pilotInningTransition && liveState?.batterName ? undefined : "pilotNamePending"}>{pilotSituation && !pilotInningTransition && liveState?.batterName ? liveState.batterName : "Actualizando…"}</strong>{pilotSituation && !pilotInningTransition && liveState?.batterName && pilotBattingTeam && <em>{pilotBattingTeam}</em>}</span>
+      <span><b>LANZA</b><strong className={pilotSituation && !pilotInningTransition && liveState?.pitcherName ? undefined : "pilotNamePending"}>{pilotSituation && !pilotInningTransition && liveState?.pitcherName ? liveState.pitcherName : "Actualizando…"}</strong>{pilotSituation && !pilotInningTransition && liveState?.pitcherName && pilotPitchingTeam && <em>{pilotPitchingTeam}</em>}</span>
     </div>
   )}
 
