@@ -19,9 +19,23 @@ export type VerifiedPersonnelEvent = {
   url: string;
   description: string;
   replaces?: string;
+  relatedArticleUrls?: readonly string[];
 };
 
 const EVENTS: readonly VerifiedPersonnelEvent[] = [
+  {
+    league:"LMB",clubSlug:"pericos",date:"2026-11-06",person:"Sergio Omar Gastélum",role:"Mánager",
+    kind:"appointment",effectiveSeason:"2027",
+    url:"https://lmb.com.mx/noticias/sergio-omar-gastelum-regresa-al-timon-de-los-pericos-de-puebla",
+    relatedArticleUrls:["https://lmb.com.mx/noticias/sergio-omar-gastelum-se-perfila-para-repetir-con-pericos-la-hazana-del-2023"],
+    description:"Pericos anunció el regreso de Sergio Omar Gastélum como mánager para 2027. La entrevista posterior del 23 de noviembre confirma el mismo nombramiento, no un segundo evento.",
+  },
+  {
+    league:"LMP",clubSlug:"charros",date:"2026-09-14",person:"Benjamín Gil",role:"Mánager",
+    kind:"ratification",effectiveSeason:"2026–27",
+    url:"https://editor.lmp.mx/presenta-charros-de-jalisco-su-proyecto-para-la-temporada-2026-27-de-la-lmp/",
+    description:"Charros confirmó la continuidad de Benjamín Gil al frente del equipo para 2026–27 durante la presentación oficial de su proyecto. No es una nueva contratación.",
+  },
   {
     league:"LMB",clubSlug:"leones",date:"2026-11-23",person:"Yadier Molina",role:"Mánager",
     kind:"appointment",effectiveSeason:"2027",

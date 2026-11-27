@@ -28,6 +28,6 @@ export function verifiedStaffNewsForClub(
   const canonical = canonicalVerifiedArticle(articleUrl, league);
   if (!canonical) return [];
   return verifiedPersonnelEventsForClub(league, clubSlug).filter(event =>
-    canonicalVerifiedArticle(event.url, league) === canonical
+    [event.url, ...(event.relatedArticleUrls ?? [])].some(url => canonicalVerifiedArticle(url, league) === canonical)
   );
 }

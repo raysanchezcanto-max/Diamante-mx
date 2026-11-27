@@ -503,8 +503,13 @@ check(verifiedPersonnelEventsForClub("LMB","leones").length===1 &&
   "Manager event cannot cross leagues or be assigned to another club");
 check(verifiedPersonnelEventsForClub("LMB","leonas").length===0,
   "Mexican Softball League managerial news must never become an LMB event");
-check(verifiedPersonnelEventsForClub("LMB","pericos").length===0,
-  "An equivocal se perfila headline cannot create an automatic managerial confirmation");
+const pericosPrimary="https://lmb.com.mx/noticias/sergio-omar-gastelum-regresa-al-timon-de-los-pericos-de-puebla";
+const pericosFollow="https://lmb.com.mx/noticias/sergio-omar-gastelum-se-perfila-para-repetir-con-pericos-la-hazana-del-2023";
+const pericosEvents=verifiedPersonnelEventsForClub("LMB","pericos");
+check(pericosEvents.length===1 && pericosEvents[0].person==="Sergio Omar Gastélum" && pericosEvents[0].date==="2026-11-06" && pericosEvents[0].kind==="appointment","Pericos appointment is confirmed by primary institutional announcement");
+check(verifiedStaffNewsForClub("LMB","pericos",pericosPrimary)[0]?.url===pericosPrimary && verifiedStaffNewsForClub("LMB","pericos",pericosFollow)[0]?.url===pericosPrimary,"Two official Pericos articles link to the same appointment");
+check(verifiedStaffNewsForClub("LMB","toros",pericosFollow).length===0 && verifiedStaffNewsForClub("LMB","pericos",pericosFollow+"?x=1").length===0,"Related articles preserve club and URL validation");
+check(verifiedPersonnelEventsForClub("LMP","charros").some(e=>e.person==="Benjamín Gil" && e.kind==="ratification" && e.date==="2026-09-14"),"Charros LMP continuity is a ratification, separate from LMB appointment");
 
 const jaguaresStaff=verifiedPersonnelEventsForClub("LMP","jaguares");
 check(jaguaresStaff.length===1&&jaguaresStaff[0].person==="Erik Rodríguez"&&

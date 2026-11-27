@@ -26,3 +26,8 @@ Siguiente: comprobar Vercel y las fichas; si el boletín no aparece, diagnostica
 - Resumen: una tarjeta de cuatro integrantes documentados, 22/ago/2026; Robinson Cancel (coach de banca, cambio desde bateo), Gabriel Luckert (pitcheo), Luis Vázquez (bullpen), José Macías (bateo).
 - Movimientos: cuatro registros individuales; Robinson Cancel clasificado como cambio de cargo, otros tres como incorporaciones técnicas, no altas de jugadores. Enlaces a comunicado LMP presentes.
 - QA de contenido HTML completado para este caso; revisión visual manual y distintivo de noticia no comprobados. Próxima auditoría: clubes LMB/LMP pendientes, contrastar fuente oficial y registros antes de modificar código.
+
+## Auditoría Pericos y Charros — 27/nov/2026
+- LMB Pericos: comunicado oficial 6/nov anuncia regreso de Sergio Omar Gastélum para 2027; entrevista 23/nov confirma el mismo nombramiento. Un solo evento con URL primaria y URL relacionada exacta.
+- LMP Charros: presentación oficial 14/sep confirma continuidad de Benjamín Gil para 2026–27; ratificación, no contratación nueva ni alta de jugador. Separada de su nombramiento LMB en Diablos.
+- No registrar invitados a pretemporada ni jugadores de academia como altas oficiales. Pruebas agregadas; compilación y QA de producción pendientes.
