@@ -20,3 +20,9 @@ Siguiente: comprobar Vercel y las fichas; si el boletín no aparece, diagnostica
 - Gustavo Adolfo Núñez Castillo: registro visible en Toros como derechos recibidos de Sultanes, y en Sultanes como derechos cedidos a Toros; ambos registros contienen enlace Noticia relacionada hacia el comunicado LMB. Resumen de Toros contiene el movimiento de derechos recibidos.
 - Aderlín Rodríguez Sánchez: visible en Sultanes como derechos recibidos de Bravos y en Bravos como derechos cedidos a Sultanes. No se añade una relación editorial de Gustavo al movimiento de Aderlín.
 - No se observó el distintivo de cesión en las noticias visibles del Resumen de Toros en esta consulta; el enlace inverso desde Movimientos sí está confirmado. Inspección HTML, no prueba visual manual móvil/escritorio. Pendiente comprobar Tomateros y avanzar con los demás clubes; preservar workflows y bandeja editorial.
+
+## QA Tomateros — 26/nov/2026
+- HTTP 200 confirmado en `/equipos/lmp/tomateros` y `/equipos/lmp/tomateros?vista=movimientos` mediante Vercel.
+- Resumen: una tarjeta de cuatro integrantes documentados, 22/ago/2026; Robinson Cancel (coach de banca, cambio desde bateo), Gabriel Luckert (pitcheo), Luis Vázquez (bullpen), José Macías (bateo).
+- Movimientos: cuatro registros individuales; Robinson Cancel clasificado como cambio de cargo, otros tres como incorporaciones técnicas, no altas de jugadores. Enlaces a comunicado LMP presentes.
+- QA de contenido HTML completado para este caso; revisión visual manual y distintivo de noticia no comprobados. Próxima auditoría: clubes LMB/LMP pendientes, contrastar fuente oficial y registros antes de modificar código.
