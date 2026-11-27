@@ -14,3 +14,9 @@ Siguiente: comprobar Vercel y las fichas; si el boletín no aparece, diagnostica
 
 ## Confirmación de despliegue — 26/nov/2026
 - Commit funcional `897c5f82ba9e09871b46b664b0ab370b5e84d13c`: Vercel `dpl_2xR2h1ELPG87CU9uDhjEPjK5uQ7p` READY, production, dominio asignado sin error. Confirmado por consulta directa a Vercel. Queda pendiente verificar el movimiento real y el distintivo editorial en las fichas públicas; READY no equivale a QA visual ni confirma la disponibilidad del boletín.
+
+## QA de producción — 26/nov/2026
+- Consulta directa mediante Vercel de `/equipos/lmb/toros?vista=movimientos`, `/equipos/lmb/sultanes?vista=movimientos`, `/equipos/lmb/bravos?vista=movimientos` y `/equipos/lmb/toros`: HTTP 200 en las cuatro rutas.
+- Gustavo Adolfo Núñez Castillo: registro visible en Toros como derechos recibidos de Sultanes, y en Sultanes como derechos cedidos a Toros; ambos registros contienen enlace Noticia relacionada hacia el comunicado LMB. Resumen de Toros contiene el movimiento de derechos recibidos.
+- Aderlín Rodríguez Sánchez: visible en Sultanes como derechos recibidos de Bravos y en Bravos como derechos cedidos a Sultanes. No se añade una relación editorial de Gustavo al movimiento de Aderlín.
+- No se observó el distintivo de cesión en las noticias visibles del Resumen de Toros en esta consulta; el enlace inverso desde Movimientos sí está confirmado. Inspección HTML, no prueba visual manual móvil/escritorio. Pendiente comprobar Tomateros y avanzar con los demás clubes; preservar workflows y bandeja editorial.
